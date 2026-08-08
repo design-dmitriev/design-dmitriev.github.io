@@ -95,6 +95,9 @@ const translations = {
         interface_mode: "РЕЖИМ РАБОТЫ:",
         mode_designer: "РАБОЧИЙ",
         mode_modder: "ХОББИ",
+        sound_label: "ЗВУК:",
+        sound_on: "ВКЛ",
+        sound_off: "ВЫКЛ",
         author_name: "Алексей Дмитриев",
 
         hero_title_designer_1: "ЭСТЕТИКА",
@@ -175,6 +178,9 @@ const translations = {
         interface_mode: "INTERFACE_MODE:",
         mode_designer: "UX/UI_DESIGN",
         mode_modder: "MODDING",
+        sound_label: "SOUND:",
+        sound_on: "ON",
+        sound_off: "OFF",
         author_name: "Alex Dmitriev",
 
         hero_title_designer_1: "AESTHETIC",
@@ -652,16 +658,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 0.5. Sound Design (Web Audio API) ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const SOUND_PREF_KEY = 'starlight.sound';
     let audioCtx = null;
     let soundEnabled = false;
     let noiseBuffer = null;
 
-    // Initialize and attempt to autoplay music immediately
+    // Звук по умолчанию выключен: включается только кнопкой в шапке.
+    // preload='none' — 5 МБ трека не грузятся, пока звук не включили.
     window.bgMusic = new Audio('./background.mp3');
     window.bgMusic.loop = true;
     window.bgMusic.volume = 0.1;
-    // Browsers may block this until interaction, but we try anyway
-    window.bgMusic.play().catch(e => console.log("Autoplay blocked by browser policy, waiting for click:", e));
+    window.bgMusic.preload = 'none';
 
     function createNoiseBuffer() {
         const bufferSize = audioCtx.sampleRate * 2; // 2 seconds
@@ -673,47 +680,55 @@ document.addEventListener('DOMContentLoaded', () => {
         return buffer;
     }
 
-    function initAudio() {
+    function enableSound() {
         if (!audioCtx) {
             audioCtx = new AudioContext();
             noiseBuffer = createNoiseBuffer();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => { });
 
-            // If music didn't start automatically (blocked), try again on click
-            if (window.bgMusic.paused) {
-                window.bgMusic.play().catch(e => console.log("Bg music error:", e));
-            }
+        soundEnabled = true;
+        window.bgMusic.preload = 'auto';
+        window.bgMusic.play().catch(() => { });
+    }
 
-            audioCtx.resume().then(() => {
-                soundEnabled = true;
-            });
+    function disableSound() {
+        soundEnabled = false;
+        window.bgMusic.pause();
+        if (audioCtx && audioCtx.state === 'running') audioCtx.suspend().catch(() => { });
+    }
+
+    const soundBtn = document.getElementById('sound-toggle');
+
+    function setSound(on, persist = true) {
+        if (on) enableSound(); else disableSound();
+
+        if (persist) {
+            try { localStorage.setItem(SOUND_PREF_KEY, on ? 'on' : 'off'); } catch (e) { /* приватный режим */ }
+        }
+        if (soundBtn) {
+            soundBtn.classList.toggle('sound-on', on);
+            soundBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
         }
     }
 
-    // Enable sound on first interaction (any action)
-    const initEvents = ['click', 'mousemove', 'scroll', 'touchstart', 'keydown'];
-    const handleInit = () => {
-        if (!audioCtx) {
-            audioCtx = new AudioContext();
-            noiseBuffer = createNoiseBuffer();
-        }
+    if (soundBtn) {
+        soundBtn.addEventListener('click', () => setSound(!soundEnabled));
+    }
 
-        if (window.bgMusic && window.bgMusic.paused) {
-            window.bgMusic.play().catch(() => { });
-        }
+    // Тем, кто уже включал звук, возвращаем его — но браузеру всё равно нужен
+    // жест пользователя, поэтому ждём первое осмысленное действие.
+    let savedSoundPref = null;
+    try { savedSoundPref = localStorage.getItem(SOUND_PREF_KEY); } catch (e) { /* приватный режим */ }
 
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume().catch(() => { });
-        }
-
-        // Only remove listeners if audio successfully started running
-        setTimeout(() => {
-            if (audioCtx && audioCtx.state === 'running' && window.bgMusic && !window.bgMusic.paused) {
-                soundEnabled = true;
-                initEvents.forEach(evt => document.removeEventListener(evt, handleInit));
-            }
-        }, 100);
-    };
-    initEvents.forEach(evt => document.addEventListener(evt, handleInit));
+    if (savedSoundPref === 'on') {
+        const gestureEvents = ['pointerdown', 'keydown', 'touchstart'];
+        const restoreSound = () => {
+            gestureEvents.forEach(evt => document.removeEventListener(evt, restoreSound));
+            setSound(true, false);
+        };
+        gestureEvents.forEach(evt => document.addEventListener(evt, restoreSound, { once: true }));
+    }
 
     // "Alien/Nostromo" terminal tick - mechanical, muted, non-tonal
     function playHoverSound() {
@@ -917,12 +932,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const emailEl = document.getElementById('dynamic-email');
-        if (emailEl) {
-            const emailVal = translations[lang]['email_value'];
+        // Почта есть в обоих футерах (рабочий/хобби) — обновляем каждую
+        const emailVal = translations[lang]['email_value'];
+        document.querySelectorAll('.dynamic-email').forEach(emailEl => {
             emailEl.textContent = emailVal;
             emailEl.href = "mailto:" + emailVal;
-        }
+        });
 
         // Reset original text cache for scramble animations so new language text is used
         document.querySelectorAll('.career-text-blocks h3, .career-text-blocks p').forEach(t => {
@@ -1129,7 +1144,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 title.style.color = 'var(--text-main)';
                 title.style.marginBottom = '0.75rem';
                 title.style.fontWeight = 'bold';
-                title.textContent = folder.toLowerCase() === 'banners' ? '[ МАСШТАБ ПРОЕКТА ]' : '[ АНАЛИТИКА ]';
+                title.textContent = folder.toLowerCase() === 'реклама' ? '[ МАСШТАБ ПРОЕКТА ]' : '[ АНАЛИТИКА ]';
                 metricsContainer.appendChild(title);
 
                 const textElem = document.createElement('div');
@@ -1256,7 +1271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'бзу 3в1 qi2': 'Увеличение CTR в поиске с 2.8% до 5.1%. Добавления "в корзину" выросли с 15% до 19%, цена заказа снижена на 8%.',
         '18+ 2024': 'CTR в каталоге вырос с 5.2% до 9.5%. Конверсия "в корзину" увеличилась с 14% до 22% при общем трафике в 1.2M.',
         'headphones 2024': 'Прирост CTR в поиске с 4.5% до 8.1%. Конверсия "в корзину" выросла с 12% до 21%, а цена заказа упала на 15%.',
-        'banners': 'Точных метрик нет — это масштабная имиджевая реклама для Wildberries. Баннеры (включая гигантские суперфасады) были размещены по всей стране и на территориях СНГ, обеспечив колоссальный охват аудитории.'
+        'реклама': 'Точных метрик нет — это масштабная имиджевая реклама для Wildberries. Баннеры (включая гигантские суперфасады) были размещены по всей стране и на территориях СНГ, обеспечив колоссальный охват аудитории.'
     };
 
     document.body.addEventListener('click', (e) => {

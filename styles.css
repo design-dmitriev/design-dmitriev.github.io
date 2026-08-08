@@ -409,11 +409,22 @@ button:hover ~ .cursor-outline,
     gap: 3rem;
 }
 
-.sys-lang, .sys-toggle {
+.sys-lang, .sys-toggle, .sys-sound {
     display: flex;
     align-items: center;
     gap: 1rem;
     font-size: 0.85rem;
+}
+
+/* Переключатель звука: показываем только текущее состояние */
+.sound-text { transition: opacity 0.3s, color 0.3s; }
+#sound-toggle .sound-off-text { display: inline-block; opacity: 0.3; }
+#sound-toggle .sound-on-text { display: none; }
+#sound-toggle.sound-on .sound-off-text { display: none; }
+#sound-toggle.sound-on .sound-on-text {
+    display: inline-block;
+    opacity: 1;
+    color: var(--accent-color);
 }
 
 .label { color: var(--text-muted); }
