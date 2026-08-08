@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            line-height: 1.5;
+            margin: 0;
+            background: #fff;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 60px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 40px;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 25px;
+        }
+
+        .avatar {
+            width: 140px;
+            height: 140px;
+            background-color: #f0f0f0;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .personal-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .role {
+            font-size: 20px;
+            color: #666;
+            margin: 0 0 15px 0;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+
+        .portfolio-btn {
+            background: #000;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 30px 0;
+        }
+
+        .job {
+            margin-bottom: 40px;
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .dates {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .job-role {
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 15px 0;
+        }
+
+        .achievements {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .achievements li {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .achievements li::marker {
+            color: #000;
+        }
+
+        @media print {
+            .job {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                margin-bottom: 30px;
+            }
+            .section-title {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+            .job-header {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+            .job-role {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-left">
+            <div class="avatar"></div>
+            <div class="personal-info">
+                <h1>Дмитриев<br>Алексей</h1>
+                <p class="role">Графический дизайнер</p>
+                <p class="meta">27 лет, 6 лет 8 месяцев опыта, Москва, м. Лианозово</p>
+            </div>
+        </div>
+        <a href="https://starlight-lnk.github.io" class="portfolio-btn">Сайт портфолио</a>
+    </div>
+
+    <h2 class="section-title">Опыт работы</h2>
+
+    <div class="job">
+        <div class="job-header">
+            <h3 class="company">HaruCase</h3>
+            <span class="dates">06.2024 — н. в.</span>
+        </div>
+        <p class="job-role">Руководитель отдела дизайна</p>
+        <ul class="achievements">
+            <li>Управление отделом дизайна (5 человек): постановка задач, арт-дирекшн, обучение, контроль выполнения KPI.</li>
+            <li>Дизайн для маркетплейсов (WB, Ozon): разработка концепций, карточек товаров (сотни артикулов), Rich-контента, витрин магазинов.</li>
+            <li>Системная работа: ведение проектов в Яндекс.Трекер и Битрикс24, взаимодействие с CEO и отделом продаж.</li>
+            <li>Брендинг и UI: дизайн упаковки, мерча, организация фотосъемок; проектирование UI-интерфейсов (Telegram-боты, макеты сайтов, дизайн-систем).</li>
+            <li>Hands-on дизайн: самостоятельная отрисовка флагманских продуктов (БЗУ и др.).</li>
+            <li>Ускорил работу отдела на 50% за счет перевода команды из Photoshop в Figma и внедрения нейросетей (генеративные ИИ для графики и текстов).</li>
+            <li>Повысил конверсию и CTR карточек на 1–5% благодаря разработке нового, более качественного визуального стиля.</li>
+            <li>За 2 года вместе с командой выпустил сотни высококонверсионных проектов (более 3000 слайдов).</li>
+            <li>Разработал десятки правил из насмотренности, которые позволяют карточкам быть не просто идентичными, но и проработанными до мелочей.</li>
+            <li>С нуля разработал и внедрил прозрачную систему KPI для дизайнеров.</li>
+        </ul>
+    </div>
+
+    <div class="job">
+        <div class="job-header">
+            <h3 class="company">ИП «Fix Mobile»</h3>
+            <span class="dates">03.2023 — 02.2024</span>
+        </div>
+        <p class="job-role">Графический дизайнер / Дизайнер инфографики / Видеограф</p>
+        <ul class="achievements">
+            <li>Дизайн для маркетплейсов "под ключ": полное визуальное сопровождение магазинов компании в роли единственного дизайнера.</li>
+            <li>Создание брендинга с нуля: разработка айдентики для нового бренда в категории 18+.</li>
+            <li>Дизайн полиграфии и упаковки: создание макетов коробок, вкладышей и инструкций для продукции.</li>
+            <li>Сложная ретушь: глубокая и высокоточная цветокоррекция сотен артикулов (цветные прозрачные чехлы) с соблюдением строгих требований к визуалу.</li>
+            <li>Работа с партнерскими сетями: оформление карточек товаров для смежных брендов (автоаксессуары, умный дом).</li>
+            <li>Фактически с нуля оформил всю витрину основного магазина компании, создав сотни карточек товаров.</li>
+            <li>Успешно разработал и запустил визуальную концепцию (от карточек до физической упаковки) для бренда 18+, который показал хорошие продажи.</li>
+            <li>Прокачал навык pixel-perfect дизайна: научился выдавать идеальный результат и работать со сложной цветокоррекцией под высокие требования руководства.</li>
+        </ul>
+    </div>
+
+    <div class="job">
+        <div class="job-header">
+            <h3 class="company">ИП «ARTOtaku»</h3>
+            <span class="dates">07.2022 — 10.2022</span>
+        </div>
+        <p class="job-role">Дизайнер</p>
+        <ul class="achievements">
+            <li>Веб-дизайн, UI/UX, полиграфия, баннеры, карточки товаров.</li>
+        </ul>
+    </div>
+
+    <div class="job">
+        <div class="job-header">
+            <h3 class="company">ИП Cases Stores</h3>
+            <span class="dates">11.2021 — 07.2022</span>
+        </div>
+        <p class="job-role">Фотограф-дизайнер</p>
+        <ul class="achievements">
+            <li>Создание инфографики, разработка превью, фонов; Сборка Rich-контента, Предметная фотосъемка и ретушь.</li>
+            <li>Разработка маркетинг-стиля; Создание дизайн макетов и верстка инфографики для маркетплейсов.</li>
+            <li>Видеосъемка маркетинговых видеороликов.</li>
+            <li>Активное участие в разработке методических материалов по созданию маркетинг-дизайну.</li>
+        </ul>
+    </div>
+
+</body>
+</html>
