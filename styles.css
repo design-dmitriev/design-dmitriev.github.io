@@ -10,7 +10,7 @@
     --font-mono: 'mononoki', monospace;
     --font-neon: 'mononoki', monospace;
     --font-display: 'Orbitron', sans-serif;
-    --font-pixel: 'Pixelify Sans', 'mononoki', monospace;
+    --font-terminal: 'IBM Plex Mono', 'mononoki', monospace;
 
     /* Темы */
     --accent-designer: #888888; /* Серый */
@@ -1170,9 +1170,9 @@ body.theme-modder .modder-btns .btn-secondary:hover {
 }
 
 /* Кегль подобран так, чтобы самый длинный блок влезал в панель целиком
-   (338 px при высоте панели 350) — раньше текст из неё вываливался */
+   (323 px при высоте панели 350) — раньше текст из неё вываливался */
 .text-block .card-role {
-    font-size: 2rem;
+    font-size: 1.9rem;
     line-height: 1.25;
     letter-spacing: 0.01em;
     margin-bottom: 1.5rem;
@@ -1180,7 +1180,7 @@ body.theme-modder .modder-btns .btn-secondary:hover {
 }
 
 .text-block .card-body {
-    font-size: 1.05rem;
+    font-size: 1rem;
     line-height: 1.55;
     max-width: 90%;
 }
@@ -1975,11 +1975,11 @@ body.zoom-out-mode .cursor-dot::after {
     font-family: 'mononoki', monospace;
 }
 
-/* Текст карьеры — пиксельным шрифтом */
+/* Текст карьеры — строгим техническим моно */
 .career-text-panel .card-role,
 .career-text-panel .card-body,
 .career-text-panel .card-body * {
-    font-family: var(--font-pixel);
+    font-family: var(--font-terminal);
 }
 
 .header-contact-btn {
