@@ -10,6 +10,7 @@
     --font-mono: 'mononoki', monospace;
     --font-neon: 'mononoki', monospace;
     --font-display: 'Orbitron', sans-serif;
+    --font-pixel: 'Pixelify Sans', 'mononoki', monospace;
 
     /* Темы */
     --accent-designer: #888888; /* Серый */
@@ -853,7 +854,7 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     gap: 0.6rem;
 }
 
-/* --- Строка списка работ (терминальный каталог) --- */
+/* --- Строка списка работ: терминал «Севастополя» --- */
 .work-row {
     --row-glow: var(--hero-accent);
     position: relative;
@@ -862,17 +863,31 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     align-items: stretch;
     gap: 1.25rem;
     padding: 0.9rem 1rem 0.9rem 0.6rem;
-    background: linear-gradient(100deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.015) 55%, rgba(255, 255, 255, 0) 100%);
-    border: 1px solid var(--grid-line);
+    background: rgba(96, 183, 86, 0.035);
+    border: 1px solid rgba(96, 183, 86, 0.16);
     /* срез угла как в игровом интерфейсе */
     clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+    box-shadow: inset 0 0 40px rgba(96, 183, 86, 0.05);
+    overflow: hidden;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* развёртка ЭЛТ поверх всей плашки */
+.work-row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 2px,
+            rgba(0, 0, 0, 0.28) 2px, rgba(0, 0, 0, 0.28) 3px);
+    pointer-events: none;
+    z-index: 4;
 }
 
 .work-row:hover {
-    border-color: rgba(96, 183, 86, 0.35);
-    transform: translateX(4px);
-    background: linear-gradient(100deg, rgba(96, 183, 86, 0.18) 0%, rgba(96, 183, 86, 0.06) 60%, rgba(96, 183, 86, 0) 100%);
+    border-color: var(--row-glow);
+    background: rgba(96, 183, 86, 0.1);
+    box-shadow: inset 0 0 60px rgba(96, 183, 86, 0.12), 0 0 24px rgba(96, 183, 86, 0.08);
 }
 
 .row-marker {
@@ -882,9 +897,13 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     color: rgba(96, 183, 86, 0.35);
     font-size: 0.7rem;
     transition: color 0.25s ease;
+    border-right: 1px dashed rgba(96, 183, 86, 0.15);
 }
 
-.work-row:hover .row-marker { color: var(--row-glow); }
+.work-row:hover .row-marker {
+    color: var(--row-glow);
+    text-shadow: 0 0 8px rgba(96, 183, 86, 0.8);
+}
 
 .row-body {
     display: flex;
@@ -941,10 +960,23 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     flex-wrap: wrap;
 }
 
-.row-meta .val { color: var(--row-glow); }
+.row-meta .val {
+    color: var(--row-glow);
+    text-shadow: 0 0 8px rgba(96, 183, 86, 0.45);
+}
+
+.row-no b { text-shadow: 0 0 8px rgba(96, 183, 86, 0.25); }
+
+.project-title {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-shadow: 0 0 10px rgba(96, 183, 86, 0.18);
+}
 
 /* Иконка-знак категории в стилистике монитора */
 .row-icon {
+    --mx: 50%;
+    --my: 50%;
     position: relative;
     width: 92px;
     height: 92px;
@@ -952,12 +984,53 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     background: #050a06;
     border: 1px solid rgba(96, 183, 86, 0.18);
     overflow: hidden;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
+
+.work-row:hover .row-icon {
+    border-color: rgba(96, 183, 86, 0.55);
+    box-shadow: 0 0 18px rgba(96, 183, 86, 0.25), inset 0 0 20px rgba(96, 183, 86, 0.1);
+}
+
+/* пятно свечения ходит за курсором */
+.row-icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx) var(--my),
+            rgba(96, 183, 86, 0.35) 0%, rgba(96, 183, 86, 0) 60%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.work-row:hover .row-icon::before { opacity: 1; }
 
 .row-icon svg {
     display: block;
     width: 100%;
     height: 100%;
+    position: relative;
+    z-index: 1;
+    /* без сглаживания — пиксель остаётся пикселем */
+    image-rendering: pixelated;
+}
+
+/* Четыре тона: яркий пиксель и полутон.
+   --force приходит из скрипта: 0 вдали от курсора, 1 под ним. */
+.row-icon .px {
+    --force: 0;
+    fill: var(--row-glow);
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(calc(1 + var(--force) * 0.5));
+    opacity: calc(0.82 + var(--force) * 0.18);
+    transition: transform 0.12s ease-out, opacity 0.12s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .row-icon .px { transition: none; transform: none; }
 }
 
 /* развёртка строк ЭЛТ */
@@ -969,11 +1042,8 @@ body.theme-modder .modder-btns .btn-secondary:hover {
             rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0) 1px,
             rgba(0, 0, 0, 0.45) 1px, rgba(0, 0, 0, 0.45) 2px);
     pointer-events: none;
+    z-index: 3;
 }
-
-.glyph-stroke { fill: none; stroke: var(--row-glow); stroke-width: 1.5; }
-.glyph-fill { fill: var(--row-glow); }
-.glyph-dim { fill: none; stroke: rgba(96, 183, 86, 0.3); stroke-width: 1.5; }
 
 /* На узких экранах знак уезжает под текст */
 @media (max-width: 700px) {
@@ -1099,15 +1169,19 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     visibility: visible;
 }
 
+/* Кегль подобран так, чтобы самый длинный блок влезал в панель целиком
+   (338 px при высоте панели 350) — раньше текст из неё вываливался */
 .text-block .card-role {
-    font-size: 2.2rem;
+    font-size: 2rem;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
     margin-bottom: 1.5rem;
     max-width: 90%;
 }
 
 .text-block .card-body {
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1.05rem;
+    line-height: 1.55;
     max-width: 90%;
 }
 
@@ -1894,8 +1968,18 @@ body.zoom-out-mode .cursor-dot::after {
     }
 }
 
-.career-text-panel *, .text-block * {
-    font-family: 'mononoki', monospace !important;
+/* Шапка блока остаётся моноширинной: в ней псевдографика [██▒▒▒],
+   таких символов в пиксельных шрифтах нет — поедет вёрстка полосы */
+.career-text-panel .terminal-header,
+.career-text-panel .terminal-header * {
+    font-family: 'mononoki', monospace;
+}
+
+/* Текст карьеры — пиксельным шрифтом */
+.career-text-panel .card-role,
+.career-text-panel .card-body,
+.career-text-panel .card-body * {
+    font-family: var(--font-pixel);
 }
 
 .header-contact-btn {

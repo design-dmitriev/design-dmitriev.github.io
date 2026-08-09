@@ -859,6 +859,147 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     attachSoundToElements();
 
+    // --- 0.9. Пиксельные знаки категорий ---
+    // Рисунок задан по клеткам: '.' пусто, '#' яркий пиксель, '+' полутон.
+    const GLYPH_MAPS = {
+        cards: [
+            '................',
+            '.....########...',
+            '.....#++++++#...',
+            '..########++#...',
+            '..#++++++#++#...',
+            '..#+####+#++#...',
+            '..#+####+#++#...',
+            '..#+####+#++#...',
+            '..#++++++#++#...',
+            '..#+####+#+##...',
+            '..#++++++#+#....',
+            '..#+###++#+#....',
+            '..#++++++#+#....',
+            '..#++++++###....',
+            '..########......',
+            '................'
+        ],
+        billboard: [
+            '................',
+            '.##############.',
+            '.#++++++++++++#.',
+            '.#+++##+++++++#.',
+            '.#++####++++++#.',
+            '.#+++##++++#++#.',
+            '.#++++++++###+#.',
+            '.#+##++++######.',
+            '.#####++#######.',
+            '.##############.',
+            '.......##.......',
+            '.......##.......',
+            '.......##.......',
+            '....########....',
+            '................',
+            '................'
+        ],
+        audio: [
+            '................',
+            '.....######.....',
+            '...##++++++##...',
+            '..#++++++++++#..',
+            '.#++++####++++#.',
+            '.#+++#++++#+++#.',
+            '#++++#+##+#++++#',
+            '#++++#+##+#++++#',
+            '#++++#++++#++++#',
+            '.#++++####++++#.',
+            '.#++++++++++++#.',
+            '..#++++++++++#..',
+            '...##++++++##...',
+            '.....######.....',
+            '................',
+            '................'
+        ]
+    };
+
+    function buildGlyph(map) {
+        const h = map.length;
+        const w = map[0].length;
+        let rects = '';
+
+        for (let y = 0; y < h; y++) {
+            for (let x = 0; x < w; x++) {
+                const ch = map[y][x];
+                // '+' в картах размечает заливку полутоном; сейчас знаки
+                // рисуются в один бит, поэтому полутон не выводится
+                if (ch !== '#') continue;
+                rects += `<rect class="px" x="${x}" y="${y}" width="1" height="1"/>`;
+            }
+        }
+
+        return `<svg viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges">${rects}</svg>`;
+    }
+
+    // Пиксели подсвечиваются под курсором: чем ближе — тем ярче и крупнее.
+    // Радиус в клетках сетки, не в пикселях экрана, поэтому эффект
+    // одинаков на любом размере знака.
+    const GLYPH_RADIUS = 5;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function attachGlyphInteraction(holder) {
+        const svg = holder.querySelector('svg');
+        if (!svg) return;
+
+        const cells = [...svg.querySelectorAll('.px')].map(r => ({
+            el: r,
+            cx: parseFloat(r.getAttribute('x')) + 0.5,
+            cy: parseFloat(r.getAttribute('y')) + 0.5
+        }));
+
+        const grid = svg.viewBox.baseVal;
+        let frame = null;
+        let pending = null;
+
+        function paint() {
+            frame = null;
+            if (!pending) return;
+
+            const { gx, gy } = pending;
+            cells.forEach(c => {
+                const d = Math.hypot(c.cx - gx, c.cy - gy);
+                const force = Math.max(0, 1 - d / GLYPH_RADIUS);
+                c.el.style.setProperty('--force', force.toFixed(3));
+            });
+        }
+
+        holder.addEventListener('pointermove', e => {
+            const rect = holder.getBoundingClientRect();
+            const px = (e.clientX - rect.left) / rect.width;
+            const py = (e.clientY - rect.top) / rect.height;
+
+            // подсветка самой «колбы» — следует за курсором
+            holder.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+            holder.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+
+            if (reduceMotion) return;
+
+            pending = { gx: px * grid.width, gy: py * grid.height };
+            if (!frame) frame = requestAnimationFrame(paint);
+        });
+
+        const reset = () => {
+            if (frame) { cancelAnimationFrame(frame); frame = null; }
+            pending = null;
+            cells.forEach(c => c.el.style.setProperty('--force', '0'));
+        };
+
+        holder.addEventListener('pointerleave', reset);
+        holder.addEventListener('pointercancel', reset);
+    }
+
+    document.querySelectorAll('.row-icon[data-glyph]').forEach(el => {
+        const map = GLYPH_MAPS[el.dataset.glyph];
+        if (!map) return;
+        el.innerHTML = buildGlyph(map);
+        attachGlyphInteraction(el);
+    });
+
     // --- 1. SPA Mode Toggle & URL Routing ---
     const toggleBtn = document.getElementById('mode-toggle');
     const body = document.body;
