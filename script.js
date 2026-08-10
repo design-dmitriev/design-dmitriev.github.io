@@ -89,7 +89,6 @@ window.scrollTo(0, 0);
 
 const translations = {
     ru: {
-        sys_id: "СИСТ.ID:",
         status_online: "В СЕТИ",
         interface_mode: "РЕЖИМ РАБОТЫ:",
         mode_designer: "РАБОЧИЙ",
@@ -97,51 +96,13 @@ const translations = {
         sound_label: "ЗВУК:",
         sound_on: "ВКЛ",
         sound_off: "ВЫКЛ",
-        author_name: "Алексей Дмитриев",
 
-        hero_title_designer_1: "ЭСТЕТИКА",
-        hero_title_designer_2: "ФУНКЦИЯ",
         hero_sub_designer: "От карточек товаров до управления отделом дизайна",
 
         label_selected_works: "// ИЗБРАННЫЕ_РАБОТЫ",
-        label_about_me: "// ИНФОРМАЦИЯ",
-        about_1_date: "01_СПЕЦИАЛИЗАЦИЯ",
-        about_1_title: "Дизайн маркетплейсов",
-        about_1_desc: "Создание премиальных карточек товаров и рич-контента с глубоким анализом конкурентов.",
-        about_2_date: "02_НАВЫКИ",
-        about_2_title: "UX/UI и Арт-дирекшн",
-        about_2_desc: "Проектирование пользовательского опыта и управление визуальным стилем.",
-        about_3_date: "03_ПОДХОД",
-        about_3_title: "Эстетика + Функция",
-        about_3_desc: "Каждый пиксель должен решать бизнес-задачу и выделять продукт среди остальных.",
-
-        proj_type_ecommerce: "ЭЛЕКТРОННАЯ_КОММЕРЦИЯ",
-        project_1_title: "Карточка товара",
-        project_1_desc: "Аналитика, инфографика и премиальный визуальный стиль для маркетплейсов.",
-
-        proj_type_rich: "RICH_CONTENT",
-        project_rich_title: "Рич-контент",
-        project_rich_desc: "Бесшовные визуальные истории (лендинги), полностью погружающие клиента в продукт.",
-
-        proj_type_outdoor: "НАРУЖНАЯ_РЕКЛАМА",
-        project_2_title: "Уличный баннер",
-        project_2_desc: "Широкоформатная наружная реклама и живые фотографии.",
 
         label_career_path: "// КАРЬЕРНЫЙ_ПУТЬ",
-        date_now: "СЕЙЧАС",
-        career_1_title: "руководитель_отдела_дизайна",
-        career_1_desc: "Управление процессами, контроль качества.",
 
-        date_prev: "РАНЕЕ",
-        career_2_title: "ведущий_графический_дизайнер",
-        career_2_desc: "Широкоформатная печать, наружная реклама.",
-
-        date_init: "СТАРТ",
-        career_3_title: "дизайнер_карточек_товаров",
-        career_3_desc: "Маркетплейсы, работа со светом и тенью.",
-
-        hero_title_modder_1: "МУТАЦИЯ",
-        hero_title_modder_2: "КОДА",
         hero_sub_modder: "Minecraft моддинг • Скромно и со вкусом",
 
         label_mod_archive: "// АРХИВ_МОДОВ",
@@ -152,27 +113,19 @@ const translations = {
         btn_view_repo: "СМОТРЕТЬ_ПРОФИЛЬ",
 
         label_communication: "// УСТАНОВЛЕНИЕ_СВЯЗИ",
-        footer_title: "дайте_сигнал",
 
         contact_direct: "Прямая связь:",
-        contact_phone: "Телефон / Max:",
         contact_email: "Почта (РФ):",
         email_value: "starlight.lnk@yandex.ru",
-        modder_contact_desc: "Если есть идеи для модов или вопросы по сборкам — пишите напрямую в Telegram.",
-
-        lbl_downloads: "Скачивания:",
-        lbl_updated: "Обновлено:",
 
         sys_normal: "Система работает в штатном режиме.",
         sys_tg_blog: "Авторский блог:",
         mod_id_1: "ACHIEVEMENT",
         document_title: "СИСТ.ПОРТФОЛИО // STARLIGHT",
         lightbox_view: "// РЕЖИМ_ПРОСМОТРА",
-        btn_cv_download: "ПОСМОТРЕТЬ CV",
-        label_cv: "РЕЗЮМЕ:"
+        btn_cv_download: "ПОСМОТРЕТЬ CV"
     },
     en: {
-        sys_id: "SYS.ID:",
         status_online: "ONLINE",
         interface_mode: "INTERFACE_MODE:",
         mode_designer: "UX/UI_DESIGN",
@@ -180,51 +133,13 @@ const translations = {
         sound_label: "SOUND:",
         sound_on: "ON",
         sound_off: "OFF",
-        author_name: "Alex Dmitriev",
 
-        hero_title_designer_1: "AESTHETIC",
-        hero_title_designer_2: "FUNCTION",
         hero_sub_designer: "From product cards to design department management",
 
         label_selected_works: "// SELECTED_WORKS",
-        label_about_me: "// INFORMATION",
-        about_1_date: "01_SPECIALIZATION",
-        about_1_title: "Marketplace Design",
-        about_1_desc: "Creating premium product cards and rich content with deep competitor analysis.",
-        about_2_date: "02_SKILLS",
-        about_2_title: "UX/UI & Art Direction",
-        about_2_desc: "Designing user experience and managing visual style.",
-        about_3_date: "03_APPROACH",
-        about_3_title: "Aesthetics + Function",
-        about_3_desc: "Every pixel must solve a business problem and make the product stand out.",
-
-        proj_type_ecommerce: "E-COMMERCE",
-        project_1_title: "Product card",
-        project_1_desc: "Analytics, infographics, and premium visual styling for marketplaces.",
-
-        proj_type_rich: "RICH_CONTENT",
-        project_rich_title: "Rich content",
-        project_rich_desc: "Seamless visual stories (landings) fully immersing the client in the product.",
-
-        proj_type_outdoor: "OUTDOOR_AD",
-        project_2_title: "Outdoor banner",
-        project_2_desc: "Large-format outdoor advertising and live photography.",
 
         label_career_path: "// CAREER_PATH",
-        date_now: "NOW",
-        career_1_title: "head_of_design_department",
-        career_1_desc: "Process management, quality control.",
 
-        date_prev: "PREV",
-        career_2_title: "lead_graphic_designer",
-        career_2_desc: "Large format printing, outdoor advertising.",
-
-        date_init: "INIT",
-        career_3_title: "product_card_designer",
-        career_3_desc: "Marketplaces, working with light and shadows.",
-
-        hero_title_modder_1: "CODE",
-        hero_title_modder_2: "MUTATION",
         hero_sub_modder: "Minecraft modding • Simple and modest",
 
         label_mod_archive: "// MOD_ARCHIVE",
@@ -235,24 +150,17 @@ const translations = {
         btn_view_repo: "VIEW_PROFILE",
 
         label_communication: "// ESTABLISH_COMMUNICATION",
-        footer_title: "give_a_signal",
 
         contact_direct: "Direct contact:",
-        contact_phone: "Phone / Max:",
         contact_email: "Email (Global):",
         email_value: "desing.starlight@gmail.com",
-        modder_contact_desc: "If you have mod ideas or modpack questions — DM me on Telegram.",
-
-        lbl_downloads: "Downloads:",
-        lbl_updated: "Updated:",
 
         sys_normal: "System running normal.",
         sys_tg_blog: "Author blog:",
         mod_id_1: "ACHIEVEMENT",
         document_title: "SYS.PORTFOLIO // STARLIGHT",
         lightbox_view: "// VIEW_MODE",
-        btn_cv_download: "VIEW CV",
-        label_cv: "CV:"
+        btn_cv_download: "VIEW CV"
     }
 };
 
@@ -1201,7 +1109,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-
             p.opacity += (Math.random() - 0.5) * 0.05;
             const minOp = isLight ? 0.02 : 0.1;
             const maxOp = isLight ? 0.3 : 1;
@@ -1257,7 +1164,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', initCanvas);
     initCanvas();
     animateCanvas();
-
 
     // --- 4. Lightbox Gallery Logic ---
 
@@ -1935,17 +1841,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (current !== activeIndex && current >= 0 && current <= maxIndex) {
                     activeIndex = current;
 
-                    // Also play a glitch sound if they scroll to a new year
-                    if (window.playHoverSound && soundEnabled) {
-                        playHoverSound();
-                    }
-
-                    // Trigger text reveal on index change
-                    if (window.playHoverSound && soundEnabled) {
-                        playHoverSound();
-                    }
-
-
                     textBlocks.forEach((block, i) => {
                         if (i === current) {
                             block.classList.add('active');
@@ -2088,9 +1983,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-
-    // Removed loadDynamicGallery() call
 
 });
 
