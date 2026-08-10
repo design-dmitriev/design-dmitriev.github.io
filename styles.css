@@ -681,13 +681,16 @@ body.theme-modder .modder-ascii {
 }
 
 /* Projects - Full Bleed rows */
-/* Ограничение по ширине: во всю ширину контента плашки читались
-   как длинные полосы — текст слева, мелкий знак справа, пустая середина */
+/* Ширина ограничена, иначе плашки читаются как длинные полосы.
+   Высота строки подобрана под эту ширину: при знаке 64 px и плотных
+   отступах выходило 620x88 — почти 7:1, всё ещё полоска.
+   Сейчас знак 84 px и просторнее поля: строка ближе к 5:1,
+   а блок целиком — примерно 620x390, нормальная панель */
 .projects-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    max-width: 680px;
+    gap: 0.65rem;
+    max-width: 620px;
 }
 
 /* --- Строка списка работ: терминал «Севастополя» --- */
@@ -697,8 +700,8 @@ body.theme-modder .modder-ascii {
     display: grid;
     grid-template-columns: 1.5rem 1fr auto;
     align-items: stretch;
-    gap: 1rem;
-    padding: 0.7rem 1rem 0.7rem 0.5rem;
+    gap: 1.15rem;
+    padding: 1rem 1.1rem 1rem 0.6rem;
     background: rgba(96, 183, 86, 0.035);
     border: 1px solid rgba(96, 183, 86, 0.16);
     /* срез угла как в игровом интерфейсе */
@@ -815,8 +818,8 @@ body.theme-modder .modder-ascii {
     --mx: 50%;
     --my: 50%;
     position: relative;
-    width: 64px;
-    height: 64px;
+    width: 84px;
+    height: 84px;
     flex-shrink: 0;
     background: #050a06;
     border: 1px solid rgba(96, 183, 86, 0.18);
@@ -1213,10 +1216,27 @@ body.theme-modder .modder-ascii {
     background-color: rgba(255, 255, 255, 0.03);
 }
 
+/* Две кнопки в строке мода: сразу видно, откуда качать */
+.mod-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Настоящие логотипы площадок. Красим их маской, а не пиксельной
+   перерисовкой: так знак остаётся собой и следует цвету ссылки */
+.platform-icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / contain no-repeat;
+}
+
 .platform-glyph {
     display: block;
-    /* 30 px на сетку 16 клеток — почти 2 экранных пикселя на клетку,
-       иначе растрированные логотипы теряют детали */
     width: 30px;
     height: 30px;
     flex-shrink: 0;
@@ -1305,14 +1325,15 @@ body.theme-modder .modder-ascii {
     border-top: 1px solid var(--grid-line);
 }
 
-/* Две равные колонки, выровненные по верху. Раньше был flex с
-   align-items: flex-end — колонки прижимались низом, а сверху шли
-   вразнобой, потому что содержимое у них разной высоты */
+/* Колонки остаются по своей ширине и разведены по краям — растягивать
+   их на половину подвала не нужно. Правится именно ровность: обе
+   начинаются от одной верхней линии, раньше был align-items: flex-end
+   и верх шёл вразнобой из-за разной высоты содержимого */
 .footer-bleed {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     gap: 4rem;
-    align-items: start;
 }
 
 .contact-block {
@@ -1376,12 +1397,12 @@ body.theme-modder .modder-ascii {
     width: 100%;
 }
 
-/* Тянется во всю колонку, как и блок контактов слева, — чтобы нижние
-   элементы обеих колонок начинались и заканчивались на одной вертикали */
+/* Прижата к правому краю; ширина по содержимому, но тот же вертикальный
+   ритм, что у левой колонки — отсюда одинаковый gap */
 .sys-logs {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-end;
     gap: 1.5rem;
     font-size: 0.75rem;
     color: var(--text-muted);
@@ -1396,6 +1417,7 @@ body.theme-modder .modder-ascii {
     border: 1px solid var(--grid-line);
     background: rgba(255, 255, 255, 0.02);
     border-radius: 4px;
+    width: 280px;
 }
 
 .blog-container > span {

@@ -113,6 +113,7 @@ const translations = {
         btn_view_repo: "СМОТРЕТЬ_ПРОФИЛЬ",
 
         label_communication: "// УСТАНОВЛЕНИЕ_СВЯЗИ",
+        label_syslog: "// СИСТЕМНЫЙ_ЖУРНАЛ",
 
         contact_direct: "Прямая связь:",
         contact_email: "Почта (РФ):",
@@ -153,6 +154,7 @@ const translations = {
         btn_view_repo: "VIEW_PROFILE",
 
         label_communication: "// ESTABLISH_COMMUNICATION",
+        label_syslog: "// SYSTEM_LOG",
 
         contact_direct: "Direct contact:",
         contact_email: "Email (Global):",
@@ -820,20 +822,6 @@ document.addEventListener('DOMContentLoaded', () => {
             '......####......', '.......##.......', '.......##.......', '................'
         ],
 
-        // Знаки площадок: настоящие логотипы, растрированные в сетку 16x16
-        // (наковальня CurseForge и знак Modrinth)
-        curseforge: [
-            '................', '................', '................', '................',
-            '..#########.....', '..############..', '.....######.....', '.......###......',
-            '.......###......', '......#####.....', '.....#######....', '....########....',
-            '................', '................', '................', '................'
-        ],
-        modrinth: [
-            '................', '.....###..#.....', '....####..##....', '...##......##...',
-            '..##....#...##..', '.##...###....##.', '.##..###.....##.', '.##..##......##.',
-            '.##..##..##..##.', '.##.#######..##.', '.#####.###...##.', '..##........##..',
-            '...##......##...', '....#####.##....', '.....####.......', '................'
-        ],
 
         social: [
             '................',
@@ -1570,10 +1558,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span><span data-i18n="lbl_updated">${translations[currentLang].lbl_updated}</span> ${formattedDate}</span>
                         </div>
                     </div>
-                    <a href="https://modrinth.com/mod/${mod.slug}" target="_blank" class="platform-link mono hover-target">
-                        <span class="platform-glyph" data-glyph="modrinth" aria-hidden="true"></span>
-                        <span>MODRINTH</span>
-                    </a>
+                    <div class="mod-actions">
+                        <a href="https://modrinth.com/mod/${mod.slug}" target="_blank" class="platform-link mono hover-target">
+                            <span class="platform-icon" style="--icon: url('icons/modrinth.svg')" aria-hidden="true"></span>
+                            <span>MODRINTH</span>
+                        </a>
+                        <a href="https://www.curseforge.com/members/starlight_lnk/projects" target="_blank" class="platform-link mono hover-target">
+                            <span class="platform-icon" style="--icon: url('icons/curseforge.webp')" aria-hidden="true"></span>
+                            <span>CURSEFORGE</span>
+                        </a>
+                    </div>
                 `;
 
                 dynamicModsContainer.appendChild(row);
