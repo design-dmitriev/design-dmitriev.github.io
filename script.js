@@ -123,7 +123,10 @@ const translations = {
         mod_id_1: "ACHIEVEMENT",
         document_title: "СИСТ.ПОРТФОЛИО // STARLIGHT",
         lightbox_view: "// РЕЖИМ_ПРОСМОТРА",
-        btn_cv_download: "ПОСМОТРЕТЬ CV"
+        btn_cv_download: "ПОСМОТРЕТЬ CV",
+        // используются в fetchMods через translations[currentLang].ключ
+        lbl_downloads: "Скачивания:",
+        lbl_updated: "Обновлено:"
     },
     en: {
         status_online: "ONLINE",
@@ -160,7 +163,10 @@ const translations = {
         mod_id_1: "ACHIEVEMENT",
         document_title: "SYS.PORTFOLIO // STARLIGHT",
         lightbox_view: "// VIEW_MODE",
-        btn_cv_download: "VIEW CV"
+        btn_cv_download: "VIEW CV",
+        // используются в fetchMods через translations[currentLang].ключ
+        lbl_downloads: "Downloads:",
+        lbl_updated: "Updated:"
     }
 };
 
@@ -806,6 +812,29 @@ document.addEventListener('DOMContentLoaded', () => {
             '................',
             '................'
         ],
+        // Логотип: четырёхлучевая звезда — центральная фигура из герба в герое
+        logo: [
+            '................', '.......##.......', '.......##.......', '......####......',
+            '......####......', '......####......', '.....######.....', '################',
+            '################', '.....######.....', '......####......', '......####......',
+            '......####......', '.......##.......', '.......##.......', '................'
+        ],
+
+        // Знаки площадок: настоящие логотипы, растрированные в сетку 16x16
+        // (наковальня CurseForge и знак Modrinth)
+        curseforge: [
+            '................', '................', '................', '................',
+            '..#########.....', '..############..', '.....######.....', '.......###......',
+            '.......###......', '......#####.....', '.....#######....', '....########....',
+            '................', '................', '................', '................'
+        ],
+        modrinth: [
+            '................', '.....###..#.....', '....####..##....', '...##......##...',
+            '..##....#...##..', '.##...###....##.', '.##..###.....##.', '.##..##......##.',
+            '.##..##..##..##.', '.##.#######..##.', '.#####.###...##.', '..##........##..',
+            '...##......##...', '....#####.##....', '.....####.......', '................'
+        ],
+
         social: [
             '................',
             '................',
@@ -844,69 +873,92 @@ document.addEventListener('DOMContentLoaded', () => {
         return `<svg viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges">${rects}</svg>`;
     }
 
-    // Пиксели подсвечиваются под курсором: чем ближе — тем ярче и крупнее.
-    // Радиус в клетках сетки, не в пикселях экрана, поэтому эффект
-    // одинаков на любом размере знака.
-    const GLYPH_RADIUS = 5;
+    // Тот же приём, что на буквах ALEXEY DMITRIEV: в тесном радиусе вокруг
+    // курсора элементы «сыпятся» — там символы подменяются случайными,
+    // здесь пиксели прыгают на соседнюю клетку. Плюс подсветка и свечение.
+    const GLYPH_RADIUS = 25;   // тот же радиус в пикселях, что у ASCII
+    const GLYPH_CHANCE = 0.2;  // та же вероятность подмены за кадр
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function attachGlyphInteraction(holder) {
         const svg = holder.querySelector('svg');
         if (!svg) return;
 
+        const grid = svg.viewBox.baseVal;
         const cells = [...svg.querySelectorAll('.px')].map(r => ({
             el: r,
             cx: parseFloat(r.getAttribute('x')) + 0.5,
-            cy: parseFloat(r.getAttribute('y')) + 0.5
+            cy: parseFloat(r.getAttribute('y')) + 0.5,
+            shifted: false
         }));
 
-        const grid = svg.viewBox.baseVal;
         let frame = null;
-        let pending = null;
+        let pointer = null;
 
         function paint() {
             frame = null;
-            if (!pending) return;
+            if (!pointer) return;
 
-            const { gx, gy } = pending;
+            const rect = holder.getBoundingClientRect();
+            const cell = rect.width / grid.width; // сколько экранных пикселей в клетке
+
             cells.forEach(c => {
-                const d = Math.hypot(c.cx - gx, c.cy - gy);
-                const force = Math.max(0, 1 - d / GLYPH_RADIUS);
-                c.el.style.setProperty('--force', force.toFixed(3));
+                const dist = Math.hypot(pointer.x - c.cx * cell, pointer.y - c.cy * cell);
+
+                if (dist < GLYPH_RADIUS) {
+                    if (Math.random() < GLYPH_CHANCE) {
+                        // прыжок на соседнюю клетку — аналог подмены символа
+                        const dx = Math.round(Math.random() * 2 - 1);
+                        const dy = Math.round(Math.random() * 2 - 1);
+                        c.el.style.transform = `translate(${dx}px, ${dy}px)`;
+                        c.shifted = true;
+                    }
+                    c.el.style.opacity = '1';
+                } else if (c.shifted || c.el.style.opacity) {
+                    c.el.style.transform = '';
+                    c.el.style.opacity = '';
+                    c.shifted = false;
+                }
             });
         }
 
         holder.addEventListener('pointermove', e => {
             const rect = holder.getBoundingClientRect();
-            const px = (e.clientX - rect.left) / rect.width;
-            const py = (e.clientY - rect.top) / rect.height;
-
-            // подсветка самой «колбы» — следует за курсором
-            holder.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
-            holder.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+            holder.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%');
+            holder.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + '%');
 
             if (reduceMotion) return;
 
-            pending = { gx: px * grid.width, gy: py * grid.height };
+            pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top };
             if (!frame) frame = requestAnimationFrame(paint);
         });
 
         const reset = () => {
             if (frame) { cancelAnimationFrame(frame); frame = null; }
-            pending = null;
-            cells.forEach(c => c.el.style.setProperty('--force', '0'));
+            pointer = null;
+            cells.forEach(c => {
+                c.el.style.transform = '';
+                c.el.style.opacity = '';
+                c.shifted = false;
+            });
         };
 
         holder.addEventListener('pointerleave', reset);
         holder.addEventListener('pointercancel', reset);
     }
 
-    document.querySelectorAll('.row-icon[data-glyph]').forEach(el => {
-        const map = GLYPH_MAPS[el.dataset.glyph];
-        if (!map) return;
-        el.innerHTML = buildGlyph(map);
-        attachGlyphInteraction(el);
-    });
+    // Знаки есть и в списке работ, и в строках модов (в том числе подгружаемых)
+    window.renderGlyphs = function (root = document) {
+        root.querySelectorAll('[data-glyph]').forEach(el => {
+            if (el.dataset.glyphDone) return;
+            const map = GLYPH_MAPS[el.dataset.glyph];
+            if (!map) return;
+            el.innerHTML = buildGlyph(map);
+            el.dataset.glyphDone = '1';
+            if (el.classList.contains('row-icon')) attachGlyphInteraction(el);
+        });
+    };
+    window.renderGlyphs();
 
     // --- 1. SPA Mode Toggle & URL Routing ---
     const toggleBtn = document.getElementById('mode-toggle');
@@ -1518,7 +1570,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span><span data-i18n="lbl_updated">${translations[currentLang].lbl_updated}</span> ${formattedDate}</span>
                         </div>
                     </div>
-                    <a href="https://modrinth.com/mod/${mod.slug}" target="_blank" class="btn-action mono hover-target" data-i18n="btn_view_repo">${translations[currentLang].btn_view_repo}</a>
+                    <a href="https://modrinth.com/mod/${mod.slug}" target="_blank" class="platform-link mono hover-target">
+                        <span class="platform-glyph" data-glyph="modrinth" aria-hidden="true"></span>
+                        <span>MODRINTH</span>
+                    </a>
                 `;
 
                 dynamicModsContainer.appendChild(row);
@@ -1526,6 +1581,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Re-apply language translations to newly created elements
             setLanguage(currentLang);
+            // Отрисовать пиксельные знаки в только что добавленных строках
+            if (window.renderGlyphs) window.renderGlyphs(dynamicModsContainer);
             // Attach sounds to newly added mod elements
             attachSoundToElements();
         } catch (error) {

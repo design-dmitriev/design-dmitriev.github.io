@@ -17,10 +17,17 @@
     --hero-accent: #60b756; /* Зеленый только для ASCII */
     --accent-modder: #FF5722; /* Сигнальный оранжевый (NasaPunk) */
     --accent-color: var(--accent-designer);
+    /* Цвет кнопок задаётся темой: в рабочем режиме зелёный, в хобби оранжевый.
+       Раньше зелёный был вшит в .btn-primary, из-за чего кнопка «Связаться»
+       в хобби оставалась зелёной. */
+    --btn-accent: var(--hero-accent);
+    --btn-accent-rgb: 96, 183, 86;
 }
 
 body.theme-modder {
     --accent-color: var(--accent-modder);
+    --btn-accent: var(--accent-modder);
+    --btn-accent-rgb: 255, 87, 34;
 }
 
 * {
@@ -159,8 +166,11 @@ button:hover ~ .cursor-outline,
     .sys-header, .content-area, .sys-footer, .lightbox-header, .lightbox-content { padding-left: 2rem; padding-right: 2rem; }
     .global-grid-lines { padding: 0 2rem; }
     .mod-row { grid-template-columns: 1fr; gap: 1rem; }
+    /* в одну колонку ссылка не должна растягиваться на всю ширину */
+    .platform-link, .mod-badge { justify-self: start; }
     .btn-action { justify-self: flex-start; }
-    .footer-bleed { flex-direction: column; align-items: flex-start; gap: 4rem; }
+    /* подвал теперь grid, поэтому схлопываем в одну колонку, а не flex-direction */
+    .footer-bleed { grid-template-columns: 1fr; gap: 3rem; }
     .sys-logs { align-items: flex-start; }
     .sys-controls { flex-direction: column; align-items: flex-end; gap: 1rem; }
     .sys-info { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -611,15 +621,15 @@ body.theme-modder .modder-ascii {
 }
 
 .btn-primary {
-    background-color: var(--hero-accent);
+    background-color: var(--btn-accent);
     color: var(--bg-color);
-    border-color: var(--hero-accent);
-    box-shadow: 0 0 10px rgba(96, 183, 86, 0.2);
+    border-color: var(--btn-accent);
+    box-shadow: 0 0 10px rgba(var(--btn-accent-rgb), 0.2);
 }
 .btn-primary:hover {
     background-color: transparent;
-    color: var(--hero-accent);
-    box-shadow: 0 0 20px rgba(96, 183, 86, 0.5);
+    color: var(--btn-accent);
+    box-shadow: 0 0 20px rgba(var(--btn-accent-rgb), 0.5);
 }
 
 .hero-info-block {
@@ -645,24 +655,8 @@ body.theme-modder .modder-ascii {
     color: var(--text-main);
 }
 .btn-secondary:hover {
-    border-color: var(--hero-accent);
-    color: var(--hero-accent);
-}
-
-/* Modder variant for buttons */
-body.theme-modder .modder-btns .btn-primary {
-    background-color: var(--accent-modder);
-    border-color: var(--accent-modder);
-    box-shadow: 0 0 10px rgba(255, 87, 34, 0.2);
-}
-body.theme-modder .modder-btns .btn-primary:hover {
-    background-color: transparent;
-    color: var(--accent-modder);
-    box-shadow: 0 0 20px rgba(255, 87, 34, 0.5);
-}
-body.theme-modder .modder-btns .btn-secondary:hover {
-    border-color: var(--accent-modder);
-    color: var(--accent-modder);
+    border-color: var(--btn-accent);
+    color: var(--btn-accent);
 }
 
 /* Content Sections */
@@ -687,10 +681,13 @@ body.theme-modder .modder-btns .btn-secondary:hover {
 }
 
 /* Projects - Full Bleed rows */
+/* Ограничение по ширине: во всю ширину контента плашки читались
+   как длинные полосы — текст слева, мелкий знак справа, пустая середина */
 .projects-list {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    max-width: 680px;
 }
 
 /* --- Строка списка работ: терминал «Севастополя» --- */
@@ -1180,13 +1177,74 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     gap: 0;
 }
 
+/* Первая колонка фиксированной ширины: при auto её размер задавал текст
+   («ACHIEVEMENT» длиннее «MODRINTH»), и вторая колонка в каждой строке
+   начиналась в своём месте — кнопки уезжали друг относительно друга */
 .mod-row {
     display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: flex-start;
+    grid-template-columns: 9rem 1fr auto;
+    align-items: center;
     gap: 2rem;
     padding: 2rem 0;
     border-bottom: 1px solid var(--grid-line);
+}
+
+/* Ссылка на площадку: пиксельный знак + название вместо «СМОТРЕТЬ_ПРОФИЛЬ» */
+.platform-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* одинаковая ширина, иначе «CURSEFORGE» шире «MODRINTH» и левые края не совпадают */
+    min-width: 11rem;
+    gap: 0.75rem;
+    padding: 0.7rem 1.1rem;
+    border: 1px solid var(--grid-line);
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    transition: border-color 0.3s, color 0.3s, background-color 0.3s;
+}
+
+.platform-link:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.platform-glyph {
+    display: block;
+    /* 30 px на сетку 16 клеток — почти 2 экранных пикселя на клетку,
+       иначе растрированные логотипы теряют детали */
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.platform-glyph svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
+/* знак перекрашивается вместе с текстом ссылки */
+.platform-glyph svg rect { fill: currentColor; }
+
+/* Логотип в строке достижения — заполняет колонку, где у остальных строк ссылка */
+.mod-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.1rem;
+    color: var(--accent-color);
+}
+
+.mod-badge .platform-glyph {
+    width: 34px;
+    height: 34px;
+    filter: drop-shadow(0 0 8px currentColor);
 }
 
 .mod-row:hover {
@@ -1247,10 +1305,14 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     border-top: 1px solid var(--grid-line);
 }
 
+/* Две равные колонки, выровненные по верху. Раньше был flex с
+   align-items: flex-end — колонки прижимались низом, а сверху шли
+   вразнобой, потому что содержимое у них разной высоты */
 .footer-bleed {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
 }
 
 .contact-block {
@@ -1314,10 +1376,12 @@ body.theme-modder .modder-btns .btn-secondary:hover {
     width: 100%;
 }
 
+/* Тянется во всю колонку, как и блок контактов слева, — чтобы нижние
+   элементы обеих колонок начинались и заканчивались на одной вертикали */
 .sys-logs {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: stretch;
     gap: 1.5rem;
     font-size: 0.75rem;
     color: var(--text-muted);
@@ -1326,13 +1390,12 @@ body.theme-modder .modder-btns .btn-secondary:hover {
 .blog-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 0.75rem;
     padding: 1.25rem;
     border: 1px solid var(--grid-line);
     background: rgba(255, 255, 255, 0.02);
     border-radius: 4px;
-    min-width: 250px;
 }
 
 .blog-container > span {
@@ -1491,8 +1554,11 @@ body.zoom-out-mode .cursor-dot::after {
     .sys-header, .content-area, .sys-footer, .lightbox-header, .lightbox-content { padding-left: 2rem; padding-right: 2rem; }
     .global-grid-lines { padding: 0 2rem; }
     .mod-row { grid-template-columns: 1fr; gap: 1rem; }
+    /* в одну колонку ссылка не должна растягиваться на всю ширину */
+    .platform-link, .mod-badge { justify-self: start; }
     .btn-action { justify-self: flex-start; }
-    .footer-bleed { flex-direction: column; align-items: flex-start; gap: 4rem; }
+    /* подвал теперь grid, поэтому схлопываем в одну колонку, а не flex-direction */
+    .footer-bleed { grid-template-columns: 1fr; gap: 3rem; }
     .sys-logs { align-items: flex-start; }
     .sys-controls { flex-direction: column; align-items: flex-end; gap: 1rem; }
 }
