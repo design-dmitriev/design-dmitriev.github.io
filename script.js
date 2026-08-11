@@ -2112,12 +2112,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // section just didn't react. Reverting to the same scroll-scrubbed driver as
         // desktop (proven to work), with `snap` added so it still settles cleanly on
         // one whole year instead of stopping mid-transition.
+        //
+        // On mobile, `scrub: true` (no delay) mirrors raw scroll 1:1 — any small wobble
+        // that crosses the halfway point between two years flips the active one instantly,
+        // which read as touchy/twitchy. A numeric scrub lets the render lag a beat behind
+        // the actual scroll instead, so it only actually lands on (and finishes revealing)
+        // a year once the scroll settles there — snap then completes it if it's still
+        // mid-reveal, rather than every little scroll movement switching it outright.
+        const isMobileCareer = window.innerWidth <= 768;
         ScrollTrigger.create({
             trigger: careerTimeline,
             start: "center center",
             end: `+=${years.length * 100}%`,
             pin: true,
-            scrub: true,
+            scrub: isMobileCareer ? 0.6 : true,
             anticipatePin: 1,
             snap: {
                 snapTo: 1 / (years.length - 1),
