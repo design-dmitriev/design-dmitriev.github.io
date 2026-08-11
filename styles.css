@@ -1096,14 +1096,30 @@ body.theme-modder .modder-ascii {
         flex-direction: column;
         justify-content: center;
         padding-top: 10vh;
+        height: auto;
+        min-height: auto;
     }
-    /* Years were stacked below the text (barely visible, per feedback) — show them first. */
+    /* Years were stacked below the text (barely visible, per feedback) — show them first.
+       flex:1 (inherited from the desktop rule) resolves flex-basis:0%, and its absolutely-
+       positioned drum content contributes no intrinsic height — so it was losing the flex
+       distribution entirely to the text panel's own min-height floor and collapsing to 0.
+       flex:none + an explicit height sidesteps that fight. */
     .career-3d-timeline {
-        height: 40vh;
+        flex: none;
+        height: 22vh;
         width: 100%;
         order: -1;
     }
+    /* The drum item's box was sized for the desktop 600×240 canvas (see years-3d.js,
+       which now renders at 0.4× on mobile) — shrink the box to match or the smaller
+       digits end up off-center inside a box sized for the old, much bigger canvas. */
+    .year-3d-item {
+        width: 240px;
+        margin-left: -120px;
+        margin-top: -48px;
+    }
     .career-text-panel {
+        flex: none;
         height: 50vh;
         width: 100%;
     }
@@ -1666,13 +1682,19 @@ body.zoom-out-mode .cursor-dot::after {
         min-height: auto;
         height: auto;
         padding: 4rem 0 6rem; /* extra bottom room so the fixed floating contact button doesn't cover content */
+        overflow-x: hidden; /* safety net while the name's fit-to-width scale (script.js) runs */
     }
     #hero-3d-model {
         display: none; /* decorative background glow — skip on mobile, also saves WebGL cost */
     }
     .ascii-word {
-        /* 1.5vw hits its 6px floor on phones, making the name unreadably tiny */
-        font-size: clamp(11px, 4vw, 18px);
+        /* A generous fixed base size — script.js measures the actual rendered width and
+           scales #hero-name-text down to fit exactly, so this only needs to be "big enough
+           to look sharp before scaling", not itself viewport-proportional. */
+        font-size: 16px;
+    }
+    #hero-name-text {
+        transform-origin: center top;
     }
     .hero-info-block {
         position: static;
@@ -1680,6 +1702,9 @@ body.zoom-out-mode .cursor-dot::after {
         margin-top: 2.5rem;
         opacity: 1;
         filter: none;
+    }
+    .bottom-scroll-container {
+        display: none; /* redundant with the floating contact button + normal mobile scrolling */
     }
 }
 
@@ -1946,4 +1971,12 @@ body.zoom-out-mode .cursor-dot::after {
     visibility: visible !important;
     pointer-events: auto;
     transform: translateX(-50%) translateY(0) !important;
+}
+
+/* Wins over both the GSAP scroll-trigger fade and the .visible class above (mobile-only:
+   the floating contact button sits right on top of the galaxian ship at the page bottom). */
+.header-contact-btn.footer-hide {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
 }

@@ -173,19 +173,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const scenes = [];
 
+    // The drum was sized purely for desktop (a 600×240 box holding an 800×400 render
+    // that intentionally bleeds outside it). On a phone that's wider than the whole
+    // screen and gets clipped almost entirely — scale every dimension down together
+    // so the digits actually stay visible and centered.
+    const isMobileDrum = window.innerWidth <= 768;
+    const drumScale = isMobileDrum ? 0.4 : 1;
+
     yearContainers.forEach(container => {
         const text = container.getAttribute('data-year-text');
 
-        container.style.width = '600px';
-        container.style.height = '240px';
+        container.style.width = (600 * drumScale) + 'px';
+        container.style.height = (240 * drumScale) + 'px';
+        container.style.margin = '0 auto'; // stay centered even though the parent .year-3d-item keeps its own (desktop-sized) box
         container.style.position = 'relative';
         container.style.overflow = 'visible';
         container.style.pointerEvents = 'none';
 
         const scene = new THREE.Scene();
 
-        const w = 800;
-        const h = 400;
+        const w = 800 * drumScale;
+        const h = 400 * drumScale;
         const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
         camera.position.z = 400;
 
@@ -287,8 +295,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         window.addEventListener('resize', () => {
-            const width = 800;
-            const height = 400;
+            const scale = window.innerWidth <= 768 ? 0.4 : 1;
+            const width = 800 * scale;
+            const height = 400 * scale;
+            container.style.width = (600 * scale) + 'px';
+            container.style.height = (240 * scale) + 'px';
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);

@@ -291,6 +291,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // The ASCII-art name is a fixed number of monospace characters per line — on a phone
+    // even a small font-size overflows the screen width (the block letters don't reflow).
+    // Measure the actual rendered width and scale the whole name down to fit exactly,
+    // instead of guessing at a viewport-proportional font-size. Scaling the container
+    // (rather than shrinking the font) also scales the touch/mouse glow effect with it,
+    // so the glow stays proportional to the text instead of looking oversized on top of tiny text.
+    function fitHeroNameToViewport() {
+        const container = document.getElementById('hero-name-text');
+        if (!container) return;
+        if (window.innerWidth > 768) {
+            // Widened back past mobile (e.g. tablet rotation) — undo any earlier scale.
+            container.style.transform = 'none';
+            return;
+        }
+        container.style.transform = 'none';
+        const words = container.querySelectorAll('.ascii-word');
+        let maxWidth = 0;
+        words.forEach(w => { maxWidth = Math.max(maxWidth, w.scrollWidth); });
+        if (maxWidth === 0) return;
+        const available = (container.parentElement ? container.parentElement.clientWidth : window.innerWidth) * 0.94;
+        const scale = Math.min(1, available / maxWidth);
+        container.style.transform = scale < 1 ? `scale(${scale})` : 'none';
+    }
+    fitHeroNameToViewport();
+    window.addEventListener('resize', fitHeroNameToViewport);
+
     // --- Initial Boot Animation (Hero Title) ---
     function animateHeroTitle(container) {
         const asciiWords = container.querySelectorAll('.ascii-word');
@@ -2203,5 +2229,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         observer.observe(heroBtn);
+    }
+
+    // On mobile the contact button floats fixed at the bottom of the screen, which
+    // ends up sitting right on top of the galaxian ship once the visitor scrolls all
+    // the way down to it. Fade the button out smoothly as that section comes into view.
+    const galaxianSection = document.querySelector('.galaxian-minigame');
+    if (headerBtn && galaxianSection && window.innerWidth <= 768) {
+        const footerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                headerBtn.classList.toggle('footer-hide', entry.isIntersecting);
+            });
+        }, { threshold: 0, rootMargin: '0px 0px -15% 0px' });
+
+        footerObserver.observe(galaxianSection);
     }
 });
