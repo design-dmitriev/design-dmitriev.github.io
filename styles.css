@@ -1110,18 +1110,21 @@ body.theme-modder .modder-ascii {
        flex:none + an explicit height sidesteps that fight. */
     .career-3d-timeline {
         flex: none;
-        height: 17vh;
+        height: 20vh;
         width: 100%;
         order: -1;
     }
-    /* Mobile renders the years as flat 2D ASCII (years-3d.js), not the WebGL drum, so
-       .year-3d-item goes back to a plain centered box sized for that text instead of the
-       desktop 600px drum box. Widest year (e.g. 2020/2026) is 34 monospace characters. */
+    /* Mobile renders the years as flat 2D ASCII (years-3d.js), not the WebGL drum.
+       translate(-50%,-50%) centers it regardless of its actual (now viewport-driven)
+       width, so it doesn't need to track a hardcoded box size like the drum did. */
     .year-3d-item {
-        width: 100%;
-        max-width: 320px;
-        margin-left: -160px;
-        margin-top: -32px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: auto;
+        max-width: 94vw;
+        margin: 0;
+        transform: translate(-50%, -50%);
     }
     .career-text-panel {
         flex: none;
@@ -1136,9 +1139,12 @@ body.theme-modder .modder-ascii {
     .career-text-panel .card-role {
         font-size: 1.15rem;
     }
+    /* ~30-40% bigger than before, and tied to viewport width (not a fixed rem) so it
+       scales with the actual phone instead of assuming one screen size — same digits
+       would otherwise run tiny on a compact phone and cramped-but-static on a big one. */
     .ascii-year,
     .year-3d-item .ascii-layer {
-        font-size: 0.5rem;
+        font-size: clamp(9px, 2.9vw, 14px);
         line-height: 1.15;
     }
 }
@@ -1781,6 +1787,14 @@ body.zoom-out-mode .cursor-dot::after {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    /* Not needed on mobile — script.js also skips the artificial loading delay there,
+       so this would otherwise be a pointless progress bar nobody's looking at. */
+    .sys-preloader {
+        display: none;
+    }
 }
 
 .preloader-content {

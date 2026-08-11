@@ -72,6 +72,14 @@ window.scrollTo(0, 0);
 
             if (preloaderInterval) clearInterval(preloaderInterval);
 
+            // The preloader is hidden outright on mobile (CSS) — the progress bar/percentage
+            // theater only makes sense while something's actually visible counting up, so
+            // there's no reason to sit through its fixed 500ms+800ms delay there either.
+            if (window.innerWidth <= 768) {
+                if (window.startInitialAnimations) window.startInitialAnimations();
+                return;
+            }
+
             if (progressFill) progressFill.style.width = '100%';
             if (percentageText) percentageText.textContent = '100%';
             if (currentTask) currentTask.textContent = 'ЗАГРУЗКА ЗАВЕРШЕНА';
@@ -174,7 +182,7 @@ const translations = {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Register GSAP Plugins
-    gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+    gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, Observer);
 
     // --- Initialize Lenis for Global Smooth Scrolling ---
     const lenis = new Lenis({
@@ -627,6 +635,20 @@ document.addEventListener('DOMContentLoaded', () => {
             window.globalMouseX = (window.innerWidth / 2) + tiltX * (window.innerWidth / 2);
             window.globalMouseY = (window.innerHeight / 2) + tiltY * (window.innerHeight / 2);
         });
+    }
+
+    // iOS 13+ Safari (and browsers built on it) silently withholds every deviceorientation
+    // event until DeviceOrientationEvent.requestPermission() is called from within a user
+    // gesture — this is why tilt did nothing there even though the listeners above are set
+    // up correctly. Piggyback on the visitor's first tap anywhere (not a dedicated "enable
+    // motion" button) so it stays invisible on Android, where this API doesn't exist at all
+    // and the listeners already just work.
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        const requestTiltPermission = () => {
+            document.removeEventListener('touchend', requestTiltPermission);
+            DeviceOrientationEvent.requestPermission().catch(() => {});
+        };
+        document.addEventListener('touchend', requestTiltPermission, { once: true });
     }
 
     const cursorDot = document.querySelector('.cursor-dot');
@@ -1952,16 +1974,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        ScrollTrigger.create({
-            trigger: careerTimeline,
-            start: "center center",
-            end: `+=${years.length * 100}%`,
-            pin: true,
-            scrub: true,
-            anticipatePin: 1,
-            onUpdate: (self) => {
+        // Everything that used to live inline in the scrub ScrollTrigger's onUpdate,
+        // pulled out so both the desktop (continuous scroll-scrubbed) and mobile
+        // (discrete one-swipe-per-step) drivers can call the exact same renderer.
+        function renderCareerFrame(progress01) {
                 const maxIndex = years.length - 1;
-                const progress = self.progress * maxIndex;
+                const progress = progress01 * maxIndex;
                 const current = Math.round(progress);
 
                 // Update terminal header progress
@@ -1970,7 +1988,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (statusText && progressBar) {
                     statusText.innerText = `БЛОК_0${current + 1} / 0${years.length}`;
 
-                    const ratio = self.progress; // 0.0 to 1.0
+                    const ratio = progress01; // 0.0 to 1.0
                     const totalBlocks = 10;
                     const filled = Math.round(ratio * totalBlocks);
                     const empty = totalBlocks - filled;
@@ -2084,8 +2102,84 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
+        }
+
+        if (window.innerWidth > 768) {
+            // Desktop: continuous scroll-scrubbed, exactly as before.
+            ScrollTrigger.create({
+                trigger: careerTimeline,
+                start: "center center",
+                end: `+=${years.length * 100}%`,
+                pin: true,
+                scrub: true,
+                anticipatePin: 1,
+                onUpdate: (self) => renderCareerFrame(self.progress)
+            });
+        } else {
+            // Mobile: "however hard you swipe, it's one year per swipe" — a continuous
+            // scrub made a firm flick blow past several years at once, and a light touch
+            // left it stuck half-transitioned between two. Pin the section for the same
+            // scroll distance as before, but drive the actual year change from discrete
+            // swipe gestures (GSAP Observer) instead of from how far the page scrolled.
+            const maxIndex = years.length - 1;
+            let stepIndex = 0;
+            // The tween always reads/continues from proxy.p's live value, so killing and
+            // re-tweening mid-flight (a quick double-swipe) just smoothly redirects it —
+            // no separate "where did we start" bookkeeping needed.
+            const proxy = { p: 0 };
+            let stepTween = null;
+
+            const st = ScrollTrigger.create({
+                trigger: careerTimeline,
+                start: "center center",
+                end: `+=${years.length * 100}%`,
+                pin: true
+            });
+
+            renderCareerFrame(0);
+
+            function goToStep(index) {
+                stepIndex = index;
+                if (stepTween) stepTween.kill();
+                stepTween = gsap.to(proxy, {
+                    p: stepIndex / maxIndex,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onUpdate: () => renderCareerFrame(proxy.p)
+                });
             }
-        });
+
+            function scrollPast(target) {
+                if (typeof lenis !== 'undefined') lenis.scrollTo(target, { duration: 0.6 });
+                else window.scrollTo({ top: target, behavior: 'smooth' });
+            }
+
+            Observer.create({
+                target: careerTimeline,
+                type: "touch,pointer",
+                tolerance: 10,
+                preventDefault: true,
+                onUp: () => { // swipe up (finger moves up) = advance forward
+                    if (!st.isActive) return;
+                    if (stepIndex >= maxIndex) {
+                        // Already on the last year — preventDefault above was eating the
+                        // swipe, so without this the visitor would be stuck unable to
+                        // continue past the timeline. Release the pin forward ourselves.
+                        scrollPast(st.end + 50);
+                        return;
+                    }
+                    goToStep(stepIndex + 1);
+                },
+                onDown: () => { // swipe down (finger moves down) = go back
+                    if (!st.isActive) return;
+                    if (stepIndex <= 0) {
+                        scrollPast(st.start - 50);
+                        return;
+                    }
+                    goToStep(stepIndex - 1);
+                }
+            });
+        }
     }
 
     // --- GALAXIAN SHOOTING MECHANICS ---
