@@ -1715,7 +1715,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 end: "+=90%",
                 scrub: 0.4,
                 pin: ".hero-bleed", // Explicitly pin the hero section
-                anticipatePin: 1, // avoids a jerk when scrolling *up* back into the pin
             }
         });
 
