@@ -1114,8 +1114,15 @@ body.theme-modder .modder-ascii {
         width: 100%;
         order: -1;
     }
-    /* .year-3d-item's box is sized in years-3d.js (applyDrumSizing) to match the scaled
-       canvas — it can't be a fixed value here now that the scale follows the viewport. */
+    /* Mobile renders the years as flat 2D ASCII (years-3d.js), not the WebGL drum, so
+       .year-3d-item goes back to a plain centered box sized for that text instead of the
+       desktop 600px drum box. Widest year (e.g. 2020/2026) is 34 monospace characters. */
+    .year-3d-item {
+        width: 100%;
+        max-width: 320px;
+        margin-left: -160px;
+        margin-top: -32px;
+    }
     .career-text-panel {
         flex: none;
         height: auto;
@@ -1129,8 +1136,10 @@ body.theme-modder .modder-ascii {
     .career-text-panel .card-role {
         font-size: 1.15rem;
     }
-    .ascii-year {
-        font-size: 0.8rem;
+    .ascii-year,
+    .year-3d-item .ascii-layer {
+        font-size: 0.5rem;
+        line-height: 1.15;
     }
 }
 

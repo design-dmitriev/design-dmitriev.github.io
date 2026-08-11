@@ -1900,15 +1900,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Track mouse to tilt the active year via global mouse
 
+        // On mobile there's no mouse, so tilt the digits with the phone's own tilt
+        // instead. beta (front-back) is read relative to wherever the phone happened to
+        // be held when the first reading came in, so it tracks deviation from that rather
+        // than an absolute angle.
+        const deviceTilt = { x: 0, y: 0, active: false };
+        if (window.innerWidth <= 768 && window.DeviceOrientationEvent) {
+            let betaBaseline = null;
+            const handleOrientation = (e) => {
+                if (e.gamma === null || e.beta === null) return;
+                if (betaBaseline === null) betaBaseline = e.beta;
+                const clampNorm = (deg, range) => Math.max(-1, Math.min(1, deg / range));
+                deviceTilt.y = clampNorm(e.gamma, 35);
+                deviceTilt.x = -clampNorm(e.beta - betaBaseline, 35);
+                deviceTilt.active = true;
+            };
+            // Some Android browsers only fire one of these two — listen for both.
+            window.addEventListener('deviceorientation', handleOrientation);
+            window.addEventListener('deviceorientationabsolute', handleOrientation);
+        }
+
         // Smoothly interpolate rotation
         gsap.ticker.add(() => {
             // Only calculate if section is in viewport
             const rect = careerTimeline.getBoundingClientRect();
             if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-                const x = ((window.globalMouseX || window.innerWidth / 2) / window.innerWidth - 0.5) * 2;
-                const y = ((window.globalMouseY || window.innerHeight / 2) / window.innerHeight - 0.5) * 2;
-                targetRotX = -y * 12; // Reduced by ~50%
-                targetRotY = x * 12; // Reduced by ~50%
+                if (deviceTilt.active) {
+                    targetRotX = deviceTilt.x * 12;
+                    targetRotY = deviceTilt.y * 12;
+                } else {
+                    const x = ((window.globalMouseX || window.innerWidth / 2) / window.innerWidth - 0.5) * 2;
+                    const y = ((window.globalMouseY || window.innerHeight / 2) / window.innerHeight - 0.5) * 2;
+                    targetRotX = -y * 12; // Reduced by ~50%
+                    targetRotY = x * 12; // Reduced by ~50%
+                }
             }
 
             currentRotX += (targetRotX - currentRotX) * 0.1;

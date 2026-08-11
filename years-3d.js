@@ -1,6 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
     const yearContainers = document.querySelectorAll('.year-3d-canvas');
-    if (yearContainers.length === 0 || typeof THREE === 'undefined') return;
+    if (yearContainers.length === 0) return;
+
+    // Flat 2D ASCII digits for mobile — same box-drawing font as the site's older look,
+    // instead of the WebGL volumetric render (which needs a lot more screen and GPU
+    // headroom than a phone has). Built from the individual digit glyphs.
+    if (window.innerWidth <= 768) {
+        const glyphs = {
+            '0': [" ██████╗ ", "██╔═████╗", "██║██╔██║", "████╔╝██║", "╚██████╔╝", " ╚═════╝ "],
+            '1': [" ██╗", "███║", "╚██║", " ██║", " ██║", " ╚═╝"],
+            '2': ["██████╗ ", "╚════██╗", " █████╔╝", "██╔═══╝ ", "███████╗", "╚══════╝"],
+            '4': ["██╗  ██╗", "██║  ██║", "███████║", "╚════██║", "     ██║", "     ╚═╝"],
+            '6': [" ██████╗ ", "██╔════╝ ", "███████╗ ", "██╔═══██╗", "╚██████╔╝", " ╚═════╝ "]
+        };
+        yearContainers.forEach(container => {
+            const text = container.getAttribute('data-year-text') || '2026';
+            const digitRows = text.split('').map(d => glyphs[d] || glyphs['0']);
+            const lines = [0, 1, 2, 3, 4, 5].map(row => digitRows.map(g => g[row]).join(''));
+
+            const pre = document.createElement('pre');
+            pre.className = 'ascii-year';
+            pre.textContent = lines.join('\n');
+
+            const item = container.parentElement;
+            container.remove();
+            if (item) item.appendChild(pre);
+        });
+        return; // no WebGL setup needed on mobile
+    }
+
+    if (typeof THREE === 'undefined') return;
 
     function createTextureAtlas() {
         const chars = ['█', '═', '╗', '╝', '╚', '╔', '║', '0', '1', '&', '*', '#', '$', '@', '%', 'X'];
@@ -364,30 +393,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     scenes.forEach(s => observer.observe(s.container));
 
-    // Read mouse coordinates from window.globalMouseX/Y set in script.js
-
-    // --- Device tilt (mobile substitute for mouse parallax) ---
-    // Note: iOS 13+ only delivers deviceorientation after an explicit permission prompt
-    // triggered by a user gesture. We deliberately don't prompt, so this simply stays
-    // inert there and the digits keep their idle wobble.
-    const tilt = { x: 0, y: 0, active: false };
-
-    if (window.innerWidth <= 768 && window.DeviceOrientationEvent) {
-        // beta (front-back) sits at whatever angle the phone is being held at, so the
-        // first reading becomes the neutral baseline and we track deviation from it.
-        let betaBaseline = null;
-
-        window.addEventListener('deviceorientation', (e) => {
-            if (e.gamma === null || e.beta === null) return;
-            if (betaBaseline === null) betaBaseline = e.beta;
-
-            const clampNorm = (deg, range) => Math.max(-1, Math.min(1, deg / range));
-            // Negated so the digits lean against the tilt rather than with it.
-            tilt.y = -clampNorm(e.gamma, 35);
-            tilt.x = -clampNorm(e.beta - betaBaseline, 35);
-            tilt.active = true;
-        });
-    }
+    // Read mouse coordinates from window.globalMouseX/Y set in script.js.
+    // (Mobile no longer reaches this file at all — see the early return above — so this
+    // stays mouse-only; the mobile ASCII digits get their tilt from device orientation
+    // via script.js instead, which drives their CSS 3D transform directly.)
 
     const clock = new THREE.Clock();
 
@@ -402,22 +411,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 s.particles.material.uniforms.uTime.value = clock.elapsedTime;
                 s.particles.material.uniforms.uDiff.value = diff;
 
-                let targetRotationY, targetRotationX;
+                const rect = s.container.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
 
-                if (tilt.active) {
-                    targetRotationY = tilt.y * 0.6;
-                    targetRotationX = tilt.x * 0.6;
-                } else {
-                    const rect = s.container.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
+                const normX = ((window.globalMouseX || window.innerWidth / 2) - centerX) / window.innerWidth;
+                const normY = ((window.globalMouseY || window.innerHeight / 2) - centerY) / window.innerHeight;
 
-                    const normX = ((window.globalMouseX || window.innerWidth / 2) - centerX) / window.innerWidth;
-                    const normY = ((window.globalMouseY || window.innerHeight / 2) - centerY) / window.innerHeight;
-
-                    targetRotationY = normX * 0.6;
-                    targetRotationX = normY * 0.6;
-                }
+                const targetRotationY = normX * 0.6;
+                const targetRotationX = normY * 0.6;
 
                 s.particles.rotation.y += (targetRotationY - s.particles.rotation.y) * 0.05;
                 const wobble = Math.sin(clock.elapsedTime * 0.5) * 0.05;
