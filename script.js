@@ -182,7 +182,7 @@ const translations = {
 
 document.addEventListener('DOMContentLoaded', () => {
     // Register GSAP Plugins
-    gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, Observer);
+    gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 
     // --- Initialize Lenis for Global Smooth Scrolling ---
     const lenis = new Lenis({
@@ -505,6 +505,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             el.addEventListener('mouseenter', () => { cachedChars = null; });
             window.addEventListener('resize', () => { cachedChars = null; });
+            // The hero name flies around via the scrub-driven intro timeline (heroTl) while
+            // scrolling — cached positions go stale mid-scroll if the mouse just sits still
+            // over the text, so the glow drifts away from the actual cursor once you scroll
+            // back. Recompute on every scroll instead of only on enter/resize.
+            window.addEventListener('scroll', () => { cachedChars = null; }, { passive: true, capture: true });
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.addEventListener('update', () => { cachedChars = null; });
+            }
 
             el.addEventListener('mousemove', (e) => processPoint(e.clientX, e.clientY));
             el.addEventListener('mouseleave', resetChars);
@@ -2104,82 +2112,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
         }
 
-        if (window.innerWidth > 768) {
-            // Desktop: continuous scroll-scrubbed, exactly as before.
-            ScrollTrigger.create({
-                trigger: careerTimeline,
-                start: "center center",
-                end: `+=${years.length * 100}%`,
-                pin: true,
-                scrub: true,
-                anticipatePin: 1,
-                onUpdate: (self) => renderCareerFrame(self.progress)
-            });
-        } else {
-            // Mobile: "however hard you swipe, it's one year per swipe" — a continuous
-            // scrub made a firm flick blow past several years at once, and a light touch
-            // left it stuck half-transitioned between two. Pin the section for the same
-            // scroll distance as before, but drive the actual year change from discrete
-            // swipe gestures (GSAP Observer) instead of from how far the page scrolled.
-            const maxIndex = years.length - 1;
-            let stepIndex = 0;
-            // The tween always reads/continues from proxy.p's live value, so killing and
-            // re-tweening mid-flight (a quick double-swipe) just smoothly redirects it —
-            // no separate "where did we start" bookkeeping needed.
-            const proxy = { p: 0 };
-            let stepTween = null;
-
-            const st = ScrollTrigger.create({
-                trigger: careerTimeline,
-                start: "center center",
-                end: `+=${years.length * 100}%`,
-                pin: true
-            });
-
-            renderCareerFrame(0);
-
-            function goToStep(index) {
-                stepIndex = index;
-                if (stepTween) stepTween.kill();
-                stepTween = gsap.to(proxy, {
-                    p: stepIndex / maxIndex,
-                    duration: 0.5,
-                    ease: "power2.out",
-                    onUpdate: () => renderCareerFrame(proxy.p)
-                });
-            }
-
-            function scrollPast(target) {
-                if (typeof lenis !== 'undefined') lenis.scrollTo(target, { duration: 0.6 });
-                else window.scrollTo({ top: target, behavior: 'smooth' });
-            }
-
-            Observer.create({
-                target: careerTimeline,
-                type: "touch,pointer",
-                tolerance: 10,
-                preventDefault: true,
-                onUp: () => { // swipe up (finger moves up) = advance forward
-                    if (!st.isActive) return;
-                    if (stepIndex >= maxIndex) {
-                        // Already on the last year — preventDefault above was eating the
-                        // swipe, so without this the visitor would be stuck unable to
-                        // continue past the timeline. Release the pin forward ourselves.
-                        scrollPast(st.end + 50);
-                        return;
-                    }
-                    goToStep(stepIndex + 1);
-                },
-                onDown: () => { // swipe down (finger moves down) = go back
-                    if (!st.isActive) return;
-                    if (stepIndex <= 0) {
-                        scrollPast(st.start - 50);
-                        return;
-                    }
-                    goToStep(stepIndex - 1);
-                }
-            });
-        }
+        // A previous attempt drove mobile entirely from discrete swipe gestures (GSAP
+        // Observer, no scroll-scrub at all) so a hard flick couldn't blow past several
+        // years at once. In practice that left real touch scrolling unresponsive — the
+        // section just didn't react. Reverting to the same scroll-scrubbed driver as
+        // desktop (proven to work), with `snap` added so it still settles cleanly on
+        // one whole year instead of stopping mid-transition.
+        ScrollTrigger.create({
+            trigger: careerTimeline,
+            start: "center center",
+            end: `+=${years.length * 100}%`,
+            pin: true,
+            scrub: true,
+            anticipatePin: 1,
+            snap: {
+                snapTo: 1 / (years.length - 1),
+                duration: 0.35,
+                ease: "power1.inOut"
+            },
+            onUpdate: (self) => renderCareerFrame(self.progress)
+        });
     }
 
     // --- GALAXIAN SHOOTING MECHANICS ---
@@ -2288,7 +2240,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (typeof lenis !== 'undefined') {
-            lenis.scrollTo(scrollTarget, { offset: 0, duration: 0.6 });
+            // A little slower and with a gentler ease-in/out than the site-wide default
+            // (which ramps in hard) — this jump felt too abrupt at the same speed.
+            lenis.scrollTo(scrollTarget, { offset: 0, duration: 0.95, easing: (t) => 1 - Math.pow(1 - t, 3) });
         } else if (typeof scrollTarget === 'number') {
             window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
         } else {
