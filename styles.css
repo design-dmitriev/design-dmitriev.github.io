@@ -1092,10 +1092,14 @@ body.theme-modder .modder-ascii {
 }
 
 @media (max-width: 900px) {
+    /* This section is pinned, so everything here has to fit one screen. The years used to
+       take 10vh padding + 22vh, leaving too little for the text below it. The drum now
+       sizes itself from the viewport (getDrumScale in years-3d.js, capped at ~15vh), so
+       the reserved strip is trimmed to match and the rest goes to the text. */
     .career-split-layout {
         flex-direction: column;
-        justify-content: center;
-        padding-top: 10vh;
+        justify-content: flex-start;
+        padding-top: 4vh;
         height: auto;
         min-height: auto;
     }
@@ -1106,22 +1110,24 @@ body.theme-modder .modder-ascii {
        flex:none + an explicit height sidesteps that fight. */
     .career-3d-timeline {
         flex: none;
-        height: 22vh;
+        height: 17vh;
         width: 100%;
         order: -1;
     }
-    /* The drum item's box was sized for the desktop 600×240 canvas (see years-3d.js,
-       which now renders at 0.4× on mobile) — shrink the box to match or the smaller
-       digits end up off-center inside a box sized for the old, much bigger canvas. */
-    .year-3d-item {
-        width: 240px;
-        margin-left: -120px;
-        margin-top: -48px;
-    }
+    /* .year-3d-item's box is sized in years-3d.js (applyDrumSizing) to match the scaled
+       canvas — it can't be a fixed value here now that the scale follows the viewport. */
     .career-text-panel {
         flex: none;
-        height: 50vh;
+        height: auto;
+        min-height: 0;
         width: 100%;
+    }
+    .career-text-panel .card-body {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    .career-text-panel .card-role {
+        font-size: 1.15rem;
     }
     .ascii-year {
         font-size: 0.8rem;
@@ -1692,9 +1698,30 @@ body.zoom-out-mode .cursor-dot::after {
            scales #hero-name-text down to fit exactly, so this only needs to be "big enough
            to look sharp before scaling", not itself viewport-proportional. */
         font-size: 16px;
+        /* text-shadow is inherited from .giant-text, where the glow is grey
+           (--accent-color is #888) plus a white pass. At desktop glyph size the green fill
+           dominates that halo, but at phone size the halo swamps it and the name reads as
+           a white blur. Re-tint the glow to the text's own green and tighten the radius so
+           it keeps the same neon look without washing out. */
+        text-shadow:
+            0 0 5px rgba(96, 183, 86, 0.55),
+            0 0 12px rgba(96, 183, 86, 0.25);
     }
     #hero-name-text {
         transform-origin: center top;
+    }
+
+    /* Description ran at 1.2rem (~19px) — a lot of scrolling on a phone. */
+    .about-text {
+        font-size: 0.8rem;
+        line-height: 1.55;
+        gap: 1rem;
+    }
+    .hero-meta {
+        font-size: 0.8rem;
+    }
+    .skill-tag {
+        font-size: 0.75rem;
     }
     .hero-info-block {
         position: static;

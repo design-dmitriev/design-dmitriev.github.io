@@ -81,6 +81,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const yearOutlines = { "2011": [" ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ "], "2020": [" ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ "], "2022": [" ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ "], "2024": [" ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ "], "2026": [" ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ ", "█   █  █   █  █   █  █   █", "█   █  █   █  █   █  █   █", " ███    ███    ███    ███ "] };
 
+    // The drum was sized purely for desktop (a 600×240 box holding an 800×400 render
+    // that intentionally bleeds outside it). On a phone that's wider than the whole
+    // screen, so scale every dimension together. Derived from the actual viewport so
+    // the digits shrink on small phones instead of using one hardcoded mobile size.
+    function getDrumScale() {
+        if (window.innerWidth > 768) return 1;
+        // Fit the 600px-wide box into ~78% of the screen, and never let the drum eat
+        // more than ~15% of screen height (the career text below it needs the room).
+        const byWidth = (window.innerWidth * 0.78) / 600;
+        const byHeight = (window.innerHeight * 0.15) / 240;
+        return Math.max(0.22, Math.min(byWidth, byHeight));
+    }
+
     function createVolumetricAscii(text) {
         const positions = [];
         const colors = [];
@@ -139,8 +152,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-        // Add deep background outline layer
-        const outlineLines = yearOutlines[text] || yearOutlines["2026"];
+        // Add deep background outline layer.
+        // This draws a full "8888" (every segment lit) behind the real digits as a depth
+        // cue. At desktop size it reads as a faint ghost, but on a phone the digits are
+        // small enough that the ghost merges with them and every year ends up looking
+        // like the same number — so skip it entirely on mobile.
+        const outlineLines = window.innerWidth > 768 ? (yearOutlines[text] || yearOutlines["2026"]) : [];
         for (let y = 0; y < outlineLines.length; y++) {
             for (let x = 0; x < outlineLines[y].length; x++) {
                 const char = outlineLines[y][x];
@@ -173,19 +190,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const scenes = [];
 
-    // The drum was sized purely for desktop (a 600×240 box holding an 800×400 render
-    // that intentionally bleeds outside it). On a phone that's wider than the whole
-    // screen and gets clipped almost entirely — scale every dimension down together
-    // so the digits actually stay visible and centered.
-    const isMobileDrum = window.innerWidth <= 768;
-    const drumScale = isMobileDrum ? 0.4 : 1;
+    const drumScale = getDrumScale();
+
+    // gl_PointSize is in raw framebuffer pixels, so it does NOT shrink along with a
+    // smaller renderer — at mobile size the 32px blocks stayed huge relative to the
+    // digit grid, overlapped, and smeared every year into an unreadable blob.
+    // Tie it to the framebuffer height so density matches the desktop look at any size.
+    function pointScaleFor(height, pixelRatio) {
+        return (height * pixelRatio) / 400;
+    }
+
+    // .year-3d-item centers itself with margins hardcoded to half of the desktop 600×240
+    // box, so the box has to be resized alongside the canvas or the scaled-down digits
+    // drift off-center. Keep both in sync from here, where the scale is known.
+    function applyDrumSizing(container, scale) {
+        const boxW = 600 * scale;
+        const boxH = 240 * scale;
+
+        container.style.width = boxW + 'px';
+        container.style.height = boxH + 'px';
+
+        const item = container.parentElement;
+        if (item && item.classList.contains('year-3d-item')) {
+            item.style.width = boxW + 'px';
+            item.style.marginLeft = (-boxW / 2) + 'px';
+            item.style.marginTop = (-boxH / 2) + 'px';
+        }
+    }
 
     yearContainers.forEach(container => {
         const text = container.getAttribute('data-year-text');
 
-        container.style.width = (600 * drumScale) + 'px';
-        container.style.height = (240 * drumScale) + 'px';
-        container.style.margin = '0 auto'; // stay centered even though the parent .year-3d-item keeps its own (desktop-sized) box
+        applyDrumSizing(container, drumScale);
         container.style.position = 'relative';
         container.style.overflow = 'visible';
         container.style.pointerEvents = 'none';
@@ -215,11 +251,13 @@ document.addEventListener('DOMContentLoaded', () => {
             uniforms: {
                 uTime: { value: 0 },
                 uDiff: { value: 0 },
-                uAtlas: { value: atlasTexture }
+                uAtlas: { value: atlasTexture },
+                uPointScale: { value: pointScaleFor(h, Math.min(window.devicePixelRatio, 2)) }
             },
             vertexShader: `
                 uniform float uTime;
                 uniform float uDiff;
+                uniform float uPointScale;
                 attribute float charIndex;
                 attribute vec3 color;
                 
@@ -248,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     vHighlight = highlight;
                     
                     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-                    gl_PointSize = 32.0 * (400.0 / -mvPosition.z); 
+                    gl_PointSize = 32.0 * uPointScale * (400.0 / -mvPosition.z);
                     gl_Position = projectionMatrix * mvPosition;
                 }
             `,
@@ -295,14 +333,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         window.addEventListener('resize', () => {
-            const scale = window.innerWidth <= 768 ? 0.4 : 1;
+            const scale = getDrumScale();
             const width = 800 * scale;
             const height = 400 * scale;
-            container.style.width = (600 * scale) + 'px';
-            container.style.height = (240 * scale) + 'px';
+            applyDrumSizing(container, scale);
             camera.aspect = width / height;
             camera.updateProjectionMatrix();
             renderer.setSize(width, height);
+            material.uniforms.uPointScale.value = pointScaleFor(height, Math.min(window.devicePixelRatio, 2));
         });
     });
 
@@ -319,6 +357,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Read mouse coordinates from window.globalMouseX/Y set in script.js
 
+    // --- Device tilt (mobile substitute for mouse parallax) ---
+    // Note: iOS 13+ only delivers deviceorientation after an explicit permission prompt
+    // triggered by a user gesture. We deliberately don't prompt, so this simply stays
+    // inert there and the digits keep their idle wobble.
+    const tilt = { x: 0, y: 0, active: false };
+
+    if (window.innerWidth <= 768 && window.DeviceOrientationEvent) {
+        // beta (front-back) sits at whatever angle the phone is being held at, so the
+        // first reading becomes the neutral baseline and we track deviation from it.
+        let betaBaseline = null;
+
+        window.addEventListener('deviceorientation', (e) => {
+            if (e.gamma === null || e.beta === null) return;
+            if (betaBaseline === null) betaBaseline = e.beta;
+
+            const clampNorm = (deg, range) => Math.max(-1, Math.min(1, deg / range));
+            // Negated so the digits lean against the tilt rather than with it.
+            tilt.y = -clampNorm(e.gamma, 35);
+            tilt.x = -clampNorm(e.beta - betaBaseline, 35);
+            tilt.active = true;
+        });
+    }
+
     const clock = new THREE.Clock();
 
     function animate() {
@@ -332,15 +393,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 s.particles.material.uniforms.uTime.value = clock.elapsedTime;
                 s.particles.material.uniforms.uDiff.value = diff;
 
-                const rect = s.container.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
+                let targetRotationY, targetRotationX;
 
-                const normX = ((window.globalMouseX || window.innerWidth / 2) - centerX) / window.innerWidth;
-                const normY = ((window.globalMouseY || window.innerHeight / 2) - centerY) / window.innerHeight;
+                if (tilt.active) {
+                    targetRotationY = tilt.y * 0.6;
+                    targetRotationX = tilt.x * 0.6;
+                } else {
+                    const rect = s.container.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
 
-                const targetRotationY = normX * 0.6;
-                const targetRotationX = normY * 0.6;
+                    const normX = ((window.globalMouseX || window.innerWidth / 2) - centerX) / window.innerWidth;
+                    const normY = ((window.globalMouseY || window.innerHeight / 2) - centerY) / window.innerHeight;
+
+                    targetRotationY = normX * 0.6;
+                    targetRotationX = normY * 0.6;
+                }
 
                 s.particles.rotation.y += (targetRotationY - s.particles.rotation.y) * 0.05;
                 const wobble = Math.sin(clock.elapsedTime * 0.5) * 0.05;

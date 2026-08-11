@@ -316,6 +316,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     fitHeroNameToViewport();
     window.addEventListener('resize', fitHeroNameToViewport);
+    // The ASCII art is monospace-dependent: measured before the webfont lands, the name
+    // looks narrow enough to fit and no scale gets applied — then the real font swaps in
+    // and it overflows. Re-measure once fonts are ready.
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(fitHeroNameToViewport);
+    }
 
     // --- Initial Boot Animation (Hero Title) ---
     function animateHeroTitle(container) {
@@ -361,6 +367,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Matrix Hover Effect for ASCII Art ---
     function initMatrixHoverEffect(container) {
+        // Mobile has no hover, and dragging a finger across the name ran the per-character
+        // scramble on every touchmove — the main source of jank on phones. Skip the whole
+        // setup there so the name stays a plain <pre> with no per-char spans at all.
+        if (window.innerWidth <= 768) return;
+
         const asciiWords = container.querySelectorAll('.matrix-hover-target');
         if (!asciiWords || asciiWords.length === 0) return;
 
@@ -2154,9 +2165,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Click on the hero name scrolls down to the description/skills block
+    // Click on the hero name scrolls down to the description/skills block.
+    // Desktop only — on mobile the description already sits right below in normal flow
+    // (no pinned intro to jump past), so the jump was redundant and fired on stray taps.
     const heroNameText = document.getElementById('hero-name-text');
-    if (heroNameText) {
+    if (heroNameText && window.innerWidth > 768) {
         heroNameText.addEventListener('click', () => smoothScrollToSelector('#about-block'));
     }
 
