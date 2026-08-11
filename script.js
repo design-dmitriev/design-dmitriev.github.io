@@ -632,31 +632,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // On touch devices there's no mouse to drive the 3D tilt effects (career year digits,
     // etc.) — feed the same globalMouseX/Y values from the phone's tilt instead, so they
-    // still react to something. No permission prompt: on iOS this API stays silent unless
-    // DeviceOrientationEvent.requestPermission() is explicitly called, which we deliberately
-    // never do, so this only ever activates where the browser allows it without asking.
+    // still react to something. No permission prompt, ever, on purpose: iOS 13+ Safari
+    // only fires deviceorientation after DeviceOrientationEvent.requestPermission() is
+    // called from a tap, and we deliberately never call it — asking is worse than the
+    // feature not existing there. This activates only on devices/browsers (mainly Android)
+    // that hand out orientation events without needing to ask.
+    // Half the divisor = twice the sensitivity: a smaller tilt now reaches the full range.
     if (window.DeviceOrientationEvent && matchMedia('(hover: none)').matches) {
         window.addEventListener('deviceorientation', (e) => {
             if (e.gamma === null || e.beta === null) return;
-            const tiltX = Math.max(-45, Math.min(45, e.gamma)) / 45; // left/right, -1..1
-            const tiltY = Math.max(-45, Math.min(45, e.beta - 45)) / 45; // front/back, centered on a natural hold angle
+            const tiltX = Math.max(-1, Math.min(1, e.gamma / 22.5)); // left/right, -1..1
+            const tiltY = Math.max(-1, Math.min(1, (e.beta - 45) / 22.5)); // front/back, centered on a natural hold angle
             window.globalMouseX = (window.innerWidth / 2) + tiltX * (window.innerWidth / 2);
             window.globalMouseY = (window.innerHeight / 2) + tiltY * (window.innerHeight / 2);
         });
-    }
-
-    // iOS 13+ Safari (and browsers built on it) silently withholds every deviceorientation
-    // event until DeviceOrientationEvent.requestPermission() is called from within a user
-    // gesture — this is why tilt did nothing there even though the listeners above are set
-    // up correctly. Piggyback on the visitor's first tap anywhere (not a dedicated "enable
-    // motion" button) so it stays invisible on Android, where this API doesn't exist at all
-    // and the listeners already just work.
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        const requestTiltPermission = () => {
-            document.removeEventListener('touchend', requestTiltPermission);
-            DeviceOrientationEvent.requestPermission().catch(() => {});
-        };
-        document.addEventListener('touchend', requestTiltPermission, { once: true });
     }
 
     const cursorDot = document.querySelector('.cursor-dot');
@@ -1940,9 +1929,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const handleOrientation = (e) => {
                 if (e.gamma === null || e.beta === null) return;
                 if (betaBaseline === null) betaBaseline = e.beta;
+                // Half the range = twice the sensitivity — any real tilt now reaches full swing.
                 const clampNorm = (deg, range) => Math.max(-1, Math.min(1, deg / range));
-                deviceTilt.y = clampNorm(e.gamma, 35);
-                deviceTilt.x = -clampNorm(e.beta - betaBaseline, 35);
+                deviceTilt.y = clampNorm(e.gamma, 17.5);
+                deviceTilt.x = -clampNorm(e.beta - betaBaseline, 17.5);
                 deviceTilt.active = true;
             };
             // Some Android browsers only fire one of these two — listen for both.
