@@ -231,6 +231,8 @@ button:hover ~ .cursor-outline,
 /* UI Layout */
 .ui-wrapper {
     width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -561,6 +563,10 @@ button:hover ~ .cursor-outline,
 
 .giant-text .accent {
     color: var(--accent-color);
+}
+
+.hero-foreground-text {
+    cursor: pointer;
 }
 
 .ascii-title {
@@ -1135,7 +1141,7 @@ body.theme-modder .modder-ascii {
     font-size: 0.9rem;
     text-transform: lowercase; /* Make it lowercase */
     transition: background-color 0.3s, color 0.3s;
-    cursor: default;
+    cursor: pointer;
     background-color: transparent;
 }
 
@@ -1472,6 +1478,31 @@ body.theme-modder .modder-ascii {
     color: var(--text-muted);
 }
 
+.lightbox-close-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: transparent;
+    border: 1px solid var(--grid-line);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lightbox-close-btn span {
+    font-size: 1rem;
+    color: inherit;
+}
+
+.lightbox-close-btn:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
 .lightbox-content {
     flex: 1;
     position: relative;
@@ -1582,7 +1613,11 @@ body.zoom-out-mode .cursor-dot::after {
 /* Tablet & Mobile */
 @media (max-width: 768px) {
     .sys-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 1.5rem 2rem; position: relative; }
-    
+    /* At this width .sys-header stacks its children left-aligned, but .sys-controls
+       still carries align-items:flex-end from the ≤1024px rule above — override it so
+       the sound/mode rows don't float right inside their now left-aligned parent. */
+    .sys-controls { align-items: flex-start; gap: 0.75rem; }
+
     .header-contact-btn { 
         position: fixed; 
         bottom: 1.5rem; 
@@ -1611,6 +1646,26 @@ body.zoom-out-mode .cursor-dot::after {
     
     .footer-bleed, .sys-logs, .contact-block { align-items: center; text-align: center; }
     .sys-footer { padding-bottom: 6rem; /* Make room for floating button */ }
+
+    /* The hero intro's pin/scrub choreography is skipped on mobile (see script.js) because
+       the info block (bio + tags + button) is taller than one screen and pinning would just
+       clip it. Let the section flow and grow normally instead of centering everything inside
+       a fixed-height box. */
+    .hero-bleed {
+        min-height: auto;
+        height: auto;
+        padding: 4rem 0 6rem; /* extra bottom room so the fixed floating contact button doesn't cover content */
+    }
+    #hero-3d-model {
+        display: none; /* decorative background glow — skip on mobile, also saves WebGL cost */
+    }
+    .hero-info-block {
+        position: static;
+        transform: none;
+        margin-top: 2.5rem;
+        opacity: 1;
+        filter: none;
+    }
 }
 
 @media (max-width: 480px) {

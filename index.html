@@ -18,7 +18,7 @@
     <meta property="og:description"
         content="От карточек товаров до управления отделом дизайна. Портфолио: маркетплейсы, наружная реклама, обложки.">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="stylesheet" href="styles.css?v=14">
+    <link rel="stylesheet" href="styles.css?v=18">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:ital,wght@0,700;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
@@ -119,7 +119,7 @@
                     <div id="hero-3d-model"></div>
 
                     <!-- Foreground Name in ASCII -->
-                    <div class="giant-text ascii-title hero-foreground-text" id="hero-name-text">
+                    <div class="giant-text ascii-title hero-foreground-text hover-target" id="hero-name-text">
                         <pre class="ascii-word matrix-hover-target" id="ascii-first-name">
  █████╗ ██╗     ███████╗██╗  ██╗███████╗██╗   ██╗
 ██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔════╝╚██╗ ██╔╝
@@ -143,7 +143,7 @@
                             От карточек товаров до управления отделом дизайна
                         </div>
                         
-                        <div class="about-block" style="margin-bottom: 0.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                        <div class="about-block" id="about-block" style="margin-bottom: 0.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
                             <div class="about-text mono">
                                 <p data-i18n="about_bio_1" style="margin-bottom: 1rem; text-align: center; border-left: none; padding-left: 0;">У меня нет академического диплома маркетолога
                                     — мой опыт выкован на реальных продажах, сотнях тестов и насмотренности. Моя стихия —
@@ -153,12 +153,12 @@
                                     отполированный интерфейс, который приведет клиента к покупке.</p>
                             </div>
                             <div class="about-skills" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; justify-content: center;">
-                                <span class="skill-tag">Figma</span>
-                                <span class="skill-tag">UX/UI Design</span>
-                                <span class="skill-tag">Rich-Content</span>
-                                <span class="skill-tag">Арт-дирекшн</span>
-                                <span class="skill-tag">Аналитика Маркетплейсов</span>
-                                <span class="skill-tag">E-Commerce</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Figma</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">UX/UI Design</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Rich-Content</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Арт-дирекшн</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Аналитика Маркетплейсов</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">E-Commerce</span>
                             </div>
                         </div>
                         
@@ -250,23 +250,19 @@
                             </div>
 
                             <div class="career-text-blocks">
-                                <!-- Block 1 -->
+                                <!-- Block 1: 2011 -->
                                 <div class="text-block active" data-year="0">
-                                    <h3 class="card-role mono" data-i18n="role_gqbox">Руководитель отдела контента @ GQBOX</h3>
+                                    <h3 class="card-role mono" data-i18n="role_init">Инициализация</h3>
                                     <div class="card-body mono">
-                                        <p>Прошел путь от рядового дизайнера до руководителя отдела за полгода.</p>
-                                        <p>> Оптимизация процессов: Перевел команду на пайплайны в Figma. Разработал систему KPI.</p>
-                                        <p>> Внедрение AI: Интегрировал нейросети в коммерческую разработку.</p>
-                                        <p>> Масштаб: Разработал дизайн наружной рекламы по СНГ.</p>
+                                        <p>Самостоятельный путь от первых интерфейсов в Adobe и превью для YouTube до
+                                            осознанного перехода в профессиональный дизайн.</p>
                                     </div>
                                 </div>
-                                <!-- Block 2 -->
+                                <!-- Block 2: 2020 -->
                                 <div class="text-block" data-year="1">
-                                    <h3 class="card-role mono" data-i18n="role_ecommerce">In-house дизайнер e-commerce</h3>
+                                    <h3 class="card-role mono">Начало коммерческого пути</h3>
                                     <div class="card-body mono">
-                                        <p>Создавал визуальные концепции для сложных и высококонкурентных ниш.</p>
-                                        <p>Контент позволил новинкам забрать долю рынка на Ozon и WB.</p>
-                                        <p>Стал early-adopter'ом генеративного дизайна (Stable Diffusion, Firefly).</p>
+                                        <p>Первые коммерческие заказы и формирование понимания дизайн-процессов.</p>
                                     </div>
                                 </div>
                                 <!-- Block 3 -->
@@ -278,19 +274,23 @@
                                         <p>Самостоятельно закрывал полный цикл: от предметной съемки до инфографики.</p>
                                     </div>
                                 </div>
-                                <!-- Block 4: 2020 -->
+                                <!-- Block 4 -->
                                 <div class="text-block" data-year="3">
-                                    <h3 class="card-role mono">Начало коммерческого пути</h3>
+                                    <h3 class="card-role mono" data-i18n="role_ecommerce">In-house дизайнер e-commerce</h3>
                                     <div class="card-body mono">
-                                        <p>Первые коммерческие заказы и формирование понимания дизайн-процессов.</p>
+                                        <p>Создавал визуальные концепции для сложных и высококонкурентных ниш.</p>
+                                        <p>Контент позволил новинкам забрать долю рынка на Ozon и WB.</p>
+                                        <p>Стал early-adopter'ом генеративного дизайна (Stable Diffusion, Firefly).</p>
                                     </div>
                                 </div>
-                                <!-- Block 5: 2011 -->
+                                <!-- Block 5 -->
                                 <div class="text-block" data-year="4">
-                                    <h3 class="card-role mono" data-i18n="role_init">Инициализация</h3>
+                                    <h3 class="card-role mono" data-i18n="role_gqbox">Руководитель отдела контента @ GQBOX</h3>
                                     <div class="card-body mono">
-                                        <p>Самостоятельный путь от первых интерфейсов в Adobe и превью для YouTube до
-                                            осознанного перехода в профессиональный дизайн.</p>
+                                        <p>Прошел путь от рядового дизайнера до руководителя отдела за полгода.</p>
+                                        <p>> Оптимизация процессов: Перевел команду на пайплайны в Figma. Разработал систему KPI.</p>
+                                        <p>> Внедрение AI: Интегрировал нейросети в коммерческую разработку.</p>
+                                        <p>> Масштаб: Разработал дизайн наружной рекламы по СНГ.</p>
                                     </div>
                                 </div>
                             </div>
@@ -300,19 +300,19 @@
                         <div class="career-3d-timeline">
                             <div class="years-drum">
                                 <div class="year-3d-item mono" data-year="0">
-                                    <div class="year-3d-canvas" data-year-text="2026"></div>
+                                    <div class="year-3d-canvas" data-year-text="2011"></div>
                                 </div>
                                 <div class="year-3d-item mono" data-year="1">
-                                    <div class="year-3d-canvas" data-year-text="2024"></div>
+                                    <div class="year-3d-canvas" data-year-text="2020"></div>
                                 </div>
                                 <div class="year-3d-item mono" data-year="2">
                                     <div class="year-3d-canvas" data-year-text="2022"></div>
                                 </div>
                                 <div class="year-3d-item mono" data-year="3">
-                                    <div class="year-3d-canvas" data-year-text="2020"></div>
+                                    <div class="year-3d-canvas" data-year-text="2024"></div>
                                 </div>
                                 <div class="year-3d-item mono" data-year="4">
-                                    <div class="year-3d-canvas" data-year-text="2011"></div>
+                                    <div class="year-3d-canvas" data-year-text="2026"></div>
                                 </div>
                             </div>
                         </div>
@@ -516,6 +516,9 @@
                 <span class="mono" id="gallery-counter" style="color: var(--accent-color); font-weight: bold;">[ 1 / 1
                     ]</span>
             </div>
+            <button id="lightbox-close-btn" class="lightbox-close-btn mono hover-target" aria-label="Закрыть" title="Закрыть (Esc)">
+                <span aria-hidden="true">✕</span> ЗАКРЫТЬ
+            </button>
         </div>
         <div class="lightbox-body">
             <!-- Sidebar for Categories & Thumbnails -->
@@ -549,7 +552,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="dithr-effect-v2.js"></script>
     <script src="years-3d.js"></script>
-    <script src="script.js?v=12"></script>
+    <script src="script.js?v=17"></script>
 </body>
 
 </html>

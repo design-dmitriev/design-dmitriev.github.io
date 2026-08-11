@@ -375,38 +375,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const matrixChars = "01&*#$@%X<>[]{}";
 
-            el.addEventListener('mousemove', (e) => {
+            // Reading span.getBoundingClientRect() for every char on every raw mousemove
+            // forces a layout reflow per span per event — very costly on weaker machines.
+            // The text doesn't reflow while hovering, so cache each span's position relative
+            // to the container once per hover session (and on resize) instead, and only
+            // process the latest mouse position once per animation frame.
+            let cachedChars = null;
+            let cachedBright = null;
+            let cachedGlow = null;
+
+            function cachePositions() {
                 const rect = el.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-
-                // Get the computed color of the element to use for glow
                 const glowColor = getComputedStyle(el).color;
-                // Make the text color itself 10% brighter than the base color
-                const brightColor = `color-mix(in srgb, ${glowColor}, white 10%)`;
-
-                chars.forEach(span => {
+                cachedGlow = glowColor;
+                cachedBright = `color-mix(in srgb, ${glowColor}, white 10%)`;
+                cachedChars = chars.map(span => {
                     const sRect = span.getBoundingClientRect();
-                    const sx = (sRect.left - rect.left) + sRect.width / 2;
-                    const sy = (sRect.top - rect.top) + sRect.height / 2;
+                    return {
+                        span,
+                        sx: (sRect.left - rect.left) + sRect.width / 2,
+                        sy: (sRect.top - rect.top) + sRect.height / 2
+                    };
+                });
+            }
 
-                    const dist = Math.hypot(mouseX - sx, mouseY - sy);
+            let rafPending = false;
+            let lastEvent = null;
+
+            el.addEventListener('mouseenter', () => { cachedChars = null; });
+            window.addEventListener('resize', () => { cachedChars = null; });
+
+            el.addEventListener('mousemove', (e) => {
+                lastEvent = e;
+                if (rafPending) return;
+                rafPending = true;
+                requestAnimationFrame(() => {
+                    rafPending = false;
+                    if (!cachedChars) cachePositions();
+
+                    const rect = el.getBoundingClientRect();
+                    const mouseX = lastEvent.clientX - rect.left;
+                    const mouseY = lastEvent.clientY - rect.top;
                     const radius = 25; // 25px radius (very tight)
 
-                    if (dist < radius) {
-                        if (Math.random() < 0.2) {
-                            span.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
-                        }
+                    cachedChars.forEach(({ span, sx, sy }) => {
+                        const dist = Math.hypot(mouseX - sx, mouseY - sy);
 
-                        span.style.color = brightColor;
-                        span.style.textShadow = `0 0 5px ${glowColor}, 0 0 10px ${glowColor}`;
-                    } else {
-                        if (span.textContent !== span.dataset.orig) {
-                            span.textContent = span.dataset.orig;
+                        if (dist < radius) {
+                            if (Math.random() < 0.2) {
+                                span.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                            }
+
+                            span.style.color = cachedBright;
+                            span.style.textShadow = `0 0 5px ${cachedGlow}, 0 0 10px ${cachedGlow}`;
+                        } else {
+                            if (span.textContent !== span.dataset.orig) {
+                                span.textContent = span.dataset.orig;
+                            }
+                            span.style.color = '';
+                            span.style.textShadow = '';
                         }
-                        span.style.color = '';
-                        span.style.textShadow = '';
-                    }
+                    });
                 });
             });
 
@@ -1087,8 +1116,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.blackHoleState = { progress: 0 };
 
     function initCanvas() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+        // Cap the internal render resolution at a ~1080p pixel budget: on ultrawide/4K
+        // screens the canvas still visually fills the viewport (CSS is 100vw/100vh),
+        // it just stops rendering (and counting particles for) pixels beyond that budget.
+        const rawW = window.innerWidth;
+        const rawH = window.innerHeight;
+        const pixelBudget = 1920 * 1080;
+        const rawArea = rawW * rawH;
+        const resScale = rawArea > pixelBudget ? Math.sqrt(pixelBudget / rawArea) : 1;
+
+        width = canvas.width = Math.round(rawW * resScale);
+        height = canvas.height = Math.round(rawH * resScale);
 
         particles = [];
         const isLight = document.body.classList.contains('theme-light');
@@ -1439,6 +1477,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeLightbox = () => { lightbox.classList.remove('active'); document.body.style.overflow = ''; if (typeof lenis !== 'undefined') lenis.start(); };
     lightbox.addEventListener('click', (e) => { if (e.target === lightbox || e.target.classList.contains('lightbox-content') || e.target.classList.contains('project-visual')) { closeLightbox(); } });
 
+    const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+    if (lightboxCloseBtn) {
+        lightboxCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+    }
+
     document.addEventListener('keydown', (e) => {
         if (!lightbox.classList.contains('active')) return;
         if (e.key === 'Escape') {
@@ -1596,32 +1642,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroMetas = document.querySelectorAll('.hero-meta');
     const heroBtns = document.querySelectorAll('.hero-action-btns');
 
-    if (heroBgLogo && asciiFirstName && asciiLastName) {
+    // 1. Contact Buttons independent of scrub timeline for instant reaction
+    const headerContactBtn = document.querySelector('.header-contact-btn');
+
+    if (headerContactBtn) {
+        gsap.to(headerContactBtn, {
+            autoAlpha: 1,
+            duration: 0.2,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: "body",
+                start: 60, // Appear slightly after
+                toggleActions: "play none none reverse"
+            }
+        });
+    }
+
+    // The pinned scroll-jacking intro (name flies away, info block crossfades in at the
+    // same centered spot) assumes a screen tall enough to fit that centered content.
+    // On phones the info block (bio + 6 skill tags + button) is taller than one screen,
+    // so pinning it would just clip the overflow with no way to scroll to it. Skip the
+    // pin/scrub choreography on narrow screens and let the hero content flow normally.
+    if (heroBgLogo && asciiFirstName && asciiLastName && window.innerWidth > 768) {
         const heroTl = gsap.timeline({
             scrollTrigger: {
                 trigger: "body", // Use body to trigger immediately
                 start: 0, // Starts exactly at 0 scroll
-                end: "+=150%",
-                scrub: 1.5,
+                end: "+=90%",
+                scrub: 0.4,
                 pin: ".hero-bleed", // Explicitly pin the hero section
             }
         });
-
-        // 1. Contact Buttons independent of scrub timeline for instant reaction
-        const headerContactBtn = document.querySelector('.header-contact-btn');
-
-        if (headerContactBtn) {
-            gsap.to(headerContactBtn, {
-                autoAlpha: 1,
-                duration: 0.2,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: "body",
-                    start: 60, // Appear slightly after
-                    toggleActions: "play none none reverse"
-                }
-            });
-        }
 
         heroTl.to(asciiFirstName, {
             y: "-150vh",
@@ -1986,7 +2037,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     if (typeof lenis !== 'undefined') {
-                        lenis.scrollTo(targetElement, { offset: 0, duration: 1.2 });
+                        lenis.scrollTo(targetElement, { offset: 0, duration: 0.6 });
                     } else {
                         // Fallback
                         const targetY = targetElement.getBoundingClientRect().top + window.scrollY;
@@ -1995,6 +2046,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+    });
+
+    // Instantly finishes any scroll-triggered reveal (blur/fade-in) animations
+    // inside a container, so a fast-forward jump lands on sharp, fully visible content
+    // instead of text still mid-blur from its normal scroll-triggered reveal.
+    function forceRevealWithin(container) {
+        if (!container) return;
+        ScrollTrigger.getAll().forEach(st => {
+            if (st.trigger && container.contains(st.trigger) && st.animation) {
+                st.animation.progress(1);
+            }
+        });
+    }
+
+    function smoothScrollToSelector(selector) {
+        const targetElement = document.querySelector(selector);
+        if (!targetElement) return;
+        forceRevealWithin(targetElement);
+
+        // Content inside the pinned hero-intro only finishes revealing at the very end
+        // of that pin's scroll range. Scrolling to the element's own (pre-reveal) position
+        // lands short — still mid-blur. Aim for the end of the pin instead in that case.
+        let scrollTarget = targetElement;
+        if (targetElement.closest('.hero-info-block')) {
+            const introST = ScrollTrigger.getAll().find(st => st.pin && st.pin.classList && st.pin.classList.contains('hero-bleed'));
+            if (introST) scrollTarget = introST.end;
+        }
+
+        if (typeof lenis !== 'undefined') {
+            lenis.scrollTo(scrollTarget, { offset: 0, duration: 0.6 });
+        } else if (typeof scrollTarget === 'number') {
+            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+        } else {
+            const targetY = targetElement.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+    }
+
+    // Click on the hero name scrolls down to the description/skills block
+    const heroNameText = document.getElementById('hero-name-text');
+    if (heroNameText) {
+        heroNameText.addEventListener('click', () => smoothScrollToSelector('#about-block'));
+    }
+
+    // Skill tags scroll to the portfolio section instead of doing nothing
+    document.querySelectorAll('.skill-tag[data-scroll-target]').forEach(tag => {
+        tag.addEventListener('click', () => smoothScrollToSelector(tag.dataset.scrollTarget));
     });
 
     // --- 11. Global Scroll Reveal (Premium Framer-style Text Animation) ---
