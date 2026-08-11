@@ -1694,10 +1694,10 @@ body.zoom-out-mode .cursor-dot::after {
         display: none; /* decorative background glow — skip on mobile, also saves WebGL cost */
     }
     .ascii-word {
-        /* A generous fixed base size — script.js measures the actual rendered width and
-           scales #hero-name-text down to fit exactly, so this only needs to be "big enough
-           to look sharp before scaling", not itself viewport-proportional. */
-        font-size: 16px;
+        /* Deliberately conservative: the widest line is 58 monospace characters, so this
+           has to fit unaided in case the JS fit never runs (it scales the name up to fill
+           the width properly once it does). Sized in vw so it can't overflow on any phone. */
+        font-size: 2.2vw;
         /* text-shadow is inherited from .giant-text, where the glow is grey
            (--accent-color is #888) plus a white pass. At desktop glyph size the green fill
            dominates that halo, but at phone size the halo swamps it and the name reads as
@@ -1722,6 +1722,13 @@ body.zoom-out-mode .cursor-dot::after {
     }
     .skill-tag {
         font-size: 0.75rem;
+    }
+
+    /* Progress bar / percentage readout on the boot screen — noise on a phone, where the
+       page is up almost immediately. The logo and status line still show briefly. */
+    .preloader-progress-bar,
+    .preloader-status {
+        display: none;
     }
     .hero-info-block {
         position: static;

@@ -311,14 +311,27 @@ document.addEventListener('DOMContentLoaded', () => {
         words.forEach(w => { maxWidth = Math.max(maxWidth, w.scrollWidth); });
         if (maxWidth === 0) return;
         const available = (container.parentElement ? container.parentElement.clientWidth : window.innerWidth) * 0.94;
-        const scale = Math.min(1, available / maxWidth);
-        container.style.transform = scale < 1 ? `scale(${scale})` : 'none';
+        // Scales up as well as down: the CSS base font-size is deliberately conservative so
+        // the name can never overflow if this never runs, and this then grows it to fill
+        // the width properly. Capped so a bad measurement can't blow it up.
+        const scale = Math.min(3, available / maxWidth);
+        container.style.transform = `scale(${scale})`;
     }
     fitHeroNameToViewport();
     window.addEventListener('resize', fitHeroNameToViewport);
-    // The ASCII art is monospace-dependent: measured before the webfont lands, the name
-    // looks narrow enough to fit and no scale gets applied — then the real font swaps in
-    // and it overflows. Re-measure once fonts are ready.
+    // The ASCII art is monospace-dependent, so its width changes well after DOMContentLoaded:
+    // the webfont swaps in, and the boot glitch rewrites the markup. A single measurement
+    // (even one retried on fonts.ready) kept losing that race on real phones and the name
+    // stayed unscaled and overflowing. Watch the words themselves and refit on any width
+    // change instead. Scaling happens on the parent, and transforms don't affect layout,
+    // so this can't feed back into itself.
+    if (window.ResizeObserver) {
+        const heroNameEl = document.getElementById('hero-name-text');
+        if (heroNameEl) {
+            const ro = new ResizeObserver(() => fitHeroNameToViewport());
+            heroNameEl.querySelectorAll('.ascii-word').forEach(w => ro.observe(w));
+        }
+    }
     if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(fitHeroNameToViewport);
     }

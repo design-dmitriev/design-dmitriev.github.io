@@ -113,7 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Slightly increased spacing to create visible gaps between characters
         const spacingX = 14.0;
         const spacingY = 24.0;
-        const layers = 5; // Reduced depth, but much cooler effect
+        // Each lit cell is drawn several times at increasing depth for a volumetric look.
+        // Perspective pulls those deeper copies sideways, which at desktop size reads as
+        // thickness — but on a phone the offset copies land in the empty cells next to a
+        // segment and effectively draw strokes that aren't in the digit (a 6 grows an
+        // upper-right stem and reads as 8). Flat single layer on mobile keeps digits honest.
+        const layers = window.innerWidth > 768 ? 5 : 1;
 
         for (let y = 0; y < gridH; y++) {
             for (let x = 0; x < lines[y].length; x++) {
@@ -197,7 +202,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // digit grid, overlapped, and smeared every year into an unreadable blob.
     // Tie it to the framebuffer height so density matches the desktop look at any size.
     function pointScaleFor(height, pixelRatio) {
-        return (height * pixelRatio) / 400;
+        const base = (height * pixelRatio) / 400;
+        // The atlas glyph only covers part of the point quad, so blocks never quite touch.
+        // At desktop size that gap reads as deliberate LED segmentation; shrunk to a phone
+        // it breaks each digit into disconnected pieces. Fatten the blocks a little there.
+        return window.innerWidth > 768 ? base : base * 1.25;
     }
 
     // .year-3d-item centers itself with margins hardcoded to half of the desktop 600×240
