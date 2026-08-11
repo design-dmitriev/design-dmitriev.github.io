@@ -2002,9 +2002,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealElements = document.querySelectorAll('.view-section p, .view-section h2, .view-section h3, .view-section .project-card, .view-section .career-item, .view-section .mod-card, .section-title, .about-skills .skill-tag');
 
     revealElements.forEach(el => {
-        // .work-row уже анимируется построчно в initScrollTextAnimations;
+        // .work-card уже анимируется построчно в initScrollTextAnimations;
         // второй проход с autoAlpha конфликтует с ним и оставляет visibility: hidden
-        if (el.closest('.hero-bleed') || el.closest('.sys-header') || el.closest('.career-text-blocks') || el.closest('.work-row')) return;
+        if (el.closest('.hero-bleed') || el.closest('.sys-header') || el.closest('.career-text-blocks') || el.closest('.work-card')) return;
 
         gsap.from(el, {
             scrollTrigger: {

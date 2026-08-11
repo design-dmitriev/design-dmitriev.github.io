@@ -2,9 +2,25 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "kpi-payroll",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "start",
+        "--prefix",
+        "C:\\Users\\Starlight\\Desktop\\KPI-Design-Payroll"
+      ],
+      "port": 3300
+    },
+    {
       "name": "portfolio",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "serve", "-l", "4173", "."],
+      "runtimeArgs": [
+        "-y",
+        "serve",
+        "-l",
+        "4173",
+        "."
+      ],
       "port": 4173
     }
   ]
