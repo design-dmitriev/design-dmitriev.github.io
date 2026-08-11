@@ -1929,10 +1929,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const handleOrientation = (e) => {
                 if (e.gamma === null || e.beta === null) return;
                 if (betaBaseline === null) betaBaseline = e.beta;
-                // Half the range = twice the sensitivity — any real tilt now reaches full swing.
+                // Small range = high sensitivity — even a slight tilt now reaches full swing.
                 const clampNorm = (deg, range) => Math.max(-1, Math.min(1, deg / range));
-                deviceTilt.y = clampNorm(e.gamma, 17.5);
-                deviceTilt.x = -clampNorm(e.beta - betaBaseline, 17.5);
+                deviceTilt.y = clampNorm(e.gamma, 7);
+                deviceTilt.x = -clampNorm(e.beta - betaBaseline, 7);
                 deviceTilt.active = true;
             };
             // Some Android browsers only fire one of these two — listen for both.
@@ -1946,8 +1946,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const rect = careerTimeline.getBoundingClientRect();
             if (rect.top <= window.innerHeight && rect.bottom >= 0) {
                 if (deviceTilt.active) {
-                    targetRotX = deviceTilt.x * 12;
-                    targetRotY = deviceTilt.y * 12;
+                    // Bigger swing and a snappier catch-up than the mouse version below —
+                    // a phone tilt is a quick, deliberate gesture, not a hovering mouse, so
+                    // the response needs to actually keep up with it to be felt at all.
+                    targetRotX = deviceTilt.x * 22;
+                    targetRotY = deviceTilt.y * 22;
                 } else {
                     const x = ((window.globalMouseX || window.innerWidth / 2) / window.innerWidth - 0.5) * 2;
                     const y = ((window.globalMouseY || window.innerHeight / 2) / window.innerHeight - 0.5) * 2;
@@ -1956,8 +1959,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            currentRotX += (targetRotX - currentRotX) * 0.1;
-            currentRotY += (targetRotY - currentRotY) * 0.1;
+            const lerpSpeed = deviceTilt.active ? 0.28 : 0.1;
+            currentRotX += (targetRotX - currentRotX) * lerpSpeed;
+            currentRotY += (targetRotY - currentRotY) * lerpSpeed;
 
             if (activeIndex >= 0 && years[activeIndex]) {
                 const activeWrapper = years[activeIndex].querySelector('.ascii-wrapper');
