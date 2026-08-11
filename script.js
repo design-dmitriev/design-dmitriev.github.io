@@ -400,13 +400,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             let rafPending = false;
-            let lastEvent = null;
+            let lastX = 0, lastY = 0;
 
-            el.addEventListener('mouseenter', () => { cachedChars = null; });
-            window.addEventListener('resize', () => { cachedChars = null; });
-
-            el.addEventListener('mousemove', (e) => {
-                lastEvent = e;
+            function processPoint(clientX, clientY) {
+                lastX = clientX;
+                lastY = clientY;
                 if (rafPending) return;
                 rafPending = true;
                 requestAnimationFrame(() => {
@@ -414,8 +412,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!cachedChars) cachePositions();
 
                     const rect = el.getBoundingClientRect();
-                    const mouseX = lastEvent.clientX - rect.left;
-                    const mouseY = lastEvent.clientY - rect.top;
+                    const mouseX = lastX - rect.left;
+                    const mouseY = lastY - rect.top;
                     const radius = 25; // 25px radius (very tight)
 
                     cachedChars.forEach(({ span, sx, sy }) => {
@@ -437,15 +435,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 });
-            });
+            }
 
-            el.addEventListener('mouseleave', () => {
+            function resetChars() {
                 chars.forEach(span => {
                     span.textContent = span.dataset.orig;
                     span.style.color = '';
                     span.style.textShadow = '';
                 });
-            });
+            }
+
+            el.addEventListener('mouseenter', () => { cachedChars = null; });
+            window.addEventListener('resize', () => { cachedChars = null; });
+
+            el.addEventListener('mousemove', (e) => processPoint(e.clientX, e.clientY));
+            el.addEventListener('mouseleave', resetChars);
+
+            // Touch devices have no hover — a finger dragged across the name drives the
+            // same char-scramble effect a mouse would, instead of the text staying static.
+            el.addEventListener('touchstart', (e) => {
+                cachedChars = null;
+                const touch = e.touches[0];
+                if (touch) processPoint(touch.clientX, touch.clientY);
+            }, { passive: true });
+
+            el.addEventListener('touchmove', (e) => {
+                const touch = e.touches[0];
+                if (touch) processPoint(touch.clientX, touch.clientY);
+            }, { passive: true });
+
+            el.addEventListener('touchend', resetChars);
+            el.addEventListener('touchcancel', resetChars);
         }
     }
 
@@ -543,6 +563,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 0. Global Mouse Tracker & Custom Cursor ---
     window.globalMouseX = window.innerWidth / 2;
     window.globalMouseY = window.innerHeight / 2;
+
+    // On touch devices there's no mouse to drive the 3D tilt effects (career year digits,
+    // etc.) — feed the same globalMouseX/Y values from the phone's tilt instead, so they
+    // still react to something. No permission prompt: on iOS this API stays silent unless
+    // DeviceOrientationEvent.requestPermission() is explicitly called, which we deliberately
+    // never do, so this only ever activates where the browser allows it without asking.
+    if (window.DeviceOrientationEvent && matchMedia('(hover: none)').matches) {
+        window.addEventListener('deviceorientation', (e) => {
+            if (e.gamma === null || e.beta === null) return;
+            const tiltX = Math.max(-45, Math.min(45, e.gamma)) / 45; // left/right, -1..1
+            const tiltY = Math.max(-45, Math.min(45, e.beta - 45)) / 45; // front/back, centered on a natural hold angle
+            window.globalMouseX = (window.innerWidth / 2) + tiltX * (window.innerWidth / 2);
+            window.globalMouseY = (window.innerHeight / 2) + tiltY * (window.innerHeight / 2);
+        });
+    }
 
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorOutline = document.querySelector('.cursor-outline');
@@ -1239,7 +1274,16 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(animateCanvas);
     }
 
-    window.addEventListener('resize', initCanvas);
+    // On mobile, showing/hiding the browser's URL bar while scrolling fires a 'resize'
+    // event (viewport height changes) even though the width didn't — reinitializing here
+    // reshuffles every particle to a new random position, which looks like the stars
+    // "jumping" mid-scroll. Only rebuild the field when the width actually changes.
+    let lastCanvasWidth = window.innerWidth;
+    window.addEventListener('resize', () => {
+        if (window.innerWidth === lastCanvasWidth) return;
+        lastCanvasWidth = window.innerWidth;
+        initCanvas();
+    });
     initCanvas();
     animateCanvas();
 
@@ -1671,6 +1715,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 end: "+=90%",
                 scrub: 0.4,
                 pin: ".hero-bleed", // Explicitly pin the hero section
+                anticipatePin: 1, // avoids a jerk when scrolling *up* back into the pin
             }
         });
 

@@ -1097,9 +1097,11 @@ body.theme-modder .modder-ascii {
         justify-content: center;
         padding-top: 10vh;
     }
+    /* Years were stacked below the text (barely visible, per feedback) — show them first. */
     .career-3d-timeline {
         height: 40vh;
         width: 100%;
+        order: -1;
     }
     .career-text-panel {
         height: 50vh;
@@ -1136,7 +1138,7 @@ body.theme-modder .modder-ascii {
 .skill-tag {
     border: none;
     padding: 0.2rem 0.5rem;
-    color: var(--hero-accent); /* Green by default */
+    color: var(--text-muted);
     font-family: var(--font-mono);
     font-size: 0.9rem;
     text-transform: lowercase; /* Make it lowercase */
@@ -1612,11 +1614,20 @@ body.zoom-out-mode .cursor-dot::after {
 
 /* Tablet & Mobile */
 @media (max-width: 768px) {
-    .sys-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding: 1.5rem 2rem; position: relative; }
-    /* At this width .sys-header stacks its children left-aligned, but .sys-controls
-       still carries align-items:flex-end from the ≤1024px rule above — override it so
-       the sound/mode rows don't float right inside their now left-aligned parent. */
-    .sys-controls { align-items: flex-start; gap: 0.75rem; }
+    /* Two columns (info left, controls right) instead of one long stacked "staircase"
+       of rows — keeps the header compact and each pair (label+value) readable. */
+    .sys-header {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.6rem 1rem;
+        padding: 1.25rem 1.5rem;
+        position: relative;
+    }
+    .sys-info { flex-direction: column; align-items: flex-start; gap: 0.4rem; font-size: 0.8rem; }
+    .sys-controls { flex-direction: column; align-items: flex-end; gap: 0.5rem; font-size: 0.8rem; }
+    .sys-lang, .sys-toggle, .sys-sound { font-size: 0.8rem; gap: 0.6rem; }
 
     .header-contact-btn { 
         position: fixed; 
@@ -1658,6 +1669,10 @@ body.zoom-out-mode .cursor-dot::after {
     }
     #hero-3d-model {
         display: none; /* decorative background glow — skip on mobile, also saves WebGL cost */
+    }
+    .ascii-word {
+        /* 1.5vw hits its 6px floor on phones, making the name unreadably tiny */
+        font-size: clamp(11px, 4vw, 18px);
     }
     .hero-info-block {
         position: static;
