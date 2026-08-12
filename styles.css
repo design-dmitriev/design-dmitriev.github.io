@@ -1555,6 +1555,11 @@ body.theme-modder .modder-ascii {
     display: none;
 }
 
+/* "[ ЗАКРЫТЬ ]" swaps in for the arrow in focus mode ("only pictures") — mobile only. */
+.lightbox-focus-close-btn {
+    display: none;
+}
+
 .lightbox-content {
     flex: 1;
     position: relative;
@@ -1929,10 +1934,15 @@ body.zoom-out-mode .cursor-dot::after {
         align-items: flex-start; /* Push image to the top */
     }
     /* Tap the picture to hide the thumbnails/description and see just the photo (WB's
-       "only pictures" view). The back arrow stays put so there's always a way out. */
+       "only pictures" view). The arrow swaps for a "[ ЗАКРЫТЬ ]" in the opposite corner
+       there — both exit, but which one shows matches which mode you're in. */
     .lightbox-focus .gallery-sidebar,
-    .lightbox-focus .mobile-metrics {
+    .lightbox-focus .mobile-metrics,
+    .lightbox-focus .lightbox-back-btn {
         display: none;
+    }
+    .lightbox-focus .lightbox-focus-close-btn {
+        display: flex;
     }
     .lightbox-focus .lightbox-content .project-visual {
         min-height: calc(100vh - 3rem); /* room for the header's counter above it */
@@ -1999,7 +2009,9 @@ body.zoom-out-mode .cursor-dot::after {
         display: none !important;
     }
     /* WB-style: one small arrow overlaid top-left of the picture instead of a full header
-       bar of controls — stays out of the way of actually looking at the image. */
+       bar of controls — stays out of the way of actually looking at the image. Square,
+       not circular — a rounded badge reads as an "app icon", not the sharp HUD-panel
+       language (terminal brackets, CRT corners) the rest of the site uses. */
     .lightbox-back-btn {
         display: flex;
         align-items: center;
@@ -2007,9 +2019,9 @@ body.zoom-out-mode .cursor-dot::after {
         position: absolute;
         top: 0.75rem;
         left: 0.75rem;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
+        width: 54px;
+        height: 54px;
+        border-radius: 0;
         background: rgba(0, 0, 0, 0.5);
         border: none;
         color: var(--hero-accent);
@@ -2024,6 +2036,21 @@ body.zoom-out-mode .cursor-dot::after {
     }
     .lightbox-back-btn .px {
         fill: currentColor;
+    }
+    /* Focus mode's exit — same terminal-bracket language as the desktop close button
+       ("[ ЗАКРЫТЬ ]" text sits inside the markup itself), opposite corner from the arrow. */
+    .lightbox-focus-close-btn {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        z-index: 105;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--hero-accent);
+        color: var(--hero-accent);
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+        padding: 0.5rem 0.6rem;
+        border-radius: 0;
     }
     /* The desktop copy lives inside .lightbox-content next to the image — on mobile that
        spot is picture-only now (see .lightbox-content above), the mobile copy below

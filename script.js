@@ -1425,6 +1425,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderLightboxImage() {
         lightboxInner.innerHTML = '';
+        resetFocusZoom(); // fresh photo, fresh zoom — don't carry a pinch over between pictures
         const currentData = currentGallery[currentIndex];
 
         if (typeof currentData === 'string' && currentData.match(/\.(jpeg|jpg|gif|png|webp)$/i)) {
@@ -1481,11 +1482,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             } else {
                 // Mobile: tap the picture to hide the thumbnails/description strip and
-                // see just the photo (WB's "only pictures" fullscreen view) — tap again,
-                // or the back arrow, to bring the rest back.
+                // see just the photo (WB's "only pictures" fullscreen view) — tap again to
+                // bring the rest back; "[ ЗАКРЫТЬ ]" (shown only in this mode) exits fully.
                 img.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    lightbox.classList.toggle('lightbox-focus');
+                    const nowFocused = lightbox.classList.toggle('lightbox-focus');
+                    if (!nowFocused) {
+                        resetFocusZoom();
+                        img.style.transition = 'none';
+                        applyFocusTransform(img);
+                    }
                 });
             }
 
@@ -1630,6 +1636,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Focus mode ("only pictures", see the img click handler below) swaps the corner
+    // arrow for a WB-style "Закрыть" in the opposite corner — same destination
+    // (closeLightbox), just the control that's visible depends on the mode.
+    const lightboxFocusCloseBtn = document.getElementById('lightbox-focus-close-btn');
+    if (lightboxFocusCloseBtn) {
+        lightboxFocusCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+    }
+
     document.addEventListener('keydown', (e) => {
         if (!lightbox.classList.contains('active')) return;
         if (e.key === 'Escape') {
@@ -1647,68 +1664,130 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Mobile swipe support
-    let touchStartX = 0;
-    let touchStartTime = 0;
+    // --- Mobile: live drag-to-dissolve swipe, plus pinch-zoom/pan in focus mode ---
+    // Earlier this only reacted after touchend (a fixed-duration transition once you let
+    // go). The digit reveal in the career section dissolves live as you scroll — this now
+    // does the same as you drag: the photo blurs/fades/follows your finger in real time,
+    // and only commits to the next picture (or springs back) once you release.
+    let imgScale = 1, imgPanX = 0, imgPanY = 0;
+    let gesture = null; // 'drag' | 'pan' | 'pinch' — which single gesture currently owns the touch
 
-    lightbox.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-        touchStartTime = e.timeStamp;
+    function resetFocusZoom() {
+        imgScale = 1; imgPanX = 0; imgPanY = 0;
+    }
+
+    function applyFocusTransform(img) {
+        img.style.transform = `translate(${imgPanX}px, ${imgPanY}px) scale(${imgScale})`;
+    }
+
+    function touchDist(touches) {
+        return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+    }
+
+    let dragStartX = 0, dragDeltaX = 0;
+    let panStartX = 0, panStartY = 0, panOriginX = 0, panOriginY = 0;
+    let pinchStartDist = 0, pinchStartScale = 1;
+
+    lightboxInner.addEventListener('touchstart', (e) => {
+        const img = lightboxInner.querySelector('img');
+        if (!img) return;
+
+        if (e.touches.length === 2 && lightbox.classList.contains('lightbox-focus')) {
+            gesture = 'pinch';
+            pinchStartDist = touchDist(e.touches);
+            pinchStartScale = imgScale;
+            img.style.transition = 'none';
+        } else if (e.touches.length === 1 && imgScale > 1.02) {
+            gesture = 'pan';
+            panStartX = e.touches[0].clientX;
+            panStartY = e.touches[0].clientY;
+            panOriginX = imgPanX;
+            panOriginY = imgPanY;
+            img.style.transition = 'none';
+        } else if (e.touches.length === 1) {
+            gesture = 'drag';
+            dragStartX = e.touches[0].clientX;
+            dragDeltaX = 0;
+            img.style.transition = 'none';
+        }
     }, { passive: true });
 
-    lightbox.addEventListener('touchend', e => {
-        const touchEndX = e.changedTouches[0].screenX;
-        const distance = touchEndX - touchStartX;
-        const elapsed = Math.max(1, e.timeStamp - touchStartTime);
-        handleSwipe(distance, Math.abs(distance) / elapsed); // velocity in px/ms
+    lightboxInner.addEventListener('touchmove', (e) => {
+        const img = lightboxInner.querySelector('img');
+        if (!img) return;
+
+        if (gesture === 'pinch' && e.touches.length === 2) {
+            imgScale = Math.max(1, Math.min(4, pinchStartScale * (touchDist(e.touches) / pinchStartDist)));
+            applyFocusTransform(img);
+        } else if (gesture === 'pan' && e.touches.length === 1) {
+            imgPanX = panOriginX + (e.touches[0].clientX - panStartX);
+            imgPanY = panOriginY + (e.touches[0].clientY - panStartY);
+            applyFocusTransform(img);
+        } else if (gesture === 'drag' && e.touches.length === 1) {
+            dragDeltaX = e.touches[0].clientX - dragStartX;
+            const maxDrag = window.innerWidth * 0.6;
+            const progress = Math.min(1, Math.abs(dragDeltaX) / maxDrag);
+            img.style.opacity = String(1 - progress * 0.85);
+            img.style.filter = `blur(${progress * 10}px)`;
+            img.style.transform = `translateX(${dragDeltaX}px)`;
+        }
     }, { passive: true });
 
-    // A quick "dissolve" between images on swipe (the same idea as the digit-scramble
-    // reveal in the career section, adapted for a photo) — but timed off the swipe itself:
-    // a fast flick gets a near-instant cut so rapid browsing never feels held up, a slow
-    // deliberate drag gets a slightly longer fade so it doesn't feel like an abrupt jump.
-    function swipeToImage(step, velocity) {
+    lightboxInner.addEventListener('touchend', () => {
+        const img = lightboxInner.querySelector('img');
+
+        if (gesture === 'pinch') {
+            if (imgScale <= 1.05 && img) {
+                resetFocusZoom();
+                img.style.transition = 'transform 0.2s ease';
+                applyFocusTransform(img);
+            }
+        } else if (gesture === 'drag' && img) {
+            const swipeThreshold = 50;
+            img.style.transition = 'transform 0.22s ease, opacity 0.22s ease, filter 0.22s ease';
+            if (dragDeltaX < -swipeThreshold && currentIndex < currentGallery.length - 1) {
+                commitSwipe(1);
+            } else if (dragDeltaX > swipeThreshold && currentIndex > 0) {
+                commitSwipe(-1);
+            } else {
+                // Didn't cross the threshold — spring back to normal instead of changing picture.
+                img.style.opacity = '1';
+                img.style.filter = 'blur(0)';
+                img.style.transform = 'translateX(0)';
+            }
+        }
+        gesture = null;
+    }, { passive: true });
+
+    function commitSwipe(step) {
         const oldImg = lightboxInner.querySelector('img');
-        const duration = Math.round(Math.max(80, Math.min(220, 220 - velocity * 260)));
-        const outX = step > 0 ? '-6%' : '6%';
-        const inX = step > 0 ? '6%' : '-6%';
-
         if (!oldImg) {
             currentIndex += step;
             renderLightboxImage();
             return;
         }
-
-        oldImg.style.transition = `opacity ${duration}ms ease, filter ${duration}ms ease, transform ${duration}ms ease`;
+        const outX = step > 0 ? -window.innerWidth * 0.5 : window.innerWidth * 0.5;
         oldImg.style.opacity = '0';
-        oldImg.style.filter = 'blur(10px)';
-        oldImg.style.transform = `translateX(${outX})`;
+        oldImg.style.filter = 'blur(12px)';
+        oldImg.style.transform = `translateX(${outX}px)`;
 
         setTimeout(() => {
             currentIndex += step;
-            renderLightboxImage();
+            renderLightboxImage(); // also resets zoom state for the incoming photo
             const newImg = lightboxInner.querySelector('img');
             if (!newImg) return;
+            const inX = step > 0 ? window.innerWidth * 0.3 : -window.innerWidth * 0.3;
             newImg.style.transition = 'none';
             newImg.style.opacity = '0';
             newImg.style.filter = 'blur(10px)';
-            newImg.style.transform = `translateX(${inX})`;
+            newImg.style.transform = `translateX(${inX}px)`;
             requestAnimationFrame(() => {
-                newImg.style.transition = `opacity ${duration}ms ease, filter ${duration}ms ease, transform ${duration}ms ease`;
+                newImg.style.transition = 'transform 0.22s ease, opacity 0.22s ease, filter 0.22s ease';
                 newImg.style.opacity = '1';
                 newImg.style.filter = 'blur(0)';
                 newImg.style.transform = 'translateX(0)';
             });
-        }, duration);
-    }
-
-    function handleSwipe(distance, velocity) {
-        const swipeThreshold = 50; // minimum pixels to swipe
-        if (distance < -swipeThreshold && currentIndex < currentGallery.length - 1) {
-            swipeToImage(1, velocity); // swiped left = next
-        } else if (distance > swipeThreshold && currentIndex > 0) {
-            swipeToImage(-1, velocity); // swiped right = previous
-        }
+        }, 180);
     }
 
     // --- 5. Fetch Dynamic Mods from Modrinth ---
