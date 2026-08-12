@@ -1931,8 +1931,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (betaBaseline === null) betaBaseline = e.beta;
                 // Small range = high sensitivity — even a slight tilt now reaches full swing.
                 const clampNorm = (deg, range) => Math.max(-1, Math.min(1, deg / range));
-                deviceTilt.y = clampNorm(e.gamma, 7);
-                deviceTilt.x = -clampNorm(e.beta - betaBaseline, 7);
+                // Signs flipped vs. before — it was tilting the digits away from the tilt
+                // direction instead of toward it (opposite of how the mouse version leans
+                // toward the cursor on desktop).
+                deviceTilt.y = -clampNorm(e.gamma, 7);
+                deviceTilt.x = clampNorm(e.beta - betaBaseline, 7);
                 deviceTilt.active = true;
             };
             // Some Android browsers only fire one of these two — listen for both.
@@ -2120,6 +2123,18 @@ document.addEventListener('DOMContentLoaded', () => {
         // a year once the scroll settles there — snap then completes it if it's still
         // mid-reveal, rather than every little scroll movement switching it outright.
         const isMobileCareer = window.innerWidth <= 768;
+        const yearStep = 1 / (years.length - 1);
+        // Default snap rounds to the *nearest* year — barely past the halfway point was
+        // enough to flip it, which felt like it advanced on an accidental extra bit of
+        // scroll. On mobile, require crossing further (65%, not 50%) — i.e. more than half
+        // of the current year's reveal has already dissolved — before it commits forward.
+        const mobileSnap = (value) => {
+            const idx = value / yearStep;
+            const base = Math.floor(idx);
+            const frac = idx - base;
+            const target = frac > 0.65 ? base + 1 : base;
+            return gsap.utils.clamp(0, years.length - 1, target) * yearStep;
+        };
         ScrollTrigger.create({
             trigger: careerTimeline,
             start: "center center",
@@ -2128,7 +2143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scrub: isMobileCareer ? 0.6 : true,
             anticipatePin: 1,
             snap: {
-                snapTo: 1 / (years.length - 1),
+                snapTo: isMobileCareer ? mobileSnap : yearStep,
                 duration: 0.35,
                 ease: "power1.inOut"
             },
