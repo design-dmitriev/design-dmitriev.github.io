@@ -1542,6 +1542,12 @@ body.theme-modder .modder-ascii {
     color: var(--accent-color);
 }
 
+/* Small WB-style back arrow overlaid on the picture — mobile only (shown in the
+   ≤768px block below). Desktop keeps the full header close button instead. */
+.lightbox-back-btn {
+    display: none;
+}
+
 .lightbox-content {
     flex: 1;
     position: relative;
@@ -1889,7 +1895,13 @@ body.zoom-out-mode .cursor-dot::after {
         flex-direction: column-reverse;
     }
     .lightbox-header {
-        padding: 1rem;
+        padding: 0.75rem 1rem;
+    }
+    /* The back arrow overlaid on the picture (below) replaces these — keep the header
+       down to just the counter so it stops eating space that could show the image. */
+    .lightbox-header [data-i18n="lightbox_view"],
+    .lightbox-close-btn {
+        display: none;
     }
     .lightbox-content {
         padding: 0 !important;
@@ -1958,20 +1970,31 @@ body.zoom-out-mode .cursor-dot::after {
         width: 40px;
         flex-shrink: 0;
     }
+    /* Side prev/next buttons are redundant with swiping on a touchscreen, and they got in
+       the way of just looking at the picture — gone on mobile, swipe only (handleSwipe in
+       script.js already drives navigation). */
     .gallery-arrow {
-        opacity: 0.4;
-        background: rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 0;
+        display: none !important;
+    }
+    /* WB-style: one small arrow overlaid top-left of the picture instead of a full header
+       bar of controls — stays out of the way of actually looking at the image. */
+    .lightbox-back-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
         width: 36px;
         height: 36px;
-        font-size: 1.2rem;
-        z-index: 105;
         border-radius: 50%;
-        display: flex !important;
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: var(--text-main);
+        font-size: 1.1rem;
+        z-index: 105;
+        padding: 0;
     }
-    .arrow-left { left: 10px; }
-    .arrow-right { right: 10px; }
     .gallery-metrics.overlay-metrics {
         position: relative;
         margin-left: 0;

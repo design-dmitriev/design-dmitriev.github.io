@@ -1405,49 +1405,54 @@ document.addEventListener('DOMContentLoaded', () => {
             const img = document.createElement('img');
             img.src = currentData;
 
-            let isZoomed = false;
+            // Click-to-zoom is a desktop (mouse) affordance — on mobile, a tap on the image
+            // is how you'd browse it and swipe already handles navigation, so zooming there
+            // just gets in the way (a wrong tap suddenly blows the picture up).
+            if (window.innerWidth > 768) {
+                let isZoomed = false;
 
-            img.addEventListener('mouseenter', () => {
-                document.body.classList.add(isZoomed ? 'zoom-out-mode' : 'zoom-in-mode');
-            });
-            img.addEventListener('mouseleave', () => {
-                document.body.classList.remove('zoom-in-mode', 'zoom-out-mode');
-            });
+                img.addEventListener('mouseenter', () => {
+                    document.body.classList.add(isZoomed ? 'zoom-out-mode' : 'zoom-in-mode');
+                });
+                img.addEventListener('mouseleave', () => {
+                    document.body.classList.remove('zoom-in-mode', 'zoom-out-mode');
+                });
 
-            function updateTransformOrigin(e) {
-                if (!isZoomed) return;
-                const rect = img.getBoundingClientRect();
-                // Ensure calculations are clamped to 0-100%
-                let x = ((e.clientX - rect.left) / rect.width) * 100;
-                let y = ((e.clientY - rect.top) / rect.height) * 100;
+                function updateTransformOrigin(e) {
+                    if (!isZoomed) return;
+                    const rect = img.getBoundingClientRect();
+                    // Ensure calculations are clamped to 0-100%
+                    let x = ((e.clientX - rect.left) / rect.width) * 100;
+                    let y = ((e.clientY - rect.top) / rect.height) * 100;
 
-                // When zoomed, rect bounds might be larger than viewport,
-                // but e.clientX/Y is viewport relative. We must track relative to original dimensions.
-                // A simpler approach for WB zoom is to track the mouse relative to the container.
-                const containerRect = lightboxInner.getBoundingClientRect();
-                x = ((e.clientX - containerRect.left) / containerRect.width) * 100;
-                y = ((e.clientY - containerRect.top) / containerRect.height) * 100;
+                    // When zoomed, rect bounds might be larger than viewport,
+                    // but e.clientX/Y is viewport relative. We must track relative to original dimensions.
+                    // A simpler approach for WB zoom is to track the mouse relative to the container.
+                    const containerRect = lightboxInner.getBoundingClientRect();
+                    x = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+                    y = ((e.clientY - containerRect.top) / containerRect.height) * 100;
 
-                img.style.transformOrigin = `${Math.max(0, Math.min(100, x))}% ${Math.max(0, Math.min(100, y))}%`;
-            }
-
-            img.addEventListener('mousemove', (e) => {
-                if (isZoomed) updateTransformOrigin(e);
-            });
-
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
-                isZoomed = !isZoomed;
-                if (isZoomed) {
-                    lightboxInner.classList.add('zoomed');
-                    document.body.classList.replace('zoom-in-mode', 'zoom-out-mode');
-                    updateTransformOrigin(e);
-                } else {
-                    lightboxInner.classList.remove('zoomed');
-                    document.body.classList.replace('zoom-out-mode', 'zoom-in-mode');
-                    img.style.transformOrigin = 'center center';
+                    img.style.transformOrigin = `${Math.max(0, Math.min(100, x))}% ${Math.max(0, Math.min(100, y))}%`;
                 }
-            });
+
+                img.addEventListener('mousemove', (e) => {
+                    if (isZoomed) updateTransformOrigin(e);
+                });
+
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    isZoomed = !isZoomed;
+                    if (isZoomed) {
+                        lightboxInner.classList.add('zoomed');
+                        document.body.classList.replace('zoom-in-mode', 'zoom-out-mode');
+                        updateTransformOrigin(e);
+                    } else {
+                        lightboxInner.classList.remove('zoomed');
+                        document.body.classList.replace('zoom-out-mode', 'zoom-in-mode');
+                        img.style.transformOrigin = 'center center';
+                    }
+                });
+            }
 
             lightboxInner.appendChild(img);
             lightboxInner.removeAttribute('data-text');
@@ -1573,6 +1578,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
     if (lightboxCloseBtn) {
         lightboxCloseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeLightbox();
+        });
+    }
+
+    // Small WB-style back arrow overlaid on the image itself (mobile only, see CSS) —
+    // the full header close button stays for desktop, this replaces it on phones so the
+    // controls stop eating vertical space that could be showing the picture.
+    const lightboxBackBtn = document.getElementById('lightbox-back-btn');
+    if (lightboxBackBtn) {
+        lightboxBackBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             closeLightbox();
         });
