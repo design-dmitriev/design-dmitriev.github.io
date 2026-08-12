@@ -1679,23 +1679,30 @@ body.zoom-out-mode .cursor-dot::after {
         display: none;
     }
 
-    .header-contact-btn { 
-        position: fixed; 
-        bottom: 1.5rem; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        width: calc(100% - 2rem); 
-        text-align: center; 
+    .header-contact-btn {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 2rem);
+        text-align: center;
         z-index: 9999;
         background: rgba(3, 3, 4, 0.85);
-        backdrop-filter: blur(10px);
+        /* No backdrop-filter here on purpose: combined with position:fixed it's a known
+           mobile Safari/Chrome bug — the element loses its fixed anchor mid-scroll and
+           visibly drifts toward the middle of the screen before snapping back. The button
+           is already near-opaque, so the blur wasn't doing much for legibility anyway. */
         border: 1px solid var(--accent-color);
         padding: 1rem;
         font-weight: bold;
         box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        /* Forces its own stable compositing layer so the browser doesn't have to
+           recompute the fixed position against the taller layout viewport while the
+           address bar animates in/out during scroll — the other half of the same bug. */
+        will-change: transform;
     }
-    
+
     @keyframes pulseContactMobile {
         0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
         50% { box-shadow: 0 0 25px var(--accent-color); }
