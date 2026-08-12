@@ -1631,17 +1631,7 @@ body.zoom-out-mode .cursor-dot::after {
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-    .sys-header, .content-area, .sys-footer, .lightbox-header, .lightbox-content { padding-left: 2rem; padding-right: 2rem; }
-    .global-grid-lines { padding: 0 2rem; }
-    .mod-row { grid-template-columns: 1fr; gap: 1rem; }
-    /* в одну колонку ссылка не должна растягиваться на всю ширину */
-    .platform-link, .mod-badge { justify-self: start; }
-    .btn-action { justify-self: flex-start; }
-    .footer-bleed { flex-direction: column; gap: 3rem; }
-    .sys-logs { align-items: flex-start; }
-    .sys-controls { flex-direction: column; align-items: flex-end; gap: 1rem; }
-}
+/* (duplicate ≤1024px block removed — identical rules already set above, near the top of the file) */
 
 @media (min-width: 769px) {
     *, *::before, *::after {

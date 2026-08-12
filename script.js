@@ -630,24 +630,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.globalMouseX = window.innerWidth / 2;
     window.globalMouseY = window.innerHeight / 2;
 
-    // On touch devices there's no mouse to drive the 3D tilt effects (career year digits,
-    // etc.) — feed the same globalMouseX/Y values from the phone's tilt instead, so they
-    // still react to something. No permission prompt, ever, on purpose: iOS 13+ Safari
-    // only fires deviceorientation after DeviceOrientationEvent.requestPermission() is
-    // called from a tap, and we deliberately never call it — asking is worse than the
-    // feature not existing there. This activates only on devices/browsers (mainly Android)
-    // that hand out orientation events without needing to ask.
-    // Half the divisor = twice the sensitivity: a smaller tilt now reaches the full range.
-    if (window.DeviceOrientationEvent && matchMedia('(hover: none)').matches) {
-        window.addEventListener('deviceorientation', (e) => {
-            if (e.gamma === null || e.beta === null) return;
-            const tiltX = Math.max(-1, Math.min(1, e.gamma / 22.5)); // left/right, -1..1
-            const tiltY = Math.max(-1, Math.min(1, (e.beta - 45) / 22.5)); // front/back, centered on a natural hold angle
-            window.globalMouseX = (window.innerWidth / 2) + tiltX * (window.innerWidth / 2);
-            window.globalMouseY = (window.innerHeight / 2) + tiltY * (window.innerHeight / 2);
-        });
-    }
-
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorOutline = document.querySelector('.cursor-outline');
     let outlineX = window.globalMouseX, outlineY = window.globalMouseY;
@@ -1360,8 +1342,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lightbox = document.getElementById('lightbox');
     const lightboxInner = document.getElementById('lightbox-inner');
-    const lightboxClose = document.getElementById('lightbox-close');
-    // Removed static querySelectorAll for triggers to use event delegation
     const btnNext = document.getElementById('gallery-next');
     const btnPrev = document.getElementById('gallery-prev');
     const counter = document.getElementById('gallery-counter');
@@ -1752,8 +1732,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const asciiFirstName = document.getElementById('ascii-first-name');
     const asciiLastName = document.getElementById('ascii-last-name');
     const asciiStarlight = document.getElementById('ascii-starlight');
-    const heroMetas = document.querySelectorAll('.hero-meta');
-    const heroBtns = document.querySelectorAll('.hero-action-btns');
 
     // 1. Contact Buttons independent of scrub timeline for instant reaction
     const headerContactBtn = document.querySelector('.header-contact-btn');
@@ -1917,54 +1895,25 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentRotX = 0;
         let currentRotY = 0;
 
-        // Track mouse to tilt the active year via global mouse
-
-        // On mobile there's no mouse, so tilt the digits with the phone's own tilt
-        // instead. beta (front-back) is read relative to wherever the phone happened to
-        // be held when the first reading came in, so it tracks deviation from that rather
-        // than an absolute angle.
-        const deviceTilt = { x: 0, y: 0, active: false };
-        if (window.innerWidth <= 768 && window.DeviceOrientationEvent) {
-            let betaBaseline = null;
-            const handleOrientation = (e) => {
-                if (e.gamma === null || e.beta === null) return;
-                if (betaBaseline === null) betaBaseline = e.beta;
-                // Small range = high sensitivity — even a slight tilt now reaches full swing.
-                const clampNorm = (deg, range) => Math.max(-1, Math.min(1, deg / range));
-                // Signs flipped vs. before — it was tilting the digits away from the tilt
-                // direction instead of toward it (opposite of how the mouse version leans
-                // toward the cursor on desktop).
-                deviceTilt.y = -clampNorm(e.gamma, 7);
-                deviceTilt.x = clampNorm(e.beta - betaBaseline, 7);
-                deviceTilt.active = true;
-            };
-            // Some Android browsers only fire one of these two — listen for both.
-            window.addEventListener('deviceorientation', handleOrientation);
-            window.addEventListener('deviceorientationabsolute', handleOrientation);
-        }
+        // Track mouse to tilt the active year via global mouse.
+        // (Device-tilt on phones was tried and dropped — orientation events are silently
+        // withheld on iOS without a permission prompt we don't want to show, and even where
+        // they do fire it never read as reliably "working" as the desktop mouse version.
+        // Mobile just keeps the digits flat instead.)
 
         // Smoothly interpolate rotation
         gsap.ticker.add(() => {
             // Only calculate if section is in viewport
             const rect = careerTimeline.getBoundingClientRect();
             if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-                if (deviceTilt.active) {
-                    // Bigger swing and a snappier catch-up than the mouse version below —
-                    // a phone tilt is a quick, deliberate gesture, not a hovering mouse, so
-                    // the response needs to actually keep up with it to be felt at all.
-                    targetRotX = deviceTilt.x * 22;
-                    targetRotY = deviceTilt.y * 22;
-                } else {
-                    const x = ((window.globalMouseX || window.innerWidth / 2) / window.innerWidth - 0.5) * 2;
-                    const y = ((window.globalMouseY || window.innerHeight / 2) / window.innerHeight - 0.5) * 2;
-                    targetRotX = -y * 12; // Reduced by ~50%
-                    targetRotY = x * 12; // Reduced by ~50%
-                }
+                const x = ((window.globalMouseX || window.innerWidth / 2) / window.innerWidth - 0.5) * 2;
+                const y = ((window.globalMouseY || window.innerHeight / 2) / window.innerHeight - 0.5) * 2;
+                targetRotX = -y * 12; // Reduced by ~50%
+                targetRotY = x * 12; // Reduced by ~50%
             }
 
-            const lerpSpeed = deviceTilt.active ? 0.28 : 0.1;
-            currentRotX += (targetRotX - currentRotX) * lerpSpeed;
-            currentRotY += (targetRotY - currentRotY) * lerpSpeed;
+            currentRotX += (targetRotX - currentRotX) * 0.1;
+            currentRotY += (targetRotY - currentRotY) * 0.1;
 
             if (activeIndex >= 0 && years[activeIndex]) {
                 const activeWrapper = years[activeIndex].querySelector('.ascii-wrapper');
