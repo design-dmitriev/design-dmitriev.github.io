@@ -18,7 +18,7 @@
     <meta property="og:description"
         content="От карточек товаров до управления отделом дизайна. Портфолио: маркетплейсы, наружная реклама, обложки.">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="stylesheet" href="styles.css?v=30">
+    <link rel="stylesheet" href="styles.css?v=31">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:ital,wght@0,700;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
@@ -522,18 +522,26 @@
             </button>
         </div>
         <div class="lightbox-body">
+            <!-- Mobile-only: description block, placed to render *after* the thumbnails
+                 once .lightbox-body's mobile column-reverse flips the visual order (see
+                 CSS) — thumbnails stay reachable right under the picture, description
+                 doesn't sit in the way of scrolling/picking one. Desktop keeps its own
+                 copy positioned next to the image (#gallery-metrics-desktop below);
+                 renderThumbnailsForCategory() fills both from the same data. -->
+            <div id="gallery-metrics-mobile" class="gallery-metrics mobile-metrics"></div>
+
             <!-- Sidebar for Categories & Thumbnails -->
             <div class="gallery-sidebar">
                 <div id="gallery-categories" class="gallery-categories"></div>
                 <div id="lightbox-thumbnails" class="lightbox-thumbnails" data-lenis-prevent></div>
             </div>
-            
+
             <!-- Main Content Area -->
             <div class="lightbox-content" id="lightbox-content">
                 <button id="lightbox-back-btn" class="lightbox-back-btn hover-target" data-glyph="arrowLeft" aria-label="Назад"></button>
                 <button id="gallery-prev" class="gallery-arrow arrow-left hover-target"><</button>
                 <div id="lightbox-inner" class="project-visual"></div>
-                <div id="gallery-metrics" class="gallery-metrics overlay-metrics"></div>
+                <div id="gallery-metrics-desktop" class="gallery-metrics overlay-metrics"></div>
                 <button id="gallery-next" class="gallery-arrow arrow-right hover-target">></button>
             </div>
         </div>
@@ -554,7 +562,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="dithr-effect-v2.js"></script>
     <script src="years-3d.js?v=7"></script>
-    <script src="script.js?v=54"></script>
+    <script src="script.js?v=55"></script>
 </body>
 
 </html>

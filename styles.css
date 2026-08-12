@@ -449,6 +449,13 @@ button:hover ~ .cursor-outline,
     color: var(--text-muted);
 }
 
+/* Desktop-hidden by default — the ≤768px block below turns it on and positions it
+   below the thumbnails; #gallery-metrics-desktop (inside .lightbox-content) is what
+   shows on desktop instead. */
+.mobile-metrics {
+    display: none;
+}
+
 .lightbox-thumbnails {
     display: flex;
     flex-direction: column;
@@ -1887,7 +1894,8 @@ body.zoom-out-mode .cursor-dot::after {
     background: rgba(10, 10, 10, 0.95);
     border-color: var(--hero-accent);
 }
-.gallery-metrics.overlay-metrics:empty {
+.gallery-metrics.overlay-metrics:empty,
+.mobile-metrics:empty {
     display: none;
 }
 
@@ -1919,6 +1927,15 @@ body.zoom-out-mode .cursor-dot::after {
         min-height: 40vh;
         flex: 1;
         align-items: flex-start; /* Push image to the top */
+    }
+    /* Tap the picture to hide the thumbnails/description and see just the photo (WB's
+       "only pictures" view). The back arrow stays put so there's always a way out. */
+    .lightbox-focus .gallery-sidebar,
+    .lightbox-focus .mobile-metrics {
+        display: none;
+    }
+    .lightbox-focus .lightbox-content .project-visual {
+        min-height: calc(100vh - 3rem); /* room for the header's counter above it */
     }
     .gallery-sidebar {
         width: 100vw;
@@ -2008,13 +2025,14 @@ body.zoom-out-mode .cursor-dot::after {
     .lightbox-back-btn .px {
         fill: currentColor;
     }
-    .gallery-metrics.overlay-metrics {
-        position: relative;
-        margin-left: 0;
-        min-width: auto;
-        bottom: auto;
-        left: auto;
-        right: auto;
+    /* The desktop copy lives inside .lightbox-content next to the image — on mobile that
+       spot is picture-only now (see .lightbox-content above), the mobile copy below
+       takes over instead. */
+    #gallery-metrics-desktop {
+        display: none;
+    }
+    .mobile-metrics {
+        display: block;
         width: 100%;
         box-sizing: border-box;
         padding: 1rem;
@@ -2023,7 +2041,6 @@ body.zoom-out-mode .cursor-dot::after {
         background: #030304;
         border-top: 1px solid var(--grid-line);
         border-radius: 0;
-        z-index: 100;
     }
 }
 

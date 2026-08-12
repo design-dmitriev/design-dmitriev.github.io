@@ -1379,30 +1379,36 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderThumbnailsForCategory(folder) {
         if (!thumbnailsContainer || !galleryGroups[folder]) return;
 
-        // Render metrics
-        const metricsContainer = document.getElementById('gallery-metrics');
-        if (metricsContainer) {
+        // Render metrics — desktop keeps its own copy positioned next to the image;
+        // mobile has a separate copy placed below the thumbnails (see index.html/CSS).
+        // Same data, same markup, just two containers so each layout can place it
+        // where it belongs without fighting the other's positioning.
+        const metricsContainers = [
+            document.getElementById('gallery-metrics-desktop'),
+            document.getElementById('gallery-metrics-mobile')
+        ].filter(Boolean);
+
+        const metricText = categoryMetrics[folder.toLowerCase()];
+
+        metricsContainers.forEach(metricsContainer => {
             metricsContainer.innerHTML = '';
+            if (!metricText) return;
 
-            const metricText = categoryMetrics[folder.toLowerCase()];
+            const title = document.createElement('div');
+            title.style.color = 'var(--text-main)';
+            title.style.marginBottom = '0.75rem';
+            title.style.fontWeight = 'bold';
+            title.textContent = folder.toLowerCase() === 'реклама' ? '[ МАСШТАБ ПРОЕКТА ]' : '[ АНАЛИТИКА ]';
+            metricsContainer.appendChild(title);
 
-            if (metricText) {
-                const title = document.createElement('div');
-                title.style.color = 'var(--text-main)';
-                title.style.marginBottom = '0.75rem';
-                title.style.fontWeight = 'bold';
-                title.textContent = folder.toLowerCase() === 'реклама' ? '[ МАСШТАБ ПРОЕКТА ]' : '[ АНАЛИТИКА ]';
-                metricsContainer.appendChild(title);
-
-                const textElem = document.createElement('div');
-                textElem.className = 'metric-text mono';
-                textElem.style.fontSize = '0.85rem';
-                textElem.style.color = 'var(--text-muted)';
-                textElem.style.lineHeight = '1.4';
-                textElem.textContent = metricText;
-                metricsContainer.appendChild(textElem);
-            }
-        }
+            const textElem = document.createElement('div');
+            textElem.className = 'metric-text mono';
+            textElem.style.fontSize = '0.85rem';
+            textElem.style.color = 'var(--text-muted)';
+            textElem.style.lineHeight = '1.4';
+            textElem.textContent = metricText;
+            metricsContainer.appendChild(textElem);
+        });
 
         thumbnailsContainer.innerHTML = '';
         galleryGroups[folder].forEach(gItem => {
@@ -1472,6 +1478,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.body.classList.replace('zoom-out-mode', 'zoom-in-mode');
                         img.style.transformOrigin = 'center center';
                     }
+                });
+            } else {
+                // Mobile: tap the picture to hide the thumbnails/description strip and
+                // see just the photo (WB's "only pictures" fullscreen view) — tap again,
+                // or the back arrow, to bring the rest back.
+                img.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    lightbox.classList.toggle('lightbox-focus');
                 });
             }
 
@@ -1572,6 +1586,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderLightboxImage();
 
             lightbox.classList.add('active');
+            lightbox.classList.remove('lightbox-focus');
             document.body.style.overflow = 'hidden';
             if (typeof lenis !== 'undefined') lenis.stop();
         }
@@ -1593,7 +1608,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const closeLightbox = () => { lightbox.classList.remove('active'); document.body.style.overflow = ''; if (typeof lenis !== 'undefined') lenis.start(); };
+    const closeLightbox = () => { lightbox.classList.remove('active', 'lightbox-focus'); document.body.style.overflow = ''; if (typeof lenis !== 'undefined') lenis.start(); };
     lightbox.addEventListener('click', (e) => { if (e.target === lightbox || e.target.classList.contains('lightbox-content') || e.target.classList.contains('project-visual')) { closeLightbox(); } });
 
     const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
