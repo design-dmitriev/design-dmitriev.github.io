@@ -1660,7 +1660,12 @@ body.zoom-out-mode .cursor-dot::after {
     }
     .sys-info { flex-direction: column; align-items: flex-start; gap: 0.4rem; font-size: 0.8rem; }
     .sys-controls { flex-direction: column; align-items: flex-end; gap: 0.5rem; font-size: 0.8rem; }
-    .sys-lang, .sys-toggle, .sys-sound { font-size: 0.8rem; gap: 0.6rem; }
+    .sys-lang, .sys-toggle { font-size: 0.8rem; gap: 0.6rem; }
+    /* Sound is desktop-only (script.js also keeps it from ever actually turning on here) —
+       a toggle for a feature that does nothing is just clutter. */
+    .sys-sound {
+        display: none;
+    }
 
     .header-contact-btn { 
         position: fixed; 
@@ -1989,11 +1994,19 @@ body.zoom-out-mode .cursor-dot::after {
         height: 36px;
         border-radius: 50%;
         background: rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: var(--text-main);
-        font-size: 1.1rem;
+        border: none;
+        color: var(--hero-accent);
         z-index: 105;
         padding: 0;
+    }
+    .lightbox-back-btn svg {
+        display: block;
+        width: 40%;
+        height: 40%;
+        image-rendering: pixelated; /* pixel stays a pixel — no anti-aliasing blur */
+    }
+    .lightbox-back-btn .px {
+        fill: currentColor;
     }
     .gallery-metrics.overlay-metrics {
         position: relative;

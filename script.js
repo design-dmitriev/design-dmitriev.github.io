@@ -739,7 +739,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const soundBtn = document.getElementById('sound-toggle');
 
+    // Sound is a desktop-only feature (the toggle is hidden on mobile in CSS too) — a
+    // single choke point here means playHoverSound/playClickSound/playGlitchSound stay
+    // dormant everywhere else without needing their own checks, since they already
+    // no-op whenever soundEnabled is false.
     function setSound(on, persist = true) {
+        if (window.innerWidth <= 768) return;
         if (on) enableSound(); else disableSound();
 
         if (persist) {
@@ -955,6 +960,22 @@ document.addEventListener('DOMContentLoaded', () => {
             '................',
             '................',
             '................'
+        ],
+        // Мобильный лайтбокс: стрелка "назад" поверх картинки, тем же пиксельным
+        // почерком, что и остальные значки-глифы (сплошной треугольник-шеврон).
+        arrowLeft: [
+            '............',
+            '............',
+            '.....#......',
+            '....##......',
+            '...###......',
+            '..####......',
+            '.#####......',
+            '..####......',
+            '...###......',
+            '....##......',
+            '.....#......',
+            '............'
         ]
     };
 
@@ -1613,32 +1634,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mobile swipe support
     let touchStartX = 0;
-    let touchEndX = 0;
+    let touchStartTime = 0;
 
     lightbox.addEventListener('touchstart', e => {
         touchStartX = e.changedTouches[0].screenX;
+        touchStartTime = e.timeStamp;
     }, { passive: true });
 
     lightbox.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
+        const touchEndX = e.changedTouches[0].screenX;
+        const distance = touchEndX - touchStartX;
+        const elapsed = Math.max(1, e.timeStamp - touchStartTime);
+        handleSwipe(distance, Math.abs(distance) / elapsed); // velocity in px/ms
     }, { passive: true });
 
-    function handleSwipe() {
-        const swipeThreshold = 50; // minimum pixels to swipe
-        if (touchEndX < touchStartX - swipeThreshold) {
-            // Swiped left (next)
-            if (currentIndex < currentGallery.length - 1) {
-                currentIndex++;
-                renderLightboxImage();
-            }
+    // A quick "dissolve" between images on swipe (the same idea as the digit-scramble
+    // reveal in the career section, adapted for a photo) — but timed off the swipe itself:
+    // a fast flick gets a near-instant cut so rapid browsing never feels held up, a slow
+    // deliberate drag gets a slightly longer fade so it doesn't feel like an abrupt jump.
+    function swipeToImage(step, velocity) {
+        const oldImg = lightboxInner.querySelector('img');
+        const duration = Math.round(Math.max(80, Math.min(220, 220 - velocity * 260)));
+        const outX = step > 0 ? '-6%' : '6%';
+        const inX = step > 0 ? '6%' : '-6%';
+
+        if (!oldImg) {
+            currentIndex += step;
+            renderLightboxImage();
+            return;
         }
-        if (touchEndX > touchStartX + swipeThreshold) {
-            // Swiped right (prev)
-            if (currentIndex > 0) {
-                currentIndex--;
-                renderLightboxImage();
-            }
+
+        oldImg.style.transition = `opacity ${duration}ms ease, filter ${duration}ms ease, transform ${duration}ms ease`;
+        oldImg.style.opacity = '0';
+        oldImg.style.filter = 'blur(10px)';
+        oldImg.style.transform = `translateX(${outX})`;
+
+        setTimeout(() => {
+            currentIndex += step;
+            renderLightboxImage();
+            const newImg = lightboxInner.querySelector('img');
+            if (!newImg) return;
+            newImg.style.transition = 'none';
+            newImg.style.opacity = '0';
+            newImg.style.filter = 'blur(10px)';
+            newImg.style.transform = `translateX(${inX})`;
+            requestAnimationFrame(() => {
+                newImg.style.transition = `opacity ${duration}ms ease, filter ${duration}ms ease, transform ${duration}ms ease`;
+                newImg.style.opacity = '1';
+                newImg.style.filter = 'blur(0)';
+                newImg.style.transform = 'translateX(0)';
+            });
+        }, duration);
+    }
+
+    function handleSwipe(distance, velocity) {
+        const swipeThreshold = 50; // minimum pixels to swipe
+        if (distance < -swipeThreshold && currentIndex < currentGallery.length - 1) {
+            swipeToImage(1, velocity); // swiped left = next
+        } else if (distance > swipeThreshold && currentIndex > 0) {
+            swipeToImage(-1, velocity); // swiped right = previous
         }
     }
 
