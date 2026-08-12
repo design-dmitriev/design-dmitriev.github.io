@@ -1971,15 +1971,24 @@ document.addEventListener('DOMContentLoaded', () => {
         // they do fire it never read as reliably "working" as the desktop mouse version.
         // Mobile just keeps the digits flat instead.)
 
-        // Smoothly interpolate rotation
+        // Smoothly interpolate rotation.
+        // Mouse-tilt is desktop-only. On mobile globalMouseX/Y never move (no mouse), but
+        // they're a fixed pixel value set once against the innerWidth/innerHeight *at that
+        // moment* — and innerHeight itself changes as the browser's URL bar shows/hides
+        // during scroll, so the ratio below drifted off exactly 0 and the digits visibly
+        // jittered while scrolling. Skip the calculation entirely on mobile instead — no
+        // tilt source there anymore, so the target should just stay put at 0.
+        const isDesktopCareerTilt = window.innerWidth > 768;
         gsap.ticker.add(() => {
-            // Only calculate if section is in viewport
-            const rect = careerTimeline.getBoundingClientRect();
-            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-                const x = ((window.globalMouseX || window.innerWidth / 2) / window.innerWidth - 0.5) * 2;
-                const y = ((window.globalMouseY || window.innerHeight / 2) / window.innerHeight - 0.5) * 2;
-                targetRotX = -y * 12; // Reduced by ~50%
-                targetRotY = x * 12; // Reduced by ~50%
+            if (isDesktopCareerTilt) {
+                // Only calculate if section is in viewport
+                const rect = careerTimeline.getBoundingClientRect();
+                if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                    const x = ((window.globalMouseX || window.innerWidth / 2) / window.innerWidth - 0.5) * 2;
+                    const y = ((window.globalMouseY || window.innerHeight / 2) / window.innerHeight - 0.5) * 2;
+                    targetRotX = -y * 12; // Reduced by ~50%
+                    targetRotY = x * 12; // Reduced by ~50%
+                }
             }
 
             currentRotX += (targetRotX - currentRotX) * 0.1;
