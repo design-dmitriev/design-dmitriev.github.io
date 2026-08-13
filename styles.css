@@ -849,6 +849,40 @@ body.theme-modder .modder-ascii {
 
 .work-card:hover .row-icon::before { opacity: 1; }
 
+/* --- Навыки (список команд) и Результаты (телеметрия) — сознательно
+   не .work-card, чтобы не сливаться визуально с «Избранными работами» --- */
+.skill-row {
+    transition: background 0.2s ease, padding-left 0.2s ease, border-color 0.2s ease;
+}
+.skill-row:hover {
+    background: rgba(96, 183, 86, 0.06);
+    padding-left: 0.6rem;
+    border-color: rgba(96, 183, 86, 0.4) !important;
+}
+.skill-row:last-child { border-bottom: none !important; }
+
+.readout-cell {
+    transition: border-color 0.2s ease;
+}
+.readout-cell:first-child { border-left: none !important; padding-left: 0 !important; }
+.readout-cell:hover { border-color: rgba(96, 183, 86, 0.5) !important; }
+.readout-cell .readout-value {
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+.readout-cell:hover .readout-value {
+    color: var(--hero-accent) !important;
+    text-shadow: 0 0 16px rgba(96, 183, 86, 0.55);
+}
+
+@media (max-width: 768px) {
+    .readout-cell {
+        border-left: none !important;
+        border-top: 1px dashed var(--grid-line);
+        padding: 1.2rem 0 !important;
+    }
+    .readout-cell:first-child { border-top: none; }
+}
+
 .row-icon svg {
     display: block;
     width: 100%;

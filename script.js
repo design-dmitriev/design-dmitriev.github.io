@@ -105,11 +105,14 @@ const translations = {
         sound_on: "ВКЛ",
         sound_off: "ВЫКЛ",
 
-        hero_sub_designer: "От карточек товаров до управления отделом дизайна",
+        hero_role_tag: ">_ РОЛЬ: Руководитель отдела дизайна · GQbox",
+        hero_sub_designer: "Руковожу командой дизайна для маркетплейсов",
 
         label_selected_works: "// ИЗБРАННЫЕ_РАБОТЫ",
 
         label_career_path: "// КАРЬЕРНЫЙ_ПУТЬ",
+        label_metrics: "// РЕЗУЛЬТАТЫ",
+        label_leadership: "// УПРАВЛЕНИЕ_КОМАНДОЙ",
 
         hero_sub_modder: "Minecraft моддинг • Скромно и со вкусом",
 
@@ -146,11 +149,14 @@ const translations = {
         sound_on: "ON",
         sound_off: "OFF",
 
-        hero_sub_designer: "From product cards to design department management",
+        hero_role_tag: ">_ ROLE: Head of Design Department · GQbox",
+        hero_sub_designer: "Leading a design team for marketplaces",
 
         label_selected_works: "// SELECTED_WORKS",
 
         label_career_path: "// CAREER_PATH",
+        label_metrics: "// RESULTS",
+        label_leadership: "// TEAM_MANAGEMENT",
 
         hero_sub_modder: "Minecraft modding • Simple and modest",
 
@@ -2264,11 +2270,14 @@ document.addEventListener('DOMContentLoaded', () => {
             pin: true,
             scrub: isMobileCareer ? 0.6 : true,
             anticipatePin: 1,
-            snap: {
-                snapTo: isMobileCareer ? mobileSnap : yearStep,
+            // Snap (auto-settling on a whole year) is a mobile-only crutch for touch —
+            // on desktop the mouse wheel is precise enough on its own, and snapping there
+            // just yanks the page back to a year the user hadn't actually finished scrolling past.
+            snap: isMobileCareer ? {
+                snapTo: mobileSnap,
                 duration: 0.35,
                 ease: "power1.inOut"
-            },
+            } : undefined,
             onUpdate: (self) => renderCareerFrame(self.progress)
         });
     }
@@ -2408,9 +2417,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const revealElements = document.querySelectorAll('.view-section p, .view-section h2, .view-section h3, .view-section .project-card, .view-section .career-item, .view-section .mod-card, .section-title, .about-skills .skill-tag');
 
     revealElements.forEach(el => {
-        // .work-card уже анимируется построчно в initScrollTextAnimations;
+        // .work-card и .leadership-grid уже анимируются построчно в initScrollTextAnimations;
         // второй проход с autoAlpha конфликтует с ним и оставляет visibility: hidden
-        if (el.closest('.hero-bleed') || el.closest('.sys-header') || el.closest('.career-text-blocks') || el.closest('.work-card')) return;
+        if (el.closest('.hero-bleed') || el.closest('.sys-header') || el.closest('.career-text-blocks') || el.closest('.work-card') || el.closest('.leadership-grid')) return;
 
         gsap.from(el, {
             scrollTrigger: {
