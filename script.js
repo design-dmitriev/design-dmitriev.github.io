@@ -108,7 +108,7 @@ const translations = {
         hero_role_tag: ">_ РОЛЬ: Руководитель отдела дизайна · GQbox",
         hero_sub_designer: "Руковожу командой дизайна для маркетплейсов",
 
-        label_selected_works: "// ИЗБРАННЫЕ_РАБОТЫ",
+        label_selected_works: "// ВЫПОЛНЕННЫЕ_КЕЙСЫ",
 
         label_career_path: "// КАРЬЕРНЫЙ_ПУТЬ",
         label_metrics: "// РЕЗУЛЬТАТЫ",
@@ -152,7 +152,7 @@ const translations = {
         hero_role_tag: ">_ ROLE: Head of Design Department · GQbox",
         hero_sub_designer: "Leading a design team for marketplaces",
 
-        label_selected_works: "// SELECTED_WORKS",
+        label_selected_works: "// COMPLETED_CASES",
 
         label_career_path: "// CAREER_PATH",
         label_metrics: "// RESULTS",
@@ -964,6 +964,64 @@ document.addEventListener('DOMContentLoaded', () => {
             '......####......',
             '.......##.......',
             '................',
+            '................',
+            '................'
+        ],
+        // Мобильные аналоги 3D-моделей из case-icons-3d.js: на телефоне WebGL
+        // не инициализируется, и карточки остались бы со значками от прежней
+        // версии. Значения data-glyph совпадают с data-icon3d — один и тот же
+        // смысл в двух техниках.
+        chip: [
+            '................',
+            '................',
+            '....#.#..#.#....',
+            '...##########...',
+            '...#........#...',
+            '.#.#.######.#.#.',
+            '...#.#....#.#...',
+            '.#.#.#....#.#.#.',
+            '...#.#....#.#...',
+            '.#.#.######.#.#.',
+            '...#........#...',
+            '...##########...',
+            '....#.#..#.#....',
+            '................',
+            '................',
+            '................'
+        ],
+        radar: [
+            '................',
+            '..........####..',
+            '........######..',
+            '......########..',
+            '....#########...',
+            '...#########....',
+            '...########.....',
+            '....######......',
+            '.....####.......',
+            '......##........',
+            '......##........',
+            '......##........',
+            '......##........',
+            '....######......',
+            '...########.....',
+            '................'
+        ],
+        globe: [
+            '................',
+            '.....######.....',
+            '...##########...',
+            '..####....####..',
+            '.###........###.',
+            '.##..........##.',
+            '###..........###',
+            '################',
+            '###..........###',
+            '.##..........##.',
+            '.###........###.',
+            '..####....####..',
+            '...##########...',
+            '.....######.....',
             '................',
             '................'
         ],
@@ -2278,7 +2336,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 duration: 0.35,
                 ease: "power1.inOut"
             } : undefined,
-            onUpdate: (self) => renderCareerFrame(self.progress)
+            onUpdate: (self) => renderCareerFrame(self.progress),
+            // Наблюдалось: после отпускания пина последний активный .text-block
+            // оставался отрисованным и протекал поверх футера. Гасим его на
+            // выходе из пина принудительно (без CSS-transition, которая при
+            // резком скролле не успевала доиграть).
+            //
+            // ВАЖНО: gsap.set пишет ИНЛАЙН-стиль, а он по специфичности бьёт
+            // класс `.text-block.active { opacity: 1 }`. Без сброса на входе
+            // текст, один раз погашенный здесь, больше никогда не появлялся —
+            // проскроллил секцию до конца, вернулся, и года стоят без описаний.
+            // Поэтому на входе clearProps возвращает управление обратно CSS.
+            onLeave: () => gsap.set('.career-text-blocks .text-block', { opacity: 0, visibility: 'hidden' }),
+            onLeaveBack: () => gsap.set('.career-text-blocks .text-block', { opacity: 0, visibility: 'hidden' }),
+            onEnter: () => {
+                gsap.set('.career-text-blocks .text-block', { clearProps: 'opacity,visibility' });
+                renderCareerFrame(0);
+            },
+            onEnterBack: () => {
+                gsap.set('.career-text-blocks .text-block', { clearProps: 'opacity,visibility' });
+                renderCareerFrame(1);
+            }
         });
     }
 
@@ -2402,9 +2480,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Click on the hero name scrolls down to the description/skills block.
     // Desktop only — on mobile the description already sits right below in normal flow
     // (no pinned intro to jump past), so the jump was redundant and fired on stray taps.
-    const heroNameText = document.getElementById('hero-name-text');
-    if (heroNameText && window.innerWidth > 768) {
-        heroNameText.addEventListener('click', () => smoothScrollToSelector('#about-block'));
+    //
+    // Listener goes on the two ASCII-word <pre> elements, NOT on #hero-name-text itself:
+    // that wrapper is a `width: 100%` flex row that only centers the words, so it was
+    // clickable across the ENTIRE hero width — clicking empty space nowhere near the
+    // name still scrolled the page. The <pre> tags size to their actual monospace
+    // content, so the click zone now matches the visible letters.
+    const heroNameWords = document.querySelectorAll('#hero-name-text .ascii-word');
+    if (heroNameWords.length && window.innerWidth > 768) {
+        heroNameWords.forEach(word => {
+            word.addEventListener('click', () => smoothScrollToSelector('#about-block'));
+        });
     }
 
     // Skill tags scroll to the portfolio section instead of doing nothing
@@ -2432,6 +2518,45 @@ document.addEventListener('DOMContentLoaded', () => {
             filter: "blur(10px)",
             duration: 1.2,
             ease: "power3.out"
+        });
+    });
+
+    // --- 11.5 Skills console / Results console: курсор-реактивный моушен ---
+    // Панели-заменители "Управление командой" и "Результаты" сознательно НЕ
+    // .work-card (см. комментарий в CSS) — вместо clip-path-карточек у них
+    // собственный язык: пятно свечения ходит за курсором по всей панели
+    // (--mx/--my, тот же приём, что у пиксельных значков в row-icon), плюс
+    // лёгкий магнитный 3D-наклон строки/ячейки под курсором. В духе
+    // референсов matveyan.com / sstr.tech, но на существующем стеке
+    // (vanilla JS), без новых библиотек.
+    const consoleReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('.skills-console, .results-console').forEach(panel => {
+        panel.addEventListener('pointermove', e => {
+            const rect = panel.getBoundingClientRect();
+            panel.style.setProperty('--mx', ((e.clientX - rect.left) / rect.width * 100).toFixed(1) + '%');
+            panel.style.setProperty('--my', ((e.clientY - rect.top) / rect.height * 100).toFixed(1) + '%');
+            // Пятно рисуется только пока курсор на панели — иначе с дефолтными
+            // 50%/50% зелёный круг висел бы по центру ещё до наведения.
+            panel.style.setProperty('--glow-alpha', '0.09');
+        });
+        panel.addEventListener('pointerleave', () => {
+            panel.style.setProperty('--glow-alpha', '0');
+        });
+
+        if (consoleReduceMotion || window.innerWidth <= 768) return;
+
+        panel.querySelectorAll('.skill-row, .readout-cell').forEach(item => {
+            item.addEventListener('pointerenter', () => { item.style.transition = 'none'; });
+            item.addEventListener('pointermove', e => {
+                const r = item.getBoundingClientRect();
+                const px = (e.clientX - r.left) / r.width - 0.5;
+                const py = (e.clientY - r.top) / r.height - 0.5;
+                item.style.transform = `perspective(700px) rotateX(${(-py * 5).toFixed(2)}deg) rotateY(${(px * 5).toFixed(2)}deg) translateZ(3px)`;
+            });
+            item.addEventListener('pointerleave', () => {
+                item.style.transition = 'transform 0.4s ease';
+                item.style.transform = '';
+            });
         });
     });
 

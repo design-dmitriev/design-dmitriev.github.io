@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВЫБОР_ИКОНОК // STARLIGHT</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/mononoki@5.2.5/index.css">
+    <style>
+        :root {
+            --bg: #030304;
+            --text-main: #f0f0f2;
+            --text-muted: #6a6a75;
+            --accent: #60b756;
+            --line: rgba(255, 255, 255, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'mononoki', ui-monospace, monospace;
+            line-height: 1.5;
+            padding: 3rem 1.5rem 6rem;
+        }
+
+        .wrap { max-width: 1100px; margin: 0 auto; }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .lead {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-top: 0.8rem;
+            max-width: 65ch;
+        }
+
+        .group {
+            margin-top: 3.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--line);
+        }
+
+        .group-label {
+            color: var(--accent);
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+        }
+
+        .group-sub {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.35rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.8rem;
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            background: rgba(96, 183, 86, 0.03);
+            padding: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            /* Тот же срез угла, что у карточек кейсов на сайте */
+            clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+        }
+
+        .card.is-current { border-color: rgba(96, 183, 86, 0.45); }
+
+        .stage {
+            width: 100%;
+            aspect-ratio: 1;
+            background: #050a06;
+            border: 1px solid rgba(96, 183, 86, 0.18);
+            overflow: hidden;
+        }
+
+        .stage canvas { display: block; width: 100%; height: 100%; }
+
+        .name { font-size: 0.95rem; }
+
+        .code {
+            font-size: 0.7rem;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+        }
+
+        .desc { font-size: 0.76rem; color: var(--text-muted); }
+
+        .badge {
+            align-self: flex-start;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            padding: 0.2rem 0.5rem;
+            border: 1px solid rgba(96, 183, 86, 0.4);
+            color: var(--accent);
+        }
+
+        .note {
+            margin-top: 3.5rem;
+            padding: 1rem 1.2rem;
+            border-left: 2px solid var(--accent);
+            background: rgba(96, 183, 86, 0.06);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .note b { color: var(--text-main); font-weight: 500; }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="group-label">// ВЫБОР_ИКОНОК</div>
+        <h1>Варианты 3D-иконок для блока «Выполненные кейсы»</h1>
+        <p class="lead">
+            Все модели каркасные, вращаются так же, как будут на сайте, и рисуются
+            той же библиотекой (<code>case-icon-models.js</code>) — что видно здесь,
+            то и уедет в продакшен. Под каждой моделью её кодовое имя: назовите
+            нужные, и я подключу их к карточкам.
+        </p>
+
+        <section class="group">
+            <div class="group-label">No.001 · DESIGN PIPELINE &amp; AI</div>
+            <div class="group-sub">Нейросети, плагины, автоматизация, движок отдела</div>
+            <div class="grid" id="grid-001"></div>
+        </section>
+
+        <section class="group">
+            <div class="group-label">No.002 · E-COMMERCE PRODUCTION</div>
+            <div class="group-sub">Товарный бизнес, массовое производство графики, упаковка</div>
+            <div class="grid" id="grid-002"></div>
+        </section>
+
+        <section class="group">
+            <div class="group-label">No.003 · OMNICHANNEL &amp; BRANDING</div>
+            <div class="group-sub">Омниканальность — вариант уже стоит на сайте, новых не заказывали</div>
+            <div class="grid" id="grid-003"></div>
+        </section>
+
+        <div class="note">
+            <b>Как выбрать:</b> напишите кодовые имена, например «001 — warpcore,
+            002 — gate». Модели, помеченные <b>СЕЙЧАС НА САЙТЕ</b>, стоят в
+            карточках прямо сейчас.
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="case-icon-models.js?v=2"></script>
+    <script>
+        (function () {
+            const WIRE_COLOR = 0x60b756;
+
+            const CATALOG = {
+                '001': [
+                    {
+                        key: 'chip', name: 'Микропроцессор', current: true,
+                        desc: 'Левитирующий чип с дорожками печатной платы и контактными площадками.'
+                    },
+                    {
+                        key: 'station', name: 'Орбитальная станция',
+                        desc: 'Ядро с пристыкованными модулями: центр — DesignOps, модули — плагины и коннекторы.'
+                    },
+                    {
+                        key: 'warpcore', name: 'Ядро гипердвигателя',
+                        desc: 'Реактор с сердечником и кольцами удержания, которые вращаются отдельно.'
+                    },
+                ],
+                '002': [
+                    {
+                        // Тарелку рассматривали для No.001, а выбрали для No.002 —
+                        // карточка живёт там, где модель реально стоит.
+                        key: 'radar', name: 'Спутниковая тарелка', current: true,
+                        desc: 'Параболическое зеркало со спицами и облучателем — приём и обработка сигналов.'
+                    },
+                    {
+                        key: 'tag', name: 'Багажная бирка',
+                        desc: 'Скошенный контур с отверстием под шнурок и штрих-кодом.'
+                    },
+                    {
+                        key: 'cargo', name: 'Грузовой модуль',
+                        desc: 'Гексагональный контейнер с рёбрами жёсткости, люками и грузом внутри каркаса.'
+                    },
+                    {
+                        key: 'gate', name: 'Транспортный шлюз',
+                        desc: 'Врата на опорах с вращающимся кольцом, сквозь которые идёт заготовка.'
+                    },
+                    {
+                        key: 'shuttle', name: 'Грузовой шаттл',
+                        desc: 'Утилитарный тягач: скошенный нос, рубка, двигатели на пилонах, груз под брюхом.'
+                    }
+                ],
+                '003': [
+                    {
+                        key: 'globe', name: 'Глобус с орбитами', current: true,
+                        desc: 'Меридианы и параллели плюс наклонённые орбиты со спутниками.'
+                    }
+                ]
+            };
+
+            const scenes = [];
+
+            function makeCard(item) {
+                const card = document.createElement('div');
+                card.className = 'card' + (item.current ? ' is-current' : '');
+
+                const stage = document.createElement('div');
+                stage.className = 'stage';
+                card.appendChild(stage);
+
+                if (item.current) {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge';
+                    badge.textContent = 'СЕЙЧАС НА САЙТЕ';
+                    card.appendChild(badge);
+                }
+
+                const code = document.createElement('div');
+                code.className = 'code';
+                code.textContent = item.key;
+                card.appendChild(code);
+
+                const name = document.createElement('div');
+                name.className = 'name';
+                name.textContent = item.name;
+                card.appendChild(name);
+
+                const desc = document.createElement('div');
+                desc.className = 'desc';
+                desc.textContent = item.desc;
+                card.appendChild(desc);
+
+                return { card, stage };
+            }
+
+            function mount(stage, key) {
+                const build = window.CaseIconModels[key];
+                if (!build) return;
+
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                // Рендерим в фиксированном размере и растягиваем по CSS: карточки
+                // резиновые, а плодить ресайз-логику на странице выбора незачем.
+                renderer.setSize(260, 260);
+                stage.appendChild(renderer.domElement);
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+                camera.position.set(0, 0, 5.4);
+
+                const material = new THREE.LineBasicMaterial({
+                    color: WIRE_COLOR, transparent: true, opacity: 0.85
+                });
+
+                const model = build(material);
+                model.scale.setScalar(1.2);
+                scene.add(model);
+
+                scenes.push({ renderer, scene, camera, model });
+            }
+
+            Object.keys(CATALOG).forEach(groupId => {
+                const grid = document.getElementById('grid-' + groupId);
+                CATALOG[groupId].forEach(item => {
+                    const { card, stage } = makeCard(item);
+                    grid.appendChild(card);
+                    mount(stage, item.key);
+                });
+            });
+
+            let last = performance.now();
+            (function tick(now) {
+                requestAnimationFrame(tick);
+                const dt = Math.min((now - last) / 1000, 0.1);
+                last = now;
+
+                scenes.forEach(({ renderer, scene, camera, model }, i) => {
+                    model.rotation.y += dt * 0.55;
+                    model.rotation.x = (model.userData.baseRotX || 0) + Math.sin((now / 1000) * 0.5 + i) * 0.18;
+                    if (model.userData.float) {
+                        model.position.y = Math.sin((now / 1000) * 0.9) * 0.09;
+                    }
+                    if (model.userData.spin) {
+                        model.userData.spin.forEach((node, k) => {
+                            node.rotation.z += dt * (k % 2 === 0 ? 0.9 : -0.7);
+                        });
+                    }
+                    renderer.render(scene, camera);
+                });
+            })(performance.now());
+        })();
+    </script>
+</body>
+
+</html>

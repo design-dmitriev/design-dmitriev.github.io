@@ -193,8 +193,14 @@ button:hover ~ .cursor-outline,
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
-    background-size: 100% 4px;
+    /* Виньетка (тёмные скруглённые края) поверх сканлайн — читается как
+       взгляд сквозь выпуклое стекло старого монитора, без искажения самого
+       контента (полноценный per-pixel warp слишком рискован рядом с
+       Three.js-канвасом и запиненными ScrollTrigger-секциями). */
+    background:
+        radial-gradient(130% 100% at 50% 45%, transparent 62%, rgba(0, 0, 0, 0.5) 100%),
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+    background-size: 100% 100%, 100% 4px;
     z-index: 9990;
     pointer-events: none;
     opacity: 0.6;
@@ -572,7 +578,10 @@ button:hover ~ .cursor-outline,
     color: var(--accent-color);
 }
 
-.hero-foreground-text {
+/* Курсор стоит на самих словах, не на #hero-name-text: тот — width:100% ряд,
+   который просто центрирует текст, и указатель на всю его ширину обещал бы
+   клик там, где кликать на самом деле нельзя (см. script.js). */
+.hero-foreground-text .ascii-word {
     cursor: pointer;
 }
 
@@ -850,8 +859,47 @@ body.theme-modder .modder-ascii {
 .work-card:hover .row-icon::before { opacity: 1; }
 
 /* --- Навыки (список команд) и Результаты (телеметрия) — сознательно
-   не .work-card, чтобы не сливаться визуально с «Избранными работами» --- */
-.skill-row {
+   не .work-card, чтобы не сливаться визуально с «Избранными работами».
+   Курсор-реактивные: --mx/--my двигает JS (см. script.js), плюс лёгкий
+   магнитный 3D-наклон строк/ячеек при наведении (в духе matveyan.com/sstr.tech). */
+/* Прозрачность пятна-подсветки вынесена в отдельную переменную: раньше пятно
+   было нарисовано всегда, и с дефолтными --mx/--my = 50% зелёный круг висел
+   ровно по центру панели ещё до того, как пользователь навёл курсор —
+   читалось как баг. Теперь по умолчанию 0, JS поднимает её на pointermove.
+   @property нужен только чтобы переменная плавно интерполировалась в
+   transition; без его поддержки всё работает, просто без затухания. */
+@property --glow-alpha {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+}
+
+.skills-console,
+.results-console {
+    position: relative;
+    --glow-alpha: 0;
+    transition: --glow-alpha 0.35s ease;
+    background-color: transparent;
+    background-image:
+        radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(96, 183, 86, var(--glow-alpha)), transparent 60%),
+        linear-gradient(var(--hero-accent), var(--hero-accent)), linear-gradient(var(--hero-accent), var(--hero-accent)),
+        linear-gradient(var(--hero-accent), var(--hero-accent)), linear-gradient(var(--hero-accent), var(--hero-accent)),
+        linear-gradient(var(--hero-accent), var(--hero-accent)), linear-gradient(var(--hero-accent), var(--hero-accent)),
+        linear-gradient(var(--hero-accent), var(--hero-accent)), linear-gradient(var(--hero-accent), var(--hero-accent));
+    background-repeat: no-repeat;
+    background-size:
+        100% 100%,
+        16px 2px, 2px 16px, 16px 2px, 2px 16px,
+        16px 2px, 2px 16px, 16px 2px, 2px 16px;
+    background-position:
+        0 0,
+        0 0, 0 0, 100% 0, 100% 0,
+        0 100%, 0 100%, 100% 100%, 100% 100%;
+}
+
+.skill-row,
+.readout-cell {
+    will-change: transform;
     transition: background 0.2s ease, padding-left 0.2s ease, border-color 0.2s ease;
 }
 .skill-row:hover {
@@ -861,9 +909,6 @@ body.theme-modder .modder-ascii {
 }
 .skill-row:last-child { border-bottom: none !important; }
 
-.readout-cell {
-    transition: border-color 0.2s ease;
-}
 .readout-cell:first-child { border-left: none !important; padding-left: 0 !important; }
 .readout-cell:hover { border-color: rgba(96, 183, 86, 0.5) !important; }
 .readout-cell .readout-value {
@@ -881,6 +926,8 @@ body.theme-modder .modder-ascii {
         padding: 1.2rem 0 !important;
     }
     .readout-cell:first-child { border-top: none; }
+    /* На тачскрине нет курсора — свечение и наклон отключаем, оставляем статику */
+    .skill-row, .readout-cell { transform: none !important; }
 }
 
 .row-icon svg {
@@ -891,6 +938,21 @@ body.theme-modder .modder-ascii {
     z-index: 1;
     /* без сглаживания — пиксель остаётся пикселем */
     image-rendering: pixelated;
+}
+
+/* 3D-каркасные иконки кейсов (case-icons-3d.js) — тот же слой, что у
+   пиксельного значка, чтобы курсорное свечение .row-icon::before (z-index: 2)
+   ложилось поверх модели, а не под неё. */
+.row-icon canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.work-card:hover .row-icon canvas {
+    filter: drop-shadow(0 0 6px rgba(96, 183, 86, 0.55));
 }
 
 /* Четыре тона: яркий пиксель и полутон.
@@ -979,8 +1041,8 @@ body.theme-modder .modder-ascii {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    height: 60vh;
-    min-height: 500px;
+    height: 70vh;
+    min-height: 580px;
     align-items: center;
     position: relative;
     width: 100%;
@@ -1020,7 +1082,13 @@ body.theme-modder .modder-ascii {
 
 .career-text-blocks {
     position: relative;
-    min-height: 350px;
+    /* Было 350px — рассчитано под старый (более короткий) текст блока GQbox.
+       После добавления пункта про инструменты (Folderify/Magnific Connect)
+       самый длинный блок стал выше своего контейнера: .text-block абсолютно
+       спозиционирован и не клипуется, поэтому лишняя высота не обрезалась,
+       а протекала за пределы запиненной секции прямо на футер — видно было
+       только на десктопе, потому что на мобиле высота этого блока auto. */
+    min-height: 460px;
 }
 
 .text-block {
