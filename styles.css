@@ -940,6 +940,33 @@ body.theme-modder .modder-ascii {
     image-rendering: pixelated;
 }
 
+/* На мобиле WebGL-иконки не создаются (case-icons-3d.js бейлит на
+   innerWidth <= 768 — три лишних контекста ради декора не стоят батареи),
+   но крутить сам пиксельный SVG вокруг Y всё равно можно: это чистый CSS
+   transform на GPU-композиторе, без канваса и без затрат на рендер-цикл.
+   rotateY на плоском спрайте не «ломается» на 90°/270° — там будет тонкий
+   срез на один кадр, дальше спрайт продолжит крутиться дальше (тот же
+   принцип, что у CSS card-flip эффектов). */
+@media (max-width: 768px) {
+    .row-icon {
+        perspective: 340px;
+    }
+    .row-icon svg {
+        animation: icon-spin-y 12s linear infinite;
+    }
+}
+
+@keyframes icon-spin-y {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    .row-icon svg {
+        animation: none;
+    }
+}
+
 /* 3D-каркасные иконки кейсов (case-icons-3d.js) — тот же слой, что у
    пиксельного значка, чтобы курсорное свечение .row-icon::before (z-index: 2)
    ложилось поверх модели, а не под неё. */
