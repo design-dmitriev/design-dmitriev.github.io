@@ -159,7 +159,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="case-icon-models.js?v=2"></script>
+    <script src="case-icon-models.js?v=3"></script>
     <script>
         (function () {
             const WIRE_COLOR = 0x60b756;
@@ -167,7 +167,11 @@
             const CATALOG = {
                 '001': [
                     {
-                        key: 'chip', name: 'Микропроцессор', current: true,
+                        key: 'oldmonitor', name: 'Старый ЭЛТ-монитор', current: true,
+                        desc: 'Пузатый корпус, утопленный экран, ножка и подставка — модель из самой первой версии набора.'
+                    },
+                    {
+                        key: 'chip', name: 'Микропроцессор',
                         desc: 'Левитирующий чип с дорожками печатной платы и контактными площадками.'
                     },
                     {

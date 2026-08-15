@@ -90,6 +90,32 @@
         return group;
     }
 
+    /* Старый ЭЛТ-монитор: корпус, утопленный экран, ножка и подставка.
+       Корпус глубокий — характерная «пузатая» пропорция трубки. Это модель
+       из самой первой версии набора иконок (до замены на sci-fi серию) —
+       вернулась на карточку No.001 по прямому запросу. */
+    function buildOldMonitor(material) {
+        const group = new THREE.Group();
+
+        const body = box(1.5, 1.2, 1.15, material);
+        body.position.y = 0.28;
+        group.add(body);
+
+        const screen = box(1.15, 0.85, 0.12, material);
+        screen.position.set(0, 0.33, 0.60);
+        group.add(screen);
+
+        const neck = box(0.42, 0.28, 0.36, material);
+        neck.position.y = -0.46;
+        group.add(neck);
+
+        const base = box(0.95, 0.14, 0.70, material);
+        base.position.y = -0.67;
+        group.add(base);
+
+        return group;
+    }
+
     /* Орбитальная станция: гексагональное ядро, четыре пристыкованных модуля
        на коротких переходах, солнечные панели и опоясывающее кольцо.
        Метафора DesignOps: ядро — ты, модули — плагины и коннекторы. */
@@ -475,6 +501,7 @@
     global.CaseIconModels = {
         // No.001 — нейросети, плагины, автоматизация
         chip: centered(buildChip),
+        oldmonitor: centered(buildOldMonitor),
         station: centered(buildStation),
         warpcore: centered(buildWarpCore),
         radar: centered(buildRadar),
