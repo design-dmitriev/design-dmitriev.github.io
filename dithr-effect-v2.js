@@ -207,8 +207,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const clock = new THREE.Clock();
 
+    // Раньше эта сцена крутилась бесконечно, даже когда герой давно
+    // проскроллен мимо — единственный из трёх WebGL-блоков сайта без такой
+    // защиты (у барабана годов и у 3D-иконок кейсов пауза за кадром уже была).
+    // Тот же приём: IntersectionObserver выключает рендер, rAF продолжает
+    // тикать вхолостую — это дёшево, а переинициализировать сцену не надо.
+    // По умолчанию «видим»: герой — самый первый экран сайта, безопаснее
+    // отрисовать один лишний кадр, чем рискнуть пустым канвасом, если
+    // наблюдатель ещё не успел сработать.
+    let isVisible = true;
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+            isVisible = entries[0].isIntersecting;
+        }, { threshold: 0.01 }).observe(container);
+    }
+
     function animate() {
         requestAnimationFrame(animate);
+        if (!isVisible) return;
+
         const time = clock.getElapsedTime();
 
         if (!isDragging) {
@@ -217,7 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         particles.rotation.y += (targetRotationY - particles.rotation.y) * 0.1;
         particles.rotation.x += (targetRotationX - particles.rotation.x) * 0.1;
-        
+
         renderer.render(scene, camera);
     }
 
