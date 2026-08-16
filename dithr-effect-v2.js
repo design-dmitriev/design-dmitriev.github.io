@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('hero-3d-model');
     if (!container || typeof THREE === 'undefined') return;
 
+    // Тот же порог, что у барабана годов и 3D-иконок кейсов — там на мобиле
+    // WebGL вообще заменяется плоской версией. У героя эта сцена остаётся
+    // (форма звезды/полумесяца видна и на телефоне), но её вес под слабый
+    // GPU не подгонялся: ниже частиц меньше, а разрешение канваса не гонится
+    // в 3x на iPhone — десктоп это не затрагивает.
+    const isMobile = window.innerWidth <= 768;
+
     // --- 1. Initialize Three.js Scene ---
     const scene = new THREE.Scene();
 
@@ -9,10 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const camera = new THREE.PerspectiveCamera(45, (container.clientWidth || 600) / (container.clientHeight || 600), 0.1, 1000);
     camera.position.z = 290;
 
-    // Renderer setup (transparent background)
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    // Renderer setup (transparent background).
+    // MSAA (antialias) на мобиле выключен: частицы и так мягкие за счёт
+    // текстуры с растушёванным краем, аппаратное сглаживание тут почти
+    // незаметно и просто съедает GPU-время.
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: !isMobile });
     renderer.setSize(container.clientWidth || 600, container.clientHeight || 600);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 2));
 
     container.style.cursor = 'grab';
     container.appendChild(renderer.domElement);
@@ -78,7 +88,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Rejection sampling to fill the volume with particles
-    const totalParticles = 15000;
+    // Rejection sampling просто ищет точки внутри той же формы — меньше
+    // частиц не меняет силуэт звезды/полумесяца, только плотность засветки
+    const totalParticles = isMobile ? 6000 : 15000;
     let attempts = 0;
     
     while (positions.length / 3 < totalParticles && attempts < 800000) {
