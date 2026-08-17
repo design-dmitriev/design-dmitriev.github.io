@@ -649,19 +649,12 @@
     });
   }
 
-  // gentle tilt on flip-cards — set once on entry, not tracked per pixel, so it
-  // doesn't fight your eyes while reading the card's text
-  if(!reduceMotion && !isTouch){
-    document.querySelectorAll('.flip-card').forEach(card=>{
-      card.addEventListener('mouseenter', e=>{
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width - 0.5;
-        const py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `translateY(-4px) rotateX(${(-py*3).toFixed(2)}deg) rotateY(${(px*3.5).toFixed(2)}deg)`;
-      });
-      card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
-    });
-  }
+  // flip-cards intentionally do NOT move on hover any more: shifting the card's
+  // own box (translateY/rotate) could nudge its edge out from under the cursor,
+  // which fires mouseleave, which resets the transform, which puts the edge
+  // back under the cursor, which fires mouseenter again — a flicker loop.
+  // All hover feedback now comes from border/shadow/icon/text, which don't
+  // move the card's hit-box.
 
   // ripple on magnetic buttons
   document.querySelectorAll('.magnet-btn').forEach(btn=>{
