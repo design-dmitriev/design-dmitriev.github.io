@@ -286,7 +286,7 @@
   .tl-hint{ font-size:12px; color:var(--ink-faint); margin-top:-8px; }
 
   /* cta */
-  .cta-sec{ padding:110px 0 90px; text-align:center; perspective:1400px; }
+  .cta-sec{ padding:96px 0 56px; text-align:center; perspective:1400px; }
   .cta-title{
     font-weight:800; letter-spacing:-.03em; font-size:clamp(38px,7vw,80px); margin:0 0 30px; text-wrap:balance;
     transform-style:preserve-3d; transition:transform .2s ease-out;
@@ -296,7 +296,15 @@
     display:inline-block; -webkit-text-stroke:0px currentColor;
     transition:transform .2s ease, color .25s ease, -webkit-text-stroke-width .25s ease;
   }
-  footer{ padding:30px 0 50px; display:flex; justify-content:space-between; font-size:12px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; }
+  .contact-links{
+    display:flex; justify-content:center; flex-wrap:wrap; gap:8px 22px; margin-top:26px;
+    font-size:13px; color:var(--ink-faint);
+  }
+  .contact-links a{ text-decoration:none; transition:color .25s ease; }
+  .contact-links a:hover{ color:var(--accent); }
+  footer{ padding:20px 0 34px; display:flex; justify-content:space-between; font-size:12px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); }
+  footer a{ color:inherit; text-decoration:none; transition:color .25s ease; }
+  footer a:hover{ color:var(--accent); }
 
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
@@ -474,16 +482,21 @@
       <span class="mword">Нужен</span> <span class="mword">человек,</span><br>
       <span class="mword">который</span> <em class="mword">доведёт</em> <span class="mword">дизайн</span> <span class="mword">до</span> <span class="mword">продаж?</span>
     </h2>
-    <a class="magnet-btn sheen" id="magnetBtn2" href="mailto:hello@example.com" data-hoverable>
-      Написать мне
+    <a class="magnet-btn sheen" id="magnetBtn2" href="https://t.me/starlight_lnk" target="_blank" rel="noopener" data-hoverable>
+      Написать в Telegram
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
     </a>
+    <div class="contact-links">
+      <a href="mailto:starlight.lnk@yandex.ru" data-hoverable>starlight.lnk@yandex.ru</a>
+      <a href="CV_Starlight.pdf" download="CV_Starlight.pdf" data-hoverable>Скачать CV</a>
+      <a href="https://t.me/wtf_starlight" target="_blank" rel="noopener" data-hoverable>Блог</a>
+    </div>
   </section>
 </main>
 
 <footer class="wrap">
   <span>Алексей Дмитриев — Product Design Lead</span>
-  <span>Москва, м. Лианозово</span>
+  <span>Москва, м. Лианозово · <a href="https://t.me/starlight_lnk" target="_blank" rel="noopener" data-hoverable>Telegram</a> · <a href="mailto:starlight.lnk@yandex.ru" data-hoverable>Email</a></span>
 </footer>
 
 <script>
@@ -496,13 +509,20 @@
     document.getElementById('heroName').classList.add('in');
   }));
 
-  // signature name: letters react to cursor proximity, magnet-style
+  // signature name: letters react to cursor proximity, magnet-style.
+  // Gated by visibility so this does zero work once you've scrolled past the
+  // hero — otherwise it was reading layout on every mousemove, everywhere on
+  // the page, which is what made unrelated sections (like the timeline) feel
+  // laggy on hover.
   if(!isTouch){
     const nameEl = document.getElementById('hnLetters');
     if(nameEl){
       const letters = Array.from(nameEl.querySelectorAll('.hn-l'));
       const RADIUS = 130;
+      let heroVisible = true;
+      new IntersectionObserver(es=>{ heroVisible = es[0].isIntersecting; }, { threshold:0 }).observe(document.querySelector('.hero'));
       window.addEventListener('mousemove', e=>{
+        if(!heroVisible) return;
         letters.forEach(l=>{
           const r = l.getBoundingClientRect();
           const cx = r.left + r.width/2, cy = r.top + r.height/2;
@@ -551,8 +571,16 @@
       s.style.setProperty('--dur', (2.4+Math.random()*3).toFixed(2)+'s');
       s.style.setProperty('--delay', (Math.random()*4).toFixed(2)+'s');
       field.appendChild(s);
-      starEls.push({ el:s, baseOpacity:.25 + Math.random()*.2 });
+      // store position as a fraction of the viewport, not read from the DOM —
+      // avoids a forced layout read on every animation frame (was the cause
+      // of the jank when hovering interactive elements elsewhere on the page)
+      starEls.push({ el:s, fx:left/100, fy:top/100, cx:0, cy:0 });
     }
+    function relayout(){
+      starEls.forEach(s=>{ s.cx = s.fx*innerWidth; s.cy = s.fy*innerHeight; });
+    }
+    relayout();
+    window.addEventListener('resize', relayout);
   })();
 
   // scroll reveal
@@ -654,12 +682,17 @@
   // skill items: font-weight (faux, via smoothly-transitioning text-stroke),
   // color and icon react to cursor proximity — same behavior as before,
   // just a continuous "boldness" instead of discrete font-weight jumps.
+  // Also gated by visibility (see the hero-name comment above) so it does no
+  // work while this section is scrolled out of view.
   if(!isTouch){
     const skillsGrid = document.querySelector('.skills-grid');
     if(skillsGrid){
       const items = Array.from(skillsGrid.querySelectorAll('.skill-item'));
       const RADIUS = 220;
+      let skillsVisible = false;
+      new IntersectionObserver(es=>{ skillsVisible = es[0].isIntersecting; }, { threshold:0 }).observe(skillsGrid);
       const applyProximity = (mx2,my2)=>{
+        if(!skillsVisible) return;
         items.forEach(item=>{
           const r = item.getBoundingClientRect();
           const cx = r.left + r.width/2, cy = r.top + r.height/2;
@@ -705,13 +738,17 @@
     }
   }
 
-  // CTA headline words: same faux-bold proximity effect, bigger radius
+  // CTA headline words: same faux-bold proximity effect, bigger radius.
+  // Gated by visibility, same reasoning as above.
   if(!isTouch){
     const ctaTitle = document.getElementById('ctaTitle');
     if(ctaTitle){
       const words = Array.from(ctaTitle.querySelectorAll('.mword'));
       const RADIUS = 260;
+      let ctaVisible = false;
+      new IntersectionObserver(es=>{ ctaVisible = es[0].isIntersecting; }, { threshold:0 }).observe(ctaTitle);
       const applyProximity = (mx2,my2)=>{
+        if(!ctaVisible) return;
         words.forEach(w=>{
           const r = w.getBoundingClientRect();
           const cx = r.left + r.width/2, cy = r.top + r.height/2;
@@ -795,12 +832,13 @@
       g.addColorStop(1, accent+'00');
       ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
 
-      // stars near the light (fixed to the viewport, same as the light) shine brighter
+      // stars near the light (fixed to the viewport, same as the light) shine brighter.
+      // Uses cached positions (no getBoundingClientRect here) so it never forces a
+      // layout read while something elsewhere on the page is being hovered/dragged.
       starTick++;
       if(starTick % 2 === 0 && starEls.length){
         starEls.forEach(s=>{
-          const r = s.el.getBoundingClientRect();
-          const dist = Math.hypot(r.left-curX, r.top-curY);
+          const dist = Math.hypot(s.cx-curX, s.cy-curY);
           const glow = Math.max(0, 1 - dist/260);
           s.el.style.filter = glow > 0.05 ? `brightness(${(1+glow*2.2).toFixed(2)}) drop-shadow(0 0 ${(glow*5).toFixed(1)}px var(--accent))` : '';
         });
