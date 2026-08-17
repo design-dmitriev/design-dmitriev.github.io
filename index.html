@@ -147,18 +147,20 @@
   }
 
   /* starlight — a field of stars fixed to the viewport across the whole site,
-     brightened by the cursor's light as it passes near them */
+     brightened by the cursor's light as it passes near them. Layered as a thin
+     overlay (not pure background) so they still read over cards and surfaces,
+     not just in the empty space around the hero. */
   #starfield{
-    position:fixed; inset:0; width:100vw; height:100vh; z-index:-1;
+    position:fixed; inset:0; width:100vw; height:100vh; z-index:5;
     pointer-events:none; overflow:hidden;
   }
   .star{
     position:absolute; width:3px; height:3px; border-radius:50%; background:var(--ink-faint);
-    pointer-events:none; opacity:.25;
+    pointer-events:none; opacity:.4; mix-blend-mode:var(--cursor-mix);
     animation:twinkle var(--dur,3.4s) ease-in-out infinite; animation-delay:var(--delay,0s);
   }
   .star.accent{ background:var(--accent); }
-  @keyframes twinkle{ 0%,100%{ opacity:.15; transform:scale(.7); } 50%{ opacity:.85; transform:scale(1.3); } }
+  @keyframes twinkle{ 0%,100%{ opacity:.22; transform:scale(.7); } 50%{ opacity:1; transform:scale(1.3); } }
   @media (max-width:640px){ .star{ display:none; } }
 
   .magnet-btn{
@@ -204,66 +206,18 @@
   .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.in{ opacity:1; transform:none; }
 
-  /* case gallery */
-  .case-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
-  .case-card{
-    position:relative; display:block; border:1px solid var(--line); border-radius:20px; overflow:hidden;
-    aspect-ratio:4/3; background:var(--surface); text-decoration:none; cursor:pointer;
-    opacity:0; transform:translateY(24px);
-    transition:transform .35s cubic-bezier(.16,1,.3,1), border-color .35s ease, box-shadow .35s ease, opacity .5s ease;
-  }
-  .case-card.in{ opacity:1; transform:none; }
-  .case-card.reveal{ transition-delay:calc(var(--i,0) * 90ms); }
-  .case-card:hover{ border-color:var(--accent); box-shadow:0 24px 40px -20px rgba(0,0,0,.3); }
-  .case-card img{
-    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-    transition:transform .5s cubic-bezier(.16,1,.3,1);
-  }
-  .case-card:hover img{ transform:scale(1.06); }
-  .case-info{
-    position:absolute; inset:auto 0 0 0; padding:16px 18px;
-    background:linear-gradient(to top, rgba(0,0,0,.7), transparent);
-  }
-  .case-info h3{ margin:0 0 4px; font-size:16px; font-weight:800; color:#fff; letter-spacing:-.01em; }
-  .case-info p{ margin:0; font-size:12.5px; color:rgba(255,255,255,.75); }
-
-  /* lightbox */
-  .lightbox{
-    position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center;
-    background:rgba(6,6,8,.92); opacity:0; visibility:hidden; transition:opacity .3s ease;
-  }
-  .lightbox.open{ opacity:1; visibility:visible; }
-  .lightbox img{ max-width:88vw; max-height:78vh; object-fit:contain; border-radius:10px; }
-  .lb-btn{
-    position:absolute; width:42px; height:42px; border-radius:50%; border:1px solid rgba(255,255,255,.25);
-    background:rgba(255,255,255,.06); color:#fff; display:flex; align-items:center; justify-content:center;
-    cursor:pointer; font-size:18px; transition:background .2s ease, border-color .2s ease;
-  }
-  .lb-btn:hover{ background:rgba(255,255,255,.16); border-color:#fff; }
-  .lb-close{ top:20px; right:20px; }
-  .lb-prev{ left:16px; top:50%; transform:translateY(-50%); }
-  .lb-next{ right:16px; top:50%; transform:translateY(-50%); }
-  .lb-counter{
-    position:absolute; bottom:22px; left:50%; transform:translateX(-50%);
-    font-size:12px; color:rgba(255,255,255,.6); font-variant-numeric:tabular-nums;
-  }
-  @media (max-width:640px){
-    .lb-prev{ left:6px; } .lb-next{ right:6px; } .lb-close{ top:12px; right:12px; }
-    .lb-btn{ width:36px; height:36px; }
-  }
-
   /* interactive "how I work" cards */
   .card-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; perspective:900px; }
   .flip-card{
     position:relative; border:1px solid var(--line); border-radius:20px; padding:26px;
     background:var(--surface); cursor:pointer; overflow:hidden; transform-style:preserve-3d;
-    transition:transform .35s cubic-bezier(.16,1,.3,1), border-color .35s ease, box-shadow .35s ease, opacity .5s ease;
+    transition:transform .6s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .45s ease, opacity .5s ease;
     min-height:190px; display:flex; flex-direction:column; justify-content:space-between;
     will-change:transform; opacity:0; transform:translateY(24px);
   }
   .flip-card.in{ opacity:1; transform:none; }
-  .flip-card:hover{ border-color:var(--accent); box-shadow:0 24px 40px -20px rgba(0,0,0,.25); }
-  .flip-card > *{ transform:translateZ(18px); }
+  .flip-card:hover{ border-color:var(--accent); box-shadow:0 20px 34px -22px rgba(0,0,0,.22); }
+  .flip-card > *{ transform:translateZ(8px); }
   .flip-card.reveal{ transition-delay:calc(var(--i, 0) * 90ms); }
   .fc-head{ display:flex; align-items:center; gap:10px; }
   .fc-icon{
@@ -272,7 +226,7 @@
     transition:transform .4s cubic-bezier(.34,1.56,.64,1), border-color .3s ease;
   }
   .fc-icon svg{ width:15px; height:15px; stroke:var(--ink-soft); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:stroke .3s ease; }
-  .flip-card:hover .fc-icon{ transform:rotate(-8deg) scale(1.08); border-color:var(--accent); }
+  .flip-card:hover .fc-icon{ transform:rotate(-4deg) scale(1.05); border-color:var(--accent); }
   .flip-card:hover .fc-icon svg{ stroke:var(--accent); }
   .flip-card .fc-num{ font-size:12px; color:var(--accent); font-weight:700; }
   .flip-card h3{ font-size:19px; font-weight:800; letter-spacing:-.01em; margin:14px 0 0; }
@@ -353,7 +307,7 @@
     .eyebrow .dot{ animation:none; }
     .scrollcue .bar::after{ animation:none; }
     #blob{ display:none; }
-    .flip-card, .tl-card, .case-card{ transition:none; }
+    .flip-card, .tl-card{ transition:none; }
     .hero-name{ opacity:1; transform:none; transition:none; }
     .hn-rule::after{ transform:scaleX(1); transition:none; }
     .star{ animation:none; opacity:.3; }
@@ -366,7 +320,6 @@
 <div class="topbar">
   <span class="name">Алексей Дмитриев</span>
   <nav>
-    <a href="#cases" data-hoverable>Кейсы</a>
     <a href="#work" data-hoverable>Подход</a>
     <a href="#skills" data-hoverable>Навыки</a>
     <a href="#path" data-hoverable>Путь</a>
@@ -402,34 +355,8 @@
 
 <main class="wrap">
 
-  <section id="cases">
-    <div class="kicker"><span class="no">01</span><h2>Кейсы</h2></div>
-    <div class="case-grid">
-      <a class="case-card sheen reveal" data-hoverable data-case="case18" style="--i:0">
-        <img loading="lazy" src="assets/portfolio/Карточки/18+ 2024/Слайд_6_Красный.webp" alt="Карточки WB, бренд 18+">
-        <div class="case-info"><h3>18+ 2024</h3><p>CTR 5.2% → 9.5% · корзина 14% → 22%</p></div>
-      </a>
-      <a class="case-card sheen reveal" data-hoverable data-case="gan" style="--i:1">
-        <img loading="lazy" src="assets/portfolio/Карточки/Gan 65w/Заглавка.webp" alt="Карточки Gan 65w">
-        <div class="case-info"><h3>Gan 65W</h3><p>CTR 3.1% → 7.2% · заказ дешевле на 12%</p></div>
-      </a>
-      <a class="case-card sheen reveal" data-hoverable data-case="bzu" style="--i:2">
-        <img loading="lazy" src="assets/portfolio/Карточки/БЗУ 3в1 Qi2/01.webp" alt="Карточки БЗУ 3в1 Qi2">
-        <div class="case-info"><h3>БЗУ 3в1 Qi2</h3><p>CTR 2.8% → 5.1% · заказ дешевле на 8%</p></div>
-      </a>
-      <a class="case-card sheen reveal" data-hoverable data-case="headphones" style="--i:3">
-        <img loading="lazy" src="assets/portfolio/Карточки/Headphones 2024/photo_2023-10-24_16-26-09.webp" alt="Карточки Headphones 2024">
-        <div class="case-info"><h3>Headphones 2024</h3><p>CTR 4.5% → 8.1% · заказ дешевле на 15%</p></div>
-      </a>
-      <a class="case-card sheen reveal" data-hoverable data-case="ads" style="--i:4">
-        <img loading="lazy" src="assets/portfolio/Реклама/1440_720.webp" alt="Имиджевая реклама Wildberries">
-        <div class="case-info"><h3>Реклама WB</h3><p>Суперфасады и наружка по стране и СНГ</p></div>
-      </a>
-    </div>
-  </section>
-
   <section id="work">
-    <div class="kicker"><span class="no">02</span><h2>Как я работаю</h2></div>
+    <div class="kicker"><span class="no">01</span><h2>Как я работаю</h2></div>
     <div class="card-row">
       <div class="flip-card sheen reveal" data-hoverable style="--i:0">
         <div>
@@ -479,7 +406,7 @@
   </section>
 
   <section id="skills">
-    <div class="kicker"><span class="no">03</span><h2>С чем работаю</h2></div>
+    <div class="kicker"><span class="no">02</span><h2>С чем работаю</h2></div>
     <div class="skills-grid reveal">
       <div class="skill-group">
         <h4>Управление</h4>
@@ -512,7 +439,7 @@
   </section>
 
   <section id="path">
-    <div class="kicker"><span class="no">04</span><h2>Путь</h2></div>
+    <div class="kicker"><span class="no">03</span><h2>Путь</h2></div>
     <p class="tl-hint">← тяните, чтобы посмотреть все места</p>
     <div class="tl-scroll reveal" id="tlScroll">
       <div class="tl-card sheen">
@@ -553,14 +480,6 @@
     </a>
   </section>
 </main>
-
-<div class="lightbox" id="lightbox" aria-hidden="true">
-  <button class="lb-btn lb-close" id="lbClose" aria-label="Закрыть">✕</button>
-  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Предыдущее фото">‹</button>
-  <img id="lbImg" src="" alt="">
-  <button class="lb-btn lb-next" id="lbNext" aria-label="Следующее фото">›</button>
-  <div class="lb-counter" id="lbCounter"></div>
-</div>
 
 <footer class="wrap">
   <span>Алексей Дмитриев — Product Design Lead</span>
@@ -702,14 +621,15 @@
     });
   }
 
-  // 3D tilt on flip-cards and timeline cards
+  // gentle tilt on flip-cards — set once on entry, not tracked per pixel, so it
+  // doesn't fight your eyes while reading the card's text
   if(!reduceMotion && !isTouch){
     document.querySelectorAll('.flip-card').forEach(card=>{
-      card.addEventListener('mousemove', e=>{
+      card.addEventListener('mouseenter', e=>{
         const r = card.getBoundingClientRect();
         const px = (e.clientX - r.left) / r.width - 0.5;
         const py = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `translateY(-6px) rotateX(${(-py*10).toFixed(2)}deg) rotateY(${(px*12).toFixed(2)}deg)`;
+        card.style.transform = `translateY(-4px) rotateX(${(-py*3).toFixed(2)}deg) rotateY(${(px*3.5).toFixed(2)}deg)`;
       });
       card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
     });
@@ -889,86 +809,6 @@
     }
     draw();
   }
-
-  // case gallery lightbox — built from the real project files
-  (function caseLightbox(){
-    const BASE = 'assets/portfolio/';
-    const CASES = {
-      case18: {
-        title: '18+ 2024',
-        dir: BASE + 'Карточки/18+ 2024/',
-        files: ['Слайд_6_Красный.webp','Слайд_7_Красный.webp','Слайд_8_Красный.webp','Слайд_9_Красный.webp',
-          'photo_2024-01-26_11-33-56.webp','red_wb (1).webp','red_wb (2).webp','red_wb (3).webp','red_wb (4).webp',
-          'red_wb (5).webp','red_wb (6).webp','red_wb (7).webp','red_wb (8).webp','red_wb (9).webp','red_wb (10).webp']
-      },
-      gan: {
-        title: 'Gan 65W',
-        dir: BASE + 'Карточки/Gan 65w/',
-        files: ['Заглавка.webp','Заглавка-1.webp','GaN.webp','Технологии.webp','Совместимость.webp','Для ноутбуков.webp',
-          'Размер.webp','Размер-1.webp','Распределение.webp','Распределение-1.webp','Материал.webp','Безопасность.webp',
-          'Производство.webp','Комплектация.webp','Гарантия.webp']
-      },
-      bzu: {
-        title: 'БЗУ 3в1 Qi2',
-        dir: BASE + 'Карточки/БЗУ 3в1 Qi2/',
-        files: ['01.webp','02.webp','02-1.webp','03.webp','04_1.webp','05.webp','06.webp','07.webp','08.webp','09.webp','10.webp','11.webp','13.webp']
-      },
-      headphones: {
-        title: 'Headphones 2024',
-        dir: BASE + 'Карточки/Headphones 2024/',
-        files: ['photo_2023-10-24_16-26-09.webp','photo_2023-10-24_17-37-25.webp','photo_2023-10-24_17-37-25 (2).webp','photo_2023-10-24_18-27-19.webp']
-      },
-      ads: {
-        title: 'Реклама WB',
-        dir: BASE + 'Реклама/',
-        files: ['1440_720.webp','1440_720 УЛИЦА.webp','1440_720 УЛИЦА-1.webp','2160_3840 МЕТРО.webp',
-          '2160_3840 МЕТРО-1.webp','2160_3840 МЕТРО-2.webp','2160_3840 МЕТРО-3.webp']
-      }
-    };
-
-    const lb = document.getElementById('lightbox');
-    const lbImg = document.getElementById('lbImg');
-    const lbCounter = document.getElementById('lbCounter');
-    if(!lb) return;
-    let currentCase = null, idx = 0;
-
-    function render(){
-      const c = CASES[currentCase];
-      lbImg.src = c.dir + c.files[idx];
-      lbImg.alt = c.title + ' — ' + (idx+1) + '/' + c.files.length;
-      lbCounter.textContent = (idx+1) + ' / ' + c.files.length;
-    }
-    function open(key){
-      if(!CASES[key]) return;
-      currentCase = key; idx = 0;
-      lb.classList.add('open'); lb.setAttribute('aria-hidden','false');
-      document.body.style.overflow = 'hidden';
-      render();
-    }
-    function close(){
-      lb.classList.remove('open'); lb.setAttribute('aria-hidden','true');
-      document.body.style.overflow = '';
-    }
-    function step(d){
-      const c = CASES[currentCase];
-      idx = (idx + d + c.files.length) % c.files.length;
-      render();
-    }
-
-    document.querySelectorAll('[data-case]').forEach(el=>{
-      el.addEventListener('click', e=>{ e.preventDefault(); open(el.getAttribute('data-case')); });
-    });
-    document.getElementById('lbClose').addEventListener('click', close);
-    document.getElementById('lbPrev').addEventListener('click', ()=> step(-1));
-    document.getElementById('lbNext').addEventListener('click', ()=> step(1));
-    lb.addEventListener('click', e=>{ if(e.target === lb) close(); });
-    window.addEventListener('keydown', e=>{
-      if(!lb.classList.contains('open')) return;
-      if(e.key === 'Escape') close();
-      if(e.key === 'ArrowLeft') step(-1);
-      if(e.key === 'ArrowRight') step(1);
-    });
-  })();
 
   // draggable horizontal timeline
   const tl = document.getElementById('tlScroll');
