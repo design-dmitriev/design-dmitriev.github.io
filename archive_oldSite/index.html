@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="document_title">СИСТ.ПОРТФОЛИО // STARLIGHT</title>
+
+    <meta name="description"
+        content="Алексей Дмитриев — руководитель отдела дизайна: управление командой, KPI-система, арт-дирекшн для маркетплейсов и e-commerce.">
+    <meta name="author" content="Алексей Дмитриев">
+    <meta name="theme-color" content="#030304">
+    <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Алексей Дмитриев">
+    <meta property="og:title" content="Алексей Дмитриев — руководитель отдела дизайна">
+    <meta property="og:description"
+        content="Управляю командой дизайна для маркетплейсов: арт-дирекшн, KPI, ускорение процессов. Портфолио и результаты отдела.">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="styles.css?v=40">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:ital,wght@0,700;1,700;1,900&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/mononoki@5.2.5/index.css">
+</head>
+
+<body class="theme-designer">
+    <!-- PRELOADER -->
+    <div id="sys-preloader" class="sys-preloader">
+        <div class="preloader-content mono">
+            <div class="preloader-logo">
+<pre class="ascii-preloader">
+ ██████╗ ████████╗██████╗ 
+██╔════╝ ╚══██╔══╝██╔══██╗
+███████╗    ██║   ██████╔╝
+╚════██║    ██║   ██╔══██╗
+███████║    ██║   ██║  ██║
+╚══════╝    ╚═╝   ╚═╝  ╚═╝
+</pre>
+            </div>
+            <div class="preloader-title" data-i18n="boot_sequence">СИСТЕМА.ИНИЦИАЛИЗАЦИЯ_ЗАГРУЗКИ</div>
+            <div class="preloader-progress-bar">
+                <div id="preloader-progress-fill"></div>
+            </div>
+            <div class="preloader-status">
+                <span id="preloader-percentage">0%</span>
+                <span id="preloader-current-task" data-i18n="loading_assets">ЗАГРУЗКА АКТИВОВ...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Глитч экран для переходов -->
+    <div id="glitch-screen" class="glitch-overlay"></div>
+
+    <!-- Кастомный курсор -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Эффекты фона -->
+    <canvas id="starlight-canvas"></canvas>
+    <div class="crt-overlay"></div>
+    <div class="film-grain"></div>
+
+    <!-- Вертикальные направляющие сетки -->
+    <div class="global-grid-lines">
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+    </div>
+
+    <div class="ui-wrapper">
+        <!-- HEADER -->
+        <header class="sys-header">
+            <div class="sys-info">
+                <div class="sys-lang">
+                    <button id="lang-toggle" class="btn-toggle mono">
+                        <span class="lang-text active" data-lang="ru">RU</span>
+                        <span class="lang-divider">/</span>
+                        <span class="lang-text" data-lang="en">EN</span>
+                    </button>
+                </div>
+                <div class="status-indicator">
+                    <span class="status-dot"></span> <span class="mono status-text" data-i18n="status_online">В
+                        СЕТИ</span>
+                </div>
+            </div>
+
+            <a href="https://t.me/starlight_lnk" target="_blank" class="header-contact-btn mono">СВЯЗАТЬСЯ</a>
+
+            <div class="sys-controls">
+
+                <div class="sys-sound">
+                    <span class="mono label" data-i18n="sound_label">ЗВУК:</span>
+                    <button id="sound-toggle" class="btn-toggle mono" aria-pressed="false">
+                        <span class="sound-text sound-off-text" data-i18n="sound_off">ВЫКЛ</span>
+                        <span class="sound-text sound-on-text" data-i18n="sound_on">ВКЛ</span>
+                    </button>
+                </div>
+
+                <div class="sys-toggle">
+                    <span class="mono label" data-i18n="interface_mode">РЕЖИМ РАБОТЫ:</span>
+                    <button id="mode-toggle" class="btn-toggle">
+                        <span class="toggle-text designer-text active" data-i18n="mode_designer">РАБОЧИЙ</span>
+                        <span class="toggle-text modder-text" data-i18n="mode_modder">ХОББИ</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="content-area">
+
+            <!-- ПОРТФОЛИО ДИЗАЙНЕРА (АКТИВНО ПО УМОЛЧАНИЮ) -->
+            <div id="view-designer" class="view-section active">
+                <section class="hero-bleed">
+                    <div id="hero-3d-model"></div>
+
+                    <!-- Foreground Name in ASCII -->
+                    <div class="giant-text ascii-title hero-foreground-text hover-target" id="hero-name-text">
+                        <pre class="ascii-word matrix-hover-target" id="ascii-first-name">
+ █████╗ ██╗     ███████╗██╗  ██╗███████╗██╗   ██╗
+██╔══██╗██║     ██╔════╝╚██╗██╔╝██╔════╝╚██╗ ██╔╝
+███████║██║     █████╗   ╚███╔╝ █████╗   ╚████╔╝ 
+██╔══██║██║     ██╔══╝   ██╔██╗ ██╔══╝    ╚██╔╝  
+██║  ██║███████╗███████╗██╔╝ ██╗███████╗   ██║   
+╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   
+</pre>
+                        <pre class="ascii-word accent matrix-hover-target" id="ascii-last-name">
+██████╗ ███╗   ███╗██╗████████╗██████╗ ██╗███████╗██╗   ██╗
+██╔══██╗████╗ ████║██║╚══██╔══╝██╔══██╗██║██╔════╝██║   ██║
+██║  ██║██╔████╔██║██║   ██║   ██████╔╝██║█████╗  ██║   ██║
+██║  ██║██║╚██╔╝██║██║   ██║   ██╔══██╗██║██╔══╝  ╚██╗ ██╔╝
+██████╔╝██║ ╚═╝ ██║██║   ██║   ██║  ██║██║███████╗ ╚████╔╝ 
+╚═════╝ ╚═╝     ╚═╝╚═╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝  ╚═══╝  
+</pre>
+                    </div>
+
+                    <div class="hero-info-block">
+                        <div class="hero-role-tag mono" data-i18n="hero_role_tag" style="margin-bottom: 1rem; color: var(--hero-accent); font-size: 0.85rem; letter-spacing: 0.04em; opacity: 0.85;">
+                            &gt;_ РОЛЬ: Руководитель отдела дизайна · GQbox
+                        </div>
+                        <div class="hero-meta mono" data-i18n="hero_sub_designer" style="margin-bottom: 2rem;">
+                            Руковожу командой дизайна для маркетплейсов
+                        </div>
+
+                        <div class="about-block" id="about-block" style="margin-bottom: 0.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                            <div class="about-text mono">
+                                <p data-i18n="about_bio_1" style="margin-bottom: 1rem; text-align: center; border-left: none; padding-left: 0;">Руковожу отделом дизайна из 5 человек:
+                                    ставлю задачи, веду арт-дирекшн, обучаю и держу качество через прозрачную систему KPI.
+                                    У меня нет академического диплома — опыт выкован на реальных продажах и насмотренности.</p>
+                                <p data-i18n="about_bio_2" style="margin-bottom: 2rem; text-align: center; border-left: none; padding-left: 0;">Перевёл команду с Photoshop на Figma и внедрил
+                                    нейросети в пайплайн — отдел стал работать на 50% быстрее. При этом сам продолжаю
+                                    рисовать флагманские проекты руками, чтобы не терять хватку.</p>
+                            </div>
+                            <div class="about-skills" style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; justify-content: center;">
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Тимлид</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Арт-дирекшн</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">KPI</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Менторство</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Figma</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">Adobe</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">UX/UI Дизайн</span>
+                                <span class="skill-tag hover-target" data-scroll-target="#selected-works">E-Commerce</span>
+                            </div>
+                        </div>
+                        
+                        <div class="hero-action-btns" style="margin-top: 2rem;">
+                            <a href="https://t.me/starlight_lnk" target="_blank" class="btn-primary mono hover-target initial-contact-btn" data-i18n="btn_contact" style="position: relative; z-index: 20;">Связаться</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-bleed" style="margin-bottom: 15vh;">
+                    <div class="section-label mono" data-i18n="label_leadership" style="margin-bottom: 2rem;">// УПРАВЛЕНИЕ_КОМАНДОЙ</div>
+                    <div class="skills-console mono" style="border: 1px solid var(--grid-line); padding: 1.6rem 1.8rem;">
+                        <div class="terminal-header" style="font-size: 1rem; margin-bottom: 0.4rem; padding-bottom: 0.8rem;">
+                            <div class="blinking-cursor" style="width: 9px; height: 15px;"></div>
+                            <span style="color: var(--text-muted); letter-spacing: 0.05em;">НАВЫКИ.ЛОГ</span>
+                        </div>
+
+                        <div class="skill-row hover-target" style="display: flex; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px dashed var(--grid-line);">
+                            <span style="color: var(--hero-accent); flex-shrink: 0;">&gt;</span>
+                            <div>
+                                <span style="color: var(--text-main);">Арт-дирекшн</span>
+                                <span style="color: var(--text-muted);"> — ставлю задачи, контролирую качество, держу единый визуальный стандарт.</span>
+                            </div>
+                        </div>
+                        <div class="skill-row hover-target" style="display: flex; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px dashed var(--grid-line);">
+                            <span style="color: var(--hero-accent); flex-shrink: 0;">&gt;</span>
+                            <div>
+                                <span style="color: var(--text-main);">Менторство</span>
+                                <span style="color: var(--text-muted);"> — обучаю дизайнеров, формализую насмотренность в понятные правила.</span>
+                            </div>
+                        </div>
+                        <div class="skill-row hover-target" style="display: flex; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px dashed var(--grid-line);">
+                            <span style="color: var(--hero-accent); flex-shrink: 0;">&gt;</span>
+                            <div>
+                                <span style="color: var(--text-main);">Система KPI</span>
+                                <span style="color: var(--text-muted);"> — строю прозрачные системы вместо оценки на глаз, понятные метрики для каждого.</span>
+                            </div>
+                        </div>
+                        <div class="skill-row hover-target" style="display: flex; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px dashed var(--grid-line);">
+                            <span style="color: var(--hero-accent); flex-shrink: 0;">&gt;</span>
+                            <div>
+                                <span style="color: var(--text-main);">Инструменты и AI</span>
+                                <span style="color: var(--text-muted);"> — разрабатываю плагины и AI-пайплайны, чтобы упростить работу дизайнеров.</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-bleed" style="margin-bottom: 15vh;">
+                    <div class="section-label mono" data-i18n="label_metrics" style="margin-bottom: 2rem;">// РЕЗУЛЬТАТЫ</div>
+                    <div class="results-console mono" style="border: 1px solid var(--grid-line); padding: 1.8rem; display: flex; flex-wrap: wrap;">
+                        <div class="readout-cell hover-target" style="flex: 1; min-width: 190px; padding: 0 1.6rem; border-left: 1px dashed var(--grid-line);">
+                            <div class="readout-value" style="font-size: 1.9rem; color: var(--hero-accent);">[ 3000+ ]</div>
+                            <div style="color: rgba(240, 240, 242, 0.72); font-size: 0.85rem; line-height: 1.45; margin-top: 0.6rem;">слайдов и макетов за карьеру</div>
+                        </div>
+                        <div class="readout-cell hover-target" style="flex: 1; min-width: 190px; padding: 0 1.6rem; border-left: 1px dashed var(--grid-line);">
+                            <div class="readout-value" style="font-size: 1.9rem; color: var(--hero-accent);">[ 6+ ]</div>
+                            <div style="color: rgba(240, 240, 242, 0.72); font-size: 0.85rem; line-height: 1.45; margin-top: 0.6rem;">лет в дизайне</div>
+                        </div>
+                        <div class="readout-cell hover-target" style="flex: 1; min-width: 190px; padding: 0 1.6rem; border-left: 1px dashed var(--grid-line);">
+                            <div class="readout-value" style="font-size: 1.9rem; color: var(--hero-accent);">[ 5 ]</div>
+                            <div style="color: rgba(240, 240, 242, 0.72); font-size: 0.85rem; line-height: 1.45; margin-top: 0.6rem;">направлений: e-commerce, веб, print, брендинг, фото/видео</div>
+                        </div>
+                        <div class="readout-cell hover-target" style="flex: 1; min-width: 190px; padding: 0 1.6rem; border-left: 1px dashed var(--grid-line);">
+                            <div class="readout-value" style="font-size: 1.1rem; color: var(--hero-accent); letter-spacing: 0.02em;">[ САМОУЧКА → ОТДЕЛ ]</div>
+                            <div style="color: rgba(240, 240, 242, 0.72); font-size: 0.85rem; line-height: 1.45; margin-top: 0.6rem;">без диплома, с нуля</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-bleed" id="selected-works">
+                    <div class="section-label mono" data-i18n="label_selected_works">// ВЫПОЛНЕННЫЕ_КЕЙСЫ</div>
+
+                    <!-- ДАТЫ: у «E-commerce production» диапазон взят из названий папок проектов
+                         (18+ 2024, Headphones 2024, Gan 65w 2026, БЗУ 3в1 Qi2 2026) — реальные данные.
+                         У «Omnichannel & branding» года нигде нет, стоит прочерк.
+                         Карточки переструктурированы под бизнес-задачи, а не под тип файла:
+                         001 — процесс/инструменты (без галереи, реальных скринов пока нет),
+                         002 — прежние «Карточки товаров» (47 изображений),
+                         003 — слияние прежних «Реклама» (7) и «Соц сети» (3) в один блок. -->
+                    <div class="projects-list">
+                        <div class="work-card hover-target" style="border-style: dashed;">
+                            <div class="card-head">
+                                <div class="card-title-group">
+                                    <span class="row-no mono">No.<b>001</b></span>
+                                    <h2 class="project-title">Design Pipeline &amp; AI</h2>
+                                    <p class="mono" style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Плагины и AI-пайплайн, которые строю для отдела</p>
+                                </div>
+                                <div class="row-icon" data-glyph="crt" data-icon3d="oldmonitor" style="width: 104px; height: 104px;" aria-hidden="true"></div>
+                            </div>
+                            <div class="card-foot">
+                                <span class="row-badge mono">ИНСТРУМЕНТЫ</span>
+                                <div class="row-meta mono">
+                                    <span>СТАТУС: <span class="val">В РАЗРАБОТКЕ</span></span>
+                                    <span>ОБЪЁМ: <span class="val">2 плагина</span></span>
+                                </div>
+                                <span class="mono" style="font-size: 0.68rem; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 0.3rem;">○ ТОЛЬКО ОПИСАНИЕ, БЕЗ ГАЛЕРЕИ</span>
+                            </div>
+                        </div>
+
+                        <div class="work-card gallery-trigger hover-target" data-gallery='["assets/portfolio/Карточки/18+%202024/photo_2024-01-26_11-33-56.webp","assets/portfolio/Карточки/18+%202024/red_wb%20(1).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(10).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(2).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(3).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(4).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(5).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(6).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(7).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(8).webp","assets/portfolio/Карточки/18+%202024/red_wb%20(9).webp","assets/portfolio/Карточки/18+%202024/%D0%A1%D0%BB%D0%B0%D0%B9%D0%B4_6_%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9.webp","assets/portfolio/Карточки/18+%202024/%D0%A1%D0%BB%D0%B0%D0%B9%D0%B4_7_%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9.webp","assets/portfolio/Карточки/18+%202024/%D0%A1%D0%BB%D0%B0%D0%B9%D0%B4_8_%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9.webp","assets/portfolio/Карточки/18+%202024/%D0%A1%D0%BB%D0%B0%D0%B9%D0%B4_9_%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9.webp","assets/portfolio/Карточки/Gan%2065w/GaN.webp","assets/portfolio/Карточки/Gan%2065w/%D0%91%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C.webp","assets/portfolio/Карточки/Gan%2065w/%D0%93%D0%B0%D1%80%D0%B0%D0%BD%D1%82%D0%B8%D1%8F.webp","assets/portfolio/Карточки/Gan%2065w/%D0%94%D0%BB%D1%8F%20%D0%BD%D0%BE%D1%83%D1%82%D0%B1%D1%83%D0%BA%D0%BE%D0%B2.webp","assets/portfolio/Карточки/Gan%2065w/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BA%D0%B0-1.webp","assets/portfolio/Карточки/Gan%2065w/%D0%97%D0%B0%D0%B3%D0%BB%D0%B0%D0%B2%D0%BA%D0%B0.webp","assets/portfolio/Карточки/Gan%2065w/%D0%9A%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BA%D1%82%D0%B0%D1%86%D0%B8%D1%8F.webp","assets/portfolio/Карточки/Gan%2065w/%D0%9C%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%B0%D0%BB.webp","assets/portfolio/Карточки/Gan%2065w/%D0%9F%D1%80%D0%BE%D0%B8%D0%B7%D0%B2%D0%BE%D0%B4%D1%81%D1%82%D0%B2%D0%BE.webp","assets/portfolio/Карточки/Gan%2065w/%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%80-1.webp","assets/portfolio/Карточки/Gan%2065w/%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%80.webp","assets/portfolio/Карточки/Gan%2065w/%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-1.webp","assets/portfolio/Карточки/Gan%2065w/%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5.webp","assets/portfolio/Карточки/Gan%2065w/%D0%A1%D0%BE%D0%B2%D0%BC%D0%B5%D1%81%D1%82%D0%B8%D0%BC%D0%BE%D1%81%D1%82%D1%8C.webp","assets/portfolio/Карточки/Gan%2065w/%D0%A2%D0%B5%D1%85%D0%BD%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D0%B8.webp","assets/portfolio/Карточки/Headphones%202024/photo_2023-10-24_16-26-09.webp","assets/portfolio/Карточки/Headphones%202024/photo_2023-10-24_17-37-25%20(2).webp","assets/portfolio/Карточки/Headphones%202024/photo_2023-10-24_17-37-25.webp","assets/portfolio/Карточки/Headphones%202024/photo_2023-10-24_18-27-19.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/01.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/02-1.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/02.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/03.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/04_1.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/05.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/06.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/07.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/08.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/09.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/10.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/11.webp","assets/portfolio/Карточки/%D0%91%D0%97%D0%A3%203%D0%B21%20Qi2/13.webp"]'>
+                            <div class="card-head">
+                                <div class="card-title-group">
+                                    <span class="row-no mono">No.<b>002</b></span>
+                                    <h2 class="project-title">E-commerce Production</h2>
+                                    <p class="mono" style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Арт-дирекшн + личное исполнение</p>
+                                </div>
+                                <div class="row-icon" data-glyph="monitor" data-icon3d="radar" style="width: 104px; height: 104px;" aria-hidden="true"></div>
+                            </div>
+                            <div class="card-foot">
+                                <span class="row-badge mono">МАРКЕТПЛЕЙСЫ</span>
+                                <div class="row-meta mono">
+                                    <span>ОБНОВЛЕНО: <span class="val">2024—2026</span></span>
+                                    <span>ОБЪЁМ: <span class="val">47 изображений</span></span>
+                                </div>
+                                <span class="mono" style="font-size: 0.68rem; letter-spacing: 0.08em; color: var(--hero-accent);">→ СМОТРЕТЬ ГАЛЕРЕЮ</span>
+                            </div>
+                        </div>
+
+                        <div class="work-card gallery-trigger hover-target" data-gallery='["assets/portfolio/Реклама/1440_720%20%D0%A3%D0%9B%D0%98%D0%A6%D0%90-1.webp","assets/portfolio/Реклама/1440_720%20%D0%A3%D0%9B%D0%98%D0%A6%D0%90.webp","assets/portfolio/Реклама/1440_720.webp","assets/portfolio/Реклама/2160_3840%20%D0%9C%D0%95%D0%A2%D0%A0%D0%9E-1.webp","assets/portfolio/Реклама/2160_3840%20%D0%9C%D0%95%D0%A2%D0%A0%D0%9E-2.webp","assets/portfolio/Реклама/2160_3840%20%D0%9C%D0%95%D0%A2%D0%A0%D0%9E-3.webp","assets/portfolio/Реклама/2160_3840%20%D0%9C%D0%95%D0%A2%D0%A0%D0%9E.webp","%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8/Lobnya.webp","%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8/SRVVRS.webp","%D0%9E%D0%B1%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8/Starset.webp"]'>
+                            <div class="card-head">
+                                <div class="card-title-group">
+                                    <span class="row-no mono">No.<b>003</b></span>
+                                    <h2 class="project-title">Omnichannel &amp; Branding</h2>
+                                    <p class="mono" style="font-size: 0.72rem; color: var(--text-muted); margin: 0;">Наружная реклама, обложки, айдентика — за рамками карточек</p>
+                                </div>
+                                <div class="row-icon" data-glyph="star" data-icon3d="globe" style="width: 104px; height: 104px;" aria-hidden="true"></div>
+                            </div>
+                            <div class="card-foot">
+                                <span class="row-badge mono">БРЕНДИНГ</span>
+                                <div class="row-meta mono">
+                                    <span>ОБНОВЛЕНО: <span class="val">—</span></span>
+                                    <span>ОБЪЁМ: <span class="val">10 изображений</span></span>
+                                </div>
+                                <span class="mono" style="font-size: 0.68rem; letter-spacing: 0.08em; color: var(--hero-accent);">→ СМОТРЕТЬ ГАЛЕРЕЮ</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-bleed" style="margin-bottom: 15vh;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem;">
+                        <div class="section-label mono" data-i18n="label_career_path" style="margin-bottom: 0;">// ХРОНОЛОГИЯ_ПРОЦЕССОВ</div>
+                        <a href="./CV_Starlight.pdf" target="_blank" class="btn-primary mono hover-target" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; z-index: 10;" data-i18n="btn_cv_download">СМОТРЕТЬ CV</a>
+                    </div>
+                    
+                    <!-- Black hole visual for transition effect -->
+                    <div id="black-hole-visual"></div>
+
+                    <div class="career-split-layout" id="career-timeline">
+                        <!-- Левая колонка: Текст -->
+                        <div class="career-text-panel">
+                            <div class="terminal-header" style="justify-content: space-between; width: 100%;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div class="blinking-cursor"></div>
+                                    <span class="mono" id="career-status-text">БЛОК_01 / 04</span>
+                                </div>
+                                <div class="mono" style="color: var(--text-muted); font-size: 0.9rem;" id="career-progress-bar">
+                                    [██▒▒▒▒▒▒▒▒]
+                                </div>
+                            </div>
+
+                            <div class="career-text-blocks">
+                                <!-- Block 1: 2011 -->
+                                <div class="text-block active" data-year="0">
+                                    <h3 class="card-role mono" data-i18n="role_init">Инициализация</h3>
+                                    <div class="card-body mono">
+                                        <p>Самостоятельный путь от первых интерфейсов в Adobe и превью для YouTube до
+                                            осознанного перехода в профессиональный дизайн.</p>
+                                    </div>
+                                </div>
+                                <!-- Block 2: 2020 -->
+                                <div class="text-block" data-year="1">
+                                    <h3 class="card-role mono">Фотограф-дизайнер в Cases Stores</h3>
+                                    <div class="card-body mono">
+                                        <p>Инфографика, предметная и видеосъёмка маркетинга.</p>
+                                        <p>Сформировал понимание полного цикла: от съёмки до готовой карточки.</p>
+                                    </div>
+                                </div>
+                                <!-- Block 3: 2022 -->
+                                <div class="text-block" data-year="2">
+                                    <h3 class="card-role mono" data-i18n="role_freelance">Веб-дизайнер в ARTOtaku</h3>
+                                    <div class="card-body mono">
+                                        <p>Веб-дизайн, UI/UX, полиграфия.</p>
+                                        <p>Расширил специализацию за пределы e-commerce.</p>
+                                    </div>
+                                </div>
+                                <!-- Block 4: 2024 -->
+                                <div class="text-block" data-year="3">
+                                    <h3 class="card-role mono" data-i18n="role_ecommerce">Дизайнер в Fix Mobile</h3>
+                                    <div class="card-body mono">
+                                        <p>Единственный дизайнер — полный цикл визуала магазинов, pixel-perfect дисциплина как рабочий стандарт.</p>
+                                        <p>> AcsX: мобильные аксессуары на маркетплейсах.</p>
+                                        <p>> XPlay: продукция 18+ — брендинг с нуля, сложная ретушь (прозрачные чехлы).</p>
+                                    </div>
+                                </div>
+                                <!-- Block 5: 2026 -->
+                                <div class="text-block" data-year="4">
+                                    <h3 class="card-role mono" data-i18n="role_gqbox">Руководитель отдела дизайна в GQbox</h3>
+                                    <div class="card-body mono">
+                                        <p>Управлял отделом (5 человек): постановка задач, арт-дирекшн, обучение, KPI.</p>
+                                        <p>> Оптимизация процессов: перевёл команду с Photoshop на Figma, внедрил нейросети — отдел стал работать на 50% быстрее.</p>
+                                        <p>> Система KPI: разработал и внедрил с нуля прозрачную систему для дизайнеров.</p>
+                                        <p>> Масштаб: дизайн для WB/Ozon (сотни артикулов), брендинг, мерч, UI-интерфейсы; +1–5% к конверсии/CTR карточек.</p>
+                                        <p>> Инструменты: ставил задачи и одновременно разрабатывал инструменты для отдела — плагины Folderify (Яндекс.Диск) и Magnific Connect.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Правая колонка: 3D Барабан -->
+                        <div class="career-3d-timeline">
+                            <div class="years-drum">
+                                <div class="year-3d-item mono" data-year="0">
+                                    <div class="year-3d-canvas" data-year-text="2011"></div>
+                                </div>
+                                <div class="year-3d-item mono" data-year="1">
+                                    <div class="year-3d-canvas" data-year-text="2020"></div>
+                                </div>
+                                <div class="year-3d-item mono" data-year="2">
+                                    <div class="year-3d-canvas" data-year-text="2022"></div>
+                                </div>
+                                <div class="year-3d-item mono" data-year="3">
+                                    <div class="year-3d-canvas" data-year-text="2024"></div>
+                                </div>
+                                <div class="year-3d-item mono" data-year="4">
+                                    <div class="year-3d-canvas" data-year-text="2026"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ФУТЕР ДИЗАЙНЕРА -->
+                <footer class="sys-footer">
+                    <div class="footer-bleed">
+                        <div class="contact-block">
+                            <div class="mono label" data-i18n="label_communication">// УСТАНОВЛЕНИЕ_СВЯЗИ</div>
+
+                            <div class="contact-links-grid">
+                                <div class="contact-item">
+                                    <span class="mono label" data-i18n="contact_direct">ПРЯМАЯ СВЯЗЬ:</span>
+                                    <a href="https://t.me/starlight_lnk" target="_blank"
+                                        class="link-hover hover-target">Telegram (@starlight_lnk)</a>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="mono label" data-i18n="contact_email">ПОЧТА:</span>
+                                    <a href="mailto:starlight.lnk@yandex.ru"
+                                        class="link-hover hover-target dynamic-email">starlight.lnk@yandex.ru</a>
+                                </div>
+                                <div class="contact-item" style="grid-column: 1 / -1; margin-top: 1rem;">
+                                    <a href="CV_Starlight.pdf" download="CV_Starlight.pdf" class="btn-secondary mono hover-target" style="display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 0.8rem; font-size: 0.9rem;" data-i18n="btn_cv_download">СМОТРЕТЬ CV</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sys-logs">
+                            <div class="mono label" data-i18n="label_syslog">// СИСТЕМНЫЙ_ЖУРНАЛ</div>
+                            <div class="log-line mono" data-i18n="sys_normal">СИСТЕМА РАБОТАЕТ В ШТАТНОМ РЕЖИМЕ.</div>
+                            <div class="blog-container">
+                                <span class="mono" data-i18n="sys_tg_blog">АВТОРСКИЙ БЛОГ:</span>
+                                <a href="https://t.me/wtf_starlight" target="_blank" class="tg-blog-link hover-target">
+                                    <svg class="tg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                    WTF_STARLIGHT
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+
+            <!-- ПОРТФОЛИО МОДОДЕЛА -->
+            <div id="view-modder" class="view-section">
+                <section class="hero-bleed">
+                    <!-- Foreground Name in ASCII -->
+                    <div class="giant-text ascii-title">
+                        <pre class="ascii-word modder-ascii matrix-hover-target" id="ascii-starlight">
+ :::::::: ::::::::::: :::     :::::::::  :::        ::::::::::: ::::::::  :::    ::: ::::::::::: 
+:+:    :+:    :+:   :+: :+:   :+:    :+: :+:            :+:    :+:    :+: :+:    :+:     :+:     
++:+           +:+  +:+   +:+  +:+    +:+ +:+            +:+    +:+        +:+    +:+     +:+     
++#++:++#++    +#+ +#++:++#++: +#++:++#:  +#+            +#+    :#:        +#++:++#++     +#+     
+       +#+    +#+ +#+     +#+ +#+    +#+ +#+            +#+    +#+   +#+# +#+    +#+     +#+     
+#+#    #+#    #+# #+#     #+# #+#    #+# #+#            #+#    #+#    #+# #+#    #+#     #+#     
+ ########     ### ###     ### ###    ### ########## ########### ########  ###    ###     ###     
+</pre>
+                    </div>
+                    
+                    <a href="https://t.me/starlight_lnk" target="_blank" class="btn-primary mono hover-target initial-contact-btn" style="position: relative; z-index: 20; margin-top: 0.5rem; opacity: 0;">Связаться</a>
+
+                    <div class="hero-info-block">
+                        <div class="hero-meta mono" data-i18n="hero_sub_modder" style="margin-bottom: 0.5rem;">
+                            Minecraft моддинг • Скромно и со вкусом
+                        </div>
+                        <div class="hero-action-btns modder-btns">
+                            <a href="#mod-archive" class="btn-secondary mono hover-target smooth-scroll">Архив модов</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="content-bleed" id="mod-archive">
+                    <div class="section-label mono" data-i18n="label_mod_archive">// АРХИВ_МОДОВ</div>
+
+                    <div class="mod-list-bleed">
+                        <!-- Контейнер для динамических модов с Modrinth -->
+                        <div id="dynamic-mods-container"></div>
+
+                        <div class="mod-row hover-target">
+                            <div class="mod-id mono" data-i18n="mod_id_1">ACHIEVEMENT</div>
+                            <div class="mod-content">
+                                <h2 class="mod-title" style="color: var(--accent-color)" data-i18n="mod_1_title">1
+                                    МИЛЛИОН СКАЧИВАНИЙ</h2>
+                                <p class="mono" data-i18n="mod_1_desc">Знаковое достижение, подтверждающее
+                                    востребованность моих маленьких, но полезных модов.</p>
+                            </div>
+                            <div class="mod-badge" aria-hidden="true">
+                                <span class="platform-glyph" data-glyph="logo"></span>
+                            </div>
+                        </div>
+
+                        <div class="mod-row hover-target">
+                            <div class="mod-id mono">CURSEFORGE</div>
+                            <div class="mod-content">
+                                <h2 class="mod-title">CurseForge</h2>
+                                <p class="mono" data-i18n="mod_cf_desc">Основная база моих небольших модов для
+                                    Minecraft.</p>
+                            </div>
+                            <a href="https://www.curseforge.com/members/starlight_lnk/projects" target="_blank"
+                                class="platform-link mono hover-target">
+                                <span class="platform-icon" style="--icon: url('icons/curseforge.webp')"
+                                    aria-hidden="true"></span>
+                                <span>CURSEFORGE</span>
+                            </a>
+                        </div>
+
+                        <div class="mod-row hover-target">
+                            <div class="mod-id mono">MODRINTH</div>
+                            <div class="mod-content">
+                                <h2 class="mod-title">Modrinth</h2>
+                                <p class="mono" data-i18n="mod_mr_desc">Современная и удобная платформа для публикации
+                                    моих работ.</p>
+                            </div>
+                            <a href="https://modrinth.com/user/starlight.lnk" target="_blank"
+                                class="platform-link mono hover-target">
+                                <span class="platform-icon" style="--icon: url('icons/modrinth.svg')"
+                                    aria-hidden="true"></span>
+                                <span>MODRINTH</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ФУТЕР МОДОДЕЛА -->
+                <footer class="sys-footer">
+                    <div class="footer-bleed">
+                        <div class="contact-block">
+                            <div class="mono label" data-i18n="label_communication">// УСТАНОВЛЕНИЕ_СВЯЗИ</div>
+
+                            <div class="contact-links-grid">
+                                <div class="contact-item">
+                                    <span class="mono label" data-i18n="contact_direct">ПРЯМАЯ СВЯЗЬ:</span>
+                                    <a href="https://t.me/starlight_lnk" target="_blank"
+                                        class="link-hover hover-target">Telegram (@starlight_lnk)</a>
+                                </div>
+                                <div class="contact-item">
+                                    <span class="mono label" data-i18n="contact_email">ПОЧТА:</span>
+                                    <a href="mailto:starlight.lnk@yandex.ru"
+                                        class="link-hover hover-target dynamic-email">starlight.lnk@yandex.ru</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sys-logs">
+                            <div class="mono label" data-i18n="label_syslog">// СИСТЕМНЫЙ_ЖУРНАЛ</div>
+                            <div class="log-line mono" data-i18n="sys_normal">СИСТЕМА РАБОТАЕТ В ШТАТНОМ РЕЖИМЕ.</div>
+                            <div class="blog-container">
+                                <span class="mono" data-i18n="sys_tg_blog">АВТОРСКИЙ БЛОГ:</span>
+                                <a href="https://t.me/wtf_starlight" target="_blank" class="tg-blog-link hover-target">
+                                    <svg class="tg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                    </svg>
+                                    WTF_STARLIGHT
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+
+            <!-- MINIGAME: GALAXIAN -->
+            <div class="galaxian-minigame">
+                <!-- Tracker text removed -->
+                <div class="galaxian-track" id="galaxian-track">
+                    <div class="galaxian-ship" id="galaxian-ship">
+                        <svg viewBox="0 0 15 16" width="30" height="32" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Пушка -->
+                            <rect x="7" y="0" width="1" height="4" fill="var(--accent-color)"/>
+                            <!-- Кабина -->
+                            <rect x="6" y="4" width="3" height="3" fill="var(--text-color)"/>
+                            <!-- Крылья -->
+                            <rect x="5" y="7" width="5" height="2" fill="#ffffff"/>
+                            <rect x="3" y="9" width="9" height="2" fill="#ffffff"/>
+                            <rect x="1" y="11" width="13" height="2" fill="var(--accent-color)"/>
+                            <rect x="0" y="13" width="15" height="1" fill="var(--accent-color)"/>
+                            <rect x="0" y="14" width="1" height="2" fill="var(--accent-color)"/>
+                            <rect x="14" y="14" width="1" height="2" fill="var(--accent-color)"/>
+                            <!-- Двигатели -->
+                            <rect x="5" y="14" width="1" height="2" fill="#ffaa00"/>
+                            <rect x="9" y="14" width="1" height="2" fill="#ffaa00"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Lightbox Modal for Images -->
+    <div id="lightbox" class="lightbox-overlay">
+        <div class="lightbox-header">
+            <div style="display: flex; gap: 2rem; align-items: center;">
+                <span class="mono" data-i18n="lightbox_view">// РЕЖИМ_ПРОСМОТРА</span>
+                <span class="mono" id="gallery-counter" style="color: var(--accent-color); font-weight: bold;">[ 1 / 1
+                    ]</span>
+            </div>
+            <button id="lightbox-close-btn" class="lightbox-close-btn mono hover-target" aria-label="Закрыть" title="Закрыть (Esc)">
+                <span aria-hidden="true">✕</span> ЗАКРЫТЬ
+            </button>
+        </div>
+        <div class="lightbox-body">
+            <!-- Mobile-only: description block, placed to render *after* the thumbnails
+                 once .lightbox-body's mobile column-reverse flips the visual order (see
+                 CSS) — thumbnails stay reachable right under the picture, description
+                 doesn't sit in the way of scrolling/picking one. Desktop keeps its own
+                 copy positioned next to the image (#gallery-metrics-desktop below);
+                 renderThumbnailsForCategory() fills both from the same data. -->
+            <div id="gallery-metrics-mobile" class="gallery-metrics mobile-metrics"></div>
+
+            <!-- Sidebar for Categories & Thumbnails -->
+            <div class="gallery-sidebar">
+                <div id="gallery-categories" class="gallery-categories"></div>
+                <div id="lightbox-thumbnails" class="lightbox-thumbnails" data-lenis-prevent></div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="lightbox-content" id="lightbox-content">
+                <button id="lightbox-back-btn" class="lightbox-back-btn hover-target" data-glyph="arrowLeft" aria-label="Назад"></button>
+                <button id="lightbox-focus-close-btn" class="lightbox-focus-close-btn mono hover-target" aria-label="Закрыть">[ ЗАКРЫТЬ ]</button>
+                <button id="gallery-prev" class="gallery-arrow arrow-left hover-target"><</button>
+                <div id="lightbox-inner" class="project-visual"></div>
+                <div id="gallery-metrics-desktop" class="gallery-metrics overlay-metrics"></div>
+                <button id="gallery-next" class="gallery-arrow arrow-right hover-target">></button>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom Custom Scrollbar -->
+    <div class="bottom-scroll-container">
+        <div class="bottom-scroll-thumb" id="bottom-scroll-thumb"></div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script src="scramble_test.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+    <!-- Smooth Scrolling -->
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+    <!-- 3D Model Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="dithr-effect-v2.js"></script>
+    <script src="years-3d.js?v=8"></script>
+    <script src="script.js?v=73"></script>
+    <!-- После script.js: renderGlyphs() успевает отрисовать пиксельный значок,
+         а на десктопе мы заменяем его 3D-каркасом (на мобиле значок остаётся). -->
+    <script src="case-icon-models.js?v=3"></script>
+    <script src="case-icons-3d.js?v=7"></script>
+</body>
+
+</html>
