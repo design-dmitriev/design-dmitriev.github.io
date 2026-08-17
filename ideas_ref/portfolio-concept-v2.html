@@ -41,6 +41,7 @@
   ::selection{ background:var(--accent); color:var(--bg); }
   a{ color:inherit; }
   .wrap{ max-width:1140px; margin:0 auto; padding:0 32px; }
+  @media (max-width:480px){ .wrap{ padding:0 18px; } }
 
   /* custom cursor */
   .cur{
@@ -155,12 +156,12 @@
     pointer-events:none; overflow:hidden;
   }
   .star{
-    position:absolute; width:3px; height:3px; border-radius:50%; background:var(--ink-faint);
-    pointer-events:none; opacity:.4; mix-blend-mode:var(--cursor-mix);
+    position:absolute; width:3px; height:3px; border-radius:50%; background:var(--ink-soft);
+    pointer-events:none; opacity:.55; box-shadow:0 0 3px 0 var(--ink-soft);
     animation:twinkle var(--dur,3.4s) ease-in-out infinite; animation-delay:var(--delay,0s);
   }
-  .star.accent{ background:var(--accent); }
-  @keyframes twinkle{ 0%,100%{ opacity:.22; transform:scale(.7); } 50%{ opacity:1; transform:scale(1.3); } }
+  .star.accent{ background:var(--accent); box-shadow:0 0 4px 0 var(--accent); }
+  @keyframes twinkle{ 0%,100%{ opacity:.3; transform:scale(.7); } 50%{ opacity:1; transform:scale(1.3); } }
   @media (max-width:640px){ .star{ display:none; } }
 
   .magnet-btn{
@@ -199,6 +200,7 @@
 
   /* sections */
   section{ padding:64px 0; }
+  @media (max-width:640px){ section{ padding:48px 0; } }
   .kicker{ display:flex; align-items:center; gap:12px; margin-bottom:36px; }
   .kicker .no{ font-size:12px; color:var(--ink-faint); }
   .kicker h2{ font-size:clamp(22px,3.4vw,30px); font-weight:800; letter-spacing:-.02em; margin:0; }
@@ -230,15 +232,13 @@
   .flip-card:hover .fc-icon svg{ stroke:var(--accent); }
   .flip-card .fc-num{ font-size:12px; color:var(--accent); font-weight:700; }
   .flip-card h3{ font-size:19px; font-weight:800; letter-spacing:-.01em; margin:14px 0 0; }
-  .fc-desc{
-    display:grid; grid-template-rows:0fr; transition:grid-template-rows .5s cubic-bezier(.16,1,.3,1);
-  }
+  /* the description text always occupies its final space — hover only fades
+     it in, so the card's height never changes and nothing around it jumps */
   .fc-desc p{
-    font-size:14px; color:var(--ink-soft); line-height:1.55; margin:12px 0 0; overflow:hidden;
-    min-height:0; opacity:0; transform:translateY(-6px);
-    transition:opacity .35s ease .05s, transform .35s ease .05s;
+    font-size:14px; color:var(--ink-soft); line-height:1.55; margin:12px 0 0;
+    opacity:0; transform:translateY(-4px);
+    transition:opacity .35s ease, transform .35s ease;
   }
-  .flip-card:hover .fc-desc, .flip-card.open .fc-desc{ grid-template-rows:1fr; }
   .flip-card:hover .fc-desc p, .flip-card.open .fc-desc p{ opacity:1; transform:none; }
   .flip-card .fc-arrow{ position:absolute; top:22px; right:22px; font-size:18px; color:var(--ink-faint); transition:transform .35s ease; }
   .flip-card:hover .fc-arrow{ transform:rotate(45deg); color:var(--accent); }
@@ -287,6 +287,7 @@
 
   /* cta */
   .cta-sec{ padding:96px 0 56px; text-align:center; perspective:1400px; }
+  @media (max-width:640px){ .cta-sec{ padding:64px 0 40px; } }
   .cta-title{
     font-weight:800; letter-spacing:-.03em; font-size:clamp(38px,7vw,80px); margin:0 0 30px; text-wrap:balance;
     transform-style:preserve-3d; transition:transform .2s ease-out;
