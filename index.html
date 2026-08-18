@@ -358,7 +358,7 @@
   /* each letter reacts on its own — the font "knows" exactly where the
      cursor is within the word, not just somewhere near the whole label */
   .sk-ch{
-    display:inline-block; font-style:normal; -webkit-text-stroke:0px var(--glass-ink);
+    display:inline-block; font-weight:inherit; font-style:normal; -webkit-text-stroke:0px var(--glass-ink);
     transition:color .2s ease, -webkit-text-stroke-width .2s ease, transform .2s ease;
   }
   @media (max-width:820px){
@@ -814,81 +814,85 @@
     });
   });
 
-  // skill items: the icon + item still drift toward the cursor (item-level,
-  // as before), but the LABEL now knows exactly where the cursor is within
-  // the text — each letter is its own element, and only the letters actually
-  // near the cursor thicken (faux-bold via text-stroke) and lean (faux-italic
-  // via skew), fading out letter by letter away from the pointer. Letter
-  // rects are cached (not read on every mousemove) and refreshed on
-  // resize/scroll/tab-switch, so this stays cheap even with ~100 letters.
+  // skill items: the icon + item drift toward the cursor, and the label's
+  // letters individually thicken/lean the closer the cursor is to each one.
+  // Everything here reads geometry ONLY in relayout() (called once up front,
+  // then again on resize/scroll/tab-switch) — the mousemove handler just
+  // records the pointer position, and a single rAF loop does the actual
+  // style writes once per frame. Nothing here ever calls getBoundingClientRect
+  // inside the hot path, so it can't lag or read stale/mid-transition rects.
   if(!isTouch){
     const skillsGrid = document.querySelector('.skills-grid');
     if(skillsGrid){
-      const items = Array.from(skillsGrid.querySelectorAll('.skill-item'));
-      const letterData = []; // { el, cx, cy }
-      items.forEach(item=>{
+      const items = Array.from(skillsGrid.querySelectorAll('.skill-item')).map(item=>({
+        item, icon:item.querySelector('svg'), cx:0, cy:0
+      }));
+      const letterData = []; // { el, item, cx, cy }
+      items.forEach(({item})=>{
         const label = item.querySelector('span');
         const text = label.textContent;
         label.textContent = '';
         text.split('').forEach(ch=>{
-          const b = document.createElement('b');
-          b.className = 'sk-ch';
-          b.textContent = ch === ' ' ? ' ' : ch;
-          label.appendChild(b);
-          letterData.push({ el:b, item, cx:0, cy:0 });
+          const s = document.createElement('span');
+          s.className = 'sk-ch';
+          s.textContent = ch === ' ' ? '\u00a0' : ch;
+          label.appendChild(s);
+          letterData.push({ el:s, item, cx:0, cy:0 });
         });
       });
 
-      function relayoutLetters(){
+      function relayout(){
+        items.forEach(en=>{
+          if(en.item.closest('.prog-pane') && !en.item.closest('.prog-pane.active')){ en.cx = en.cy = -9999; return; }
+          const r = en.item.getBoundingClientRect();
+          en.cx = r.left + r.width/2; en.cy = r.top + r.height/2;
+        });
         letterData.forEach(l=>{
           if(l.item.closest('.prog-pane') && !l.item.closest('.prog-pane.active')){ l.cx = l.cy = -9999; return; }
           const r = l.el.getBoundingClientRect();
           l.cx = r.left + r.width/2; l.cy = r.top + r.height/2;
         });
       }
-      relayoutLetters();
-      window.addEventListener('resize', relayoutLetters);
-      window.addEventListener('scroll', relayoutLetters, { passive:true });
-      document.querySelectorAll('.prog-tab').forEach(t=> t.addEventListener('click', ()=> setTimeout(relayoutLetters, 60)));
+      relayout();
+      window.addEventListener('resize', relayout);
+      window.addEventListener('scroll', relayout, { passive:true });
+      document.querySelectorAll('.prog-tab').forEach(t=> t.addEventListener('click', ()=> setTimeout(relayout, 380)));
 
-      const ITEM_RADIUS = 220, LETTER_RADIUS = 46;
+      const ITEM_RADIUS = 220, LETTER_RADIUS = 50;
       let skillsVisible = false;
       new IntersectionObserver(es=>{ skillsVisible = es[0].isIntersecting; }, { threshold:0 }).observe(skillsGrid);
 
-      const applyProximity = (mx2,my2)=>{
-        if(!skillsVisible) return;
-        items.forEach(item=>{
-          if(item.closest('.prog-pane') && !item.closest('.prog-pane.active')) return;
-          const r = item.getBoundingClientRect();
-          const cx = r.left + r.width/2, cy = r.top + r.height/2;
-          const dist = Math.hypot(cx-mx2, cy-my2);
-          const t = Math.max(0, 1 - dist/ITEM_RADIUS);
-          const eased = t*t*(3-2*t);
-          const icon = item.querySelector('svg');
-          if(reduceMotion){ item.style.transform=''; icon.style.transform=''; icon.style.stroke=''; return; }
-          item.style.transform = `translateX(${(eased*10).toFixed(1)}px) scale(${(1+eased*0.045).toFixed(3)})`;
-          icon.style.transform = `scale(${(1+eased*0.35).toFixed(2)}) rotate(${(eased*10).toFixed(1)}deg)`;
-          icon.style.stroke = eased > 0.1 ? 'var(--accent)' : '';
-        });
-        letterData.forEach(l=>{
-          const dist = Math.hypot(l.cx-mx2, l.cy-my2);
-          const t = Math.max(0, 1 - dist/LETTER_RADIUS);
-          const eased = t*t*(3-2*t);
-          if(reduceMotion || eased < 0.02){
-            l.el.style.cssText = '';
-            return;
-          }
-          l.el.style.setProperty('-webkit-text-stroke-width', (eased*0.6).toFixed(2)+'px');
-          l.el.style.transform = `skewX(${(-eased*9).toFixed(1)}deg)`;
-          l.el.style.color = eased > 0.15 ? 'var(--glass-ink)' : '';
-        });
-      };
-      window.addEventListener('mousemove', e=> applyProximity(e.clientX, e.clientY), { passive:true });
+      let mx3 = -9999, my3 = -9999;
+      window.addEventListener('mousemove', e=>{ mx3 = e.clientX; my3 = e.clientY; }, { passive:true });
+
+      (function skillsLoop(){
+        if(skillsVisible && !reduceMotion){
+          items.forEach(en=>{
+            const dist = Math.hypot(en.cx-mx3, en.cy-my3);
+            const t = Math.max(0, 1 - dist/ITEM_RADIUS);
+            const eased = t*t*(3-2*t);
+            en.item.style.transform = eased > 0.01 ? `translateX(${(eased*10).toFixed(1)}px) scale(${(1+eased*0.045).toFixed(3)})` : '';
+            en.icon.style.transform = eased > 0.01 ? `scale(${(1+eased*0.35).toFixed(2)}) rotate(${(eased*10).toFixed(1)}deg)` : '';
+            en.icon.style.stroke = eased > 0.1 ? 'var(--accent)' : '';
+          });
+          letterData.forEach(l=>{
+            const dist = Math.hypot(l.cx-mx3, l.cy-my3);
+            const t = Math.max(0, 1 - dist/LETTER_RADIUS);
+            const eased = t*t*(3-2*t);
+            if(eased < 0.02){
+              l.el.style.cssText = '';
+            } else {
+              l.el.style.setProperty('-webkit-text-stroke-width', (eased*0.5).toFixed(2)+'px');
+              l.el.style.transform = `skewX(${(-eased*8).toFixed(1)}deg)`;
+              l.el.style.color = eased > 0.15 ? 'var(--glass-ink)' : '';
+            }
+          });
+        }
+        requestAnimationFrame(skillsLoop);
+      })();
+
       skillsGrid.addEventListener('mouseleave', ()=>{
-        items.forEach(item=>{
-          item.style.transform = '';
-          const icon = item.querySelector('svg'); icon.style.transform = ''; icon.style.stroke = '';
-        });
+        items.forEach(en=>{ en.item.style.transform=''; en.icon.style.transform=''; en.icon.style.stroke=''; });
         letterData.forEach(l=>{ l.el.style.cssText = ''; });
       });
     }
