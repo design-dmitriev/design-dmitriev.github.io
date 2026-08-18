@@ -871,7 +871,13 @@
             // currently active tab — inactive-pane items sit exactly on top
             // (grid overlay) and would otherwise falsely match the cursor
             if(en.item.closest('.prog-pane') && !en.item.closest('.prog-pane.active')){
-              en.cx = en.cy = -9999; return;
+              // clear any leftover styling from before the tab was switched —
+              // otherwise an icon that was lit up right before you clicked a
+              // different tab stays stuck lit forever, since it never gets
+              // touched again once excluded here
+              en.cx = en.cy = -9999;
+              en.item.style.transform=''; en.icon.style.transform=''; en.icon.style.stroke='';
+              return;
             }
             const r = en.item.getBoundingClientRect();
             en.cx = r.left + r.width/2; en.cy = r.top + r.height/2;
@@ -994,16 +1000,11 @@
     // accent color as the cursor's light nears it — distance is measured to
     // the nearest point of the panel (so it lights up before the cursor is
     // even over it, and the effect hugs the whole rim, not just a spot).
-    // Rects are cached and only refreshed on scroll/resize, never read inside
-    // the per-frame loop, so this can't cause the layout-thrash jank fixed
-    // earlier for the stars.
-    const glassEls = isTouch ? [] : Array.from(document.querySelectorAll('.glass')).map(el=>({ el, rect:null, isButton: el.classList.contains('magnet-btn') }));
-    function relayoutGlass(){ glassEls.forEach(g=>{ g.rect = g.el.getBoundingClientRect(); }); }
-    if(glassEls.length){
-      relayoutGlass();
-      window.addEventListener('resize', relayoutGlass);
-      window.addEventListener('scroll', relayoutGlass, { passive:true });
-    }
+    // Rects are read fresh every other frame (not on every mousemove) — there
+    // are only ~16 glass panels, so this is cheap, and it means the panel's
+    // own continuous tilt (which changes its rendered box) can never leave
+    // this reacting to a stale position.
+    const glassEls = isTouch ? [] : Array.from(document.querySelectorAll('.glass')).map(el=>({ el, isButton: el.classList.contains('magnet-btn') }));
 
     let w,h,dpr;
     let targetX = innerWidth*0.5, targetY = innerHeight*0.32;
@@ -1045,28 +1046,20 @@
       if(starTick % 2 === 1 && glassEls.length){
         const RADIUS = 336; // +40%
         glassEls.forEach(g=>{
-          const r = g.rect;
-          if(!r) return;
+          const r = g.el.getBoundingClientRect();
           // nearest point of the panel to the cursor — this is where the
-          // spotlight sits, so only that part of the rim lights up, not the
-          // whole border
+          // spotlight sits (equal to the cursor's own position when it's
+          // inside the panel), so only that part of the rim lights up, not
+          // the whole border, whether you're approaching from outside or
+          // already inside
           const nx = Math.max(r.left, Math.min(curX, r.right));
           const ny = Math.max(r.top, Math.min(curY, r.bottom));
-          const inside = curX>r.left && curX<r.right && curY>r.top && curY<r.bottom;
           const dist = Math.hypot(nx-curX, ny-curY);
           const t = Math.max(0, 1 - dist/RADIUS);
-          // once the cursor is physically inside a card (not a button), the
-          // rim glow turns off entirely — only the physical tilt continues;
-          // buttons keep the glow since they're small and meant to react to
-          // being hovered directly
-          if(inside && !g.isButton){
-            g.el.style.setProperty('--edge-glow', 0);
-          } else {
-            g.el.style.setProperty('--edge-glow', (t*t*0.9).toFixed(3));
-            if(t > 0.02){
-              g.el.style.setProperty('--edge-x', (nx-r.left).toFixed(1)+'px');
-              g.el.style.setProperty('--edge-y', (ny-r.top).toFixed(1)+'px');
-            }
+          g.el.style.setProperty('--edge-glow', (t*t*0.9).toFixed(3));
+          if(t > 0.02){
+            g.el.style.setProperty('--edge-x', (nx-r.left).toFixed(1)+'px');
+            g.el.style.setProperty('--edge-y', (ny-r.top).toFixed(1)+'px');
           }
           // the panel itself leans slightly toward the cursor, the same
           // physical reaction the CTA headline has — stronger the closer
