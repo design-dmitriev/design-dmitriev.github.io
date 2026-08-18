@@ -15,6 +15,11 @@
     --accent-soft:rgba(61,78,255,.10);
     --line:#DEDED4;
     --cursor-mix: multiply;
+    --glass-bg:rgba(255,255,255,.5);
+    --glass-bg-2:rgba(255,255,255,.28);
+    --glass-border:rgba(255,255,255,.75);
+    --glass-shine:rgba(255,255,255,.9);
+    --glass-shadow:0 10px 34px -14px rgba(20,20,30,.28);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -27,16 +32,36 @@
       --accent-soft:rgba(124,139,255,.16);
       --line:#232327;
       --cursor-mix: screen;
+      --glass-bg:rgba(255,255,255,.08);
+      --glass-bg-2:rgba(255,255,255,.04);
+      --glass-border:rgba(255,255,255,.16);
+      --glass-shine:rgba(255,255,255,.35);
+      --glass-shadow:0 14px 40px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
     --bg:#0B0B0E; --surface:#151519; --ink:#F1F1EC; --ink-soft:#A6A6A0;
     --ink-faint:#5F5F5C; --accent:#7C8BFF; --accent-soft:rgba(124,139,255,.16);
     --line:#232327; --cursor-mix: screen;
+    --glass-bg:rgba(255,255,255,.08); --glass-bg-2:rgba(255,255,255,.04);
+    --glass-border:rgba(255,255,255,.16); --glass-shine:rgba(255,255,255,.35);
+    --glass-shadow:0 14px 40px -14px rgba(0,0,0,.6);
+  }
+  /* Liquid Glass — the shared frosted-panel look for every card/panel on the
+     site: translucent + blurred backdrop, a bright hairline border, and a
+     soft top highlight that reads as a curved glass surface catching light. */
+  .glass{
+    background:
+      linear-gradient(155deg, var(--glass-shine), transparent 30%),
+      linear-gradient(155deg, var(--glass-bg), var(--glass-bg-2));
+    -webkit-backdrop-filter:blur(20px) saturate(160%);
+    backdrop-filter:blur(20px) saturate(160%);
+    border:1px solid var(--glass-border);
+    box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-shine);
   }
 
   *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:smooth; scroll-padding-top:100px; }
   body{
     margin:0; background:var(--bg); color:var(--ink);
     font-family:-apple-system,'Segoe UI',system-ui,sans-serif;
@@ -70,17 +95,20 @@
   }
   @media (hover:none), (pointer:coarse){ .cur-trail{ display:none; } }
 
-  /* nav */
+  /* nav — a floating glass pill that stays with you as you scroll, not a
+     full-width bar (after picnic.afisha.ru's header) */
   .topbar{
-    position:sticky; top:0; z-index:50; display:flex; justify-content:space-between; align-items:center;
-    padding:22px 32px; background:color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter:blur(12px);
+    position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:50;
+    display:flex; justify-content:space-between; align-items:center; gap:32px;
+    width:min(100% - 40px, 980px); padding:14px 26px; border-radius:999px;
+    transition:top .3s ease, box-shadow .3s ease;
   }
-  .topbar .name{ font-weight:800; font-size:14px; letter-spacing:-.01em; }
+  .topbar .name{ font-weight:800; font-size:14px; letter-spacing:-.01em; white-space:nowrap; }
   .topbar nav{ display:flex; gap:24px; font-size:13px; color:var(--ink-soft); }
   .topbar nav a{ text-decoration:none; display:inline-block; font-variant-numeric:tabular-nums; }
   .topbar nav a:hover{ color:var(--accent); }
   @media (max-width:640px){
-    .topbar{ padding:16px 20px; }
+    .topbar{ top:12px; padding:11px 18px; gap:16px; }
     .topbar nav{ gap:14px; font-size:11.5px; }
   }
   @media (max-width:400px){
@@ -174,9 +202,9 @@
 
   .magnet-btn{
     position:relative; display:inline-flex; align-items:center; gap:11px;
-    padding:19px 34px; border-radius:999px; border:1px solid var(--line);
-    background:var(--surface); text-decoration:none; font-size:15px; font-weight:600; color:var(--ink);
-    transition:background .3s ease, border-color .3s ease;
+    padding:19px 34px; border-radius:999px;
+    text-decoration:none; font-size:15px; font-weight:600; color:var(--ink);
+    transition:border-color .3s ease, box-shadow .3s ease;
     overflow:hidden; isolation:isolate;
   }
   .magnet-btn:hover{ border-color:var(--accent); }
@@ -220,8 +248,8 @@
   /* interactive "how I work" cards */
   .card-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; perspective:900px; }
   .flip-card{
-    position:relative; border:1px solid var(--line); border-radius:24px; padding:34px;
-    background:var(--surface); cursor:pointer; overflow:hidden; transform-style:preserve-3d;
+    position:relative; border-radius:24px; padding:34px;
+    cursor:pointer; overflow:hidden; transform-style:preserve-3d;
     transition:transform .6s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .45s ease, opacity .5s ease;
     min-height:230px; display:flex; flex-direction:column; justify-content:space-between;
     will-change:transform; opacity:0; transform:translateY(32px);
@@ -232,7 +260,7 @@
   .flip-card.reveal{ transition-delay:calc(var(--i, 0) * 90ms); }
   .fc-head{ display:flex; align-items:center; gap:10px; }
   .fc-icon{
-    width:36px; height:36px; border-radius:11px; background:var(--bg); border:1px solid var(--line);
+    width:36px; height:36px; border-radius:11px;
     display:flex; align-items:center; justify-content:center; flex:0 0 auto;
     transition:transform .4s cubic-bezier(.34,1.56,.64,1), border-color .3s ease;
   }
@@ -284,8 +312,8 @@
      (HaruCase) gets the featured treatment — bigger, tinted, interactive —
      the rest stay quieter. */
   .path-scatter{ padding:20px 0 10px; perspective:1200px; }
-  .path-featured-row{ display:flex; justify-content:center; margin-bottom:56px; }
-  .path-central{ text-align:center; margin:0 0 56px; padding:0 20px; }
+  .path-featured-row{ display:flex; justify-content:center; margin-bottom:68px; }
+  .path-central{ text-align:center; margin:0 0 68px; padding:0 20px; }
   .path-central .pc-big{
     display:block; font-size:clamp(32px,4.2vw,58px); font-weight:800; letter-spacing:-.02em;
     line-height:1.05; color:var(--ink);
@@ -299,22 +327,21 @@
     display:grid; grid-template-columns:repeat(3,1fr); gap:5vw;
   }
   .path-card{
-    border:1px solid var(--line); border-radius:22px;
-    padding:28px; background:var(--surface); position:relative;
+    border-radius:22px;
+    padding:28px; position:relative;
     transform:rotate(var(--rot,0deg)) translateY(var(--off,0px));
     transition:transform .45s cubic-bezier(.22,1,.36,1), border-color .3s ease, box-shadow .35s ease;
   }
   .path-card:hover{
     transform:rotate(0deg) translateY(calc(var(--off,0px) - 6px)) scale(1.03) var(--tilt, );
-    border-color:var(--accent); box-shadow:0 22px 38px -22px rgba(0,0,0,.28); z-index:2;
+    border-color:var(--accent); z-index:2;
   }
   .path-card .yr{ font-size:13px; color:var(--accent); font-weight:700; }
   .path-card h3{ font-size:22px; font-weight:800; margin:12px 0 4px; letter-spacing:-.01em; }
   .path-card .role{ font-size:13px; color:var(--ink-faint); margin-bottom:14px; }
   .path-card p{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; margin:0; }
   .path-card.featured{
-    width:min(48vw,560px); padding:40px; border-color:var(--accent);
-    background:linear-gradient(160deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface));
+    width:min(48vw,560px); padding:40px;
   }
   .path-card.featured .yr{ font-size:15px; }
   .path-card.featured h3{ font-size:30px; }
@@ -329,9 +356,8 @@
   }
 
   /* cta */
-  #path{ padding-bottom:48px; }
-  .cta-sec{ padding:56px 0 0; text-align:center; perspective:1400px; }
-  @media (max-width:640px){ .cta-sec{ padding:40px 0 0; } }
+  .cta-sec{ padding:80px 0 0; text-align:center; perspective:1400px; }
+  @media (max-width:640px){ .cta-sec{ padding:56px 0 0; } }
   .cta-title{
     font-weight:800; letter-spacing:-.03em; font-size:clamp(38px,7.5vw,104px); margin:0 0 30px; text-wrap:balance;
     transform-style:preserve-3d; transition:transform .2s ease-out;
@@ -342,13 +368,13 @@
     transition:transform .2s ease, color .25s ease, -webkit-text-stroke-width .25s ease;
   }
   .contact-links{
-    display:flex; justify-content:center; flex-wrap:wrap; gap:10px 26px; margin-top:30px;
+    display:flex; justify-content:center; flex-wrap:wrap; gap:10px 26px; margin-top:38px;
     font-size:14.5px; color:var(--ink-faint);
   }
   .contact-links a{ text-decoration:none; transition:color .25s ease; }
   .contact-links a:hover{ color:var(--accent); }
-  footer{ margin-top:44px; padding:24px 0 48px; display:flex; justify-content:space-between; font-size:14px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); text-align:left; }
-  @media (max-width:640px){ footer{ margin-top:32px; padding:20px 0 36px; } }
+  footer{ margin-top:64px; padding:28px 0 56px; display:flex; justify-content:space-between; font-size:14px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); text-align:left; }
+  @media (max-width:640px){ footer{ margin-top:44px; padding:22px 0 40px; } }
   footer a{ color:inherit; text-decoration:none; transition:color .25s ease; }
   footer a:hover{ color:var(--accent); }
 
@@ -389,7 +415,7 @@
 <div class="cur" id="cur"></div>
 <div id="starfield"></div>
 
-<div class="topbar">
+<div class="topbar glass">
   <span class="name">Алексей Дмитриев</span>
   <nav>
     <a href="#work" data-hoverable>Подход</a>
@@ -417,7 +443,7 @@
       <span class="word"><span><em>продаёт.</em></span></span>
     </h1>
     <p class="hero-sub" id="heroSub">Веду дизайн-отдел, который выпускает сотни карточек для маркетплейсов и не теряет в качестве. 6 лет в коммерческом дизайне, 2 — во главе команды.</p>
-    <a class="magnet-btn sheen" id="magnetBtn" href="#work" data-hoverable>
+    <a class="magnet-btn sheen glass" id="magnetBtn" href="#work" data-hoverable>
       Как я это делаю
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
     </a>
@@ -430,10 +456,10 @@
   <section id="work">
     <div class="kicker"><span class="no">01</span><h2>Как я работаю</h2></div>
     <div class="card-row">
-      <div class="flip-card sheen reveal" data-hoverable style="--i:0">
+      <div class="flip-card sheen glass reveal" data-hoverable style="--i:0">
         <div>
           <div class="fc-head">
-            <span class="fc-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><circle cx="16" cy="10.5" r="2.4"/><path d="M4 19c.5-3.2 2.6-5 5-5s4.5 1.8 5 5"/><path d="M14.5 14.3c1.9.3 3.3 1.9 3.5 4.7"/></svg></span>
+            <span class="fc-icon glass"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><circle cx="16" cy="10.5" r="2.4"/><path d="M4 19c.5-3.2 2.6-5 5-5s4.5 1.8 5 5"/><path d="M14.5 14.3c1.9.3 3.3 1.9 3.5 4.7"/></svg></span>
             <span class="fc-num">Команда</span>
           </div>
           <h3>Строю людей, не только карточки</h3>
@@ -441,10 +467,10 @@
         <div class="fc-desc"><p>Нанимаю джунов и довожу их до уверенных мидлов и сеньоров через менторинг — команда растёт вместе с продуктом.</p></div>
         <span class="fc-arrow">↗</span>
       </div>
-      <div class="flip-card sheen reveal" data-hoverable style="--i:1">
+      <div class="flip-card sheen glass reveal" data-hoverable style="--i:1">
         <div>
           <div class="fc-head">
-            <span class="fc-icon"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7"/><path d="M17 3v4h-4M7 21v-4h4"/></svg></span>
+            <span class="fc-icon glass"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7"/><path d="M17 3v4h-4M7 21v-4h4"/></svg></span>
             <span class="fc-num">Процесс</span>
           </div>
           <h3>Конвейер вместо хаоса</h3>
@@ -452,10 +478,10 @@
         <div class="fc-desc"><p>Своя система быстрого продакшена и кастомные плагины для автовыгрузки ассетов — минуты вместо часов на карточку.</p></div>
         <span class="fc-arrow">↗</span>
       </div>
-      <div class="flip-card sheen reveal" data-hoverable style="--i:2">
+      <div class="flip-card sheen glass reveal" data-hoverable style="--i:2">
         <div>
           <div class="fc-head">
-            <span class="fc-icon"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20V13M22 20V7" stroke-width="1.8"/></svg></span>
+            <span class="fc-icon glass"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20V13M22 20V7" stroke-width="1.8"/></svg></span>
             <span class="fc-num">Прозрачность</span>
           </div>
           <h3>KPI, которым верят</h3>
@@ -463,10 +489,10 @@
         <div class="fc-desc"><p>С нуля разработал понятную систему оценки дизайн-отдела — команда знает, за что её измеряют.</p></div>
         <span class="fc-arrow">↗</span>
       </div>
-      <div class="flip-card sheen reveal" data-hoverable style="--i:3">
+      <div class="flip-card sheen glass reveal" data-hoverable style="--i:3">
         <div>
           <div class="fc-head">
-            <span class="fc-icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.7 8.6L10.5 16M16.3 8.6L13.5 16M8.2 7H15.8"/></svg></span>
+            <span class="fc-icon glass"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.7 8.6L10.5 16M16.3 8.6L13.5 16M8.2 7H15.8"/></svg></span>
             <span class="fc-num">Голос покупателя</span>
           </div>
           <h3>Фильтр между маркетингом и площадкой</h3>
@@ -515,7 +541,7 @@
       <div class="kicker"><span class="no">03</span><h2>Путь</h2></div>
       <div class="path-scatter reveal" id="pathScatter">
         <div class="path-featured-row">
-          <div class="path-card featured sheen" data-hoverable style="--rot:1.5deg; --off:0px">
+          <div class="path-card featured sheen glass" data-hoverable style="--rot:1.5deg; --off:0px">
             <span class="yr">2024 — сейчас</span>
             <h3>HaruCase</h3>
             <div class="role">Руководитель отдела дизайна</div>
@@ -527,19 +553,19 @@
           <span class="pc-sub">От руководства отделом дизайна назад — до самой первой предметной съёмки для маркетплейсов.</span>
         </div>
         <div class="path-row">
-          <div class="path-card" data-hoverable style="--rot:-2deg; --off:18px">
+          <div class="path-card glass" data-hoverable style="--rot:-2deg; --off:18px">
             <span class="yr">2023 — 2024</span>
             <h3>Fix Mobile</h3>
             <div class="role">Графический дизайнер / видеограф</div>
             <p>Единственный дизайнер компании: витрины под ключ, брендинг бренда 18+ с нуля, сложная ретушь.</p>
           </div>
-          <div class="path-card" data-hoverable style="--rot:2.5deg; --off:-14px">
+          <div class="path-card glass" data-hoverable style="--rot:2.5deg; --off:-14px">
             <span class="yr">2022</span>
             <h3>ARTOtaku</h3>
             <div class="role">Дизайнер</div>
             <p>Веб-дизайн, UI/UX, полиграфия, баннеры, карточки товаров.</p>
           </div>
-          <div class="path-card" data-hoverable style="--rot:-3deg; --off:22px">
+          <div class="path-card glass" data-hoverable style="--rot:-3deg; --off:22px">
             <span class="yr">2021 — 2022</span>
             <h3>Cases Stores</h3>
             <div class="role">Фотограф-дизайнер</div>
@@ -555,7 +581,7 @@
       <span class="mword">Нужен</span> <span class="mword">человек,</span><br>
       <span class="mword">который</span> <em class="mword">доведёт</em> <span class="mword">дизайн</span> <span class="mword">до</span> <span class="mword">продаж?</span>
     </h2>
-    <a class="magnet-btn sheen" id="magnetBtn2" href="https://t.me/starlight_lnk" target="_blank" rel="noopener" data-hoverable>
+    <a class="magnet-btn sheen glass" id="magnetBtn2" href="https://t.me/starlight_lnk" target="_blank" rel="noopener" data-hoverable>
       Написать в Telegram
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7V16"/></svg>
     </a>
