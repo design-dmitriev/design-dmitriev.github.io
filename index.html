@@ -13,8 +13,6 @@
     --ink-faint:#9C9C95;
     --accent:#3D4EFF;
     --accent-soft:rgba(61,78,255,.10);
-    --nebula-2:#7B3DFF;
-    --nebula-3:#FF3D8E;
     --line:#DEDED4;
     --cursor-mix: multiply;
   }
@@ -27,8 +25,6 @@
       --ink-faint:#5F5F5C;
       --accent:#7C8BFF;
       --accent-soft:rgba(124,139,255,.16);
-      --nebula-2:#B98BFF;
-      --nebula-3:#FF7CB8;
       --line:#232327;
       --cursor-mix: screen;
     }
@@ -36,7 +32,6 @@
   :root[data-theme="dark"]{
     --bg:#0B0B0E; --surface:#151519; --ink:#F1F1EC; --ink-soft:#A6A6A0;
     --ink-faint:#5F5F5C; --accent:#7C8BFF; --accent-soft:rgba(124,139,255,.16);
-    --nebula-2:#B98BFF; --nebula-3:#FF7CB8;
     --line:#232327; --cursor-mix: screen;
   }
 
@@ -103,13 +98,6 @@
   .hero{
     position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:center;
     padding:100px 0 60px; overflow:hidden;
-  }
-  /* the nebula — a few soft, slowly-drifting colored clouds behind the hero
-     content, layered at different depths so they part slightly with the
-     cursor (a cheap but convincing sense of 3D) */
-  #nebula{
-    position:absolute; inset:-15%; z-index:0; filter:blur(64px) saturate(1.3);
-    opacity:.8; pointer-events:none;
   }
   .hero-inner{ position:relative; z-index:1; }
 
@@ -288,24 +276,48 @@
   }
   @media (max-width:820px){ .skills-grid{ grid-template-columns:1fr; gap:28px; } }
 
-  /* horizontal drag timeline */
+  /* "Путь" — full-bleed horizontal scroller: content runs off the right edge
+     of the screen (only the left gutter lines up with the rest of the page),
+     scrolls with mouse-wheel (smoothed, not just drag), and a thin progress
+     line under it shows how far through you are. */
+  .tl-progress-track{
+    height:2px; background:var(--line); margin-bottom:40px; border-radius:2px; overflow:hidden;
+  }
+  .tl-progress{
+    height:100%; width:0%; background:var(--accent); border-radius:2px;
+    transition:width .1s linear;
+  }
   .tl-scroll{
-    display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x proximity; padding:8px 8px 26px;
+    display:flex; gap:0; overflow-x:auto; scroll-snap-type:x proximity;
+    padding:8px 12vw 30px 48px;
     cursor:grab; user-select:none; -ms-overflow-style:none; scrollbar-width:none;
   }
+  @media (max-width:960px){ .tl-scroll{ padding-left:32px; } }
+  @media (max-width:480px){ .tl-scroll{ padding-left:18px; padding-right:14vw; } }
   .tl-scroll::-webkit-scrollbar{ display:none; }
   .tl-scroll.grabbing{ cursor:grabbing; }
   .tl-card{
-    flex:0 0 auto; width:400px; scroll-snap-align:start; border:1px solid var(--line); border-radius:24px;
-    padding:32px; background:var(--surface); transition:transform .3s ease, border-color .3s ease;
+    flex:0 0 auto; width:min(46vw,560px); scroll-snap-align:start;
+    padding:0 56px 0 0; margin-right:56px; border-right:1px solid var(--line);
+    position:relative; transition:opacity .3s ease;
   }
-  .tl-card:hover{ border-color:var(--accent); transform:translateY(-4px); }
-  .tl-card .yr{ font-size:13px; color:var(--accent); font-weight:700; }
-  .tl-card h3{ font-size:24px; font-weight:800; margin:14px 0 4px; letter-spacing:-.01em; }
-  .tl-card .role{ font-size:13.5px; color:var(--ink-faint); margin-bottom:16px; }
-  .tl-card p{ font-size:15px; color:var(--ink-soft); line-height:1.6; margin:0; }
+  .tl-card:last-child{ border-right:none; margin-right:0; padding-right:0; }
+  .tl-index{
+    display:block; font-size:15px; font-weight:700; color:var(--ink-faint);
+    font-variant-numeric:tabular-nums; margin-bottom:18px;
+  }
+  .tl-card:hover .tl-index{ color:var(--accent); }
+  .tl-card .yr{ font-size:14px; color:var(--accent); font-weight:700; }
+  .tl-card h3{
+    font-size:clamp(30px,3vw,44px); font-weight:800; margin:16px 0 6px; letter-spacing:-.02em;
+  }
+  .tl-card .role{ font-size:15px; color:var(--ink-faint); margin-bottom:20px; }
+  .tl-card p{ font-size:16px; color:var(--ink-soft); line-height:1.65; margin:0; max-width:46ch; }
   .tl-hint{ font-size:13px; color:var(--ink-faint); margin-top:-10px; }
-  @media (max-width:640px){ .tl-card{ width:82vw; padding:24px; } }
+  @media (max-width:640px){
+    .tl-card{ width:80vw; padding-right:32px; margin-right:32px; }
+    .tl-card h3{ font-size:28px; }
+  }
 
   /* cta */
   .cta-sec{ padding:96px 0 0; text-align:center; perspective:1400px; }
@@ -378,7 +390,6 @@
 </div>
 
 <header class="hero">
-  <canvas id="nebula"></canvas>
   <canvas id="blob"></canvas>
   <div class="wrap hero-inner">
     <div class="hero-name" id="heroName">
@@ -490,28 +501,35 @@
   </section>
 
   <section id="path">
-    <div class="kicker"><span class="no">03</span><h2>Путь</h2></div>
-    <p class="tl-hint">← тяните, чтобы посмотреть все места</p>
+    <div class="wrap">
+      <div class="kicker"><span class="no">03</span><h2>Путь</h2></div>
+      <p class="tl-hint">Крутите колесо мыши или тяните — весь путь в одну строку</p>
+      <div class="tl-progress-track"><div class="tl-progress" id="tlProgress"></div></div>
+    </div>
     <div class="tl-scroll reveal" id="tlScroll">
-      <div class="tl-card sheen">
+      <div class="tl-card" data-hoverable>
+        <span class="tl-index">01</span>
         <span class="yr">2024 — сейчас</span>
         <h3>HaruCase</h3>
         <div class="role">Руководитель отдела дизайна</div>
         <p>Отдел из 5 человек, дизайн для WB/Ozon, KPI-система, перевод команды на Figma + AI.</p>
       </div>
-      <div class="tl-card sheen">
+      <div class="tl-card" data-hoverable>
+        <span class="tl-index">02</span>
         <span class="yr">2023 — 2024</span>
         <h3>Fix Mobile</h3>
         <div class="role">Графический дизайнер / видеограф</div>
         <p>Единственный дизайнер компании: витрины под ключ, брендинг бренда 18+ с нуля, сложная ретушь.</p>
       </div>
-      <div class="tl-card sheen">
+      <div class="tl-card" data-hoverable>
+        <span class="tl-index">03</span>
         <span class="yr">2022</span>
         <h3>ARTOtaku</h3>
         <div class="role">Дизайнер</div>
         <p>Веб-дизайн, UI/UX, полиграфия, баннеры, карточки товаров.</p>
       </div>
-      <div class="tl-card sheen">
+      <div class="tl-card" data-hoverable>
+        <span class="tl-index">04</span>
         <span class="yr">2021 — 2022</span>
         <h3>Cases Stores</h3>
         <div class="role">Фотограф-дизайнер</div>
@@ -602,7 +620,7 @@
   (function buildStarfield(){
     const field = document.getElementById('starfield');
     if(!field) return;
-    const N = innerWidth < 640 ? 24 : 44;
+    const N = innerWidth < 640 ? 40 : 90;
     for(let i=0;i<N;i++){
       const s = document.createElement('span');
       s.className = 'star' + (Math.random() < 0.22 ? ' accent' : '');
@@ -838,63 +856,6 @@
     });
   }
 
-  // hero nebula — several soft color clouds drifting slowly on their own,
-  // each parallaxing at a different rate against the cursor for a sense of
-  // depth. Confined to the hero (not fixed) so it doesn't linger elsewhere.
-  (function nebula(){
-    const canvas = document.getElementById('nebula');
-    const heroEl = document.querySelector('.hero');
-    if(!canvas || !heroEl) return;
-    const ctx = canvas.getContext('2d');
-    let w,h,dpr;
-    let mx=0.5, my=0.4;
-    function resize(){
-      dpr = Math.min(devicePixelRatio||1,1.5);
-      const r = heroEl.getBoundingClientRect();
-      w = canvas.width = r.width*dpr;
-      h = canvas.height = r.height*dpr;
-      canvas.style.width = r.width+'px';
-      canvas.style.height = r.height+'px';
-    }
-    resize(); window.addEventListener('resize', resize);
-    if(!isTouch){
-      heroEl.addEventListener('mousemove', e=>{
-        const r = heroEl.getBoundingClientRect();
-        mx = (e.clientX-r.left)/r.width; my = (e.clientY-r.top)/r.height;
-      }, { passive:true });
-    }
-    const cs = getComputedStyle(document.documentElement);
-    const clouds = [
-      { hue:cs.getPropertyValue('--accent').trim(),   bx:.30, by:.35, r:.55, speed:.00021, phase:0,   depth:26 },
-      { hue:cs.getPropertyValue('--nebula-2').trim(), bx:.68, by:.55, r:.48, speed:.00016, phase:2.1, depth:44 },
-      { hue:cs.getPropertyValue('--nebula-3').trim(), bx:.50, by:.72, r:.36, speed:.00027, phase:4.4, depth:14 },
-      { hue:cs.getPropertyValue('--accent').trim(),   bx:.82, by:.22, r:.30, speed:.00019, phase:1.3, depth:58 }
-    ];
-    if(reduceMotion){
-      // still paint a static nebula — just no motion
-      draw(0); return;
-    }
-    function draw(t){
-      ctx.clearRect(0,0,w,h);
-      clouds.forEach(c=>{
-        const driftX = Math.sin(t*c.speed + c.phase) * 0.06;
-        const driftY = Math.cos(t*c.speed*1.3 + c.phase) * 0.05;
-        const parX = (mx-0.5) * (c.depth/1000);
-        const parY = (my-0.5) * (c.depth/1000);
-        const cx = (c.bx + driftX - parX) * w;
-        const cy = (c.by + driftY - parY) * h;
-        const rad = c.r * Math.max(w,h);
-        const g = ctx.createRadialGradient(cx,cy,0,cx,cy,rad);
-        g.addColorStop(0, c.hue+'59');
-        g.addColorStop(0.55, c.hue+'22');
-        g.addColorStop(1, c.hue+'00');
-        ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
-      });
-      requestAnimationFrame(draw);
-    }
-    requestAnimationFrame(draw);
-  })();
-
   // one soft light, fixed to the viewport, that follows the cursor across the whole page
   const canvas = document.getElementById('blob');
   if(canvas && !reduceMotion){
@@ -959,22 +920,57 @@
     spotlight('.mword');
   }
 
-  // draggable horizontal timeline
+  // "Путь" horizontal scroller: still drag-able, but the main way to move
+  // through it is the mouse wheel — vertical wheel motion drives horizontal
+  // scroll, smoothed with easing instead of jumping, so you never have to
+  // "тыкать" (poke/drag) to see the rest. A thin progress line tracks how
+  // far through you are.
   const tl = document.getElementById('tlScroll');
+  const tlProgress = document.getElementById('tlProgress');
   if(tl){
-    let isDown=false, startX, scrollLeft;
-    tl.addEventListener('mousedown', e=>{
-      isDown=true; tl.classList.add('grabbing');
-      startX = e.pageX - tl.offsetLeft; scrollLeft = tl.scrollLeft;
-    });
-    window.addEventListener('mouseup', ()=>{ isDown=false; tl.classList.remove('grabbing'); });
-    tl.addEventListener('mouseleave', ()=>{ isDown=false; tl.classList.remove('grabbing'); });
-    tl.addEventListener('mousemove', e=>{
-      if(!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - tl.offsetLeft;
-      tl.scrollLeft = scrollLeft - (x - startX)*1.4;
-    });
+    const maxScroll = ()=> tl.scrollWidth - tl.clientWidth;
+    const updateProgress = ()=>{
+      if(!tlProgress) return;
+      const m = maxScroll();
+      tlProgress.style.width = (m > 0 ? (tl.scrollLeft/m)*100 : 0) + '%';
+    };
+
+    if(isTouch){
+      // native touch swipe already works via overflow-x:auto — just track progress
+      tl.addEventListener('scroll', updateProgress, { passive:true });
+      updateProgress();
+    } else {
+      // desktop: vertical wheel drives horizontal scroll, eased toward a target
+      // instead of jumping — this is what makes it feel smooth instead of "тыкать"
+      let target = tl.scrollLeft;
+      tl.addEventListener('wheel', e=>{
+        if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // let native horizontal wheel/trackpad through
+        e.preventDefault();
+        target = Math.max(0, Math.min(maxScroll(), target + e.deltaY * 1.5));
+      }, { passive:false });
+
+      (function smooth(){
+        tl.scrollLeft += (target - tl.scrollLeft) * (reduceMotion ? 1 : 0.16);
+        updateProgress();
+        requestAnimationFrame(smooth);
+      })();
+
+      // drag-to-scroll still works, and keeps the wheel target in sync
+      let isDown=false, startX, startScroll;
+      tl.addEventListener('mousedown', e=>{
+        isDown=true; tl.classList.add('grabbing');
+        startX = e.pageX - tl.offsetLeft; startScroll = tl.scrollLeft;
+      });
+      window.addEventListener('mouseup', ()=>{ isDown=false; tl.classList.remove('grabbing'); });
+      tl.addEventListener('mouseleave', ()=>{ isDown=false; tl.classList.remove('grabbing'); });
+      tl.addEventListener('mousemove', e=>{
+        if(!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - tl.offsetLeft;
+        tl.scrollLeft = startScroll - (x - startX)*1.4;
+        target = tl.scrollLeft;
+      });
+    }
   }
 </script>
 </body>
