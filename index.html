@@ -816,17 +816,19 @@
 
   // skill items: the icon + item drift toward the cursor, and each letter
   // in the label thickens/leans on its own the closer the cursor is to it.
-  // Item rects are re-read fresh every animation frame (cheap — only ~16
-  // items) so proximity is always accurate, even mid-scroll. Letters don't
-  // get their own per-frame layout read: each one's position is stored as
-  // an OFFSET from its parent item (set once, refreshed on resize/tab-switch)
-  // and reconstructed each frame from the item's fresh rect — so ~100
-  // letters cost zero extra layout reads per frame.
+  // The icon reacts to distance from ITS OWN position, not the item's
+  // center — for long labels ("Синхронизация со стейкхолдерами") the item's
+  // center sits well past the icon, so hovering directly on the icon used
+  // to barely register. Item rects are re-read fresh every animation frame
+  // (cheap — only ~16 items); the icon's and each letter's position is
+  // stored as an offset from the item's box (set once, refreshed on
+  // resize/tab-switch) and reconstructed each frame from the item's fresh
+  // rect — zero extra layout reads per frame for them.
   if(!isTouch){
     const skillsGrid = document.querySelector('.skills-grid');
     if(skillsGrid){
       const items = Array.from(skillsGrid.querySelectorAll('.skill-item')).map(item=>({
-        item, icon:item.querySelector('svg'), cx:0, cy:0, w:0, h:0
+        item, icon:item.querySelector('svg'), cx:0, cy:0, iox:0, ioy:0
       }));
       const letterData = []; // { el, en (item entry), ox, oy } — ox/oy are offsets from the item's own box
       items.forEach(en=>{
@@ -845,8 +847,10 @@
       function relayout(){
         items.forEach(en=>{
           const r = en.item.getBoundingClientRect();
-          en.cx = r.left + r.width/2; en.cy = r.top + r.height/2; en.w = r.width; en.h = r.height;
+          en.cx = r.left + r.width/2; en.cy = r.top + r.height/2;
           en._left = r.left; en._top = r.top;
+          const ir = en.icon.getBoundingClientRect();
+          en.iox = ir.left - r.left + ir.width/2; en.ioy = ir.top - r.top + ir.height/2;
         });
         letterData.forEach(l=>{
           const r = l.el.getBoundingClientRect();
@@ -857,7 +861,7 @@
       window.addEventListener('resize', relayout);
       document.querySelectorAll('.prog-tab').forEach(t=> t.addEventListener('click', ()=> setTimeout(relayout, 380)));
 
-      const ITEM_RADIUS = 220, LETTER_RADIUS = 50;
+      const ITEM_RADIUS = 220, ICON_RADIUS = 90, LETTER_RADIUS = 50;
       let skillsVisible = false;
       new IntersectionObserver(es=>{ skillsVisible = es[0].isIntersecting; }, { threshold:0 }).observe(skillsGrid);
 
@@ -886,8 +890,13 @@
             const t = Math.max(0, 1 - dist/ITEM_RADIUS);
             const eased = t*t*(3-2*t);
             en.item.style.transform = eased > 0.01 ? `translateX(${(eased*10).toFixed(1)}px) scale(${(1+eased*0.045).toFixed(3)})` : '';
-            en.icon.style.transform = eased > 0.01 ? `scale(${(1+eased*0.35).toFixed(2)}) rotate(${(eased*10).toFixed(1)}deg)` : '';
-            en.icon.style.stroke = eased > 0.1 ? 'var(--accent)' : '';
+
+            const iconX = en._left + en.iox, iconY = en._top + en.ioy;
+            const idist = Math.hypot(iconX-mx3, iconY-my3);
+            const it = Math.max(0, 1 - idist/ICON_RADIUS);
+            const ieased = it*it*(3-2*it);
+            en.icon.style.transform = ieased > 0.01 ? `scale(${(1+ieased*0.35).toFixed(2)}) rotate(${(ieased*10).toFixed(1)}deg)` : '';
+            en.icon.style.stroke = ieased > 0.12 ? 'var(--accent)' : '';
           });
           letterData.forEach(l=>{
             if(l.en.cx === -9999){ l.el.style.cssText = ''; return; }
@@ -1043,7 +1052,7 @@
         });
       }
 
-      if(starTick % 2 === 1 && glassEls.length){
+      if(glassEls.length){
         const RADIUS = 336; // +40%
         glassEls.forEach(g=>{
           const r = g.el.getBoundingClientRect();
