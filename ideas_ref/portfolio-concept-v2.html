@@ -53,6 +53,7 @@
     --glass-ink-faint:#8F8B82;
   }
   .glass{
+    position:relative;
     background:
       linear-gradient(155deg, var(--glass-shine), transparent 45%),
       var(--glass-bg);
@@ -61,10 +62,21 @@
     border:1px solid var(--glass-border);
     box-shadow:
       var(--glass-shadow),
-      inset 0 1px 0 rgba(255,255,255,.22),
-      0 0 0 1px rgba(var(--accent-rgb), var(--edge-glow,0)),
-      0 0 26px rgba(var(--accent-rgb), calc(var(--edge-glow,0) * .8));
+      inset 0 1px 0 rgba(255,255,255,.22);
     transition:box-shadow .15s ease-out;
+  }
+  /* the rim only lights up where the cursor's light actually is, not the
+     whole panel — a masked ring, spotlit at (--edge-x,--edge-y), which JS
+     keeps updated to the nearest point between the cursor and this panel */
+  .glass::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; padding:1.5px;
+    background:radial-gradient(90px circle at var(--edge-x,-999px) var(--edge-y,-999px),
+      rgba(var(--accent-rgb),.95), transparent 70%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite:exclude;
+    opacity:var(--edge-glow,0); pointer-events:none; transition:opacity .2s ease-out;
   }
 
   *{ box-sizing:border-box; }
@@ -108,12 +120,12 @@
   .topbar{
     position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:50;
     display:flex; justify-content:space-between; align-items:center; gap:32px;
-    width:min(100% - 64px, 1400px); padding:14px 18px 14px 28px; border-radius:999px;
+    width:min(100% - 64px, 1400px); padding:14px 18px 14px 28px; border-radius:26px;
     transition:top .3s ease, box-shadow .3s ease;
   }
   .topbar .name{ font-weight:800; font-size:15px; letter-spacing:-.01em; white-space:nowrap; color:var(--glass-ink); }
   .topbar nav{ display:flex; align-items:center; gap:30px; font-size:14px; color:var(--glass-ink-soft); }
-  .topbar nav a{ text-decoration:none; display:inline-block; font-variant-numeric:tabular-nums; }
+  .topbar nav a{ text-decoration:none; display:inline-block; font-variant-numeric:tabular-nums; transition:color .3s ease; }
   .topbar nav a:hover{ color:var(--accent); }
   .topbar nav a.cta-pill{
     display:inline-flex; align-items:center; padding:10px 20px; border-radius:999px;
@@ -266,11 +278,14 @@
   .flip-card{
     position:relative; border-radius:24px; padding:34px;
     cursor:pointer; overflow:hidden; transform-style:preserve-3d;
-    transition:transform .6s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .45s ease, opacity .5s ease;
+    transition:transform .4s ease-out, border-color .35s ease, box-shadow .45s ease, opacity .5s ease;
     min-height:230px; display:flex; flex-direction:column; justify-content:space-between;
     will-change:transform; opacity:0; transform:translateY(32px);
   }
-  .flip-card.in{ opacity:1; transform:none; }
+  /* once revealed, the card keeps physically leaning toward the cursor —
+     the same continuous reaction the CTA headline has, just subtler —
+     driven by --gtilt from the shared glass proximity loop */
+  .flip-card.in{ opacity:1; transform:var(--gtilt, none); }
   .flip-card:hover{ border-color:var(--accent); box-shadow:0 20px 34px -22px rgba(0,0,0,.22); }
   .flip-card > *{ transform:translateZ(8px); }
   .flip-card.reveal{ transition-delay:calc(var(--i, 0) * 90ms); }
@@ -299,6 +314,7 @@
   /* "С чем работаю" as a programme switcher (after ecomfest.ru's "Программа"
      track-tabs): pill tabs pick a track, a big glass stage shows that
      track's statement on the left and its skills on the right. */
+  #skills .wrap{ perspective:1400px; }
   .prog-tabs{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
   .prog-tab{
     font:inherit; cursor:pointer; appearance:none; border:1px solid var(--line);
@@ -308,11 +324,16 @@
   .prog-tab:hover{ border-color:var(--accent); color:var(--ink); }
   .prog-tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
 
-  .prog-stage{ border-radius:28px; padding:0; overflow:hidden; position:relative; }
-  .prog-pane{
-    display:none; grid-template-columns:1fr 1.3fr; gap:48px; padding:48px;
+  .prog-stage{
+    border-radius:28px; padding:0; overflow:hidden; position:relative; display:grid;
+    transform:var(--gtilt, none); transition:transform .35s ease-out;
   }
-  .prog-pane.active{ display:grid; }
+  .prog-pane{
+    grid-area:1/1; grid-template-columns:1fr 1.3fr; gap:48px; padding:48px;
+    display:grid; opacity:0; pointer-events:none; transform:translateY(6px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .prog-pane.active{ opacity:1; pointer-events:auto; transform:none; }
   .prog-pane-head{ align-self:start; }
   .prog-no{ font-size:13px; color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums; }
   .prog-pane-head h3{
@@ -363,8 +384,8 @@
   .path-card{
     border-radius:22px;
     padding:30px; position:relative;
-    transform:rotate(var(--rot,0deg)) translateY(var(--off,0px));
-    transition:transform .45s cubic-bezier(.22,1,.36,1), border-color .3s ease, box-shadow .35s ease;
+    transform:rotate(var(--rot,0deg)) translateY(var(--off,0px)) var(--gtilt, );
+    transition:transform .35s ease-out, border-color .3s ease, box-shadow .35s ease;
   }
   .path-card:hover{
     transform:rotate(0deg) translateY(calc(var(--off,0px) - 6px)) scale(1.03) var(--tilt, );
@@ -765,29 +786,6 @@
     })();
   }
 
-  // nav link scramble-on-hover
-  if(!isTouch){
-    const CHARS = 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЭЮЯ';
-    document.querySelectorAll('.topbar nav a').forEach(link=>{
-      const original = link.textContent;
-      let frame = null;
-      link.addEventListener('mouseenter', ()=>{
-        if(reduceMotion) return;
-        let iter = 0;
-        clearInterval(frame);
-        frame = setInterval(()=>{
-          link.textContent = original.split('').map((ch,i)=>{
-            if(i < iter) return original[i];
-            if(ch === ' ') return ' ';
-            return CHARS[Math.floor(Math.random()*CHARS.length)];
-          }).join('');
-          iter += 1;
-          if(iter > original.length){ clearInterval(frame); link.textContent = original; }
-        }, 28);
-      });
-      link.addEventListener('mouseleave', ()=>{ clearInterval(frame); link.textContent = original; });
-    });
-  }
 
   // flip-cards intentionally do NOT move on hover any more: shifting the card's
   // own box (translateY/rotate) could nudge its edge out from under the cursor,
@@ -827,6 +825,7 @@
       const applyProximity = (mx2,my2)=>{
         if(!skillsVisible) return;
         items.forEach(item=>{
+          if(item.closest('.prog-pane') && !item.closest('.prog-pane.active')) return;
           const r = item.getBoundingClientRect();
           const cx = r.left + r.width/2, cy = r.top + r.height/2;
           const dist = Math.hypot(cx-mx2, cy-my2);
@@ -997,11 +996,25 @@
         glassEls.forEach(g=>{
           const r = g.rect;
           if(!r) return;
+          // nearest point of the panel to the cursor — this is where the
+          // spotlight sits, so only that part of the rim lights up, not the
+          // whole border
           const nx = Math.max(r.left, Math.min(curX, r.right));
           const ny = Math.max(r.top, Math.min(curY, r.bottom));
           const dist = Math.hypot(nx-curX, ny-curY);
           const t = Math.max(0, 1 - dist/RADIUS);
           g.el.style.setProperty('--edge-glow', (t*t*0.9).toFixed(3));
+          if(t > 0.02){
+            g.el.style.setProperty('--edge-x', (nx-r.left).toFixed(1)+'px');
+            g.el.style.setProperty('--edge-y', (ny-r.top).toFixed(1)+'px');
+          }
+          // the panel itself leans slightly toward the cursor, the same
+          // physical reaction the CTA headline has — stronger the closer
+          // the cursor is, capped small so it stays subtle
+          const ccx = (r.left+r.right)/2, ccy = (r.top+r.bottom)/2;
+          const px = Math.max(-1.4, Math.min(1.4, (curX-ccx)/(r.width/2)));
+          const py = Math.max(-1.4, Math.min(1.4, (curY-ccy)/(r.height/2)));
+          g.el.style.setProperty('--gtilt', `rotateX(${(-py*3*t).toFixed(2)}deg) rotateY(${(px*3.6*t).toFixed(2)}deg)`);
         });
       }
       requestAnimationFrame(draw);
