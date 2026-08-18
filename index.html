@@ -13,6 +13,8 @@
     --ink-faint:#9C9C95;
     --accent:#3D4EFF;
     --accent-soft:rgba(61,78,255,.10);
+    --nebula-2:#7B3DFF;
+    --nebula-3:#FF3D8E;
     --line:#DEDED4;
     --cursor-mix: multiply;
   }
@@ -25,6 +27,8 @@
       --ink-faint:#5F5F5C;
       --accent:#7C8BFF;
       --accent-soft:rgba(124,139,255,.16);
+      --nebula-2:#B98BFF;
+      --nebula-3:#FF7CB8;
       --line:#232327;
       --cursor-mix: screen;
     }
@@ -32,6 +36,7 @@
   :root[data-theme="dark"]{
     --bg:#0B0B0E; --surface:#151519; --ink:#F1F1EC; --ink-soft:#A6A6A0;
     --ink-faint:#5F5F5C; --accent:#7C8BFF; --accent-soft:rgba(124,139,255,.16);
+    --nebula-2:#B98BFF; --nebula-3:#FF7CB8;
     --line:#232327; --cursor-mix: screen;
   }
 
@@ -99,6 +104,13 @@
     position:relative; min-height:100vh; display:flex; flex-direction:column; justify-content:center;
     padding:100px 0 60px; overflow:hidden;
   }
+  /* the nebula — a few soft, slowly-drifting colored clouds behind the hero
+     content, layered at different depths so they part slightly with the
+     cursor (a cheap but convincing sense of 3D) */
+  #nebula{
+    position:absolute; inset:-15%; z-index:0; filter:blur(64px) saturate(1.3);
+    opacity:.8; pointer-events:none;
+  }
   .hero-inner{ position:relative; z-index:1; }
 
   /* signature name row — leads the page, personal before anything else */
@@ -108,7 +120,7 @@
   }
   .hero-name.in{ opacity:1; transform:none; }
   .hn-letters{
-    display:flex; font-size:clamp(15px,1.7vw,18px); font-weight:700; letter-spacing:.16em;
+    display:flex; font-size:clamp(16px,1.9vw,21px); font-weight:700; letter-spacing:.16em;
     text-transform:uppercase; color:var(--ink);
   }
   .hn-letters .hn-l{ display:inline-block; transition:transform .3s cubic-bezier(.34,1.56,.64,1), color .3s ease; }
@@ -121,7 +133,7 @@
     transform:scaleX(0); transform-origin:left; transition:transform .9s cubic-bezier(.16,1,.3,1) .3s;
   }
   .hero-name.in .hn-rule::after{ transform:scaleX(1); }
-  .hn-role{ font-size:12.5px; color:var(--ink-faint); letter-spacing:.03em; white-space:nowrap; }
+  .hn-role{ font-size:14px; color:var(--ink-faint); letter-spacing:.03em; white-space:nowrap; }
   @media (max-width:560px){
     .hero{ padding:90px 0 50px; }
     .hero-name{ flex-wrap:wrap; row-gap:8px; margin-bottom:26px; }
@@ -130,10 +142,10 @@
   }
 
   .eyebrow{
-    display:inline-flex; align-items:center; gap:8px;
-    font-size:13px; color:var(--ink-soft); margin:0 0 24px; letter-spacing:.02em;
+    display:inline-flex; align-items:center; gap:9px;
+    font-size:14.5px; color:var(--ink-soft); margin:0 0 26px; letter-spacing:.02em;
   }
-  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:var(--accent); animation:pulse 1.8s ease-in-out infinite; }
+  .eyebrow .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); animation:pulse 1.8s ease-in-out infinite; }
   @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(1.5); opacity:.5;} }
 
   h1.title{
@@ -255,8 +267,8 @@
   /* skills — magnetic type list, weight + icon react to cursor proximity */
   .skills-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:48px; }
   .skill-group h4{
-    font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
-    margin:0 0 20px; border-bottom:1px solid var(--line); padding-bottom:16px;
+    font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
+    margin:0 0 22px; border-bottom:1px solid var(--line); padding-bottom:18px;
   }
   .skill-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
   .skill-item{
@@ -296,8 +308,8 @@
   @media (max-width:640px){ .tl-card{ width:82vw; padding:24px; } }
 
   /* cta */
-  .cta-sec{ padding:96px 0 56px; text-align:center; perspective:1400px; }
-  @media (max-width:640px){ .cta-sec{ padding:64px 0 40px; } }
+  .cta-sec{ padding:96px 0 0; text-align:center; perspective:1400px; }
+  @media (max-width:640px){ .cta-sec{ padding:64px 0 0; } }
   .cta-title{
     font-weight:800; letter-spacing:-.03em; font-size:clamp(38px,7.5vw,104px); margin:0 0 30px; text-wrap:balance;
     transform-style:preserve-3d; transition:transform .2s ease-out;
@@ -308,12 +320,13 @@
     transition:transform .2s ease, color .25s ease, -webkit-text-stroke-width .25s ease;
   }
   .contact-links{
-    display:flex; justify-content:center; flex-wrap:wrap; gap:8px 22px; margin-top:26px;
-    font-size:13px; color:var(--ink-faint);
+    display:flex; justify-content:center; flex-wrap:wrap; gap:10px 26px; margin-top:30px;
+    font-size:14.5px; color:var(--ink-faint);
   }
   .contact-links a{ text-decoration:none; transition:color .25s ease; }
   .contact-links a:hover{ color:var(--accent); }
-  footer{ padding:32px 0 64px; display:flex; justify-content:space-between; font-size:13px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); }
+  footer{ margin-top:44px; padding:24px 0 48px; display:flex; justify-content:space-between; font-size:14px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); text-align:left; }
+  @media (max-width:640px){ footer{ margin-top:32px; padding:20px 0 36px; } }
   footer a{ color:inherit; text-decoration:none; transition:color .25s ease; }
   footer a:hover{ color:var(--accent); }
 
@@ -365,6 +378,7 @@
 </div>
 
 <header class="hero">
+  <canvas id="nebula"></canvas>
   <canvas id="blob"></canvas>
   <div class="wrap hero-inner">
     <div class="hero-name" id="heroName">
@@ -520,13 +534,12 @@
       <a href="CV_Starlight.pdf" download="CV_Starlight.pdf" data-hoverable>Скачать CV</a>
       <a href="https://t.me/wtf_starlight" target="_blank" rel="noopener" data-hoverable>Блог</a>
     </div>
+    <footer>
+      <span>Алексей Дмитриев — Product Design Lead</span>
+      <span>Москва, м. Лианозово · <a href="https://t.me/starlight_lnk" target="_blank" rel="noopener" data-hoverable>Telegram</a> · <a href="mailto:starlight.lnk@yandex.ru" data-hoverable>Email</a></span>
+    </footer>
   </section>
 </main>
-
-<footer class="wrap">
-  <span>Алексей Дмитриев — Product Design Lead</span>
-  <span>Москва, м. Лианозово · <a href="https://t.me/starlight_lnk" target="_blank" rel="noopener" data-hoverable>Telegram</a> · <a href="mailto:starlight.lnk@yandex.ru" data-hoverable>Email</a></span>
-</footer>
 
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -824,6 +837,63 @@
       btn.addEventListener('mouseleave', ()=>{ btn.style.transform = 'translate(0,0)'; });
     });
   }
+
+  // hero nebula — several soft color clouds drifting slowly on their own,
+  // each parallaxing at a different rate against the cursor for a sense of
+  // depth. Confined to the hero (not fixed) so it doesn't linger elsewhere.
+  (function nebula(){
+    const canvas = document.getElementById('nebula');
+    const heroEl = document.querySelector('.hero');
+    if(!canvas || !heroEl) return;
+    const ctx = canvas.getContext('2d');
+    let w,h,dpr;
+    let mx=0.5, my=0.4;
+    function resize(){
+      dpr = Math.min(devicePixelRatio||1,1.5);
+      const r = heroEl.getBoundingClientRect();
+      w = canvas.width = r.width*dpr;
+      h = canvas.height = r.height*dpr;
+      canvas.style.width = r.width+'px';
+      canvas.style.height = r.height+'px';
+    }
+    resize(); window.addEventListener('resize', resize);
+    if(!isTouch){
+      heroEl.addEventListener('mousemove', e=>{
+        const r = heroEl.getBoundingClientRect();
+        mx = (e.clientX-r.left)/r.width; my = (e.clientY-r.top)/r.height;
+      }, { passive:true });
+    }
+    const cs = getComputedStyle(document.documentElement);
+    const clouds = [
+      { hue:cs.getPropertyValue('--accent').trim(),   bx:.30, by:.35, r:.55, speed:.00021, phase:0,   depth:26 },
+      { hue:cs.getPropertyValue('--nebula-2').trim(), bx:.68, by:.55, r:.48, speed:.00016, phase:2.1, depth:44 },
+      { hue:cs.getPropertyValue('--nebula-3').trim(), bx:.50, by:.72, r:.36, speed:.00027, phase:4.4, depth:14 },
+      { hue:cs.getPropertyValue('--accent').trim(),   bx:.82, by:.22, r:.30, speed:.00019, phase:1.3, depth:58 }
+    ];
+    if(reduceMotion){
+      // still paint a static nebula — just no motion
+      draw(0); return;
+    }
+    function draw(t){
+      ctx.clearRect(0,0,w,h);
+      clouds.forEach(c=>{
+        const driftX = Math.sin(t*c.speed + c.phase) * 0.06;
+        const driftY = Math.cos(t*c.speed*1.3 + c.phase) * 0.05;
+        const parX = (mx-0.5) * (c.depth/1000);
+        const parY = (my-0.5) * (c.depth/1000);
+        const cx = (c.bx + driftX - parX) * w;
+        const cy = (c.by + driftY - parY) * h;
+        const rad = c.r * Math.max(w,h);
+        const g = ctx.createRadialGradient(cx,cy,0,cx,cy,rad);
+        g.addColorStop(0, c.hue+'59');
+        g.addColorStop(0.55, c.hue+'22');
+        g.addColorStop(1, c.hue+'00');
+        ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+      });
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
 
   // one soft light, fixed to the viewport, that follows the cursor across the whole page
   const canvas = document.getElementById('blob');
