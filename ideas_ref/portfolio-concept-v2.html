@@ -105,7 +105,7 @@
     opacity:0;
   }
   body.cur-ready .cur{ opacity:1; }
-  .cur.big{ width:64px; height:64px; }
+  .cur.big{ width:32px; height:32px; }
   @media (hover:none), (pointer:coarse){ .cur{ display:none; } }
   .cur-trail{
     position:fixed; top:0; left:0; width:5px; height:5px; border-radius:50%;
@@ -286,7 +286,7 @@
      the same continuous reaction the CTA headline has, just subtler —
      driven by --gtilt from the shared glass proximity loop */
   .flip-card.in{ opacity:1; transform:var(--gtilt, none); }
-  .flip-card:hover{ border-color:var(--accent); box-shadow:0 20px 34px -22px rgba(0,0,0,.22); }
+  .flip-card:hover{ box-shadow:0 20px 34px -22px rgba(0,0,0,.22); }
   .flip-card > *{ transform:translateZ(8px); }
   .flip-card.reveal{ transition-delay:calc(var(--i, 0) * 90ms); }
   .fc-head{ display:flex; align-items:center; gap:10px; }
@@ -354,8 +354,12 @@
   }
   .skill-item span{
     font-size:16.5px; color:var(--glass-ink-soft); letter-spacing:-.005em;
-    -webkit-text-stroke:0px var(--glass-ink); text-stroke:0px var(--glass-ink);
-    transition:color .25s ease, -webkit-text-stroke-width .25s ease;
+  }
+  /* each letter reacts on its own — the font "knows" exactly where the
+     cursor is within the word, not just somewhere near the whole label */
+  .sk-ch{
+    display:inline-block; font-style:normal; -webkit-text-stroke:0px var(--glass-ink);
+    transition:color .2s ease, -webkit-text-stroke-width .2s ease, transform .2s ease;
   }
   @media (max-width:820px){
     .prog-pane{ grid-template-columns:1fr; gap:28px; padding:32px; }
@@ -389,7 +393,7 @@
   }
   .path-card:hover{
     transform:rotate(0deg) translateY(calc(var(--off,0px) - 6px)) scale(1.03) var(--tilt, );
-    border-color:var(--accent); z-index:2;
+    z-index:2;
   }
   .path-card .yr{ font-size:13px; color:var(--accent); font-weight:700; }
   .path-card h3{ font-size:21px; font-weight:800; margin:12px 0 4px; letter-spacing:-.01em; color:var(--glass-ink); }
@@ -435,7 +439,7 @@
     .flip-card, .path-card{ cursor:default; }
     .hn-l.touch-active{ transform:translateY(-6px) scale(1.15); color:var(--accent); }
     .skill-item.touch-active{ transform:translateX(8px) scale(1.03); }
-    .skill-item.touch-active span{ -webkit-text-stroke-width:.5px; color:var(--glass-ink); }
+    .skill-item.touch-active .sk-ch{ -webkit-text-stroke-width:.5px; color:var(--glass-ink); }
     .skill-item.touch-active svg{ stroke:var(--accent); transform:scale(1.25) rotate(8deg); }
     .mword.touch-active{ -webkit-text-stroke-width:.7px; transform:scale(1.06); }
   }
@@ -810,18 +814,47 @@
     });
   });
 
-  // skill items: font-weight (faux, via smoothly-transitioning text-stroke),
-  // color and icon react to cursor proximity — same behavior as before,
-  // just a continuous "boldness" instead of discrete font-weight jumps.
-  // Also gated by visibility (see the hero-name comment above) so it does no
-  // work while this section is scrolled out of view.
+  // skill items: the icon + item still drift toward the cursor (item-level,
+  // as before), but the LABEL now knows exactly where the cursor is within
+  // the text — each letter is its own element, and only the letters actually
+  // near the cursor thicken (faux-bold via text-stroke) and lean (faux-italic
+  // via skew), fading out letter by letter away from the pointer. Letter
+  // rects are cached (not read on every mousemove) and refreshed on
+  // resize/scroll/tab-switch, so this stays cheap even with ~100 letters.
   if(!isTouch){
     const skillsGrid = document.querySelector('.skills-grid');
     if(skillsGrid){
       const items = Array.from(skillsGrid.querySelectorAll('.skill-item'));
-      const RADIUS = 220;
+      const letterData = []; // { el, cx, cy }
+      items.forEach(item=>{
+        const label = item.querySelector('span');
+        const text = label.textContent;
+        label.textContent = '';
+        text.split('').forEach(ch=>{
+          const b = document.createElement('b');
+          b.className = 'sk-ch';
+          b.textContent = ch === ' ' ? ' ' : ch;
+          label.appendChild(b);
+          letterData.push({ el:b, item, cx:0, cy:0 });
+        });
+      });
+
+      function relayoutLetters(){
+        letterData.forEach(l=>{
+          if(l.item.closest('.prog-pane') && !l.item.closest('.prog-pane.active')){ l.cx = l.cy = -9999; return; }
+          const r = l.el.getBoundingClientRect();
+          l.cx = r.left + r.width/2; l.cy = r.top + r.height/2;
+        });
+      }
+      relayoutLetters();
+      window.addEventListener('resize', relayoutLetters);
+      window.addEventListener('scroll', relayoutLetters, { passive:true });
+      document.querySelectorAll('.prog-tab').forEach(t=> t.addEventListener('click', ()=> setTimeout(relayoutLetters, 60)));
+
+      const ITEM_RADIUS = 220, LETTER_RADIUS = 46;
       let skillsVisible = false;
       new IntersectionObserver(es=>{ skillsVisible = es[0].isIntersecting; }, { threshold:0 }).observe(skillsGrid);
+
       const applyProximity = (mx2,my2)=>{
         if(!skillsVisible) return;
         items.forEach(item=>{
@@ -829,21 +862,25 @@
           const r = item.getBoundingClientRect();
           const cx = r.left + r.width/2, cy = r.top + r.height/2;
           const dist = Math.hypot(cx-mx2, cy-my2);
-          const t = Math.max(0, 1 - dist/RADIUS);
-          const eased = t*t*(3-2*t); // smoothstep — continuous, no snapping
+          const t = Math.max(0, 1 - dist/ITEM_RADIUS);
+          const eased = t*t*(3-2*t);
           const icon = item.querySelector('svg');
-          const label = item.querySelector('span');
-          if(reduceMotion){
-            item.style.transform = ''; icon.style.transform = '';
-            label.style.setProperty('-webkit-text-stroke-width','0px'); label.style.color = '';
-            icon.style.stroke = '';
-            return;
-          }
+          if(reduceMotion){ item.style.transform=''; icon.style.transform=''; icon.style.stroke=''; return; }
           item.style.transform = `translateX(${(eased*10).toFixed(1)}px) scale(${(1+eased*0.045).toFixed(3)})`;
           icon.style.transform = `scale(${(1+eased*0.35).toFixed(2)}) rotate(${(eased*10).toFixed(1)}deg)`;
-          label.style.setProperty('-webkit-text-stroke-width', (eased*0.55).toFixed(2)+'px');
-          label.style.color = eased > 0.1 ? 'var(--glass-ink)' : '';
           icon.style.stroke = eased > 0.1 ? 'var(--accent)' : '';
+        });
+        letterData.forEach(l=>{
+          const dist = Math.hypot(l.cx-mx2, l.cy-my2);
+          const t = Math.max(0, 1 - dist/LETTER_RADIUS);
+          const eased = t*t*(3-2*t);
+          if(reduceMotion || eased < 0.02){
+            l.el.style.cssText = '';
+            return;
+          }
+          l.el.style.setProperty('-webkit-text-stroke-width', (eased*0.6).toFixed(2)+'px');
+          l.el.style.transform = `skewX(${(-eased*9).toFixed(1)}deg)`;
+          l.el.style.color = eased > 0.15 ? 'var(--glass-ink)' : '';
         });
       };
       window.addEventListener('mousemove', e=> applyProximity(e.clientX, e.clientY), { passive:true });
@@ -851,8 +888,8 @@
         items.forEach(item=>{
           item.style.transform = '';
           const icon = item.querySelector('svg'); icon.style.transform = ''; icon.style.stroke = '';
-          const label = item.querySelector('span'); label.style.setProperty('-webkit-text-stroke-width','0px'); label.style.color = '';
         });
+        letterData.forEach(l=>{ l.el.style.cssText = ''; });
       });
     }
   }
@@ -946,7 +983,7 @@
     // Rects are cached and only refreshed on scroll/resize, never read inside
     // the per-frame loop, so this can't cause the layout-thrash jank fixed
     // earlier for the stars.
-    const glassEls = isTouch ? [] : Array.from(document.querySelectorAll('.glass')).map(el=>({ el, rect:null }));
+    const glassEls = isTouch ? [] : Array.from(document.querySelectorAll('.glass')).map(el=>({ el, rect:null, isButton: el.classList.contains('magnet-btn') }));
     function relayoutGlass(){ glassEls.forEach(g=>{ g.rect = g.el.getBoundingClientRect(); }); }
     if(glassEls.length){
       relayoutGlass();
@@ -992,7 +1029,7 @@
       }
 
       if(starTick % 2 === 1 && glassEls.length){
-        const RADIUS = 240;
+        const RADIUS = 336; // +40%
         glassEls.forEach(g=>{
           const r = g.rect;
           if(!r) return;
@@ -1001,12 +1038,21 @@
           // whole border
           const nx = Math.max(r.left, Math.min(curX, r.right));
           const ny = Math.max(r.top, Math.min(curY, r.bottom));
+          const inside = curX>r.left && curX<r.right && curY>r.top && curY<r.bottom;
           const dist = Math.hypot(nx-curX, ny-curY);
           const t = Math.max(0, 1 - dist/RADIUS);
-          g.el.style.setProperty('--edge-glow', (t*t*0.9).toFixed(3));
-          if(t > 0.02){
-            g.el.style.setProperty('--edge-x', (nx-r.left).toFixed(1)+'px');
-            g.el.style.setProperty('--edge-y', (ny-r.top).toFixed(1)+'px');
+          // once the cursor is physically inside a card (not a button), the
+          // rim glow turns off entirely — only the physical tilt continues;
+          // buttons keep the glow since they're small and meant to react to
+          // being hovered directly
+          if(inside && !g.isButton){
+            g.el.style.setProperty('--edge-glow', 0);
+          } else {
+            g.el.style.setProperty('--edge-glow', (t*t*0.9).toFixed(3));
+            if(t > 0.02){
+              g.el.style.setProperty('--edge-x', (nx-r.left).toFixed(1)+'px');
+              g.el.style.setProperty('--edge-y', (ny-r.top).toFixed(1)+'px');
+            }
           }
           // the panel itself leans slightly toward the cursor, the same
           // physical reaction the CTA headline has — stronger the closer
