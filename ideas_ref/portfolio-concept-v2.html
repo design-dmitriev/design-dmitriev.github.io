@@ -814,22 +814,23 @@
     });
   });
 
-  // skill items: the icon + item drift toward the cursor, and the label's
-  // letters individually thicken/lean the closer the cursor is to each one.
-  // Everything here reads geometry ONLY in relayout() (called once up front,
-  // then again on resize/scroll/tab-switch) — the mousemove handler just
-  // records the pointer position, and a single rAF loop does the actual
-  // style writes once per frame. Nothing here ever calls getBoundingClientRect
-  // inside the hot path, so it can't lag or read stale/mid-transition rects.
+  // skill items: the icon + item drift toward the cursor, and each letter
+  // in the label thickens/leans on its own the closer the cursor is to it.
+  // Item rects are re-read fresh every animation frame (cheap — only ~16
+  // items) so proximity is always accurate, even mid-scroll. Letters don't
+  // get their own per-frame layout read: each one's position is stored as
+  // an OFFSET from its parent item (set once, refreshed on resize/tab-switch)
+  // and reconstructed each frame from the item's fresh rect — so ~100
+  // letters cost zero extra layout reads per frame.
   if(!isTouch){
     const skillsGrid = document.querySelector('.skills-grid');
     if(skillsGrid){
       const items = Array.from(skillsGrid.querySelectorAll('.skill-item')).map(item=>({
-        item, icon:item.querySelector('svg'), cx:0, cy:0
+        item, icon:item.querySelector('svg'), cx:0, cy:0, w:0, h:0
       }));
-      const letterData = []; // { el, item, cx, cy }
-      items.forEach(({item})=>{
-        const label = item.querySelector('span');
+      const letterData = []; // { el, en (item entry), ox, oy } — ox/oy are offsets from the item's own box
+      items.forEach(en=>{
+        const label = en.item.querySelector('span');
         const text = label.textContent;
         label.textContent = '';
         text.split('').forEach(ch=>{
@@ -837,25 +838,23 @@
           s.className = 'sk-ch';
           s.textContent = ch === ' ' ? '\u00a0' : ch;
           label.appendChild(s);
-          letterData.push({ el:s, item, cx:0, cy:0 });
+          letterData.push({ el:s, en, ox:0, oy:0 });
         });
       });
 
       function relayout(){
         items.forEach(en=>{
-          if(en.item.closest('.prog-pane') && !en.item.closest('.prog-pane.active')){ en.cx = en.cy = -9999; return; }
           const r = en.item.getBoundingClientRect();
-          en.cx = r.left + r.width/2; en.cy = r.top + r.height/2;
+          en.cx = r.left + r.width/2; en.cy = r.top + r.height/2; en.w = r.width; en.h = r.height;
+          en._left = r.left; en._top = r.top;
         });
         letterData.forEach(l=>{
-          if(l.item.closest('.prog-pane') && !l.item.closest('.prog-pane.active')){ l.cx = l.cy = -9999; return; }
           const r = l.el.getBoundingClientRect();
-          l.cx = r.left + r.width/2; l.cy = r.top + r.height/2;
+          l.ox = r.left - l.en._left + r.width/2; l.oy = r.top - l.en._top + r.height/2;
         });
       }
       relayout();
       window.addEventListener('resize', relayout);
-      window.addEventListener('scroll', relayout, { passive:true });
       document.querySelectorAll('.prog-tab').forEach(t=> t.addEventListener('click', ()=> setTimeout(relayout, 380)));
 
       const ITEM_RADIUS = 220, LETTER_RADIUS = 50;
@@ -868,6 +867,15 @@
       (function skillsLoop(){
         if(skillsVisible && !reduceMotion){
           items.forEach(en=>{
+            // only re-read layout for items that actually belong to the
+            // currently active tab — inactive-pane items sit exactly on top
+            // (grid overlay) and would otherwise falsely match the cursor
+            if(en.item.closest('.prog-pane') && !en.item.closest('.prog-pane.active')){
+              en.cx = en.cy = -9999; return;
+            }
+            const r = en.item.getBoundingClientRect();
+            en.cx = r.left + r.width/2; en.cy = r.top + r.height/2;
+            en._left = r.left; en._top = r.top;
             const dist = Math.hypot(en.cx-mx3, en.cy-my3);
             const t = Math.max(0, 1 - dist/ITEM_RADIUS);
             const eased = t*t*(3-2*t);
@@ -876,7 +884,9 @@
             en.icon.style.stroke = eased > 0.1 ? 'var(--accent)' : '';
           });
           letterData.forEach(l=>{
-            const dist = Math.hypot(l.cx-mx3, l.cy-my3);
+            if(l.en.cx === -9999){ l.el.style.cssText = ''; return; }
+            const lx = l.en._left + l.ox, ly = l.en._top + l.oy;
+            const dist = Math.hypot(lx-mx3, ly-my3);
             const t = Math.max(0, 1 - dist/LETTER_RADIUS);
             const eased = t*t*(3-2*t);
             if(eased < 0.02){
