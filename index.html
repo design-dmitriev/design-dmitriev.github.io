@@ -102,25 +102,34 @@
   }
   @media (hover:none), (pointer:coarse){ .cur-trail{ display:none; } }
 
-  /* nav — a floating glass pill that stays with you as you scroll, not a
-     full-width bar (after picnic.afisha.ru's header) */
+  /* nav — a wide floating glass bar that stays with you as you scroll, sized
+     and formatted after ecomfest.ru's header: logo left, nav center, a
+     filled pill button on the right instead of a plain link. */
   .topbar{
     position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:50;
     display:flex; justify-content:space-between; align-items:center; gap:32px;
-    width:min(100% - 40px, 980px); padding:14px 26px; border-radius:999px;
+    width:min(100% - 64px, 1400px); padding:14px 18px 14px 28px; border-radius:999px;
     transition:top .3s ease, box-shadow .3s ease;
   }
-  .topbar .name{ font-weight:800; font-size:14px; letter-spacing:-.01em; white-space:nowrap; color:var(--glass-ink); }
-  .topbar nav{ display:flex; gap:24px; font-size:13px; color:var(--glass-ink-soft); }
+  .topbar .name{ font-weight:800; font-size:15px; letter-spacing:-.01em; white-space:nowrap; color:var(--glass-ink); }
+  .topbar nav{ display:flex; align-items:center; gap:30px; font-size:14px; color:var(--glass-ink-soft); }
   .topbar nav a{ text-decoration:none; display:inline-block; font-variant-numeric:tabular-nums; }
   .topbar nav a:hover{ color:var(--accent); }
+  .topbar nav a.cta-pill{
+    display:inline-flex; align-items:center; padding:10px 20px; border-radius:999px;
+    background:var(--accent); color:#fff; font-weight:600; transition:transform .25s ease, background .25s ease;
+  }
+  .topbar nav a.cta-pill:hover{ color:#fff; background:color-mix(in srgb, var(--accent) 85%, white); transform:translateY(-1px); }
+  @media (max-width:760px){
+    .topbar nav a:not(.cta-pill){ display:none; }
+    .topbar nav{ gap:10px; }
+  }
   @media (max-width:640px){
-    .topbar{ top:12px; padding:11px 18px; gap:16px; }
-    .topbar nav{ gap:14px; font-size:11.5px; }
+    .topbar{ top:12px; padding:10px 10px 10px 18px; gap:16px; }
+    .topbar nav a.cta-pill{ padding:9px 16px; font-size:12.5px; }
   }
   @media (max-width:400px){
     .topbar .name{ font-size:12px; }
-    .topbar nav{ gap:9px; font-size:10px; }
   }
 
   /* global light that follows the cursor, everywhere on the page */
@@ -287,12 +296,30 @@
   .flip-card .fc-arrow{ position:absolute; top:22px; right:22px; font-size:18px; color:var(--glass-ink-faint); transition:transform .35s ease; }
   .flip-card:hover .fc-arrow{ transform:rotate(45deg); color:var(--accent); }
 
-  /* skills — magnetic type list, weight + icon react to cursor proximity */
-  .skills-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:48px; }
-  .skill-group h4{
-    font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
-    margin:0 0 22px; border-bottom:1px solid var(--line); padding-bottom:18px;
+  /* "С чем работаю" as a programme switcher (after ecomfest.ru's "Программа"
+     track-tabs): pill tabs pick a track, a big glass stage shows that
+     track's statement on the left and its skills on the right. */
+  .prog-tabs{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+  .prog-tab{
+    font:inherit; cursor:pointer; appearance:none; border:1px solid var(--line);
+    background:var(--surface); color:var(--ink-soft); padding:12px 22px; border-radius:999px;
+    font-size:14px; font-weight:600; transition:background .25s ease, color .25s ease, border-color .25s ease;
   }
+  .prog-tab:hover{ border-color:var(--accent); color:var(--ink); }
+  .prog-tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+
+  .prog-stage{ border-radius:28px; padding:0; overflow:hidden; position:relative; }
+  .prog-pane{
+    display:none; grid-template-columns:1fr 1.3fr; gap:48px; padding:48px;
+  }
+  .prog-pane.active{ display:grid; }
+  .prog-pane-head{ align-self:start; }
+  .prog-no{ font-size:13px; color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums; }
+  .prog-pane-head h3{
+    font-size:clamp(28px,3vw,42px); font-weight:800; letter-spacing:-.02em; margin:14px 0 14px; color:var(--glass-ink);
+  }
+  .prog-pane-head p{ font-size:16px; line-height:1.6; color:var(--glass-ink-soft); margin:0; max-width:36ch; }
+
   .skill-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
   .skill-item{
     display:flex; align-items:center; gap:16px; padding:13px 8px; border-radius:12px;
@@ -300,16 +327,18 @@
     transition:transform .2s ease;
   }
   .skill-item svg{
-    flex:0 0 auto; width:22px; height:22px; stroke:var(--ink-faint); fill:none; stroke-width:1.6;
+    flex:0 0 auto; width:22px; height:22px; stroke:var(--glass-ink-faint); fill:none; stroke-width:1.6;
     stroke-linecap:round; stroke-linejoin:round;
     transition:stroke .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
   }
   .skill-item span{
-    font-size:16.5px; color:var(--ink-soft); letter-spacing:-.005em;
-    -webkit-text-stroke:0px var(--ink); text-stroke:0px var(--ink);
+    font-size:16.5px; color:var(--glass-ink-soft); letter-spacing:-.005em;
+    -webkit-text-stroke:0px var(--glass-ink); text-stroke:0px var(--glass-ink);
     transition:color .25s ease, -webkit-text-stroke-width .25s ease;
   }
-  @media (max-width:820px){ .skills-grid{ grid-template-columns:1fr; gap:28px; } }
+  @media (max-width:820px){
+    .prog-pane{ grid-template-columns:1fr; gap:28px; padding:32px; }
+  }
 
   /* "Путь" — a scattered collage instead of a scroller: four equal stops,
      gently rotated and offset like items pinned to a board, spread across
@@ -385,7 +414,7 @@
     .flip-card, .path-card{ cursor:default; }
     .hn-l.touch-active{ transform:translateY(-6px) scale(1.15); color:var(--accent); }
     .skill-item.touch-active{ transform:translateX(8px) scale(1.03); }
-    .skill-item.touch-active span{ -webkit-text-stroke-width:.5px; color:var(--ink); }
+    .skill-item.touch-active span{ -webkit-text-stroke-width:.5px; color:var(--glass-ink); }
     .skill-item.touch-active svg{ stroke:var(--accent); transform:scale(1.25) rotate(8deg); }
     .mword.touch-active{ -webkit-text-stroke-width:.7px; transform:scale(1.06); }
   }
@@ -417,7 +446,7 @@
     <a href="#work" data-hoverable>Подход</a>
     <a href="#skills" data-hoverable>Навыки</a>
     <a href="#path" data-hoverable>Путь</a>
-    <a href="#contact" data-hoverable>Контакт</a>
+    <a class="cta-pill" href="#contact" data-hoverable>Связаться</a>
   </nav>
 </div>
 
@@ -500,34 +529,53 @@
   </section>
 
   <section id="skills">
-    <div class="kicker"><span class="no">02</span><h2>С чем работаю</h2></div>
-    <div class="skills-grid reveal">
-      <div class="skill-group">
-        <h4>Управление</h4>
-        <ul class="skill-list">
-          <li class="skill-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><circle cx="16" cy="10.5" r="2.4"/><path d="M4 19c.5-3.2 2.6-5 5-5s4.5 1.8 5 5"/><path d="M14.5 14.3c1.9.3 3.3 1.9 3.5 4.7"/></svg><span>Найм и менторство</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.7 8.6L10.5 16M16.3 8.6L13.5 16M8.2 7H15.8"/></svg><span>Синхронизация со стейкхолдерами</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20V13M22 20V7" stroke-width="1.8"/></svg><span>Система KPI</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7"/><path d="M17 3v4h-4M7 21v-4h4"/></svg><span>Оптимизация процессов</span></li>
-        </ul>
+    <div class="wrap">
+      <div class="kicker"><span class="no">02</span><h2>С чем работаю</h2></div>
+      <div class="prog-tabs reveal" id="progTabs">
+        <button class="prog-tab active" data-pane="0" data-hoverable>Управление</button>
+        <button class="prog-tab" data-pane="1" data-hoverable>Продукт</button>
+        <button class="prog-tab" data-pane="2" data-hoverable>Инструменты</button>
       </div>
-      <div class="skill-group">
-        <h4>Продукт</h4>
-        <ul class="skill-list">
-          <li class="skill-item"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/></svg><span>Дизайн-системы</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-5-5"/></svg><span>Анализ рынка и конкурентов</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h11M4 18h7"/></svg><span>Гайдлайны</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M12 3v7"/><path d="M12 10l-6 4v7M12 10l6 4v7"/></svg><span>A/B тесты гипотез</span></li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <h4>Инструменты</h4>
-        <ul class="skill-list">
-          <li class="skill-item"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><span>Figma / Photoshop / Illustrator</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/><path d="M14 6h6v6"/></svg><span>Google Analytics</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg><span>Gemini / ChatGPT / Midjourney</span></li>
-          <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 1 7 7"/><path d="M12 19l-3-1M12 19l-1-3"/></svg><span>Nada / Banana / Revi AI</span></li>
-        </ul>
+      <div class="prog-stage skills-grid glass" id="progStage">
+        <div class="prog-pane active" data-pane="0">
+          <div class="prog-pane-head">
+            <span class="prog-no">01</span>
+            <h3>Управление</h3>
+            <p>Как выстраиваю процессы и держу команду в тонусе — от найма до прозрачных метрик.</p>
+          </div>
+          <ul class="skill-list">
+            <li class="skill-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><circle cx="16" cy="10.5" r="2.4"/><path d="M4 19c.5-3.2 2.6-5 5-5s4.5 1.8 5 5"/><path d="M14.5 14.3c1.9.3 3.3 1.9 3.5 4.7"/></svg><span>Найм и менторство</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M7.7 8.6L10.5 16M16.3 8.6L13.5 16M8.2 7H15.8"/></svg><span>Синхронизация со стейкхолдерами</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20V13M22 20V7" stroke-width="1.8"/></svg><span>Система KPI</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7"/><path d="M17 3v4h-4M7 21v-4h4"/></svg><span>Оптимизация процессов</span></li>
+          </ul>
+        </div>
+        <div class="prog-pane" data-pane="1">
+          <div class="prog-pane-head">
+            <span class="prog-no">02</span>
+            <h3>Продукт</h3>
+            <p>Как ищу инсайты и превращаю их в решения, которые реально продают.</p>
+          </div>
+          <ul class="skill-list">
+            <li class="skill-item"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.2"/><rect x="13" y="4" width="7" height="7" rx="1.2"/><rect x="4" y="13" width="7" height="7" rx="1.2"/><rect x="13" y="13" width="7" height="7" rx="1.2"/></svg><span>Дизайн-системы</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-5-5"/></svg><span>Анализ рынка и конкурентов</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h11M4 18h7"/></svg><span>Гайдлайны</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M12 3v7"/><path d="M12 10l-6 4v7M12 10l6 4v7"/></svg><span>A/B тесты гипотез</span></li>
+          </ul>
+        </div>
+        <div class="prog-pane" data-pane="2">
+          <div class="prog-pane-head">
+            <span class="prog-no">03</span>
+            <h3>Инструменты</h3>
+            <p>На чём собираю всё это — от макета до генерации ассетов нейросетями.</p>
+          </div>
+          <ul class="skill-list">
+            <li class="skill-item"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg><span>Figma / Photoshop / Illustrator</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/><path d="M14 6h6v6"/></svg><span>Google Analytics</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/></svg><span>Gemini / ChatGPT / Midjourney</span></li>
+            <li class="skill-item"><svg viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 1 7 7"/><path d="M12 19l-3-1M12 19l-1-3"/></svg><span>Nada / Banana / Revi AI</span></li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -795,7 +843,7 @@
           item.style.transform = `translateX(${(eased*10).toFixed(1)}px) scale(${(1+eased*0.045).toFixed(3)})`;
           icon.style.transform = `scale(${(1+eased*0.35).toFixed(2)}) rotate(${(eased*10).toFixed(1)}deg)`;
           label.style.setProperty('-webkit-text-stroke-width', (eased*0.55).toFixed(2)+'px');
-          label.style.color = eased > 0.1 ? 'var(--ink)' : '';
+          label.style.color = eased > 0.1 ? 'var(--glass-ink)' : '';
           icon.style.stroke = eased > 0.1 ? 'var(--accent)' : '';
         });
       };
@@ -960,6 +1008,20 @@
     }
     draw();
   }
+
+  // "С чем работаю" programme tabs — click a track, see its stage
+  (function progTabs(){
+    const tabs = document.querySelectorAll('.prog-tab');
+    const panes = document.querySelectorAll('.prog-pane');
+    if(!tabs.length) return;
+    tabs.forEach(tab=>{
+      tab.addEventListener('click', ()=>{
+        const target = tab.getAttribute('data-pane');
+        tabs.forEach(t=> t.classList.toggle('active', t===tab));
+        panes.forEach(p=> p.classList.toggle('active', p.getAttribute('data-pane')===target));
+      });
+    });
+  })();
 
   // touch devices: the desktop effects above react to mouse proximity, which
   // doesn't exist on a phone. Here each of the same three element groups
