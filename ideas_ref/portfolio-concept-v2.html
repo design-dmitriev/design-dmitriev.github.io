@@ -276,47 +276,56 @@
   }
   @media (max-width:820px){ .skills-grid{ grid-template-columns:1fr; gap:28px; } }
 
-  /* "Путь" — full-bleed horizontal scroller: content runs off the right edge
-     of the screen (only the left gutter lines up with the rest of the page),
-     scrolls with mouse-wheel (smoothed, not just drag), and a thin progress
-     line under it shows how far through you are. */
-  .tl-progress-track{
-    height:2px; background:var(--line); margin-bottom:40px; border-radius:2px; overflow:hidden;
+  /* "Путь" — a scattered collage instead of a scroller: each stop is its own
+     card, gently rotated and offset like items pinned to a board, laid out
+     in chronological reading order (newest first) with a big statement about
+     the years spent doing this sitting in the middle of them. The most
+     recent job (HaruCase) gets the featured treatment — bigger, tinted,
+     interactive — the rest stay quieter. */
+  .path-scatter{
+    display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:center;
+    gap:28px 24px; padding:20px 0 10px; perspective:1200px;
   }
-  .tl-progress{
-    height:100%; width:0%; background:var(--accent); border-radius:2px;
-    transition:width .1s linear;
+  .path-central{
+    flex:1 1 100%; text-align:center; margin:24px 0 8px; padding:0 20px;
   }
-  .tl-scroll{
-    display:flex; gap:0; overflow-x:auto; scroll-snap-type:x proximity;
-    padding:8px 12vw 30px 48px;
-    cursor:grab; user-select:none; -ms-overflow-style:none; scrollbar-width:none;
+  .path-central .pc-big{
+    display:block; font-size:clamp(32px,4.2vw,58px); font-weight:800; letter-spacing:-.02em;
+    line-height:1.05; color:var(--ink);
   }
-  @media (max-width:960px){ .tl-scroll{ padding-left:32px; } }
-  @media (max-width:480px){ .tl-scroll{ padding-left:18px; padding-right:14vw; } }
-  .tl-scroll::-webkit-scrollbar{ display:none; }
-  .tl-scroll.grabbing{ cursor:grabbing; }
-  .tl-card{
-    flex:0 0 auto; width:min(46vw,560px); scroll-snap-align:start;
-    padding:0 56px 0 0; margin-right:56px; border-right:1px solid var(--line);
-    position:relative; transition:opacity .3s ease;
+  .path-central .pc-big em{ font-style:normal; color:var(--accent); }
+  .path-central .pc-sub{
+    display:block; margin-top:14px; font-size:16px; color:var(--ink-faint); max-width:44ch;
+    margin-left:auto; margin-right:auto;
   }
-  .tl-card:last-child{ border-right:none; margin-right:0; padding-right:0; }
-  .tl-index{
-    display:block; font-size:15px; font-weight:700; color:var(--ink-faint);
-    font-variant-numeric:tabular-nums; margin-bottom:18px;
+  .path-card{
+    flex:1 1 250px; max-width:300px; border:1px solid var(--line); border-radius:22px;
+    padding:28px; background:var(--surface); position:relative;
+    transform:rotate(var(--rot,0deg)) translateY(var(--off,0px));
+    transition:transform .45s cubic-bezier(.22,1,.36,1), border-color .3s ease, box-shadow .35s ease;
   }
-  .tl-card:hover .tl-index{ color:var(--accent); }
-  .tl-card .yr{ font-size:14px; color:var(--accent); font-weight:700; }
-  .tl-card h3{
-    font-size:clamp(30px,3vw,44px); font-weight:800; margin:16px 0 6px; letter-spacing:-.02em;
+  .path-card:hover{
+    transform:rotate(0deg) translateY(calc(var(--off,0px) - 6px)) scale(1.03) var(--tilt, );
+    border-color:var(--accent); box-shadow:0 22px 38px -22px rgba(0,0,0,.28); z-index:2;
   }
-  .tl-card .role{ font-size:15px; color:var(--ink-faint); margin-bottom:20px; }
-  .tl-card p{ font-size:16px; color:var(--ink-soft); line-height:1.65; margin:0; max-width:46ch; }
-  .tl-hint{ font-size:13px; color:var(--ink-faint); margin-top:-10px; }
-  @media (max-width:640px){
-    .tl-card{ width:80vw; padding-right:32px; margin-right:32px; }
-    .tl-card h3{ font-size:28px; }
+  .path-card .yr{ font-size:13px; color:var(--accent); font-weight:700; }
+  .path-card h3{ font-size:22px; font-weight:800; margin:12px 0 4px; letter-spacing:-.01em; }
+  .path-card .role{ font-size:13px; color:var(--ink-faint); margin-bottom:14px; }
+  .path-card p{ font-size:14.5px; color:var(--ink-soft); line-height:1.55; margin:0; }
+  .path-card.featured{
+    flex-basis:340px; max-width:380px; padding:36px; border-color:var(--accent);
+    background:linear-gradient(160deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface));
+  }
+  .path-card.featured .yr{ font-size:14px; }
+  .path-card.featured h3{ font-size:28px; }
+  .path-card.featured .role{ font-size:14px; }
+  .path-card.featured p{ font-size:15.5px; }
+  .path-card.featured::before{
+    content:"✦"; position:absolute; top:22px; right:26px; color:var(--accent); font-size:18px;
+    animation:twinkle 2.6s ease-in-out infinite;
+  }
+  @media (max-width:720px){
+    .path-card{ --rot:0deg !important; --off:0px !important; flex-basis:100%; max-width:none; }
   }
 
   /* cta */
@@ -350,7 +359,7 @@
      hover to reveal it with. */
   @media (hover:none){
     .fc-desc p{ opacity:1; transform:none; }
-    .flip-card, .tl-card{ cursor:default; }
+    .flip-card, .path-card{ cursor:default; }
     .hn-l.touch-active{ transform:translateY(-6px) scale(1.15); color:var(--accent); }
     .skill-item.touch-active{ transform:translateX(8px) scale(1.03); }
     .skill-item.touch-active span{ -webkit-text-stroke-width:.5px; color:var(--ink); }
@@ -367,7 +376,7 @@
     .eyebrow .dot{ animation:none; }
     .scrollcue .bar::after{ animation:none; }
     #blob{ display:none; }
-    .flip-card, .tl-card{ transition:none; }
+    .flip-card, .path-card{ transition:none; }
     .hero-name{ opacity:1; transform:none; transition:none; }
     .hn-rule::after{ transform:scaleX(1); transition:none; }
     .star{ animation:none; opacity:.3; }
@@ -503,37 +512,35 @@
   <section id="path">
     <div class="wrap">
       <div class="kicker"><span class="no">03</span><h2>Путь</h2></div>
-      <p class="tl-hint">Крутите колесо мыши или тяните — весь путь в одну строку</p>
-      <div class="tl-progress-track"><div class="tl-progress" id="tlProgress"></div></div>
-    </div>
-    <div class="tl-scroll reveal" id="tlScroll">
-      <div class="tl-card" data-hoverable>
-        <span class="tl-index">01</span>
-        <span class="yr">2024 — сейчас</span>
-        <h3>HaruCase</h3>
-        <div class="role">Руководитель отдела дизайна</div>
-        <p>Отдел из 5 человек, дизайн для WB/Ozon, KPI-система, перевод команды на Figma + AI.</p>
-      </div>
-      <div class="tl-card" data-hoverable>
-        <span class="tl-index">02</span>
-        <span class="yr">2023 — 2024</span>
-        <h3>Fix Mobile</h3>
-        <div class="role">Графический дизайнер / видеограф</div>
-        <p>Единственный дизайнер компании: витрины под ключ, брендинг бренда 18+ с нуля, сложная ретушь.</p>
-      </div>
-      <div class="tl-card" data-hoverable>
-        <span class="tl-index">03</span>
-        <span class="yr">2022</span>
-        <h3>ARTOtaku</h3>
-        <div class="role">Дизайнер</div>
-        <p>Веб-дизайн, UI/UX, полиграфия, баннеры, карточки товаров.</p>
-      </div>
-      <div class="tl-card" data-hoverable>
-        <span class="tl-index">04</span>
-        <span class="yr">2021 — 2022</span>
-        <h3>Cases Stores</h3>
-        <div class="role">Фотограф-дизайнер</div>
-        <p>Инфографика, предметная съёмка и ретушь, видеосъёмка маркетинговых роликов.</p>
+      <div class="path-scatter reveal" id="pathScatter">
+        <div class="path-card" data-hoverable style="--rot:-3deg; --off:22px">
+          <span class="yr">2021 — 2022</span>
+          <h3>Cases Stores</h3>
+          <div class="role">Фотограф-дизайнер</div>
+          <p>Инфографика, предметная съёмка и ретушь, видеосъёмка маркетинговых роликов.</p>
+        </div>
+        <div class="path-card" data-hoverable style="--rot:2.5deg; --off:-14px">
+          <span class="yr">2022</span>
+          <h3>ARTOtaku</h3>
+          <div class="role">Дизайнер</div>
+          <p>Веб-дизайн, UI/UX, полиграфия, баннеры, карточки товаров.</p>
+        </div>
+        <div class="path-card" data-hoverable style="--rot:-2deg; --off:18px">
+          <span class="yr">2023 — 2024</span>
+          <h3>Fix Mobile</h3>
+          <div class="role">Графический дизайнер / видеограф</div>
+          <p>Единственный дизайнер компании: витрины под ключ, брендинг бренда 18+ с нуля, сложная ретушь.</p>
+        </div>
+        <div class="path-central">
+          <span class="pc-big">6 лет <em>в пути</em> — четыре места, один почерк</span>
+          <span class="pc-sub">От предметной съёмки для маркетплейсов до руководства отделом дизайна: каждая точка — новый уровень ответственности.</span>
+        </div>
+        <div class="path-card featured sheen" data-hoverable style="--rot:1.5deg; --off:0px">
+          <span class="yr">2024 — сейчас</span>
+          <h3>HaruCase</h3>
+          <div class="role">Руководитель отдела дизайна</div>
+          <p>Отдел из 5 человек, дизайн для WB/Ozon, KPI-система, перевод команды на Figma + AI.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -920,57 +927,21 @@
     spotlight('.mword');
   }
 
-  // "Путь" horizontal scroller: still drag-able, but the main way to move
-  // through it is the mouse wheel — vertical wheel motion drives horizontal
-  // scroll, smoothed with easing instead of jumping, so you never have to
-  // "тыкать" (poke/drag) to see the rest. A thin progress line tracks how
-  // far through you are.
-  const tl = document.getElementById('tlScroll');
-  const tlProgress = document.getElementById('tlProgress');
-  if(tl){
-    const maxScroll = ()=> tl.scrollWidth - tl.clientWidth;
-    const updateProgress = ()=>{
-      if(!tlProgress) return;
-      const m = maxScroll();
-      tlProgress.style.width = (m > 0 ? (tl.scrollLeft/m)*100 : 0) + '%';
-    };
-
-    if(isTouch){
-      // native touch swipe already works via overflow-x:auto — just track progress
-      tl.addEventListener('scroll', updateProgress, { passive:true });
-      updateProgress();
-    } else {
-      // desktop: vertical wheel drives horizontal scroll, eased toward a target
-      // instead of jumping — this is what makes it feel smooth instead of "тыкать"
-      let target = tl.scrollLeft;
-      tl.addEventListener('wheel', e=>{
-        if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // let native horizontal wheel/trackpad through
-        e.preventDefault();
-        target = Math.max(0, Math.min(maxScroll(), target + e.deltaY * 1.5));
-      }, { passive:false });
-
-      (function smooth(){
-        tl.scrollLeft += (target - tl.scrollLeft) * (reduceMotion ? 1 : 0.16);
-        updateProgress();
-        requestAnimationFrame(smooth);
-      })();
-
-      // drag-to-scroll still works, and keeps the wheel target in sync
-      let isDown=false, startX, startScroll;
-      tl.addEventListener('mousedown', e=>{
-        isDown=true; tl.classList.add('grabbing');
-        startX = e.pageX - tl.offsetLeft; startScroll = tl.scrollLeft;
+  // "Путь" scattered cards: a gentle tilt set once on entry (not tracked per
+  // pixel — same safe pattern as the flip-cards, so it can't flicker), on
+  // top of the card's own resting rotation. Straightens back to its resting
+  // angle on hover via CSS, this JS only adds a tiny extra lean toward where
+  // the cursor entered.
+  if(!reduceMotion && !isTouch){
+    document.querySelectorAll('.path-card').forEach(card=>{
+      card.addEventListener('mouseenter', e=>{
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        card.style.setProperty('--tilt', `rotateX(${(-py*4).toFixed(2)}deg) rotateY(${(px*5).toFixed(2)}deg)`);
       });
-      window.addEventListener('mouseup', ()=>{ isDown=false; tl.classList.remove('grabbing'); });
-      tl.addEventListener('mouseleave', ()=>{ isDown=false; tl.classList.remove('grabbing'); });
-      tl.addEventListener('mousemove', e=>{
-        if(!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - tl.offsetLeft;
-        tl.scrollLeft = startScroll - (x - startX)*1.4;
-        target = tl.scrollLeft;
-      });
-    }
+      card.addEventListener('mouseleave', ()=>{ card.style.removeProperty('--tilt'); });
+    });
   }
 </script>
 </body>
