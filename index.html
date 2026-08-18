@@ -45,7 +45,11 @@
   }
   ::selection{ background:var(--accent); color:var(--bg); }
   a{ color:inherit; }
-  .wrap{ max-width:1140px; margin:0 auto; padding:0 32px; }
+  /* once the custom cursor is running, hide the native OS cursor everywhere —
+     otherwise you'd see both at once */
+  body.cur-ready, body.cur-ready *{ cursor:none !important; }
+  .wrap{ max-width:1400px; margin:0 auto; padding:0 48px; }
+  @media (max-width:960px){ .wrap{ padding:0 32px; } }
   @media (max-width:480px){ .wrap{ padding:0 18px; } }
 
   /* custom cursor */
@@ -133,8 +137,8 @@
   @keyframes pulse{ 0%,100%{ transform:scale(1); opacity:1;} 50%{ transform:scale(1.5); opacity:.5;} }
 
   h1.title{
-    font-weight:800; letter-spacing:-0.035em; line-height:.98;
-    font-size:clamp(42px, 8vw, 96px); margin:0 0 30px; max-width:16ch;
+    font-weight:800; letter-spacing:-0.035em; line-height:.96;
+    font-size:clamp(42px, 8.5vw, 128px); margin:0 0 36px; max-width:17ch;
     transition:transform .25s ease-out;
   }
   h1.title .word{ display:inline-block; overflow:hidden; vertical-align:top; }
@@ -148,7 +152,7 @@
   h1.title em{ font-style:normal; color:var(--accent); }
 
   .hero-sub{
-    font-size:18px; line-height:1.6; color:var(--ink-soft); max-width:480px; margin:0 0 40px;
+    font-size:20px; line-height:1.6; color:var(--ink-soft); max-width:560px; margin:0 0 44px;
     transition:transform .25s ease-out;
   }
 
@@ -167,17 +171,16 @@
   }
   .star.accent{ background:var(--accent); box-shadow:0 0 4px 0 var(--accent); }
   @keyframes twinkle{ 0%,100%{ opacity:.3; transform:scale(.7); } 50%{ opacity:1; transform:scale(1.3); } }
-  @media (max-width:640px){ .star{ display:none; } }
 
   .magnet-btn{
-    position:relative; display:inline-flex; align-items:center; gap:10px;
-    padding:16px 28px; border-radius:999px; border:1px solid var(--line);
-    background:var(--surface); text-decoration:none; font-size:14px; font-weight:600; color:var(--ink);
+    position:relative; display:inline-flex; align-items:center; gap:11px;
+    padding:19px 34px; border-radius:999px; border:1px solid var(--line);
+    background:var(--surface); text-decoration:none; font-size:15px; font-weight:600; color:var(--ink);
     transition:background .3s ease, border-color .3s ease;
     overflow:hidden; isolation:isolate;
   }
   .magnet-btn:hover{ border-color:var(--accent); }
-  .magnet-btn svg{ width:14px; height:14px; transition:transform .3s ease; }
+  .magnet-btn svg{ width:15px; height:15px; transition:transform .3s ease; }
   .magnet-btn:hover svg{ transform:translate(3px,-3px); }
   .ripple{
     position:absolute; border-radius:50%; background:var(--accent-soft); pointer-events:none;
@@ -204,23 +207,24 @@
   @keyframes cueflow{ 0%{ top:-100%; } 60%{ top:100%; } 100%{ top:100%; } }
 
   /* sections */
-  section{ padding:64px 0; }
+  section{ padding:96px 0; }
+  @media (max-width:960px){ section{ padding:72px 0; } }
   @media (max-width:640px){ section{ padding:48px 0; } }
-  .kicker{ display:flex; align-items:center; gap:12px; margin-bottom:36px; }
-  .kicker .no{ font-size:12px; color:var(--ink-faint); }
-  .kicker h2{ font-size:clamp(22px,3.4vw,30px); font-weight:800; letter-spacing:-.02em; margin:0; }
+  .kicker{ display:flex; align-items:center; gap:14px; margin-bottom:48px; }
+  .kicker .no{ font-size:13px; color:var(--ink-faint); }
+  .kicker h2{ font-size:clamp(24px,3.8vw,38px); font-weight:800; letter-spacing:-.02em; margin:0; }
 
-  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal{ opacity:0; transform:translateY(32px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.in{ opacity:1; transform:none; }
 
   /* interactive "how I work" cards */
-  .card-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; perspective:900px; }
+  .card-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; perspective:900px; }
   .flip-card{
-    position:relative; border:1px solid var(--line); border-radius:20px; padding:26px;
+    position:relative; border:1px solid var(--line); border-radius:24px; padding:34px;
     background:var(--surface); cursor:pointer; overflow:hidden; transform-style:preserve-3d;
     transition:transform .6s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .45s ease, opacity .5s ease;
-    min-height:190px; display:flex; flex-direction:column; justify-content:space-between;
-    will-change:transform; opacity:0; transform:translateY(24px);
+    min-height:230px; display:flex; flex-direction:column; justify-content:space-between;
+    will-change:transform; opacity:0; transform:translateY(32px);
   }
   .flip-card.in{ opacity:1; transform:none; }
   .flip-card:hover{ border-color:var(--accent); box-shadow:0 20px 34px -22px rgba(0,0,0,.22); }
@@ -228,19 +232,19 @@
   .flip-card.reveal{ transition-delay:calc(var(--i, 0) * 90ms); }
   .fc-head{ display:flex; align-items:center; gap:10px; }
   .fc-icon{
-    width:30px; height:30px; border-radius:9px; background:var(--bg); border:1px solid var(--line);
+    width:36px; height:36px; border-radius:11px; background:var(--bg); border:1px solid var(--line);
     display:flex; align-items:center; justify-content:center; flex:0 0 auto;
     transition:transform .4s cubic-bezier(.34,1.56,.64,1), border-color .3s ease;
   }
-  .fc-icon svg{ width:15px; height:15px; stroke:var(--ink-soft); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:stroke .3s ease; }
+  .fc-icon svg{ width:18px; height:18px; stroke:var(--ink-soft); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:stroke .3s ease; }
   .flip-card:hover .fc-icon{ transform:rotate(-4deg) scale(1.05); border-color:var(--accent); }
   .flip-card:hover .fc-icon svg{ stroke:var(--accent); }
-  .flip-card .fc-num{ font-size:12px; color:var(--accent); font-weight:700; }
-  .flip-card h3{ font-size:19px; font-weight:800; letter-spacing:-.01em; margin:14px 0 0; }
+  .flip-card .fc-num{ font-size:13px; color:var(--accent); font-weight:700; }
+  .flip-card h3{ font-size:22px; font-weight:800; letter-spacing:-.01em; margin:18px 0 0; }
   /* the description text always occupies its final space — hover only fades
      it in, so the card's height never changes and nothing around it jumps */
   .fc-desc p{
-    font-size:14px; color:var(--ink-soft); line-height:1.55; margin:12px 0 0;
+    font-size:15px; color:var(--ink-soft); line-height:1.6; margin:14px 0 0;
     opacity:0; transform:translateY(-4px);
     transition:opacity .35s ease, transform .35s ease;
   }
@@ -249,24 +253,24 @@
   .flip-card:hover .fc-arrow{ transform:rotate(45deg); color:var(--accent); }
 
   /* skills — magnetic type list, weight + icon react to cursor proximity */
-  .skills-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; }
+  .skills-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:48px; }
   .skill-group h4{
-    font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
-    margin:0 0 18px; border-bottom:1px solid var(--line); padding-bottom:14px;
+    font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint);
+    margin:0 0 20px; border-bottom:1px solid var(--line); padding-bottom:16px;
   }
-  .skill-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px; }
+  .skill-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
   .skill-item{
-    display:flex; align-items:center; gap:14px; padding:11px 6px; border-radius:10px;
+    display:flex; align-items:center; gap:16px; padding:13px 8px; border-radius:12px;
     cursor:default; transform-origin:left center;
     transition:transform .2s ease;
   }
   .skill-item svg{
-    flex:0 0 auto; width:20px; height:20px; stroke:var(--ink-faint); fill:none; stroke-width:1.6;
+    flex:0 0 auto; width:22px; height:22px; stroke:var(--ink-faint); fill:none; stroke-width:1.6;
     stroke-linecap:round; stroke-linejoin:round;
     transition:stroke .25s ease, transform .25s cubic-bezier(.34,1.56,.64,1);
   }
   .skill-item span{
-    font-size:15px; color:var(--ink-soft); letter-spacing:-.005em;
+    font-size:16.5px; color:var(--ink-soft); letter-spacing:-.005em;
     -webkit-text-stroke:0px var(--ink); text-stroke:0px var(--ink);
     transition:color .25s ease, -webkit-text-stroke-width .25s ease;
   }
@@ -274,27 +278,28 @@
 
   /* horizontal drag timeline */
   .tl-scroll{
-    display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x proximity; padding:6px 6px 22px;
+    display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x proximity; padding:8px 8px 26px;
     cursor:grab; user-select:none; -ms-overflow-style:none; scrollbar-width:none;
   }
   .tl-scroll::-webkit-scrollbar{ display:none; }
   .tl-scroll.grabbing{ cursor:grabbing; }
   .tl-card{
-    flex:0 0 auto; width:280px; scroll-snap-align:start; border:1px solid var(--line); border-radius:20px;
-    padding:24px; background:var(--surface); transition:transform .3s ease, border-color .3s ease;
+    flex:0 0 auto; width:400px; scroll-snap-align:start; border:1px solid var(--line); border-radius:24px;
+    padding:32px; background:var(--surface); transition:transform .3s ease, border-color .3s ease;
   }
   .tl-card:hover{ border-color:var(--accent); transform:translateY(-4px); }
-  .tl-card .yr{ font-size:12px; color:var(--accent); font-weight:700; }
-  .tl-card h3{ font-size:19px; font-weight:800; margin:10px 0 2px; letter-spacing:-.01em; }
-  .tl-card .role{ font-size:12.5px; color:var(--ink-faint); margin-bottom:12px; }
-  .tl-card p{ font-size:14px; color:var(--ink-soft); line-height:1.55; margin:0; }
-  .tl-hint{ font-size:12px; color:var(--ink-faint); margin-top:-8px; }
+  .tl-card .yr{ font-size:13px; color:var(--accent); font-weight:700; }
+  .tl-card h3{ font-size:24px; font-weight:800; margin:14px 0 4px; letter-spacing:-.01em; }
+  .tl-card .role{ font-size:13.5px; color:var(--ink-faint); margin-bottom:16px; }
+  .tl-card p{ font-size:15px; color:var(--ink-soft); line-height:1.6; margin:0; }
+  .tl-hint{ font-size:13px; color:var(--ink-faint); margin-top:-10px; }
+  @media (max-width:640px){ .tl-card{ width:82vw; padding:24px; } }
 
   /* cta */
   .cta-sec{ padding:96px 0 56px; text-align:center; perspective:1400px; }
   @media (max-width:640px){ .cta-sec{ padding:64px 0 40px; } }
   .cta-title{
-    font-weight:800; letter-spacing:-.03em; font-size:clamp(38px,7vw,80px); margin:0 0 30px; text-wrap:balance;
+    font-weight:800; letter-spacing:-.03em; font-size:clamp(38px,7.5vw,104px); margin:0 0 30px; text-wrap:balance;
     transform-style:preserve-3d; transition:transform .2s ease-out;
   }
   .cta-title em{ font-style:normal; color:var(--accent); }
@@ -308,9 +313,25 @@
   }
   .contact-links a{ text-decoration:none; transition:color .25s ease; }
   .contact-links a:hover{ color:var(--accent); }
-  footer{ padding:20px 0 34px; display:flex; justify-content:space-between; font-size:12px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); }
+  footer{ padding:32px 0 64px; display:flex; justify-content:space-between; font-size:13px; color:var(--ink-faint); flex-wrap:wrap; gap:10px; border-top:1px solid var(--line); }
   footer a{ color:inherit; text-decoration:none; transition:color .25s ease; }
   footer a:hover{ color:var(--accent); }
+
+  /* touch devices have no hover — the desktop effects below were built around
+     mouse proximity, so on touch they get scroll-driven equivalents instead:
+     .touch-active is toggled by an IntersectionObserver as each element
+     crosses the middle of the screen while you scroll. Card text, which used
+     to only reveal on hover, is simply always visible here since there's no
+     hover to reveal it with. */
+  @media (hover:none){
+    .fc-desc p{ opacity:1; transform:none; }
+    .flip-card, .tl-card{ cursor:default; }
+    .hn-l.touch-active{ transform:translateY(-6px) scale(1.15); color:var(--accent); }
+    .skill-item.touch-active{ transform:translateX(8px) scale(1.03); }
+    .skill-item.touch-active span{ -webkit-text-stroke-width:.5px; color:var(--ink); }
+    .skill-item.touch-active svg{ stroke:var(--accent); transform:scale(1.25) rotate(8deg); }
+    .mword.touch-active{ -webkit-text-stroke-width:.7px; transform:scale(1.06); }
+  }
 
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
@@ -556,8 +577,8 @@
     document.querySelector('.hero').addEventListener('mousemove', e=>{
       const nx = e.clientX/innerWidth - 0.5;
       const ny = e.clientY/innerHeight - 0.5;
-      if(heroTitleEl) heroTitleEl.style.transform = `translate(${(nx*-10).toFixed(1)}px, ${(ny*-6).toFixed(1)}px)`;
-      if(heroSubEl) heroSubEl.style.transform = `translate(${(nx*-16).toFixed(1)}px, ${(ny*-9).toFixed(1)}px)`;
+      if(heroTitleEl) heroTitleEl.style.transform = `translate(${(nx*-16).toFixed(1)}px, ${(ny*-9).toFixed(1)}px)`;
+      if(heroSubEl) heroSubEl.style.transform = `translate(${(nx*-24).toFixed(1)}px, ${(ny*-13).toFixed(1)}px)`;
     }, { passive:true });
   }
 
@@ -568,7 +589,7 @@
   (function buildStarfield(){
     const field = document.getElementById('starfield');
     if(!field) return;
-    const N = 44;
+    const N = innerWidth < 640 ? 24 : 44;
     for(let i=0;i<N;i++){
       const s = document.createElement('span');
       s.className = 'star' + (Math.random() < 0.22 ? ' accent' : '');
@@ -847,6 +868,25 @@
       requestAnimationFrame(draw);
     }
     draw();
+  }
+
+  // touch devices: the desktop effects above react to mouse proximity, which
+  // doesn't exist on a phone. Here each of the same three element groups
+  // (name letters, skill items, CTA words) gets a scroll-driven equivalent —
+  // an element "activates" as it crosses the middle band of the screen while
+  // you scroll past it, using the same visual peak state as the desktop hover.
+  if(isTouch && !reduceMotion){
+    const spotlight = (selector)=>{
+      document.querySelectorAll(selector).forEach(el=>{
+        const io = new IntersectionObserver(es=>{
+          es.forEach(en=> en.target.classList.toggle('touch-active', en.isIntersecting));
+        }, { rootMargin:'-42% 0px -42% 0px', threshold:0 });
+        io.observe(el);
+      });
+    };
+    spotlight('.hn-l');
+    spotlight('.skill-item');
+    spotlight('.mword');
   }
 
   // draggable horizontal timeline
