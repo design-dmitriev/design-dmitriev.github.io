@@ -936,6 +936,23 @@
     }
   }
 
+  // "Как я работаю" cards: the same global-cursor tilt as the CTA headline
+  // above (proven reliable — one shared listener, plain global mouse
+  // position, no per-card geometry math that could drift or go stale).
+  // Every card gets the exact same computation, so none of them can end up
+  // "stuck" while others react.
+  if(!reduceMotion && !isTouch){
+    const tiltCards = document.querySelectorAll('.flip-card, .prog-stage');
+    if(tiltCards.length){
+      window.addEventListener('mousemove', e=>{
+        const nx = e.clientX/innerWidth - 0.5;
+        const ny = e.clientY/innerHeight - 0.5;
+        const tilt = `rotateX(${(-ny*3).toFixed(2)}deg) rotateY(${(nx*3.6).toFixed(2)}deg)`;
+        tiltCards.forEach(c=> c.style.setProperty('--gtilt', tilt));
+      }, { passive:true });
+    }
+  }
+
   // CTA headline words: same faux-bold proximity effect, bigger radius.
   // Gated by visibility, same reasoning as above.
   if(!isTouch){
@@ -1070,13 +1087,6 @@
             g.el.style.setProperty('--edge-x', (nx-r.left).toFixed(1)+'px');
             g.el.style.setProperty('--edge-y', (ny-r.top).toFixed(1)+'px');
           }
-          // the panel itself leans slightly toward the cursor, the same
-          // physical reaction the CTA headline has — stronger the closer
-          // the cursor is, capped small so it stays subtle
-          const ccx = (r.left+r.right)/2, ccy = (r.top+r.bottom)/2;
-          const px = Math.max(-1.4, Math.min(1.4, (curX-ccx)/(r.width/2)));
-          const py = Math.max(-1.4, Math.min(1.4, (curY-ccy)/(r.height/2)));
-          g.el.style.setProperty('--gtilt', `rotateX(${(-py*3*t).toFixed(2)}deg) rotateY(${(px*3.6*t).toFixed(2)}deg)`);
         });
       }
       requestAnimationFrame(draw);
