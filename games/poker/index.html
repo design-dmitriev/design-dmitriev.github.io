@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Техасский холдем</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=PT+Mono&display=swap">
+<style>
+:root{--bg:#0f0b06;--panel:#1d170c;--amber:#ffb642;--dim:rgba(255,182,66,.66);--line:rgba(255,182,66,.34);--paper:#efe4c4;--ink:#1b1711;--red:#a8281a;--warn:#ff7a5c;--felt:#1d4638;
+  --bc:min(12.4vw,58px);--mc:min(19vw,84px);box-sizing:border-box;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#0f0b06}}
+:root[data-theme="light"]{--bg:#0f0b06}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%;margin:0;background:var(--bg)}
+body{background:var(--bg) radial-gradient(ellipse at 50% 35%,#2b2110 0,transparent 75%);color:var(--amber);font:400 14px/1.45 "PT Mono",ui-monospace,Menlo,Consolas,monospace;text-shadow:0 0 6px rgba(255,182,66,.4);-webkit-tap-highlight-color:transparent;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;background:radial-gradient(ellipse at center,transparent 62%,rgba(0,0,0,.35) 100%)}
+#app{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+button{font:inherit;border:0;border-radius:0;cursor:pointer;color:inherit;background:none;font-family:Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.06em}
+a{color:var(--amber)}
+.btn{background:var(--amber);color:var(--bg);font-weight:600;font-size:16px;line-height:1.25;padding:12px 16px;width:100%;text-align:center;text-shadow:none;box-shadow:0 0 12px rgba(255,182,66,.35)}
+.btn.ghost{background:rgba(255,182,66,.06);color:var(--amber);box-shadow:inset 0 0 0 2px var(--amber);text-shadow:inherit}
+.btn:disabled{opacity:.35;cursor:default}
+.btn.sm{width:auto;padding:7px 10px;font-size:13px}
+.btn.ic{width:34px;height:34px;padding:0;font-size:17px;flex:none;display:grid;place-items:center}
+.page{padding:22px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:16px;width:100%;max-width:560px;margin:0 auto}
+h1{font-family:Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.04em;font-weight:600;font-size:clamp(36px,13vw,52px);line-height:1;margin:0 0 14px;padding-bottom:10px;border-bottom:3px solid var(--amber);box-shadow:0 6px 0 -4px var(--amber)}
+h2{font-family:Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.05em;font-weight:600;font-size:19px;line-height:1.2;margin:0 0 8px}
+.sub{color:var(--dim);margin:0}
+input[type=text]{background:rgba(255,182,66,.06);border:0;border-radius:0;box-shadow:inset 0 0 0 2px var(--line);color:var(--amber);font:inherit;font-size:16px;padding:11px 12px;width:100%;-webkit-user-select:text;user-select:text}
+input[type=text]::placeholder{color:var(--dim)}
+input[type=text]:focus{outline:0;box-shadow:inset 0 0 0 2px var(--amber)}
+.sec{display:grid;gap:10px}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-family:Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.rules ol,.rules ul{padding-left:20px;margin:8px 0;color:var(--dim);font-size:13px}
+.rules li{margin:3px 0}
+.gsw{display:flex;gap:0;margin:0 0 4px;box-shadow:inset 0 0 0 2px var(--line);width:max-content}
+.gsw>*{font-family:Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:13px;padding:7px 14px;text-decoration:none;color:var(--dim)}
+.gsw .on{background:var(--amber);color:var(--bg);text-shadow:none}
+.over{position:fixed;inset:0;background:rgba(8,6,3,.9);display:flex;align-items:center;justify-content:center;padding:20px;z-index:45}
+.over>div{background:var(--panel);border:2px solid var(--amber);box-shadow:0 0 24px rgba(255,182,66,.3);padding:20px;width:100%;max-width:420px;display:grid;gap:12px;max-height:90dvh;overflow:auto}
+.log{font-size:12px;color:var(--dim);display:grid;gap:3px;text-align:left}
+.log div:first-letter{color:var(--amber)}
+.log .hd{color:var(--amber);margin-top:6px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--amber);color:var(--bg);text-shadow:none;padding:10px 14px;font-size:13px;max-width:90%;width:max-content;opacity:0;pointer-events:none;transition:opacity .2s;z-index:60}
+#toast.show{opacity:1}
+.linkbox{display:flex;gap:8px}
+.linkbox input{flex:1;min-width:0;font-size:13px!important}
+.plist{display:grid;gap:0}
+.plist div{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
+.warn{color:var(--warn)}
+
+/* ---- table ---- */
+.tv{flex:1;display:flex;flex-direction:column;min-height:0;max-width:980px;width:100%;margin:0 auto}
+.top{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:2px solid var(--amber);background:var(--panel)}
+.top .who{flex:1;min-width:0;line-height:1.2}
+.top .who b{white-space:nowrap;font-family:Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:16px;display:block}
+.top .who span{color:var(--dim);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.net{width:8px;height:8px;border-radius:50%;background:var(--warn);flex:none;box-shadow:0 0 6px currentColor}
+.net.ok{background:#8fd16a}
+.fw{flex:1;min-height:0;position:relative;--in:46px 48px 30px}
+.felt,.ring{position:absolute;inset:var(--in)}
+.ring{z-index:3}
+.felt{border-radius:999px;background:radial-gradient(ellipse at 50% 42%,#2c6a55 0,#1f4c3e 45%,#13302a 100%);box-shadow:0 0 0 10px #3b2512,0 0 0 13px #1c1108,0 0 0 15px rgba(255,182,66,.25),0 18px 40px rgba(0,0,0,.7),inset 0 0 60px rgba(0,0,0,.55)}
+.felt::before{content:"";position:absolute;inset:14px;border-radius:999px;border:1.5px solid rgba(255,214,140,.16)}
+.felt::after{content:"";position:absolute;inset:0;border-radius:inherit;opacity:.35;mix-blend-mode:overlay;background:repeating-radial-gradient(circle at 30% 20%,rgba(255,255,255,.07) 0 1px,transparent 1px 3px)}
+.mid{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;justify-items:center;gap:8px;z-index:2;width:calc(var(--bc)*5 + 30px)}
+.pot{font-family:Oswald,"Arial Narrow",sans-serif;letter-spacing:.06em;text-transform:uppercase;font-size:14px;background:rgba(0,0,0,.45);padding:3px 12px;border-radius:99px;white-space:nowrap}
+.board{display:flex;gap:5px;min-height:calc(var(--bc)*1.4)}
+.slot{width:var(--bc);height:calc(var(--bc)*1.4);border-radius:5px;border:1.5px dashed rgba(255,214,140,.18)}
+.banner{background:rgba(15,11,6,.92);border:1.5px solid var(--amber);padding:8px 10px;font-size:12px;line-height:1.35;text-align:center;max-width:min(78vw,360px);box-shadow:0 6px 20px rgba(0,0,0,.6)}
+.banner b{font-family:Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.05em;font-size:14px;display:block;font-weight:600}
+.banner small{display:block;color:var(--dim);margin-top:3px}
+
+/* cards */
+.pc{position:relative;width:var(--w,var(--bc));height:calc(var(--w,var(--bc))*1.4);background:linear-gradient(150deg,#f6edd2,#e2d4ad);border-radius:calc(var(--w,var(--bc))*.09);box-shadow:inset 0 0 0 1px rgba(80,55,20,.35),0 3px 6px rgba(0,0,0,.55);color:var(--ink);text-shadow:none;font-family:Oswald,"Arial Narrow",sans-serif;overflow:hidden;flex:none}
+.pc.r{color:var(--red)}
+.pc i{position:absolute;left:8%;top:3%;font-style:normal;font-weight:600;font-size:calc(var(--w,var(--bc))*.36);line-height:1;letter-spacing:-.04em}
+.pc s{position:absolute;left:9%;top:31%;text-decoration:none;font-size:calc(var(--w,var(--bc))*.26);line-height:1}
+.pc b{position:absolute;right:7%;bottom:2%;font-size:calc(var(--w,var(--bc))*.62);line-height:1;font-weight:400}
+.pc.bk{background:repeating-linear-gradient(45deg,#7a3a12 0 3px,#5e2b0c 3px 6px);box-shadow:inset 0 0 0 2px #e4b25f,inset 0 0 0 4px #5e2b0c,0 3px 6px rgba(0,0,0,.55)}
+.pc.hl{box-shadow:inset 0 0 0 1px rgba(80,55,20,.35),0 0 0 2px var(--amber),0 0 12px var(--amber)}
+.pc.dim{filter:brightness(.55)}
+.pc.new{animation:deal .35s ease-out both}
+@keyframes deal{from{transform:translateY(-14px) scale(.9);opacity:0}}
+
+/* seats */
+.seat{position:absolute;transform:translate(-50%,-50%);z-index:3;display:grid;justify-items:center;gap:2px;width:84px}
+.seat.top{transform:translate(-50%,-70%)}
+.seat.mine{transform:translate(-50%,-30%)}
+.seat .sc{display:flex;gap:2px;height:calc(var(--sw)*1.4);--sw:30px}
+.seat .sc .pc{--w:var(--sw)}
+.seat .sc.big{--sw:34px}
+.seat .tag{background:rgba(12,9,5,.92);border:1.5px solid var(--line);padding:3px 6px;width:100%;text-align:center;line-height:1.15;position:relative}
+.seat .nm{font-family:Oswald,"Arial Narrow",sans-serif;font-size:13px;letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.seat .st{font-size:12px;color:var(--dim);display:block}
+.seat .hn{font-size:10.5px;color:var(--amber);line-height:1.2;text-align:center;background:rgba(0,0,0,.7);padding:1px 4px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.banner.inpanel{max-width:none;margin:0 auto;width:100%;text-align:left}
+.banner.inpanel>div+div{margin-top:6px}
+@media (max-width:759px){.banner.onfelt{display:none}}
+@media (min-width:760px){.banner.inpanel{display:none}.seat .hn{white-space:normal}}
+.seat.turn .tag{border-color:var(--amber);box-shadow:0 0 14px rgba(255,182,66,.55)}
+.seat.fold{opacity:.42}
+.seat.away .nm::after{content:" · нет связи";color:var(--warn)}
+.seat.win .tag{background:var(--amber);color:var(--bg);text-shadow:none}
+.seat.win .st{color:var(--bg)}
+.seat .bar{position:absolute;left:0;bottom:-1.5px;height:3px;background:var(--amber);width:calc(var(--p,0)*100%);transition:width 1s linear}
+.dlr,.blind{position:absolute;top:-8px;right:-8px;width:20px;height:20px;border-radius:50%;background:#f3ead0;color:#1b1711;text-shadow:none;font:600 11px/20px Oswald,sans-serif;text-align:center;box-shadow:0 2px 4px rgba(0,0,0,.6)}
+.blind{background:#2b4f86;color:#fff;font-size:9px;letter-spacing:-.03em}
+.chip{position:absolute;z-index:4;display:flex;align-items:center;gap:4px;font:600 12px/1 Oswald,sans-serif;color:var(--amber);background:rgba(0,0,0,.55);padding:3px 7px 3px 3px;border-radius:99px;white-space:nowrap;transform:translate(-50%,-50%)}
+.chip::before{content:"";width:13px;height:13px;border-radius:50%;background:radial-gradient(circle,#ffb642 0 32%,#8a1f12 34% 62%,#ffb642 64%);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.act{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font:500 11px/1 Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;background:var(--amber);color:var(--bg);text-shadow:none;padding:3px 6px;white-space:nowrap}
+
+/* my panel */
+.me{display:flex;align-items:center;gap:12px;padding:8px 14px 6px;border-top:2px solid var(--amber);background:var(--panel)}
+.me .cards{display:flex;gap:6px}
+.me .cards .pc{--w:var(--mc)}
+.me .cards .pc:nth-child(1){transform:rotate(-4deg)}.me .cards .pc:nth-child(2){transform:rotate(4deg) translateY(2px)}
+.me .info{flex:1;min-width:0;display:grid;gap:2px}
+.me .info b{font-family:Oswald,"Arial Narrow",sans-serif;font-size:17px;text-transform:uppercase;letter-spacing:.05em}
+.me .info .hn{font-size:13px}
+.me .info .st{color:var(--dim);font-size:13px}
+.acts{display:grid;gap:8px;padding:8px 14px 12px;background:var(--panel)}
+.acts .row3{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:8px}
+.acts .btn{padding:12px 6px;font-size:15px}
+.rz{display:grid;gap:8px;padding:10px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.rz .pre{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.rz .pre .btn{padding:8px 2px;font-size:12px}
+.rz input[type=range]{width:100%;accent-color:var(--amber);height:30px}
+.rz .val{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--dim)}
+.rz .val b{font:600 22px Oswald,sans-serif;color:var(--amber)}
+.wait{max-height:36dvh;overflow:auto;padding:10px 14px 14px;background:var(--panel);display:grid;gap:8px;text-align:center;color:var(--dim)}
+.wait b{color:var(--amber)}
+@media (min-width:760px) and (min-height:640px){:root{--bc:64px;--mc:92px}.btn.ic{width:40px;height:40px}.seat{width:120px}.seat .sc{--sw:38px}.seat .sc.big{--sw:46px}.seat .nm{font-size:15px}.fw{--in:64px 110px 44px}.acts,.me,.wait{max-width:720px;width:100%;margin:0 auto}}
+@media (max-height:740px){:root{--mc:min(16vw,64px)}.me{padding:6px 14px 4px}}
+@media (max-height:620px){:root{--bc:min(10vw,44px);--mc:60px}.fw{--in:40px 48px 24px}}
+/* ---- app shell: Pip-Boy style menus, bottom tabs, sheets ---- */
+.home{flex:1;display:flex;flex-direction:column;min-height:0;width:100%;max-width:560px;margin:0 auto}
+.hbar{display:flex;align-items:flex-end;gap:12px;padding:20px 16px 12px}
+.brand{min-width:0}
+.brand b{font:600 clamp(34px,11vw,46px)/1 Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.04em;display:block}
+.brand span{display:block;color:var(--dim);font-size:13px;margin-top:6px}
+.pchip{margin-left:auto;flex:none;max-width:42%;min-height:40px;display:flex;align-items:center;gap:8px;padding:0 12px;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--amber);font:500 14px/1 Oswald,"Arial Narrow",sans-serif;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pchip svg{flex:none}
+.pchip.empty{color:var(--dim)}
+.menu{flex:1;min-height:0;overflow-y:auto;border-top:2px solid var(--amber);box-shadow:0 -6px 0 -4px var(--amber);margin-top:2px;padding-bottom:16px;-webkit-overflow-scrolling:touch}
+.mgroup{padding-top:6px}
+.mgroup>h3{margin:0;padding:14px 16px 6px;font:400 12px/1.2 "PT Mono",ui-monospace,monospace;color:var(--dim);letter-spacing:0;text-transform:none}
+.mrow,.pchip{text-transform:none!important;letter-spacing:normal}
+.mrow{display:flex;align-items:center;gap:14px;width:100%;min-height:62px;padding:10px 16px;text-align:left;color:var(--amber);border-bottom:1px solid var(--line);text-decoration:none;position:relative}
+.mrow .tx{flex:1;min-width:0}
+.mrow b{font:600 19px/1.15 Oswald,"Arial Narrow",sans-serif;letter-spacing:.03em;display:block;text-transform:none}
+.mrow small{display:block;font:400 13px/1.35 "PT Mono",ui-monospace,monospace;color:var(--dim);margin-top:2px}
+.mrow::after{content:"";flex:none;width:9px;height:9px;border:solid currentColor;border-width:2px 2px 0 0;transform:rotate(45deg);opacity:.6;margin-right:4px}
+.mrow.sel{background:rgba(255,182,66,.12);box-shadow:inset 4px 0 0 var(--amber)}
+.mrow:hover,.mrow:focus-visible,.mrow:active{background:var(--amber);color:var(--bg);text-shadow:none;outline:0;box-shadow:none}
+.mrow:hover small,.mrow:focus-visible small,.mrow:active small{color:rgba(18,14,8,.72)}
+.mnote{padding:12px 16px;color:var(--dim);font-size:13px}
+.tabbar{flex:none;display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--amber);background:var(--panel);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar>*{min-height:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:500 12px/1 Oswald,"Arial Narrow",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);text-decoration:none;text-shadow:none}
+.tabbar svg{width:22px;height:22px}
+.tabbar .on{color:var(--amber);box-shadow:inset 0 3px 0 var(--amber);text-shadow:0 0 6px rgba(255,182,66,.45)}
+.tabbar>*:focus-visible{outline:2px solid var(--amber);outline-offset:-4px}
+.field{display:grid;gap:6px}
+.field>span{font-size:12px;color:var(--dim)}
+.sheet-rows{display:grid;margin:0 -20px}
+.sheet-rows .mrow{min-height:54px;padding:8px 20px}
+.sheet-rows .mrow:first-child{border-top:1px solid var(--line)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (min-width:900px){
+  .home{max-width:600px;border-left:1px solid var(--line);border-right:1px solid var(--line);background:rgba(23,18,10,.55)}
+  .tabbar{grid-template-columns:repeat(3,1fr)}
+}
+/* sheets: dialogs slide up from the bottom on phones */
+@media (max-width:699px){
+  .over{align-items:flex-end;padding:0;background:rgba(5,4,2,.72)}
+  .over>div{max-width:none!important;width:100%;border:0!important;border-top:2px solid var(--amber)!important;max-height:88dvh!important;padding:8px 20px calc(18px + env(safe-area-inset-bottom,0px))!important}
+  .over.enter>div{animation:sheetUp .22s ease-out}
+  .over>div::before{content:"";display:block;width:44px;height:4px;background:var(--line);margin:2px auto 6px}
+}
+@keyframes sheetUp{from{transform:translateY(40px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.over>div{animation:none!important}}
+.hcol{flex:1;display:flex;flex-direction:column;min-height:0}
+.hero{flex:none;display:flex;justify-content:center;align-items:flex-end;height:170px;padding-top:14px;overflow:hidden}
+.fan{position:relative;width:100%;height:100%;pointer-events:none}
+.fan .pc{position:absolute;left:50%;bottom:-22px;--w:86px;margin-left:-43px;transform-origin:50% 140%;transform:rotate(calc(var(--i)*11deg)) translateY(calc(var(--i)*var(--i)*3px));box-shadow:0 8px 18px rgba(0,0,0,.6)}
+@media (max-height:740px){.hero{display:none}}
+@media (min-width:900px){
+  .home{max-width:1180px;flex-direction:row;border:0;background:none}
+  .hero{height:auto;flex:1;align-items:center;padding:40px}
+  .fan{height:min(62vh,520px)}
+  .fan .pc{--w:min(13vw,190px);margin-left:calc(min(13vw,190px)*-.5);bottom:18%;transform:rotate(calc(var(--i)*12deg)) translateY(calc(var(--i)*var(--i)*6px))}
+  .hcol{flex:none;width:480px;border-left:1px solid var(--line);border-right:1px solid var(--line);background:rgba(23,18,10,.55)}
+}
+@media (max-width:699px){.over>div h2{text-align:left}}
+.home{flex-direction:column}
+.jbox{padding:16px;display:grid;gap:12px}
+.btn.stick{position:sticky;bottom:0;box-shadow:0 -14px 14px var(--panel),0 34px 0 14px var(--panel)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" role="status"></div>
+<script>
+/*ENGINE*/
+const RK='23456789TJQKA',SU='shdc',BL=[10,20],START=1000,MAXS=6,TURN_MS=45000,NEXT_MS=9000,FOLD_MS=5000;
+const rnd=n=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n};
+function shuffled(){const d=[];for(const r of RK)for(const s of SU)d.push(r+s);for(let i=d.length-1;i>0;i--){const j=rnd(i+1);[d[i],d[j]]=[d[j],d[i]]}return d}
+const rv=c=>RK.indexOf(c[0])+2;
+function groups(v){const cnt={};v.forEach(x=>cnt[x]=(cnt[x]||0)+1);return Object.entries(cnt).map(([r,n])=>[+r,n]).sort((a,b)=>b[1]-a[1]||b[0]-a[0])}
+function eval5(cs){
+  const v=cs.map(rv).sort((a,b)=>b-a),fl=cs.every(c=>c[1]===cs[0][1]),u=[...new Set(v)];let st=0;
+  if(u.length===5){if(u[0]-u[4]===4)st=u[0];else if(u.join()==='14,5,4,3,2')st=5}
+  const g=groups(v),ks=g.map(x=>x[0]);
+  if(st&&fl)return[8,st];
+  if(g[0][1]===4)return[7,...ks];
+  if(g[0][1]===3&&g[1][1]===2)return[6,...ks];
+  if(fl)return[5,...v];
+  if(st)return[4,st];
+  if(g[0][1]===3)return[3,...ks];
+  if(g[0][1]===2&&g[1][1]===2)return[2,...ks];
+  if(g[0][1]===2)return[1,...ks];
+  return[0,...v];
+}
+const cmpS=(a,b)=>{for(let i=0;i<Math.max(a.length,b.length);i++){const d=(a[i]||0)-(b[i]||0);if(d)return d}return 0};
+function best(cs){
+  if(cs.length<5){const v=cs.map(rv).sort((a,b)=>b-a),g=groups(v);return{s:g[0]&&g[0][1]>=2?[g[0][1]===3?3:1,...g.map(x=>x[0])]:[0,...v],five:cs}}
+  let b=null;const n=cs.length,pick=[];
+  (function rec(st,k){if(k===5){const f=pick.map(i=>cs[i]),s=eval5(f);if(!b||cmpS(s,b.s)>0)b={s,five:f};return}for(let i=st;i<n;i++){pick.push(i);rec(i+1,k+1);pick.pop()}})(0,0);
+  return b;
+}
+const NOM={2:'двойка',3:'тройка',4:'четвёрка',5:'пятёрка',6:'шестёрка',7:'семёрка',8:'восьмёрка',9:'девятка',10:'десятка',11:'валет',12:'дама',13:'король',14:'туз'};
+const GEN={2:'двойки',3:'тройки',4:'четвёрки',5:'пятёрки',6:'шестёрки',7:'семёрки',8:'восьмёрки',9:'девятки',10:'десятки',11:'валета',12:'дамы',13:'короля',14:'туза'};
+const NP={2:'двойки',3:'тройки',4:'четвёрки',5:'пятёрки',6:'шестёрки',7:'семёрки',8:'восьмёрки',9:'девятки',10:'десятки',11:'валеты',12:'дамы',13:'короли',14:'тузы'};
+const PL={2:'двоек',3:'троек',4:'четвёрок',5:'пятёрок',6:'шестёрок',7:'семёрок',8:'восьмёрок',9:'девяток',10:'десяток',11:'валетов',12:'дам',13:'королей',14:'тузов'};
+function hname(s){const[c,a,b]=s;return[`Старшая карта — ${NOM[a]}`,`Пара ${PL[a]}`,`Две пары: ${NP[a]} и ${NP[b]}`,`Тройка ${PL[a]}`,`Стрит до ${GEN[a]}`,`Флеш до ${GEN[a]}`,`Фулл-хаус: ${NP[a]} и ${NP[b]}`,`Каре ${PL[a]}`,a===14?'Роял-флеш':`Стрит-флеш до ${GEN[a]}`][c]}
+
+const canAct=p=>p.in&&!p.fold&&!p.allin;
+const live=p=>p.in&&!p.fold;
+function nextIdx(S,i,f){const n=S.seats.length;for(let k=1;k<=n;k++){const j=((i+k)%n+n)%n;if(f(S.seats[j]))return j}return -1}
+function addLog(S,t){S.log.push(t);if(S.log.length>60)S.log.splice(0,S.log.length-60)}
+function newTable(code,hostId,hostName){return{v:1,code,host:hostId,seats:[],btn:-1,sb:-1,bb:-1,hand:0,phase:'wait',board:[],curBet:0,minRaise:BL[1],toAct:-1,last:null,res:null,show:{},log:[],deadline:0,turnAt:0,bl:BL,closed:false}}
+function addSeat(S,id,name){
+  if(S.seats.some(p=>p.id===id)||S.seats.length>=MAXS)return false;
+  S.seats.push({id,name:name||'Игрок',stack:START,bet:0,tot:0,fold:true,allin:false,acted:false,in:false,out:false,leave:false,won:0,rebuys:0});
+  return true;
+}
+function pay(p,a){a=Math.max(0,Math.min(a,p.stack));p.stack-=a;p.bet+=a;p.tot+=a;if(!p.stack)p.allin=true;return a}
+function startHand(S,P,now,ok){
+  S.seats=S.seats.filter(p=>!p.leave);
+  if(S.btn>=S.seats.length)S.btn=S.seats.length-1;
+  for(const p of S.seats){p.bet=0;p.tot=0;p.fold=false;p.allin=false;p.acted=false;p.won=0;p.in=p.stack>0&&!p.out&&(!ok||ok(p))}
+  S.board=[];S.res=null;S.show={};S.last=null;P.hole={};P.deck=[];
+  if(S.seats.filter(p=>p.in).length<2){for(const p of S.seats){p.in=false;p.fold=true}S.phase='wait';S.toAct=-1;return false}
+  S.hand++;S.phase='preflop';
+  const n=S.seats.length,hu=S.seats.filter(p=>p.in).length===2;
+  S.btn=nextIdx(S,S.btn<0?n-1:S.btn,p=>p.in);
+  S.sb=hu?S.btn:nextIdx(S,S.btn,p=>p.in);S.bb=nextIdx(S,S.sb,p=>p.in);
+  pay(S.seats[S.sb],BL[0]);pay(S.seats[S.bb],BL[1]);
+  P.deck=shuffled();
+  for(let r=0;r<2;r++){let i=S.btn;for(let k=0;k<n;k++){i=(i+1)%n;const p=S.seats[i];if(p.in)(P.hole[p.id]=P.hole[p.id]||[]).push(P.deck.pop())}}
+  S.curBet=BL[1];S.minRaise=BL[1];
+  addLog(S,`— Раздача ${S.hand}. Дилер: ${S.seats[S.btn].name}, блайнды ${BL[0]}/${BL[1]}`);
+  S.toAct=S.bb;
+  advance(S,P,now,true);
+  return true;
+}
+function act(S,P,i,a,amt,now){
+  if(!['preflop','flop','turn','river'].includes(S.phase))return'Сейчас нет торговли';
+  if(i!==S.toAct)return'Сейчас не ваш ход';
+  const p=S.seats[i],need=S.curBet-p.bet;let t;
+  if(a==='allin'){a='raise';amt=p.bet+p.stack}
+  if(a==='call'&&need<=0)a='check';
+  if(a==='fold'){p.fold=true;t='фолд'}
+  else if(a==='check'){if(need>0)return'Нельзя чек — нужно уравнять ставку';t='чек'}
+  else if(a==='call'){const x=pay(p,need);t=`колл ${x}${p.allin?' (ва-банк)':''}`}
+  else if(a==='raise'){
+    const max=p.bet+p.stack;let to=Math.floor(+amt||0);if(to>=max)to=max;
+    if(to<=S.curBet){if(to===max){const x=pay(p,max-p.bet);t=`колл ${x} (ва-банк)`}else return'Рейз должен быть больше текущей ставки'}
+    else{
+      const full=to-S.curBet>=S.minRaise;
+      if(!full&&to<max)return`Минимальный рейз — до ${S.curBet+S.minRaise}`;
+      const was=S.curBet;pay(p,to-p.bet);if(full)S.minRaise=to-was;S.curBet=to;
+      for(const q of S.seats)if(q!==p&&canAct(q))q.acted=false;
+      t=(was===0?`ставка ${to}`:`рейз до ${to}`)+(p.allin?' (ва-банк)':'');
+    }
+  }else return'Неизвестное действие';
+  p.acted=true;S.last={i,t};addLog(S,`${p.name}: ${t}`);
+  advance(S,P,now,false);
+  return null;
+}
+function advance(S,P,now,fresh){
+  for(;;){
+    const L=S.seats.filter(live);
+    if(L.length===1)return winUncontested(S,L[0],now);
+    const ca=S.seats.filter(canAct);
+    const over=ca.every(p=>p.acted&&p.bet===S.curBet)||(ca.length<=1&&ca.every(p=>p.bet>=S.curBet));
+    if(!over){
+      const st=fresh?S.toAct:S.toAct;
+      S.toAct=nextIdx(S,st,p=>canAct(p)&&(!p.acted||p.bet<S.curBet));
+      S.turnAt=now;S.deadline=now+TURN_MS;return;
+    }
+    for(const p of S.seats){p.bet=0;p.acted=false}
+    S.curBet=0;S.minRaise=BL[1];fresh=false;
+    if(S.phase==='river')return showdown(S,P,now);
+    const nx={preflop:['flop',3],flop:['turn',1],turn:['river',1]}[S.phase];
+    S.phase=nx[0];for(let k=0;k<nx[1];k++)S.board.push(P.deck.pop());
+    addLog(S,`${{flop:'Флоп',turn:'Тёрн',river:'Ривер'}[S.phase]}: ${S.board.slice(-nx[1]).join(' ')}`);
+    if(ca.length>=2){S.toAct=nextIdx(S,S.btn,canAct);S.turnAt=now;S.deadline=now+TURN_MS;return}
+  }
+}
+function winUncontested(S,w,now){
+  const amt=S.seats.reduce((a,p)=>a+p.tot,0);w.stack+=amt;w.won=amt;
+  for(const p of S.seats)p.bet=0;
+  const i=S.seats.indexOf(w);
+  S.res={kind:'fold',pots:[{amt,w:[i],h:null,c:[]}],hands:{}};
+  addLog(S,`${w.name} забирает ${amt}: остальные сбросили`);
+  S.phase='show';S.toAct=-1;S.curBet=0;S.deadline=now+NEXT_MS-3000;
+}
+function showdown(S,P,now){
+  const idx=S.seats.map((p,i)=>i).filter(i=>live(S.seats[i])),H={};
+  for(const i of idx){const p=S.seats[i],b=best(P.hole[p.id].concat(S.board));H[i]={s:b.s,name:hname(b.s),five:b.five};S.show[i]=P.hole[p.id]}
+  const tot=S.seats.map(p=>p.tot),lv=[...new Set(idx.map(i=>tot[i]))].sort((a,b)=>a-b);
+  let prev=0,pots=[];
+  for(const L of lv){const amt=tot.reduce((a,t)=>a+Math.min(t,L)-Math.min(t,prev),0),el=idx.filter(i=>tot[i]>=L);
+    if(pots.length&&pots[pots.length-1].el.join()===el.join())pots[pots.length-1].amt+=amt;else if(amt)pots.push({amt,el});prev=L}
+  const rest=tot.reduce((a,t)=>a+t,0)-pots.reduce((a,p)=>a+p.amt,0);if(rest&&pots.length)pots[pots.length-1].amt+=rest;
+  const n=S.seats.length,order=i=>((i-S.btn-1)%n+n)%n,out=[];
+  for(const pt of pots){
+    let bs=null,w=[];for(const i of pt.el){const c=bs?cmpS(H[i].s,bs):1;if(c>0){bs=H[i].s;w=[i]}else if(c===0)w.push(i)}
+    w.sort((a,b)=>order(a)-order(b));const sh=Math.floor(pt.amt/w.length);let rem=pt.amt-sh*w.length;
+    for(const i of w){const x=sh+(rem>0?1:0);rem--;S.seats[i].stack+=x;S.seats[i].won+=x}
+    out.push({amt:pt.amt,w,h:H[w[0]].name,el:pt.el});
+    addLog(S,`${pots.length>1?(out.length===1?'Основной банк':'Побочный банк')+' ':'Банк '}${pt.amt}: ${w.map(i=>S.seats[i].name).join(', ')} — ${H[w[0]].name}`);
+  }
+  const hs={};for(const i of idx)hs[i]={name:H[i].name,five:H[i].five};
+  S.res={kind:'show',pots:out,hands:hs};
+  S.phase='show';S.toAct=-1;S.deadline=now+NEXT_MS;
+}
+function timeoutMove(S,P,now){
+  const i=S.toAct,p=S.seats[i];if(!p)return;
+  const a=S.curBet>p.bet?'fold':'check';p.out=true;
+  addLog(S,`${p.name} не успел сходить — ${a==='fold'?'фолд':'чек'}, пропускает следующие раздачи`);
+  act(S,P,i,a,0,now);
+}
+/*END*/
+
+/* ---------- utilities ---------- */
+const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rid=()=>Array.from(crypto.getRandomValues(new Uint8Array(9)),b=>b.toString(36).padStart(2,'0')).join('').slice(0,14);
+const clean=s=>String(s||'').replace(/\s+/g,' ').trim().slice(0,16)||'Игрок';
+const BET=['preflop','flop','turn','river'];
+const ON_GH=/github\.io$/.test(location.hostname);
+const CARAVAN_URL=ON_GH?'../caravan/':'https://design-dmitriev.github.io/games/caravan/';
+let toastT;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3500)}
+
+const me={id:LS.get('poker_id')||rid(),name:(()=>{const s=LS.get('dd_name');if(typeof s==='string')return s;return LS.get('poker_name')||(LS.get('caravan_names')||{}).me||''})()};LS.set('poker_id',me.id);
+let shownOv=null,joinCode=null,S=null,P=null,host=false,net=null,mine=null,view='lobby',ov=null,hostSeen=0,offset=0,pending=false,raiseTo=0,dragging=false,lastHtml='',muted=!!LS.get('poker_mute');
+const seen={};
+
+/* ---------- sound: tiny synthesized clicks ---------- */
+let AC=null;
+function snd(kind){
+  if(muted)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume()}catch(e){return}
+  const t=AC.currentTime,len={chip:.06,card:.12,turn:.25,win:.5}[kind]||.08,b=AC.createBuffer(1,AC.sampleRate*len,AC.sampleRate),d=b.getChannelData(0);
+  for(let i=0;i<d.length;i++){const x=i/d.length;d[i]=(Math.random()*2-1)*Math.pow(1-x,kind==='card'?2:5)*(kind==='chip'?Math.sin(i*.9):1)}
+  const s=AC.createBufferSource(),g=AC.createGain(),f=AC.createBiquadFilter();s.buffer=b;f.type=kind==='card'?'highpass':'bandpass';f.frequency.value={chip:3200,card:1800,turn:900,win:1400}[kind]||2000;
+  g.gain.value=kind==='turn'?.5:.35;s.connect(f).connect(g).connect(AC.destination);s.start(t);
+  if(kind==='turn'||kind==='win'){const o=AC.createOscillator(),og=AC.createGain();o.frequency.value=kind==='win'?660:520;og.gain.setValueAtTime(.08,t);og.gain.exponentialRampToValueAtTime(.001,t+.35);o.connect(og).connect(AC.destination);o.start(t);o.stop(t+.36)}
+}
+
+/* ---------- crypto: hole cards are sealed per player (ECDH P-256 + AES-GCM) ---------- */
+let KP=null,PUB=null;const shk={};
+async function initKeys(){
+  const sv=LS.get('poker_key');
+  if(sv&&sv.d&&sv.p)try{KP={privateKey:await crypto.subtle.importKey('jwk',sv.d,{name:'ECDH',namedCurve:'P-256'},false,['deriveKey'])};PUB=sv.p;return}catch(e){}
+  const k=await crypto.subtle.generateKey({name:'ECDH',namedCurve:'P-256'},true,['deriveKey']);
+  const d=await crypto.subtle.exportKey('jwk',k.privateKey),p=await crypto.subtle.exportKey('jwk',k.publicKey);
+  KP=k;PUB={x:p.x,y:p.y};LS.set('poker_key',{d,p:PUB});
+}
+async function shared(pub){
+  const id=pub.x+pub.y;if(shk[id])return shk[id];
+  const k=await crypto.subtle.importKey('jwk',{kty:'EC',crv:'P-256',x:pub.x,y:pub.y,ext:true},{name:'ECDH',namedCurve:'P-256'},false,[]);
+  return shk[id]=await crypto.subtle.deriveKey({name:'ECDH',public:k},KP.privateKey,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+const b64=u=>{let s='';for(const x of new Uint8Array(u))s+=String.fromCharCode(x);return btoa(s)},ub=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function seal(pub,obj){const k=await shared(pub),iv=crypto.getRandomValues(new Uint8Array(12));return{iv:b64(iv),ct:b64(await crypto.subtle.encrypt({name:'AES-GCM',iv},k,new TextEncoder().encode(JSON.stringify(obj))))}}
+async function unseal(pub,box){const k=await shared(pub);return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:ub(box.iv)},k,ub(box.ct))))}
+
+/* ---------- network: public MQTT brokers + ntfy.sh fallback, same relays as Caravan ---------- */
+const BROKERS=window.POKER_BROKERS||['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt','wss://test.mosquitto.org:8081/mqtt','wss://mqtt.eclipseprojects.io:443/mqtt','wss://broker-cn.emqx.io:8084/mqtt'];
+const MQ_SRC=['../caravan/mqtt.min.js','https://cdn.jsdelivr.net/npm/mqtt@5.16.0/dist/mqtt.min.js'];
+async function loadMqtt(){
+  for(const src of MQ_SRC){if(window.mqtt)break;await new Promise(r=>{const x=document.createElement('script');x.src=src;x.onload=x.onerror=r;document.head.appendChild(x);setTimeout(r,8000)})}
+  return !!window.mqtt;
+}
+const topic=c=>'poker-dd/v1/'+c;
+const netUp=()=>!!net&&net.clients.some(c=>c.connected);
+function pub(m,retain){
+  if(!net)return;const str=JSON.stringify(m);
+  for(const c of net.clients)if(c.connected)try{c.ntfy?c.publish(0,str,0,m):c.publish(topic(net.code),str,{qos:retain?1:0,retain:!!retain})}catch(e){}
+}
+function ntfyClient(N,code){
+  const base='https://ntfy.sh/poker-dd-v1-'+code;let es=null,dead=false,lastHello=0;
+  const cl={connected:false,ntfy:true,
+    publish(_,str,o,m){
+      if(!m||m.t==='hb')return;
+      if(m.t==='state'){const s={...m.s,log:m.s.log.slice(-6)};str=JSON.stringify({t:'state',s})}
+      if(str.length>3800)return;
+      if(m.t==='hello'){if(Date.now()-lastHello<30000)return;lastHello=Date.now()}
+      fetch(base,{method:'POST',body:str}).catch(()=>{});
+    },
+    end(){dead=true;try{es&&es.close()}catch(e){}}};
+  const feed=raw=>{try{const ev=JSON.parse(raw);if(ev.event!=='message'||!ev.message)return;onMsg(JSON.parse(ev.message))}catch(e){}};
+  try{
+    es=new EventSource(base+'/sse');
+    es.onopen=async()=>{
+      if(dead||net!==N)return;cl.connected=true;
+      try{const r=await fetch(base+'/json?poll=1&since=2h'),ls=(await r.text()).trim().split('\n').filter(Boolean);for(const l of ls.slice(-40))feed(l)}catch(e){}
+      if(net===N){host?pubState():hello();render()}
+    };
+    es.onmessage=e=>{if(!dead&&net===N)feed(e.data)};
+    es.onerror=()=>{const was=cl.connected;cl.connected=!!es&&es.readyState===1;if(was!==cl.connected&&net===N)render()};
+  }catch(e){}
+  return cl;
+}
+function stopNet(){if(!net)return;clearInterval(net.timer);for(const c of net.clients)try{c.end(true)}catch(e){}net=null}
+function startNet(code){
+  stopNet();
+  const N=net={code,clients:[],timer:0},tp=topic(code),cid='pk'+rid();
+  if(window.mqtt)BROKERS.forEach((url,n)=>{
+    let cl;try{cl=mqtt.connect(url,{clientId:cid+n,clean:true,keepalive:30,reconnectPeriod:4000,connectTimeout:10000})}catch(e){return}
+    N.clients.push(cl);
+    cl.on('connect',()=>{
+      if(net!==N)return;
+      cl.subscribe(tp,{qos:1},()=>{if(net!==N||!cl.connected)return;if(host)pubState();else hello()});
+      render();
+    });
+    cl.on('message',(t,payload)=>{if(net!==N)return;let m;try{m=JSON.parse(payload.toString())}catch(e){return}onMsg(m)});
+    cl.on('close',()=>{if(net===N)render()});
+    cl.on('error',()=>{});
+  });
+  if(!window.POKER_BROKERS&&window.EventSource)N.clients.push(ntfyClient(N,code));
+  N.timer=setInterval(()=>{if(net!==N)return;if(host)pub({t:'hb',id:me.id});else hello();if(!host||!S||!BET.includes(S.phase))render()},5000);
+}
+function hello(){pub({t:'hello',id:me.id,name:clean(me.name),pk:PUB,need:!S})}
+const pubState=()=>{if(host&&S)pub({t:'state',s:S},true)};
+function onMsg(m){
+  if(!m||typeof m!=='object')return;
+  if(host)return hostMsg(m);
+  if(m.t==='state'&&m.s)return clientState(m.s);
+  if(m.t==='hb')hostSeen=Date.now();
+}
+
+/* ---------- host side: the table creator deals and referees ---------- */
+let chain=Promise.resolve();
+const commit=()=>chain=chain.then(hostCommit).catch(e=>console.error(e));
+async function hostCommit(){
+  S.v++;S.now=Date.now();
+  if(S.hand&&P.encHand!==S.hand&&S.phase!=='wait'){
+    P.enc={};for(const p of S.seats)if(p.in&&p.id!==me.id&&P.pks[p.id]&&P.hole[p.id])P.enc[p.id]=await seal(P.pks[p.id],{n:S.hand,c:P.hole[p.id]});
+    P.encHand=S.hand;
+  }
+  S.enc=S.phase==='wait'?{}:P.enc||{};S.hpk=PUB;
+  LS.set('poker_host_'+S.code,{S,P});LS.set('poker_last',{code:S.code});
+  mine=P.hole&&P.hole[me.id]?{n:S.hand,c:P.hole[me.id]}:null;
+  pubState();onState();
+}
+async function hostMsg(m){
+  const now=Date.now();
+  if(m.t==='need')return pubState();
+  if(m.t==='hello'&&m.id&&m.id!==me.id){
+    seen[m.id]=now;let ch=false;
+    if(m.pk&&m.pk.x&&!P.pks[m.id]){P.pks[m.id]={x:m.pk.x,y:m.pk.y};ch=true}
+    const p=S.seats.find(x=>x.id===m.id),nm=clean(m.name);
+    if(!p){if(!S.closed&&addSeat(S,m.id,nm)){addLog(S,`${nm} сел за стол`);ch=true}}
+    else if(p.name!==nm){p.name=nm;ch=true}
+    if(p&&p.leave&&!S.closed){p.leave=false;ch=true}
+    if(ch)commit();else if(m.need)pubState();
+    return;
+  }
+  if(m.t==='act'&&m.id&&P.pks[m.id]&&m.iv){
+    let a;try{a=await unseal(P.pks[m.id],m)}catch(e){return}
+    if(!a||!(a.q>(P.q[m.id]||0)))return;P.q[m.id]=a.q;seen[m.id]=now;
+    applyAct(m.id,a);
+  }
+}
+function applyAct(id,a){
+  const i=S.seats.findIndex(p=>p.id===id),now=Date.now();if(i<0)return'Вы не за столом';
+  const p=S.seats[i];let err=null;
+  switch(a.a){
+    case'back':p.out=false;addLog(S,`${p.name} вернулся в игру`);break;
+    case'out':p.out=true;addLog(S,`${p.name} пропускает раздачи`);break;
+    case'rebuy':if(p.stack>0)return'Фишки ещё есть';if(BET.includes(S.phase)&&live(p))return'Дождитесь конца раздачи';p.stack=START;p.rebuys=(p.rebuys||0)+1;p.out=false;addLog(S,`${p.name} взял ещё ${START} фишек`);break;
+    case'leave':
+      p.leave=true;addLog(S,`${p.name} ушёл из-за стола`);
+      if(BET.includes(S.phase)&&live(p)){if(S.toAct===i)act(S,P,i,'fold',0,now);else{p.fold=true;if(S.seats.filter(live).length===1)advance(S,P,now,false)}}
+      else if(S.phase==='wait')S.seats.splice(i,1);
+      break;
+    case'start':if(id!==S.host||S.phase!=='wait')return null;if(!startHand(S,P,now,okDeal))return'Нужно хотя бы двое с фишками';break;
+    default:if(a.n!==S.hand)return'Этот ход уже устарел';err=act(S,P,i,a.a,a.amt,now);
+  }
+  if(!err)commit();
+  return err;
+}
+const okDeal=p=>p.id===me.id||!!P.pks[p.id];
+function hostTick(){
+  if(!host||!S||S.closed)return;const now=Date.now();let ch=false;
+  if(BET.includes(S.phase)){
+    const p=S.seats[S.toAct],away=p&&p.id!==me.id&&now-(seen[p.id]||0)>20000;
+    if(p&&(now>S.deadline||(away&&now-S.turnAt>FOLD_MS))){timeoutMove(S,P,now);ch=true}
+  }else if(S.phase==='show'&&now>S.deadline){startHand(S,P,now,okDeal);ch=true}
+  if(ch)commit();
+}
+setInterval(hostTick,1000);
+
+/* ---------- client side ---------- */
+async function clientState(s){
+  if(!s||!s.code||(net&&s.code!==net.code))return;
+  if(S&&S.host===s.host&&s.v<=S.v)return;
+  const prev=S;hostSeen=Date.now();offset=Date.now()-(s.now||Date.now());S=s;pending=false;
+  if(s.enc&&s.enc[me.id]&&(!mine||mine.n!==s.hand)){try{mine=await unseal(s.hpk,s.enc[me.id])}catch(e){mine=null}}
+  else if(mine&&mine.n!==s.hand)mine=null;
+  if(S!==s)return;
+  LS.set('poker_last',{code:s.code});
+  onState(prev);
+}
+let lastSnd={};
+function onState(){
+  const s=S;if(!s)return;
+  const k=s.hand+':'+s.phase+':'+s.board.length,mi=s.seats.findIndex(p=>p.id===me.id);
+  if(lastSnd.k!==k&&lastSnd.k){if(s.phase==='show'){if(s.res&&s.res.pots.some(p=>p.w.includes(mi)))snd('win');else snd('card')}else snd('card')}
+  if(s.last&&lastSnd.lt!==s.v&&s.last.t!=='чек'&&s.last.t!=='фолд'&&lastSnd.lk!==JSON.stringify(s.last))snd('chip');
+  if(BET.includes(s.phase)&&s.toAct===mi&&mi>=0&&lastSnd.turn!==k+s.v){if(lastSnd.myTurn!==s.hand+':'+s.phase+':'+s.curBet)snd('turn');lastSnd.myTurn=s.hand+':'+s.phase+':'+s.curBet}
+  lastSnd.k=k;lastSnd.lk=JSON.stringify(s.last);
+  const p=s.seats[mi];
+  if(p&&BET.includes(s.phase)&&s.toAct===mi){const mn=minRaiseTo();if(raiseTo<mn||raiseTo>p.bet+p.stack||lastSnd.rk!==s.v)raiseTo=Math.min(mn,p.bet+p.stack)}
+  lastSnd.rk=s.v;
+  if(s.closed&&!host){toast('Ведущий закрыл стол');leaveTable(true);return}
+  render();
+}
+let seq=Date.now()*100;
+async function send(a){
+  if(!S)return;
+  if(host){const e=applyAct(me.id,a);if(e)toast(e);return}
+  if(!S.hpk)return toast('Стол ещё не ответил');
+  a.q=++seq;pending=true;render();
+  try{pub({t:'act',id:me.id,...await seal(S.hpk,a)})}catch(e){pending=false;toast('Не удалось отправить ход');render()}
+  setTimeout(()=>{if(pending){pending=false;render()}},6000);
+}
+
+/* ---------- flows ---------- */
+async function openTable(code,asHost){
+  await initKeys();
+  view='table';ov=null;mine=null;S=null;P=null;host=false;lastSnd={};
+  const saved=LS.get('poker_host_'+code);
+  if(asHost||(saved&&saved.S&&saved.S.host===me.id&&!saved.S.closed)){
+    host=true;
+    if(saved&&saved.S&&!asHost){S=saved.S;P=saved.P}
+    else{S=newTable(code,me.id);P={deck:[],hole:{},pks:{},q:{},enc:{}};addSeat(S,me.id,clean(me.name));addLog(S,`${clean(me.name)} открыл стол`)}
+    S.host=me.id;for(const p of S.seats)seen[p.id]=Date.now();
+  }
+  try{history.replaceState(null,'','?room='+code)}catch(e){}
+  if(!await loadMqtt()&&!window.EventSource)toast('Не загрузился модуль связи');
+  startNet(code);
+  if(host)commit();else render();
+}
+function leaveTable(silent){
+  if(S&&!silent){if(host){S.closed=true;addLog(S,'Стол закрыт');commit();LS.del('poker_host_'+S.code)}else send({a:'leave'})}
+  const N=net;setTimeout(()=>{if(net===N)stopNet()},host&&!silent?1500:600);
+  if(S&&!host)LS.del('poker_last');if(host&&S)LS.del('poker_last');
+  view='lobby';S=null;P=null;host=false;mine=null;ov=null;
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+  render();
+}
+const roomUrl=()=>(ON_GH?location.origin+location.pathname:'https://design-dmitriev.github.io/games/poker/')+'?room='+(S?S.code:'');
+function newCode(){return Array.from({length:5},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[rnd(24)]).join('')}
+
+/* ---------- rendering ---------- */
+const SUITC={s:'♠',h:'♥',d:'♦',c:'♣'};
+const card=(c,cls='')=>c?`<div class="pc ${'hd'.includes(c[1])?'r':''} ${cls}"><i>${c[0]==='T'?'10':c[0]}</i><s>${SUITC[c[1]]}&#xFE0E;</s><b>${SUITC[c[1]]}&#xFE0E;</b></div>`:`<div class="pc bk ${cls}"></div>`;
+const potTotal=()=>S.seats.reduce((a,p)=>a+p.tot,0);
+function minRaiseTo(){const p=S.seats.find(x=>x.id===me.id);return S.curBet+S.minRaise}
+const POS={1:[[50,100]],2:[[50,100],[50,0]],3:[[50,100],[2,18],[98,18]],4:[[50,100],[0,28],[50,0],[100,28]],5:[[50,100],[0,76],[12,4],[88,4],[100,76]],6:[[50,100],[0,78],[0,22],[50,0],[100,22],[100,78]]};
+const secs=()=>S&&S.deadline?Math.max(0,Math.ceil((S.deadline-(Date.now()-offset))/1000)):0;
+
+const ICON={
+  cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="5" width="11" height="15" rx="1.5" transform="rotate(-8 9 12)"/><rect x="9.5" y="4" width="11" height="15" rx="1.5" transform="rotate(8 15 11)"/></svg>',
+  chip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.8 1.8M16.7 16.7l1.8 1.8M5.5 18.5l1.8-1.8M16.7 7.3l1.8-1.8"/></svg>',
+  user:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c1.2-4 4-6 7.5-6s6.3 2 7.5 6"/></svg>',
+  menu:'<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>'};
+const tabbar=()=>`<nav class="tabbar" aria-label="Разделы"><a href="${CARAVAN_URL}">${ICON.cards}Караван</a><a href="#" class="on" aria-current="page" data-act="noop">${ICON.chip}Покер</a><button class="${ov==='settings'?'on':''}" data-act="settings">${ICON.gear}Настройки</button></nav>`;
+const fanHtml=()=>`<aside class="hero" aria-hidden="true"><div class="fan">${['Ah','Kh','Qh','Jh','Th'].map((c,i)=>card(c).replace('class="pc','style="--i:'+(i-2)+'" class="pc')).join('')}</div></aside>`;
+const hbar=()=>`<header class="hbar"><div class="brand"><b>Покер</b><span>Техасский холдем на 2–6 игроков</span></div><button class="pchip ${me.name.trim()?'':'empty'}" data-act="settings" aria-label="Имя и настройки">${ICON.user}<span>${me.name.trim()?esc(me.name):'Ваше имя'}</span></button></header>`;
+function lobbyView(){
+  const last=LS.get('poker_last');
+  return `<div class="home">${fanHtml()}<div class="hcol">${hbar()}<main class="menu">
+  ${last&&last.code?`<section class="mgroup"><h3>Незаконченные</h3><button class="mrow sel" data-act="resume" data-code="${esc(last.code)}"><span class="tx"><b>Вернуться за стол ${esc(last.code)}</b><small>Фишки и место сохранились</small></span></button></section>`:''}
+  <section class="mgroup"><h3>Новая игра</h3><button class="mrow ${last&&last.code?'':'sel'}" data-act="newTable"><span class="tx"><b>Создать стол</b><small>Получите ссылку и позовите друзей</small></span></button></section>
+  <section class="mgroup"><h3>Справка</h3><button class="mrow" data-act="rules"><span class="tx"><b>Правила и комбинации</b><small>От роял-флеша до старшей карты</small></span></button></section>
+  </main>${tabbar()}</div></div>`;
+}
+const RULES=`<ul>
+<li>Каждому раздают по две закрытые карты. На стол по очереди выкладываются пять общих: флоп (3), тёрн (1), ривер (1).</li>
+<li>Перед раздачей двое слева от дилера ставят блайнды ${BL[0]} и ${BL[1]}. Торговля идёт по кругу четыре раза: до флопа, после флопа, тёрна и ривера.</li>
+<li>В свой ход: фолд (сбросить карты), чек (если ставок нет), колл (уравнять), рейз (повысить, минимум на размер прошлого повышения), ва-банк.</li>
+<li>Если остались двое и больше — вскрытие. Из своих двух и пяти общих собирается лучшая пятёрка. Если игрок пошёл ва-банк, он может выиграть только ту часть банка, которую сам покрыл; остальное разыгрывают в побочном банке.</li>
+<li>На ход даётся 45 секунд, иначе автоматический чек или фолд, и игрок пропускает следующие раздачи, пока не нажмёт «Вернуться».</li>
+</ul>
+<b>Комбинации, от старшей к младшей</b>
+<ol><li>Роял-флеш — A K Q J 10 одной масти</li><li>Стрит-флеш — пять подряд одной масти</li><li>Каре — четыре одинаковых</li><li>Фулл-хаус — тройка и пара</li><li>Флеш — пять одной масти</li><li>Стрит — пять подряд (туз бывает и единицей: A 2 3 4 5)</li><li>Тройка</li><li>Две пары</li><li>Пара</li><li>Старшая карта</li></ol>
+<p class="sub" style="font-size:12px">Карты раздаёт телефон того, кто создал стол. Ваши карты шифруются так, что их видите только вы и раздающий.</p>`;
+
+function joinView(){
+  return `<div class="home">${fanHtml()}<div class="hcol">${hbar()}<main class="menu"><div class="jbox">
+  <p class="sub">Вас позвали за стол <b>${esc(joinCode)}</b>. У каждого ${START} фишек, блайнды ${BL[0]}/${BL[1]}.</p>
+  <label class="field"><span>Ваше имя</span><input type="text" maxlength="16" data-nm placeholder="Как вас назвать" value="${esc(me.name)}" autocomplete="off"></label>
+  <button class="btn" data-act="join">Сесть за стол</button><button class="btn ghost" data-act="toLobby">Не сейчас</button></div>
+  <section class="mgroup"><h3>Справка</h3><button class="mrow" data-act="rules"><span class="tx"><b>Правила и комбинации</b><small>Если играете впервые</small></span></button></section></main>${tabbar()}</div></div>`;
+}
+function waitView(){
+  const mi=S.seats.findIndex(p=>p.id===me.id),n=S.seats.length,ready=S.seats.filter(p=>p.stack>0&&!p.out).length;
+  return `<div class="page">
+  <nav class="gsw"><a href="${CARAVAN_URL}">Караван</a><span class="on">Покер</span></nav>
+  <div><h2>Стол ${esc(S.code)}</h2><p class="sub">Отправьте ссылку тем, с кем хотите сыграть. Сесть могут до шести человек.</p></div>
+  <div class="linkbox"><input type="text" readonly value="${esc(roomUrl())}" data-sel><button class="btn sm" data-act="share">Поделиться</button></div>
+  <div class="plist">${S.seats.map(p=>`<div><span>${esc(p.name)}${p.id===S.host?' <span class="sub">· раздаёт</span>':''}${p.id===me.id?' <span class="sub">· вы</span>':''}</span><span class="sub">${p.stack} фишек</span></div>`).join('')}</div>
+  ${host?`<button class="btn" data-act="start" ${ready<2?'disabled':''}>${ready<2?'Ждём хотя бы ещё одного игрока':'Начать игру'}</button>`:`<p class="sub">${mi<0?(n>=6?'Стол заполнен. Можно смотреть игру.':'Садимся за стол…'):'Ждём, пока создатель стола начнёт игру.'}</p>`}
+  ${netNote()}
+  <button class="btn ghost" data-act="leave">${host?'Закрыть стол':'Выйти'}</button></div>`;
+}
+function netNote(){
+  if(!netUp())return view==='table'&&S&&S.hand?'<span class="warn">Нет связи, переподключаемся…</span>':'<p class="warn">Нет связи с сервером, переподключаемся… Если включён VPN или блокировщик, попробуйте без него.</p>';
+  if(!host&&S&&Date.now()-hostSeen>25000)return '<p class="warn">Создатель стола не в сети. Игра продолжится, когда он вернётся.</p>';
+  return '';
+}
+function seatHtml(p,i,pos,mi){
+  const [x,y]=pos,turn=BET.includes(S.phase)&&S.toAct===i,shown=S.show&&S.show[i],res=S.res,won=S.phase==='show'&&res&&res.pots.some(q=>q.w.includes(i));
+  const away=host?(p.id!==me.id&&Date.now()-(seen[p.id]||0)>20000):false;
+  const isMe=i===mi;
+  let cards='';
+  if(p.in&&!p.fold&&!isMe)cards=shown?shown.map(c=>card(c,res&&res.hands[i]&&res.hands[i].five.includes(c)?'hl':'')).join(''):card(null)+card(null);
+  const hn=!isMe&&S.phase==='show'&&res&&res.hands&&res.hands[i]?`<span class="hn">${esc(res.hands[i].name)}</span>`:'';
+  const lastA=S.last&&S.last.i===i&&BET.includes(S.phase)?`<span class="act">${esc(S.last.t.replace(/\s*\(.*\)/,''))}</span>`:'';
+  const tag=S.btn===i&&S.phase!=='wait'?'<span class="dlr">D</span>':S.sb===i&&S.hand&&S.phase!=='wait'&&S.seats.filter(q=>q.in).length>2?'<span class="blind">SB</span>':S.bb===i&&S.hand&&S.phase!=='wait'?'<span class="blind">BB</span>':'';
+  const st=p.allin&&p.in&&!p.fold&&S.phase!=='show'?'ва-банк':p.out?'пропускает':!p.in&&S.phase!=='wait'?'ждёт раздачи':p.fold&&p.in?'фолд':`${p.stack}`;
+  const prog=turn?Math.max(0,Math.min(1,(S.deadline-(Date.now()-offset))/TURN_MS)):0;
+  const side=x<20||x>80,cx=side?(x<50?x+21:x-21):x,cy=side?y:y<50?y+19:y-17,cs=`left:${cx}%;top:${cy}%`;
+  const bet=p.bet>0&&BET.includes(S.phase)?`<div class="chip" style="${cs}">${p.bet}</div>`:'';
+  const winChip=won?`<div class="chip" style="${cs}">+${p.won}</div>`:'';
+  return `<div class="seat ${isMe?'mine':y<15?'top':''} ${turn?'turn':''} ${(p.fold||!p.in)&&S.phase!=='wait'?'fold':''} ${away?'away':''} ${won?'win':''}" style="left:${x}%;top:${y}%">
+    ${cards?`<div class="sc ${shown?'big':''}">${cards}</div>`:''}
+    <div class="tag">${lastA}${tag}<span class="nm">${esc(p.name)}${isMe?' (вы)':''}</span><span class="st">${st}</span>${turn?`<span class="bar" style="--p:${prog.toFixed(3)}"></span>`:''}</div>${hn}
+  </div>${bet}${winChip}`;
+}
+function resultBanner(cls){
+  const r=S.res;if(!r)return'';
+  const nm=i=>esc(S.seats[i]?S.seats[i].name:'?'),mi=S.seats.findIndex(p=>p.id===me.id);
+  if(r.kind==='fold'){const q=r.pots[0];return `<div class="banner ${cls}"><b>${nm(q.w[0])} +${q.amt}</b>Остальные сбросили карты, вскрытия не было.<small>Следующая раздача через ${secs()}</small></div>`}
+  const lines=r.pots.map((q,k)=>{
+    const who=q.w.map(nm).join(' и '),lab=r.pots.length>1?(k?'Побочный банк':'Основной банк'):'Банк';
+    const beat=q.el.filter(i=>!q.w.includes(i)).map(i=>`${nm(i)}: ${esc(r.hands[i].name.toLowerCase())}`);
+    return `<div>${lab} ${q.amt} — <b style="display:inline;font-size:13px">${who}</b>${q.w.length>1?' (делёж)':''}<br>${esc(q.h)}${beat.length?`<small>против — ${beat.join('; ')}</small>`:''}</div>`;
+  }).join('');
+  return `<div class="banner ${cls}">${lines}<small>Следующая раздача через ${secs()}</small></div>`;
+}
+function tableView(){
+  if(!S)return `<div class="page"><nav class="gsw"><a href="${CARAVAN_URL}">Караван</a><span class="on">Покер</span></nav><h2>Стол ${esc(net?net.code:'')}</h2><p class="sub">Подключаемся к столу…</p>${netNote()}<button class="btn ghost" data-act="leave">Выйти</button></div>`;
+  if(S.phase==='wait'&&!S.hand)return waitView();
+  const mi=S.seats.findIndex(p=>p.id===me.id),n=S.seats.length,L=POS[n]||POS[6],base=mi<0?0:mi;
+  let seats='';for(let k=0;k<n;k++){const i=(base+k)%n;seats+=seatHtml(S.seats[i],i,L[k],mi)}
+  const slots=Array.from({length:5},(_,k)=>S.board[k]?card(S.board[k],(S.res&&S.res.kind==='show'&&S.res.pots.some(q=>q.w.some(w=>S.res.hands[w]&&S.res.hands[w].five.includes(S.board[k]))))?'hl':(S.phase==='show'&&S.res&&S.res.kind==='show'?'dim':'')):'<div class="slot"></div>').join('');
+  const pot=potTotal();
+  const p=S.seats[mi],myTurn=p&&BET.includes(S.phase)&&S.toAct===mi;
+  let my='',acts='';
+  if(p){
+    const hc=mine&&mine.n===S.hand&&p.in?mine.c:null;
+    const hn=hc?hname(best(hc.concat(S.board)).s):'';
+    my=`<div class="me"><div class="cards">${hc?hc.map(c=>card(c)).join(''):''}</div><div class="info"><b>${esc(p.name)}</b><span class="st">Фишки: ${p.stack}${p.bet?` · в ставке ${p.bet}`:''}${p.rebuys?` · докупок ${p.rebuys}`:''}</span>${hn&&!p.fold?`<span class="hn">${esc(hn)}</span>`:p.fold&&p.in?'<span class="hn">Вы сбросили карты</span>':''}</div></div>`;
+    if(myTurn){
+      const need=S.curBet-p.bet,max=p.bet+p.stack,mn=Math.min(S.curBet+S.minRaise,max),canRaise=max>S.curBet;
+      const halfPot=Math.min(max,Math.max(mn,S.curBet+Math.round((pot+need)/2))),fullPot=Math.min(max,Math.max(mn,S.curBet+pot+need));
+      acts=`<div class="acts">
+        ${canRaise&&ov==='raise'?`<div class="rz"><div class="val"><span>${S.curBet?'Рейз до':'Ставка'}</span><b data-rv>${raiseTo}${raiseTo>=max?' · ва-банк':''}</b></div>
+          <input type="range" min="${mn}" max="${max}" step="${BL[0]}" value="${raiseTo}" data-range aria-label="Размер ставки">
+          <div class="pre"><button class="btn ghost" data-act="rset" data-v="${mn}">Мин</button><button class="btn ghost" data-act="rset" data-v="${halfPot}">½ банка</button><button class="btn ghost" data-act="rset" data-v="${fullPot}">Банк</button><button class="btn ghost" data-act="rset" data-v="${max}">Ва-банк</button></div></div>`:''}
+        <div class="row3"><button class="btn ghost" data-act="fold" ${pending?'disabled':''}>Фолд</button>
+        <button class="btn ghost" data-act="${need>0?'call':'check'}" ${pending?'disabled':''}>${need>0?(need>=p.stack?`Колл ${p.stack} · ва-банк`:`Колл ${need}`):'Чек'}</button>
+        ${canRaise?(ov==='raise'?`<button class="btn" data-act="raise" ${pending?'disabled':''}>${raiseTo>=max?'Ва-банк':(S.curBet?'Рейз':'Ставка')} ${raiseTo}</button>`:`<button class="btn" data-act="rz">${S.curBet?'Рейз…':'Ставка…'}</button>`):'<button class="btn" disabled>Рейз</button>'}</div>
+        <p class="sub" style="text-align:center;font-size:12px;margin:0">Ваш ход · осталось ${secs()} с</p></div>`;
+    }else{
+      let t='';
+      if(S.phase==='show')t=S.res&&S.res.pots.some(q=>q.w.includes(mi))?`<b>Вы выиграли ${p.won}</b>`:'Раздача окончена';
+      else if(S.phase==='wait')t=host?'':'Ждём, пока создатель стола начнёт раздачу';
+      else if(!p.in)t='Вы сядете в следующей раздаче';
+      else if(p.fold)t='Вы сбросили карты, ждём конца раздачи';
+      else if(p.allin)t='Вы пошли ва-банк, ждём вскрытия';
+      else{const q=S.seats[S.toAct];t=q?`Ходит ${esc(q.name)} · ${secs()} с`:''}
+      const extra=p.stack===0&&!(BET.includes(S.phase)&&live(p))?`<button class="btn" data-act="rebuy">Взять ещё ${START} фишек</button>`:p.out?'<button class="btn" data-act="back">Вернуться в игру</button>':'';
+      const startB=host&&S.phase==='wait'?`<button class="btn" data-act="start" ${S.seats.filter(q=>q.stack>0&&!q.out).length<2?'disabled':''}>Новая раздача</button>`:'';
+      acts=`<div class="wait">${S.phase==='show'?resultBanner('inpanel'):''}${t?`<div>${t}</div>`:''}${extra}${startB}${S.phase==='wait'&&S.seats.filter(q=>q.stack>0&&!q.out).length<2?'<div>За столом нет второго игрока с фишками.</div>':''}</div>`;
+    }
+  }else acts=`<div class="wait">${n>=6?'Стол заполнен — вы смотрите игру.':'Садимся за стол…'}</div>`;
+  const sub=S.phase==='wait'?'перерыв':`раздача ${S.hand} · ${({preflop:'до флопа',flop:'флоп',turn:'тёрн',river:'ривер',show:'итоги'})[S.phase]}`;
+  const note=netNote();
+  return `<div class="tv"><div class="top"><span class="net ${netUp()?'ok':''}" title="${netUp()?'На связи':'Нет связи'}"></span><div class="who"><b>Стол ${esc(S.code)}</b><span>${sub} · блайнды ${BL[0]}/${BL[1]}</span></div>
+    <button class="btn ghost sm" data-act="share">Пригласить</button><button class="btn ghost ic" data-act="menu" aria-label="Меню">${ICON.menu}</button></div>
+    ${note?`<div style="padding:6px 12px;font-size:12px">${note}</div>`:''}
+    <div class="fw"><div class="felt"></div><div class="ring">${seats}</div>
+      <div class="mid"><div class="pot">${S.phase==='show'?'Итоги':'Банк '+pot}</div><div class="board">${slots}</div>${S.phase==='show'?resultBanner('onfelt'):''}</div></div>
+    ${my}${acts}</div>`;
+}
+function overlay(){
+  if(ov==='settings')return `<div class="over" data-act="close"><div data-stop><h2>Настройки</h2><label class="field"><span>Ваше имя</span><input type="text" maxlength="16" data-nm placeholder="Как вас назвать" value="${esc(me.name)}" autocomplete="off"></label><button class="btn ghost" data-act="mute">${muted?'Включить звук':'Выключить звук'}</button><button class="btn" data-act="close">Готово</button></div></div>`;
+  if(ov==='newTable')return `<div class="over" data-act="close"><div data-stop><h2>Новый стол</h2><p class="sub">Вы получите ссылку. Кто её откроет, сядет за стол. Карты раздаёт ваш телефон, поэтому не закрывайте игру, пока стол открыт.</p><label class="field"><span>Ваше имя</span><input type="text" maxlength="16" data-nm placeholder="Как вас назвать" value="${esc(me.name)}" autocomplete="off"></label><button class="btn" data-act="create">Создать стол и получить ссылку</button><button class="btn ghost" data-act="close">Отмена</button></div></div>`;
+  if(ov==='rules'&&!S)return `<div class="over" data-act="close"><div data-stop><h2>Правила</h2><div class="rules">${RULES}</div><button class="btn stick" data-act="close">Понятно</button></div></div>`;
+  if(!S)return'';
+  if(ov==='menu')return `<div class="over" data-act="close"><div data-stop><h2>Меню</h2><div class="sheet-rows"><button class="mrow" data-act="share"><span class="tx"><b>Пригласить</b><small>Свободных мест: ${6-S.seats.length}</small></span></button><button class="mrow" data-act="log"><span class="tx"><b>Журнал стола</b><small>Все ходы и итоги раздач</small></span></button><button class="mrow" data-act="rules"><span class="tx"><b>Правила и комбинации</b></span></button><button class="mrow" data-act="mute"><span class="tx"><b>Звук</b><small>${muted?'выключен':'включён'}</small></span></button><a class="mrow" href="${CARAVAN_URL}"><span class="tx"><b>Перейти в Караван</b><small>${host?'Пока вас нет, раздачи у стола остановятся':'Место за столом сохранится'}</small></span></a><button class="mrow" data-act="leave"><span class="tx"><b>${host?'Закрыть стол':'Выйти из-за стола'}</b></span></button></div><button class="btn ghost" data-act="close">Закрыть</button></div></div>`;
+  if(ov==='log')return `<div class="over" data-act="close"><div data-stop><h2>Журнал стола</h2><div class="log">${S.log.slice().reverse().map(l=>`<div class="${l.startsWith('—')?'hd':''}">${esc(l)}</div>`).join('')}</div><button class="btn" data-act="close">Закрыть</button></div></div>`;
+  if(ov==='rules')return `<div class="over" data-act="close"><div data-stop><h2>Правила</h2><div class="rules">${RULES}</div><button class="btn stick" data-act="close">Понятно</button></div></div>`;
+  if(ov==='share')return `<div class="over" data-act="close"><div data-stop><h2>Пригласить за стол</h2><p class="sub">Свободных мест: ${6-S.seats.length}. Новый игрок сядет со следующей раздачи.</p><div class="linkbox"><input type="text" readonly value="${esc(roomUrl())}" data-sel><button class="btn sm" data-act="copy">Копировать</button></div><button class="btn" data-act="close">Готово</button></div></div>`;
+  if(ov==='leave')return `<div class="over" data-act="close"><div data-stop><h2>${host?'Закрыть стол?':'Выйти из-за стола?'}</h2><p class="sub">${host?'Карты раздаёт ваш телефон: если вы уйдёте, игра остановится у всех.':'Ваши карты в текущей раздаче уйдут в фолд.'}</p><button class="btn" data-act="leaveYes">${host?'Закрыть стол':'Выйти'}</button><button class="btn ghost" data-act="close">Остаться</button></div></div>`;
+  return'';
+}
+function render(){
+  if(dragging)return;
+  const app=document.getElementById('app');
+  let h=view==='lobby'?lobbyView():view==='join'?joinView():tableView();
+  let o=overlay();if(o&&ov!==shownOv)o=o.replace('class="over"','class="over enter"');shownOv=o?ov:null;h+=o;
+  if(h===lastHtml)return;lastHtml=h;
+  const fx=document.activeElement&&document.activeElement.matches('input[data-nm]');
+  app.innerHTML=h;
+  if(fx){const i=app.querySelector('input[data-nm]');if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}
+}
+setInterval(()=>{if(view==='table'&&S&&(BET.includes(S.phase)||S.phase==='show'))render()},1000);
+
+/* ---------- input ---------- */
+document.addEventListener('click',async e=>{
+  const stop=e.target.closest('[data-stop]'),el=e.target.closest('[data-act]');
+  if(!el||(stop&&!stop.contains(el)))return;if(stop&&el.classList.contains('over'))return;
+  const a=el.dataset.act;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)()}catch(x){}
+  switch(a){
+    case'create':ov=null;if(!me.name.trim())return toast('Введите имя'),document.querySelector('[data-nm]')?.focus();return openTable(newCode(),true);
+    case'resume':return openTable(el.dataset.code,false);
+    case'join':if(!me.name.trim())return toast('Введите имя'),document.querySelector('[data-nm]')?.focus();return openTable(joinCode,false);
+    case'toLobby':view='lobby';joinCode=null;try{history.replaceState(null,'',location.pathname)}catch(x){}return render();
+    case'leave':ov='leave';return render();
+    case'leaveYes':ov=null;return leaveTable(false);
+    case'close':ov=null;return render();
+    case'log':case'rules':case'menu':case'settings':case'newTable':ov=a;return render();
+    case'noop':e.preventDefault();return;
+    case'share':
+      if(navigator.share&&matchMedia('(pointer:coarse)').matches){try{await navigator.share({title:'Покер',text:'Садись за стол',url:roomUrl()});return}catch(x){}}
+      ov='share';return render();
+    case'copy':try{await navigator.clipboard.writeText(roomUrl());toast('Ссылка скопирована')}catch(x){const i=document.querySelector('[data-sel]');i&&i.select();toast('Выделите и скопируйте ссылку')}return;
+    case'mute':muted=!muted;LS.set('poker_mute',muted);lastHtml='';return render();
+    case'start':return send({a:'start'});
+    case'fold':case'check':case'call':ov=null;return send({a,n:S.hand});
+    case'rz':ov='raise';return render();
+    case'rset':raiseTo=+el.dataset.v;return render();
+    case'raise':ov=null;return send({a:'raise',amt:raiseTo,n:S.hand});
+    case'rebuy':case'back':return send({a});
+  }
+});
+document.addEventListener('input',e=>{
+  if(e.target.matches('[data-nm]')){me.name=e.target.value;LS.set('poker_name',me.name);LS.set('dd_name',me.name)}
+  if(e.target.matches('[data-range]')){raiseTo=+e.target.value;const p=S.seats.find(x=>x.id===me.id),max=p.bet+p.stack;const b=document.querySelector('[data-rv]');if(b)b.textContent=raiseTo+(raiseTo>=max?' · ва-банк':'');const btn=document.querySelector('[data-act=raise]');if(btn)btn.textContent=(raiseTo>=max?'Ва-банк':(S.curBet?'Рейз':'Ставка'))+' '+raiseTo}
+});
+document.addEventListener('pointerdown',e=>{if(e.target.matches('[data-range]'))dragging=true});
+document.addEventListener('pointerup',()=>{if(dragging){dragging=false;lastHtml='';render()}});
+document.addEventListener('focusin',e=>{if(e.target.matches('[data-sel]'))e.target.select()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&net&&!host)hello()});
+
+/* ---------- boot ---------- */
+(async()=>{
+  const room=(new URLSearchParams(location.search).get('room')||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8);
+  if(room){
+    const sv=LS.get('poker_host_'+room),last=LS.get('poker_last');
+    if((sv&&sv.S&&sv.S.host===me.id&&!sv.S.closed)||(last&&last.code===room&&me.name.trim()))return openTable(room,false);
+    joinCode=room;view='join';
+  }
+  render();
+})();
+</script>
+</body>
+</html>

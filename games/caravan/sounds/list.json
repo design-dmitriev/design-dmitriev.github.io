@@ -1,0 +1,8 @@
+{
+  "win": "deck_ui_achievement_toast.wav",
+  "blip": "deck_ui_default_activation.wav",
+  "miss": "deck_ui_hide_modal.wav",
+  "turn": "deck_ui_launch_game.wav",
+  "oppturn": "deck_ui_into_game_detail.wav",
+  "hover": "deck_ui_navigation.wav"
+}

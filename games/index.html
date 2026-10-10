@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Игры пустошей</title>
+<meta name="description" content="Караван и техасский холдем: играйте с друзьями по ссылке или вдвоём на одном телефоне.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=PT+Mono&display=swap">
+<style>
+:root{--bg:#0f0b06;--panel:#1d170c;--amber:#ffb642;--dim:rgba(255,182,66,.66);--line:rgba(255,182,66,.34);--paper:#efe4c4;--ink:#1b1711;--red:#a8281a;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#0f0b06}}
+:root[data-theme="light"]{--bg:#0f0b06}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg)}
+body{background:var(--bg) radial-gradient(ellipse at 50% 30%,#2b2110 0,transparent 75%);color:var(--amber);font:400 14px/1.45 "PT Mono",ui-monospace,Menlo,Consolas,monospace;text-shadow:0 0 6px rgba(255,182,66,.4);-webkit-tap-highlight-color:transparent}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 62%,rgba(0,0,0,.35) 100%)}
+main{min-height:100%;max-width:980px;margin:0 auto;padding:calc(24px + env(safe-area-inset-top,0px)) 16px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:20px}
+header{display:flex;align-items:flex-end;gap:12px;border-bottom:2px solid var(--amber);box-shadow:0 6px 0 -4px var(--amber);padding-bottom:12px}
+h1{margin:0;font:600 clamp(34px,11vw,52px)/1 Oswald,"Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.04em}
+header p{margin:6px 0 0;color:var(--dim);font-size:13px}
+.who{margin-left:auto;flex:none;max-width:42%;padding:9px 12px;box-shadow:inset 0 0 0 1.5px var(--line);font:500 14px/1 Oswald,"Arial Narrow",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who:empty{display:none}
+.grid{display:grid;gap:14px}
+@media (min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+a.game{display:grid;grid-template-rows:auto 1fr;color:inherit;text-decoration:none;border:1.5px solid var(--line);background:rgba(23,18,10,.6);min-height:200px;position:relative;overflow:hidden}
+a.game:hover,a.game:focus-visible{border-color:var(--amber);outline:0;box-shadow:0 0 18px rgba(255,182,66,.25)}
+.art{height:150px;position:relative;overflow:hidden;border-bottom:1.5px solid var(--line)}
+.caravan .art{background:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.55)),repeating-linear-gradient(90deg,#5a3a20 0 46px,#3e2714 46px 49px)}
+.poker .art{background:radial-gradient(ellipse at 50% 120%,#2c6a55 0,#1f4c3e 45%,#13302a 100%)}
+.pc{position:absolute;left:50%;bottom:-26px;width:74px;height:104px;margin-left:-37px;background:linear-gradient(150deg,#f6edd2,#e2d4ad);border-radius:6px;box-shadow:inset 0 0 0 1px rgba(80,55,20,.35),0 6px 14px rgba(0,0,0,.6);color:var(--ink);text-shadow:none;font:600 26px/1 Oswald,sans-serif;padding:6px 8px;transform-origin:50% 150%;transform:rotate(calc(var(--i)*12deg))}
+.pc.r{color:var(--red)}
+.pc small{display:block;font-size:18px;margin-top:2px}
+.tx{padding:14px 16px 16px;display:grid;gap:4px;align-content:start}
+.tx b{font:600 24px/1.1 Oswald,"Arial Narrow",sans-serif;letter-spacing:.03em}
+.tx span{color:var(--dim)}
+.tx em{font-style:normal;color:var(--amber);margin-top:6px}
+.tx em:empty{display:none}
+a.game::after{content:"";position:absolute;right:18px;bottom:22px;width:10px;height:10px;border:solid currentColor;border-width:2px 2px 0 0;transform:rotate(45deg);opacity:.7}
+footer{color:var(--dim);font-size:12px;margin-top:auto}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <header><div><h1>Игры</h1><p>Карточные игры пустошей. Без регистрации, с друзьями по ссылке.</p></div><div class="who" id="who"></div></header>
+  <div class="grid">
+    <a class="game caravan" href="caravan/">
+      <div class="art" aria-hidden="true"><div class="pc" style="--i:-1">10<small>♥&#xFE0E;</small></div><div class="pc" style="--i:0">K<small>♠&#xFE0E;</small></div><div class="pc r" style="--i:1">Q<small>♦&#xFE0E;</small></div></div>
+      <div class="tx"><b>Караван</b><span>Двое, по три каравана. Продайте два из трёх, чтобы забрать банк.</span><em id="cv"></em></div>
+    </a>
+    <a class="game poker" href="poker/">
+      <div class="art" aria-hidden="true"><div class="pc r" style="--i:-1">A<small>♥&#xFE0E;</small></div><div class="pc" style="--i:0">A<small>♠&#xFE0E;</small></div><div class="pc r" style="--i:1">K<small>♦&#xFE0E;</small></div></div>
+      <div class="tx"><b>Покер</b><span>Техасский холдем без лимита, от двух до шести игроков.</span><em id="pk"></em></div>
+    </a>
+  </div>
+  <footer>Имя общее для обеих игр. Оно и незаконченные партии хранятся в браузере на этом устройстве.</footer>
+</main>
+<script>
+const g=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const nm=g('dd_name')||(g('caravan_names')||{}).me||g('poker_name')||'';
+document.getElementById('who').textContent=String(nm).trim();
+const cl=g('caravan_local'),cp=g('caravan_p2p'),pl=g('poker_last');
+document.getElementById('cv').textContent=cl&&cl.game?'Есть незаконченная партия':cp&&cp.code?`Вы за столом ${cp.code}`:'';
+document.getElementById('pk').textContent=pl&&pl.code?`Вы за столом ${pl.code}`:'';
+</script>
+</body>
+</html>
