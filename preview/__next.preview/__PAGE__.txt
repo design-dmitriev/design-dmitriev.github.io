@@ -1,9 +1,9 @@
 1:"$Sreact.fragment"
-2:I[2971,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuv.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
-3:I[32177,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuv.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
-4:I[96199,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuv.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
-5:I[81434,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuv.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
-6:I[5500,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuv.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"Image"]
+2:I[2971,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuw.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
+3:I[32177,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuw.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
+4:I[96199,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuw.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
+5:I[81434,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuw.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"default"]
+6:I[5500,["/_next/static/chunks/3fntmmi971322.js","/_next/static/chunks/2qk6b_tinbiuw.js","/_next/static/chunks/0f05v_37u_-64.js","/_next/static/chunks/1fx5g2v75f8fd.js"],"Image"]
 f:X
 14:X
 14:C
@@ -19,7 +19,7 @@ f:X
 7:["$","a",null,{"href":"tel:[TODO: телефон]","className":"text-white/70 hover:text-white transition-colors","children":"[TODO: телефон]"}]
 8:["$","nav",null,{"className":"flex flex-col gap-1.5 text-white/70","children":[[["$","a","[Услуга 1]",{"href":"#services","className":"hover:text-white transition-colors","children":"[Услуга 1]"}]],[["$","a","#portfolio",{"href":"#portfolio","className":"hover:text-white transition-colors","children":"Портфолио"}],["$","a","#about",{"href":"#about","className":"hover:text-white transition-colors","children":"Обо мне"}],["$","a","#blog",{"href":"#blog","className":"hover:text-white transition-colors","children":"Блог"}],["$","a","#contact",{"href":"#contact","className":"hover:text-white transition-colors","children":"Контакты"}]]]}]
 9:["$","div",null,{"className":"mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-6 text-sm text-white/50","children":[["$","p",null,{"children":["Алексей Дмитриев"," © ",2026]}],["$","div",null,{"className":"flex items-center gap-6","children":[["$","a","[Соцсеть 1]",{"href":"#","className":"hover:text-white transition-colors","children":"[Соцсеть 1]"}],["$","a","[Соцсеть 2]",{"href":"#","className":"hover:text-white transition-colors","children":"[Соцсеть 2]"}]]}]]}]
-a:["$","script","script-0",{"src":"/_next/static/chunks/2qk6b_tinbiuv.js","async":true}]
+a:["$","script","script-0",{"src":"/_next/static/chunks/2qk6b_tinbiuw.js","async":true}]
 b:["$","script","script-1",{"src":"/_next/static/chunks/0f05v_37u_-64.js","async":true}]
 c:["$","script","script-2",{"src":"/_next/static/chunks/1fx5g2v75f8fd.js","async":true}]
 d:["$","$L19",null,{"children":["$","$1a",null,{"name":"Next.MetadataOutlet","children":"$@1b"}]}]
