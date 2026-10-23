@@ -62,3 +62,34 @@
     $$('[data-view-btn]').forEach(function (b) { b.addEventListener('click', function () { setView(b.dataset.viewBtn); }); });
   }).catch(function () {});
 })();
+
+/* превью при наведении в «Что я выстроил» */
+(function () {
+  var panel = document.getElementById('built-panel');
+  if (!panel || !matchMedia('(min-width:1100px) and (hover:hover)').matches) return;
+  var peek = document.createElement('div');
+  peek.className = 'peek'; peek.setAttribute('aria-hidden', 'true');
+  peek.innerHTML = '<div class="ph">Превью появится позже</div><img alt="" hidden>';
+  panel.appendChild(peek);
+  var img = peek.querySelector('img'), ph = peek.querySelector('.ph');
+  var rows = [].slice.call(panel.querySelectorAll('.built > li'));
+
+  function show(li) {
+    var src = li.getAttribute('data-peek');
+    if (src) { img.hidden = false; ph.hidden = true; if (img.getAttribute('src') !== src) img.src = src; }
+    else { img.hidden = true; ph.hidden = false; }
+    var top = li.offsetTop + li.offsetHeight / 2 - peek.offsetHeight / 2;
+    top = Math.max(0, Math.min(top, panel.clientHeight - peek.offsetHeight));
+    if (!peek.classList.contains('on')) {
+      peek.style.transition = 'none'; peek.style.top = top + 'px'; void peek.offsetWidth; peek.style.transition = '';
+    } else peek.style.top = top + 'px';
+    rows.forEach(function (r) { r.classList.toggle('on', r === li); });
+    panel.classList.add('hovering'); peek.classList.add('on');
+  }
+  function hide() {
+    rows.forEach(function (r) { r.classList.remove('on'); });
+    panel.classList.remove('hovering'); peek.classList.remove('on');
+  }
+  rows.forEach(function (li) { li.addEventListener('mouseenter', function () { show(li); }); });
+  panel.addEventListener('mouseleave', hide);
+})();
