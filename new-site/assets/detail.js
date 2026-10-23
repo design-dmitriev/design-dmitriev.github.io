@@ -40,8 +40,9 @@
     go();if(!reduce)timer=setInterval(go,2400);
   }
   function fitFy(){
-    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),r=parseFloat(st.getAttribute('data-r'))||.6,W=st.clientWidth,H=st.clientHeight-$('.fy-meta',st).offsetHeight-16;
-    var w=innerWidth<900?Math.min(W,360):Math.min(W,H*r,540);if(w<180)w=180;box.style.width=w+'px';box.style.height=w/r+'px';
+    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-$('.fy-meta',st).offsetHeight-16;
+    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,360):Math.min(W,H*r,cap);if(w<180)w=180;box.style.width=w+'px';box.style.height=w/r+'px';
+    if(fw){fr.style.transform='scale('+(w/fw)+')'}
   }
   window.addEventListener('resize',function(){if(sheetOn)fitFy()});
   function renderSkills(d){
@@ -49,12 +50,13 @@
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
-    h+='<div class="fy-stage" data-r="'+d.frame.ratio+'"><div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
+    var fv=d.frame.w?(innerWidth<900&&d.frame.mw?{w:d.frame.mw,h:d.frame.mh}:{w:d.frame.w,h:d.frame.h}):null,fr=fv?fv.w/fv.h:d.frame.ratio;
+    h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'><div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
     if(d.actions){h+='<div class="fy-act">'+d.actions.map(function(a,i){return '<a class="sh-link'+(i?' alt':'')+'" href="'+a.href+'" target="_blank" rel="noopener">'+esc(a.label)+' ↗</a>'}).join('')+'</div>'}
     else if(d.download||d.files){h+='<div class="fy-act">';if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)h+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';h+='</div>'}
     if(d.install)h+='<small>'+esc(d.install)+'</small>';
     h+='</div></div></div>';
-    sh.innerHTML=h;sh.classList.add('wide');$('.sh-x',sh).onclick=closeSheet;
+    sh.innerHTML=h;sh.classList.add('wide');if(fr>1)$('.fy-layout',sh).classList.add('land');$('.sh-x',sh).onclick=closeSheet;
   }
   function render(key){
     sh.classList.remove('wide');
