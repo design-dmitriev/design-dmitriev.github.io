@@ -73,6 +73,8 @@ body.lock{overflow:hidden}
 .fc-row b{color:#fff;font-weight:500;font-size:1.25rem}
 .fc-go{color:#0a0a0a;background:#fff;border-radius:99px;padding:.8rem 1.4rem;font-weight:500}
 
-.fdemo{width:100%;max-width:22.5rem;height:37.5rem;margin:0 0 1.5rem;border-radius:1.5rem;overflow:hidden;border:1px solid rgba(128,128,128,.25);background:#fff}
-.fdemo iframe{width:100%;height:100%;border:0;display:block}
 
+
+.fdemo{width:28.125rem;height:46.875rem;margin:0 0 1.5rem;border-radius:1.75rem;overflow:hidden;border:1px solid rgba(128,128,128,.25);background:#fff;position:relative;max-width:100%}
+.fdemo iframe{position:absolute;left:0;top:0;width:360px;height:600px;border:0;transform:scale(1.25);transform-origin:0 0}
+@media(max-width:560px){.fdemo{width:100%;height:37.5rem}.fdemo iframe{width:100%;height:100%;transform:none}}
