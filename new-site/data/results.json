@@ -1,0 +1,15 @@
+{
+  "demo": true,
+  "intro": "После смены визуального стиля CTR карточек вырос на 1–5%. Ниже несколько сделок, где я менял заглавку и сравнивал показатели до и после.",
+  "source": {
+    "text": "Цифры взяты из выгрузки CRM компании. Данные по сделкам вносили менеджеры, сводку по ним собрал ИИ-агент.",
+    "proof": null,
+    "proofLabel": "Посмотреть выгрузку"
+  },
+  "cases": [
+    { "client": "Клиент A", "marketplace": "WB", "category": "Косметика", "period": "январь 2026", "ctrBefore": 2.1, "ctrAfter": 2.9, "change": "Новая композиция заглавки, товар крупнее" },
+    { "client": "Клиент B", "marketplace": "Ozon", "category": "Товары для дома", "period": "март 2026", "ctrBefore": 2.4, "ctrAfter": 3.0, "change": "Один акцент вместо трёх" },
+    { "client": "Клиент C", "marketplace": "WB", "category": "Одежда", "period": "июнь 2026", "ctrBefore": 1.8, "ctrAfter": 2.6, "change": "Заглавка по системе КЮА" },
+    { "client": "Клиент D", "marketplace": "Ozon", "category": "Электроника", "period": "сентябрь 2026", "ctrBefore": 3.1, "ctrAfter": 4.6, "change": "Другой фон и контраст" }
+  ]
+}

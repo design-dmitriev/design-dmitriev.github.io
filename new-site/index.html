@@ -1,30 +1,31 @@
 <!doctype html>
-<html lang="ru" data-role="head">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#0a0a0a">
 <title>Алексей Дмитриев — руководитель отдела дизайна</title>
-<meta name="description" content="Портфолио Алексея Дмитриева: CTR по каждой сделке, процесс отдела дизайна и инструменты, которые убирают рутину.">
+<meta name="description" content="Портфолио и резюме Алексея Дмитриева: руководитель отдела дизайна, карточки для WB и Ozon, результаты по CTR.">
 <link rel="icon" href="/favicon.ico">
 <link rel="preload" href="assets/fonts/onest-cyr.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
-<a class="skip" href="#deals">К содержимому</a>
+<body data-view="work">
+<a class="skip" href="#results">К содержимому</a>
 
 <header class="top" id="top">
   <a class="brand" href="#top">Алексей Дмитриев</a>
   <nav class="nav" aria-label="Разделы">
-    <a href="#deals">Сделки</a>
-    <a href="#process">Процесс</a>
-    <a href="#tools">Инструменты</a>
-    <a href="#recruiter">Рекрутеру</a>
+    <a href="#results">Результаты</a>
+    <a href="#built">Что я выстроил</a>
+    <a href="#works">Работы</a>
+    <a href="#experience">Опыт</a>
+    <a href="#contact">Контакты</a>
   </nav>
-  <div class="roles" role="group" aria-label="Под какую вакансию показать сайт">
-    <button type="button" data-role-btn="head" aria-pressed="true">Руководитель отдела</button>
-    <button type="button" data-role-btn="commercial" aria-pressed="false">Коммерческий лид</button>
+  <div class="views" id="views" role="group" aria-label="Раздел сайта" hidden>
+    <button type="button" data-view-btn="work" aria-pressed="true">Работа</button>
+    <button type="button" data-view-btn="hobby" aria-pressed="false">Хобби</button>
   </div>
 </header>
 
@@ -33,86 +34,136 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="hero-body wrap">
     <h1 id="h1">Руководитель отдела дизайна</h1>
-    <p class="lead" id="sub"></p>
+    <p class="lead">Алексей Дмитриев. Руковожу отделом из пяти дизайнеров в HaruCase и с 2021 года делаю карточки для WB и Ozon.</p>
     <div class="actions">
       <a class="btn btn-fill" href="/CV_Starlight.pdf">Резюме в PDF</a>
       <a class="btn btn-line" href="https://t.me/starlight_lnk">Написать в Telegram</a>
     </div>
   </div>
-  <div class="hero-chart wrap">
-    <div class="chart-head">
-      <p class="legend">
-        <span><svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4" stroke="#fff" stroke-width="2"/></svg>CTR после правки</span>
-        <span><svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4" stroke="#fff" stroke-opacity=".5" stroke-width="1.5" stroke-dasharray="3 3"/></svg>до правки</span>
-      </p>
-      <p class="demo" id="demo-hero" hidden>Демо-данные, заменятся выгрузкой из Excel</p>
-    </div>
-    <div class="chart" id="chart" role="img" aria-label="График CTR от сделки к сделке. Те же данные в таблице ниже.">
-      <svg id="chart-svg" width="100%" height="100%"></svg>
-      <div class="tip" id="tip" hidden></div>
-    </div>
-  </div>
 </section>
 
 <main id="main">
-  <section class="sec" id="deals" aria-labelledby="deals-h" style="--o:2">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 id="deals-h">CTR от сделки к сделке</h2>
-        <p class="sum" id="sum"></p>
+  <div data-show="work">
+    <section class="sec" id="results" aria-labelledby="results-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="results-h">Результаты</h2>
+          <p class="sum" id="results-intro"></p>
+        </div>
+        <p class="demo" id="demo" hidden>Пока здесь демо-данные, их заменит реальная выгрузка.</p>
+        <ul class="cases" id="cases"></ul>
+        <p class="source" id="source"></p>
       </div>
-      <div class="tools-row">
-        <div class="chips" id="chips" role="group" aria-label="Площадка"></div>
-        <label class="search"><span class="sr">Поиск по сделкам</span><input id="q" type="search" placeholder="Клиент, категория, правка" autocomplete="off"></label>
-      </div>
-      <p class="demo" id="demo-list" hidden>Демо-данные, заменятся выгрузкой из Excel</p>
-      <ul class="deals" id="deals-list"></ul>
-      <p class="count" id="count" aria-live="polite"></p>
-    </div>
-  </section>
+    </section>
 
-  <section class="sec" id="process" aria-labelledby="process-h" style="--o:1">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 id="process-h">Как устроена работа отдела</h2>
-        <p class="sum">Каждая сделка проходит один и тот же путь, поэтому результат можно сравнивать и повторять.</p>
+    <section class="sec" id="built" aria-labelledby="built-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="built-h">Что я выстроил</h2>
+          <p class="sum">Процессы отдела и инструменты, которые я сделал сам.</p>
+        </div>
+        <ul class="rows">
+          <li>
+            <h3>Figma и нейросети</h3>
+            <p>Перевёл отдел из Photoshop в Figma и подключил нейросети для графики и текстов. Скорость работы выросла на 50%.</p>
+          </li>
+          <li>
+            <h3>KPI для дизайнеров</h3>
+            <p>С нуля сделал прозрачную систему KPI. Объём задачи считается по времени, оценка по конверсии карточки на маркетплейсе.</p>
+          </li>
+          <li>
+            <h3>Правила и система КЮА</h3>
+            <p>Собрал десятки правил из насмотренности и дизайн-систему заглавок для трёх маркетплейсов: общая логика, разные картинки и ракурсы.</p>
+          </li>
+          <li>
+            <h3>Задачи и коммуникация</h3>
+            <p>Веду проекты в Яндекс.Трекере и Битрикс24, работаю напрямую с CEO и отделом продаж.</p>
+          </li>
+          <li>
+            <h3>Сборщик коробочек</h3>
+            <p>Развёртка коробки в SVG и PDF и 3D-примерка макета под ваши размеры. Сделал сам.</p>
+            <a href="https://design-dmitriev.github.io/box-builder/">Открыть сборщик</a>
+          </li>
+          <li>
+            <h3>Паспорт артикула</h3>
+            <p>По артикулу WB или Ozon показывает, есть ли фотобанк, макет коробки и последний дизайн. Внутренний инструмент, сейчас в разработке.</p>
+          </li>
+        </ul>
       </div>
-      <ol class="steps">
-        <li><span class="n">1</span><h3>Бриф</h3><p>Фиксируем цель сделки, площадку, категорию и текущий CTR.</p></li>
-        <li><span class="n">2</span><h3>Гипотеза</h3><p>Определяем, что в карточке мешает клику, и какую правку проверяем.</p></li>
-        <li><span class="n">3</span><h3>Макет</h3><p>Делаем по системе КЮА, чтобы правка одинаково работала на трёх площадках.</p></li>
-        <li><span class="n">4</span><h3>Тест</h3><p>Выкладываем макет и ждём, пока накопятся показы.</p></li>
-        <li><span class="n">5</span><h3>Разбор</h3><p>Сравниваем CTR до и после и записываем вывод в таблицу сделок.</p></li>
-      </ol>
-    </div>
-  </section>
+    </section>
 
-  <section class="sec" id="tools" aria-labelledby="tools-h" style="--o:3">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 id="tools-h">Инструменты, которые я сделал для работы</h2>
-        <p class="sum">Рутину отдела лучше убирать кодом, чем людьми.</p>
+    <section class="sec" id="works" aria-labelledby="works-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="works-h">Личные дизайн-работы</h2>
+          <p class="sum" id="works-note">Проекты, которые я делаю для себя. Фото добавлю позже.</p>
+        </div>
+        <ul class="works" id="works-list">
+          <li class="slot" aria-hidden="true"></li>
+          <li class="slot" aria-hidden="true"></li>
+          <li class="slot" aria-hidden="true"></li>
+          <li class="slot" aria-hidden="true"></li>
+          <li class="slot" aria-hidden="true"></li>
+          <li class="slot" aria-hidden="true"></li>
+        </ul>
       </div>
-      <ul class="projects" id="projects"></ul>
-    </div>
-  </section>
+    </section>
 
-  <section class="sec" id="recruiter" aria-labelledby="rec-h" style="--o:4">
-    <div class="wrap two">
-      <div>
-        <h2 id="rec-h">Рекрутеру</h2>
-        <p class="sum">Всё, что нужно для первого шага, на одном экране. Ссылку можно переслать дальше: роль в ней сохраняется.</p>
-        <button type="button" class="btn btn-outline" id="copy">Скопировать ссылку</button>
-        <span class="sr" id="copy-live" aria-live="polite"></span>
+    <section class="sec" id="experience" aria-labelledby="exp-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="exp-h">Опыт</h2>
+          <p class="sum"><a href="/CV_Starlight.pdf">Полное резюме в PDF</a></p>
+        </div>
+        <ul class="rows jobs">
+          <li>
+            <p class="when">июнь 2024 — сейчас</p>
+            <h3>HaruCase, руководитель отдела дизайна</h3>
+            <p>Отдел из пяти человек: задачи, арт-дирекшн, обучение, KPI. Карточки, Rich-контент и витрины для WB и Ozon, упаковка, мерч, интерфейсы для Telegram-ботов и сайтов. Флагманские продукты рисую сам. За два года с командой выпустили больше 3000 слайдов.</p>
+          </li>
+          <li>
+            <p class="when">март 2023 — февраль 2024</p>
+            <h3>ИП Fix Mobile, графический дизайнер</h3>
+            <p>Единственный дизайнер в компании. Оформил с нуля витрину главного магазина, сотни карточек. Запустил визуальную концепцию нового бренда от карточек до упаковки. Делал цветокоррекцию сотен артикулов.</p>
+          </li>
+          <li>
+            <p class="when">июль — октябрь 2022</p>
+            <h3>ИП ARTOtaku, дизайнер</h3>
+            <p>Веб-дизайн, UI/UX, полиграфия, баннеры, карточки товаров.</p>
+          </li>
+          <li>
+            <p class="when">ноябрь 2021 — июль 2022</p>
+            <h3>ИП Cases Stores, фотограф-дизайнер</h3>
+            <p>Инфографика, превью и фоны, предметная съёмка и ретушь, видеоролики. Участвовал в методических материалах по дизайну для маркетплейсов.</p>
+          </li>
+        </ul>
       </div>
-      <dl class="facts">
-        <div><dt>Ищу</dt><dd>Руководитель отдела дизайна или коммерческий лид в дизайне</dd></div>
-        <div><dt>Telegram</dt><dd><a href="https://t.me/starlight_lnk">@starlight_lnk</a></dd></div>
-        <div><dt>Почта</dt><dd><a href="mailto:alex.strl1t@gmail.com">alex.strl1t@gmail.com</a></dd></div>
-        <div><dt>Резюме</dt><dd><a href="/CV_Starlight.pdf">Скачать PDF</a></dd></div>
-      </dl>
-    </div>
-  </section>
+    </section>
+
+    <section class="sec" id="contact" aria-labelledby="contact-h">
+      <div class="wrap two">
+        <div>
+          <h2 id="contact-h">Контакты</h2>
+          <p class="sum">Пишите в Telegram, отвечаю быстрее всего там.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Telegram</dt><dd><a href="https://t.me/starlight_lnk">@starlight_lnk</a></dd></div>
+          <div><dt>Почта</dt><dd><a href="mailto:alex.strl1t@gmail.com">alex.strl1t@gmail.com</a></dd></div>
+          <div><dt>Резюме</dt><dd><a href="/CV_Starlight.pdf">Скачать PDF</a></dd></div>
+          <div><dt>Город</dt><dd>Москва</dd></div>
+        </dl>
+      </div>
+    </section>
+  </div>
+
+  <div data-show="hobby" hidden>
+    <section class="sec" id="hobbies" aria-labelledby="hobby-h">
+      <div class="wrap">
+        <div class="sec-head"><h2 id="hobby-h">Хобби</h2></div>
+        <ul class="rows" id="hobby-list"></ul>
+      </div>
+    </section>
+  </div>
 </main>
 
 <footer class="foot">
