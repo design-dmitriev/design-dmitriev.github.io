@@ -37,7 +37,7 @@
   document.addEventListener('results:ready',initCases);
 
   /* нижняя навигация */
-  var secs=[['results','Цифры'],['built','Система'],['kit','Кит'],['works','Работы'],['experience','Опыт'],['contact','Связь']];
+  var secs=[['results','Цифры'],['built','Система'],['zaglavki','Заглавки'],['works','Работы'],['experience','Опыт'],['contact','Связь']];
   var dock=document.createElement('nav');dock.className='dock';dock.setAttribute('aria-label','Разделы');
   dock.innerHTML=secs.map(function(s){return '<a href="#'+s[0]+'">'+s[1]+'</a>'}).join('')+'<i class="ind"></i>';
   document.body.appendChild(dock);
@@ -61,7 +61,7 @@
       var d=document.createElement('div');d.className='m-peek';
       d.innerHTML='<div>'+(src?'<img src="'+src+'" alt="" loading="lazy">':'<div class="m-stat"><b>'+stat+'</b><span>'+(li.getAttribute('data-stat-cap')||'')+'</span></div>')+'</div>';
       li.appendChild(d);li.setAttribute('role','button');li.setAttribute('tabindex','0');li.setAttribute('aria-expanded','false');
-      function tg(e){if(e.target.closest('a'))return;var o=!li.classList.contains('open');$$('.built>li.open').forEach(function(x){if(x!==li){x.classList.remove('open');x.setAttribute('aria-expanded','false')}});li.classList.toggle('open',o);li.setAttribute('aria-expanded',String(o));if(o&&navigator.vibrate)try{navigator.vibrate(6)}catch(x){}}
+      function tg(e){if(e.target.closest('a,button'))return;var o=!li.classList.contains('open');$$('.built>li.open').forEach(function(x){if(x!==li){x.classList.remove('open');x.setAttribute('aria-expanded','false')}});li.classList.toggle('open',o);li.setAttribute('aria-expanded',String(o));if(o&&navigator.vibrate)try{navigator.vibrate(6)}catch(x){}}
       li.addEventListener('click',tg);li.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tg(e)}});
     });
   }
