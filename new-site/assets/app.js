@@ -10,23 +10,29 @@
   function num(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
   function getJSON(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(url); return r.json(); }); }
 
-  /* результаты по CTR */
+  /* результаты: заказы, CTR и CR до и после */
+  function pct(n) { return n.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + '%'; }
+  function pair(v) { return pct(v[0]) + ' → ' + pct(v[1]); }
   getJSON('data/results.json').then(function (d) {
     $('#results-intro').textContent = d.intro || '';
     if (d.demo) $('#demo').hidden = false;
-    var max = Math.max.apply(null, d.cases.map(function (c) { return Math.max(c.ctrBefore, c.ctrAfter); }));
+    var max = Math.max.apply(null, d.cases.map(function (c) { return Math.max(c.orders[0], c.orders[1]); }));
     $('#cases').innerHTML = d.cases.map(function (c) {
-      var delta = c.ctrAfter - c.ctrBefore;
+      var growth = Math.round((c.orders[1] - c.orders[0]) / c.orders[0] * 100);
+      var notes = [];
+      if (c.change) notes.push(esc(c.change));
+      if (c.manager) notes.push('Оценка менеджера: ' + esc(c.manager.toLowerCase()));
       return '<li class="case">' +
-        '<div class="who"><b>' + esc(c.client) + '</b><span>' + esc(c.marketplace) + ', ' + esc(c.category) + '<br>' + esc(c.period) + '</span></div>' +
-        '<div class="bars">' +
-          '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (c.ctrBefore / max * 100).toFixed(1) + '%"></i>' + num(c.ctrBefore) + '%</span></div>' +
-          '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (c.ctrAfter / max * 100).toFixed(1) + '%"></i><b>' + num(c.ctrAfter) + '%</b></span></div>' +
+        '<div class="who"><b>' + esc(c.title) + '</b><span>' + notes.join('<br>') + '</span></div>' +
+        '<div class="bars" role="img" aria-label="Заказов в день: ' + c.orders[0] + ', стало ' + c.orders[1] + '">' +
+          '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (c.orders[0] / max * 100).toFixed(1) + '%"></i>' + c.orders[0] + '</span></div>' +
+          '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (c.orders[1] / max * 100).toFixed(1) + '%"></i><b>' + c.orders[1] + '</b><em>' + (growth >= 0 ? '+' : '') + growth + '%</em></span></div>' +
+          '<p class="cap">заказов в день</p>' +
         '</div>' +
-        '<p class="what"><b>' + (delta >= 0 ? '+' : '') + num(delta) + ' п.п.</b>' + esc(c.change) + '</p></li>';
+        '<dl class="m"><div><dt>CTR</dt><dd>' + pair(c.ctr) + '</dd></div><div><dt>CR в корзину</dt><dd>' + pair(c.cart) + '</dd></div><div><dt>CR в заказ</dt><dd>' + pair(c.order) + '</dd></div></dl>' +
+        '</li>';
     }).join('');
-    var s = d.source || {};
-    var src = $('#source');
+    var src = $('#source'), s = d.source || {};
     src.textContent = s.text || '';
     if (s.proof) {
       var a = document.createElement('a');
