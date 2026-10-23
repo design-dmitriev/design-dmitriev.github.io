@@ -13,40 +13,40 @@ html,body{height:100%;overflow:hidden;background:#f1f1f1}
 body{display:grid;place-items:center;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",InterKit,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
 #fit{width:900px;height:1200px;transform-origin:center;flex:none}
 #s{position:relative;width:900px;height:1200px;background:#fff;color:#0b0b0b;overflow:hidden;--g1:#4db8ff;--g2:#0a7aff;--g3:#5e5ce6;border-radius:0}
-.br{position:absolute;width:74px;height:74px;border:4px solid #000;opacity:0;transition:opacity .6s,transform .8s cubic-bezier(.2,.7,.2,1)}
+.br{position:absolute;width:74px;height:74px;border:4px solid #000;opacity:0;transition:opacity .36s,transform .48s cubic-bezier(.2,.7,.2,1)}
 .br.a{left:26px;top:26px;border-right:0;border-bottom:0;border-radius:48px 0 0 0;transform:translate(24px,24px)}
 .br.b{right:26px;top:26px;border-left:0;border-bottom:0;border-radius:0 48px 0 0;transform:translate(-24px,24px)}
 .br.c{left:26px;bottom:26px;border-right:0;border-top:0;border-radius:0 0 0 48px;transform:translate(24px,-24px)}
 .br.d{right:26px;bottom:26px;border-left:0;border-top:0;border-radius:0 0 48px 0;transform:translate(-24px,-24px)}
 .st1 .br{opacity:1;transform:none}
-#logo{position:absolute;left:339px;top:26px;width:222px;height:66px;border:3px dashed #9a9a9a;border-radius:16px;display:grid;place-items:center;font-weight:500;font-size:26px;color:#8a8a8a;opacity:0;transform:translateY(-14px);transition:all .6s .25s cubic-bezier(.2,.7,.2,1)}
+#logo{position:absolute;left:339px;top:26px;width:222px;height:66px;border:3px dashed #9a9a9a;border-radius:16px;display:grid;place-items:center;font-weight:500;font-size:26px;color:#8a8a8a;opacity:0;transform:translateY(-14px);transition:all .36s .15s cubic-bezier(.2,.7,.2,1)}
 .st1 #logo{opacity:1;transform:none}
-#head{position:absolute;left:67px;top:148px;width:766px;opacity:0;transform:translateY(18px);transition:all .7s cubic-bezier(.2,.7,.2,1)}
+#head{position:absolute;left:67px;top:148px;width:766px;opacity:0;transform:translateY(18px);transition:all .42s cubic-bezier(.2,.7,.2,1)}
 .st2 #head{opacity:1;transform:none}
 #ttl{font-weight:600;font-size:90px;line-height:80px;letter-spacing:-.02em}
 #sub{margin-top:14px;font-weight:500;font-size:64px;line-height:64px;letter-spacing:-.01em;color:#383837}
-#guard{position:absolute;left:67px;top:380px;width:766px;border-top:3px dashed #ff4f7b;opacity:0;transition:opacity .4s}
+#guard{position:absolute;left:67px;top:380px;width:766px;border-top:3px dashed #ff4f7b;opacity:0;transition:opacity .24s}
 #guard i{position:absolute;right:0;top:6px;font-weight:500;font-size:24px;font-family:inherit;color:#ff4f7b;font-style:normal}
 .st2.gd #guard{opacity:1}
-.of{position:absolute;left:67px;width:340px;height:76px;display:flex;align-items:center;gap:16px;opacity:0;transform:translateX(-40px);transition:opacity .5s,transform .7s cubic-bezier(.2,.7,.2,1)}
+.of{position:absolute;left:67px;width:340px;height:76px;display:flex;align-items:center;gap:16px;opacity:0;transform:translateX(-40px);transition:opacity .3s,transform .42s cubic-bezier(.2,.7,.2,1)}
 .o1{top:428px}.o2{top:570px}.o3{top:712px}
-.st3 .of{opacity:1;transform:none}.st3 .o2{transition-delay:.2s}.st3 .o3{transition-delay:.4s}
+.st3 .of{opacity:1;transform:none}.st3 .o2{transition-delay:.12s}.st3 .o3{transition-delay:.24s}
 .of svg{width:60px;height:60px;flex:none;fill:none;stroke:#0b0b0b;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
-.of b{display:block;font-weight:700;font-size:56px;line-height:44px;letter-spacing:-.02em;background:linear-gradient(90deg,var(--g1),var(--g2) 55%,var(--g3));-webkit-background-clip:text;background-clip:text;color:transparent;transition:opacity .25s}
-.of span{display:block;margin-top:8px;font-weight:700;font-size:32px;line-height:24px;letter-spacing:-.02em;transition:opacity .25s}
+.of b{display:block;font-weight:700;font-size:56px;line-height:44px;letter-spacing:-.02em;background:linear-gradient(90deg,var(--g1),var(--g2) 55%,var(--g3));-webkit-background-clip:text;background-clip:text;color:transparent;transition:opacity .15s}
+.of span{display:block;margin-top:8px;font-weight:700;font-size:32px;line-height:24px;letter-spacing:-.02em;transition:opacity .15s}
 .sw b,.sw span,.sw svg{opacity:0}
-#zone{position:absolute;left:379px;top:428px;width:454px;height:552px;border:3px dashed #b8b8b8;border-radius:32px;opacity:0;transform:scale(.96);transition:all .7s cubic-bezier(.2,.7,.2,1);display:grid;place-items:center}
+#zone{position:absolute;left:379px;top:428px;width:454px;height:552px;border:3px dashed #b8b8b8;border-radius:32px;opacity:0;transform:scale(.96);transition:all .42s cubic-bezier(.2,.7,.2,1);display:grid;place-items:center}
 .st4 #zone{opacity:1;transform:none}
-#prod{width:250px;height:370px;border-radius:44px;background:linear-gradient(160deg,var(--g1),var(--g2) 55%,var(--g3));opacity:.92;box-shadow:0 40px 60px -30px rgba(0,0,0,.35);transform:translateY(30px) scale(.9);transition:transform .9s .2s cubic-bezier(.2,.7,.2,1),background .4s}
+#prod{width:250px;height:370px;border-radius:44px;background:linear-gradient(160deg,var(--g1),var(--g2) 55%,var(--g3));opacity:.92;box-shadow:0 40px 60px -30px rgba(0,0,0,.35);transform:translateY(30px) scale(.9);transition:transform .54s .12s cubic-bezier(.2,.7,.2,1),background .24s}
 .st4 #prod{transform:none}
 #prod::after{content:"товар";position:absolute;inset:auto 0 18px 0;text-align:center;color:rgba(255,255,255,.85);font-weight:500;font-size:28px;font-family:inherit}
-#pct{position:absolute;right:26px;top:994px;font-weight:700;font-size:40px;font-family:inherit;color:#8a8a8a;opacity:0;transition:opacity .5s .5s}
+#pct{position:absolute;right:26px;top:994px;font-weight:700;font-size:40px;font-family:inherit;color:#8a8a8a;opacity:0;transition:opacity .3s .3s}
 .st4 #pct{opacity:1}
-#cat{position:absolute;left:67px;top:1010px;display:flex;gap:10px;opacity:0;transition:opacity .4s}
+#cat{position:absolute;left:67px;top:1010px;display:flex;gap:10px;opacity:0;transition:opacity .24s}
 .st5 #cat{opacity:1}
-#cat i{font-style:normal;font-weight:500;font-size:26px;padding:8px 20px;border-radius:99px;background:#eee;color:#6b6b6b;transition:all .3s}
+#cat i{font-style:normal;font-weight:500;font-size:26px;padding:8px 20px;border-radius:99px;background:#eee;color:#6b6b6b;transition:all .18s}
 #cat i.on{background:#0b0b0b;color:#fff}
-#cap{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);background:#0b0b0b;color:#fff;border-radius:99px;padding:16px 38px;font-weight:500;font-size:32px;font-family:inherit;white-space:nowrap;transition:opacity .3s}
+#cap{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);background:#0b0b0b;color:#fff;border-radius:99px;padding:16px 38px;font-weight:500;font-size:32px;font-family:inherit;white-space:nowrap;transition:opacity .18s}
 #note{position:absolute;left:0;right:0;bottom:22px;text-align:center;font-weight:500;font-size:20px;font-family:inherit;color:#9a9a9a}
 @media (prefers-reduced-motion:reduce){#s *{transition-duration:.01s!important}}
 </style></head>
@@ -97,7 +97,7 @@ body{display:grid;place-items:center;font-family:-apple-system,BlinkMacSystemFon
       s.classList.remove('sw');
     };
     if(quick){apply();return}
-    s.classList.add('sw');setTimeout(apply,260);
+    s.classList.add('sw');setTimeout(apply,160);
   }
   var STEPS=[
     ['Рамка и логотип всегда на одном месте',1],
@@ -112,11 +112,11 @@ body{display:grid;place-items:center;font-family:-apple-system,BlinkMacSystemFon
   var t=[];function at(ms,f){t.push(setTimeout(f,ms))}
   function run(){
     t.forEach(clearTimeout);t=[];cls(0);s.classList.remove('gd');setCat(CAT[0],true);cap.textContent='';cap.style.opacity=0;
-    var T=reduce?400:3000;
-    STEPS.forEach(function(st,i){at(300+i*T,function(){cls(st[1]);show(st[0]);if(i===1)at(1400,function(){s.classList.add('gd')});if(i===2)s.classList.remove('gd')})});
+    var T=reduce?400:1800;
+    STEPS.forEach(function(st,i){at(300+i*T,function(){cls(st[1]);show(st[0]);if(i===1)at(850,function(){s.classList.add('gd')});if(i===2)s.classList.remove('gd')})});
     var base=300+4*T+T*.6;
-    [1,2,3,0].forEach(function(k,i){at(base+i*(reduce?500:1800),function(){setCat(CAT[k])})});
-    at(base+4*(reduce?500:1800)+1200,run);
+    [1,2,3,0].forEach(function(k,i){at(base+i*(reduce?500:1080),function(){setCat(CAT[k])})});
+    at(base+4*(reduce?500:1080)+800,run);
   }
   document.fonts.ready.then(run);
 })();
