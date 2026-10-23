@@ -194,3 +194,6 @@ section[id]{scroll-margin-top:1rem}
 .case .who a b{border-bottom:1px solid rgba(255,255,255,.4)}
 @media (hover:hover){.case .who a:hover b{border-bottom-color:#fff}}
 .note{color:rgba(255,255,255,.72);font-size:.9375rem}
+
+.peek.demo{width:min(15rem,19%);aspect-ratio:3/5;background:#fff}
+.peek iframe{position:absolute;left:0;top:0;width:360px;height:600px;border:0;transform-origin:0 0}

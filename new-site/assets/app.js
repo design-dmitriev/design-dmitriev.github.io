@@ -90,9 +90,18 @@
   var img = peek.querySelector('img'), ph = peek.querySelector('.ph');
   var rows = [].slice.call(panel.querySelectorAll('.built > li'));
 
+  var frame = null;
+  function fit() { if (frame) frame.style.transform = 'scale(' + peek.clientWidth / 360 + ')'; }
   function show(li) {
+    var demo = li.getAttribute('data-demo');
+    peek.classList.toggle('demo', !!demo);
+    if (demo) {
+      if (!frame) { frame = document.createElement('iframe'); frame.title = 'Превью Folderify'; frame.tabIndex = -1; frame.src = demo; peek.appendChild(frame); }
+      frame.hidden = false; img.hidden = true; ph.hidden = true; fit();
+    } else if (frame) frame.hidden = true;
     var src = li.getAttribute('data-peek');
-    if (src) { img.hidden = false; ph.hidden = true; if (img.getAttribute('src') !== src) img.src = src; }
+    if (demo) {}
+    else if (src) { img.hidden = false; ph.hidden = true; if (img.getAttribute('src') !== src) img.src = src; }
     else { img.hidden = true; ph.hidden = false; var st = li.getAttribute('data-stat'); ph.innerHTML = st ? '<b>' + st + '</b><span>' + (li.getAttribute('data-stat-cap') || '') + '</span>' : 'Превью появится позже'; ph.classList.toggle('stat', !!st); }
     var top = li.offsetTop + li.offsetHeight / 2 - peek.offsetHeight / 2;
     top = Math.max(0, Math.min(top, panel.clientHeight - peek.offsetHeight));
