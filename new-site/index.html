@@ -12,6 +12,7 @@
 <script>document.documentElement.className+=" js"</script>
 <link rel="stylesheet" href="assets/style.css">
 <link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/kit.css">
 </head>
 <body data-view="work">
 <a class="skip" href="#results">К содержимому</a>
@@ -21,6 +22,7 @@
   <nav class="nav" aria-label="Разделы">
     <a href="#results">Результаты</a>
     <a href="#built">Что я выстроил</a>
+    <a href="#kit">Дизайн-кит</a>
     <a href="#works">Работы</a>
     <a href="#experience">Опыт</a>
     <a href="#contact">Контакты</a>
@@ -76,9 +78,9 @@
             <div class="r-title"><h3>KPI для дизайнеров</h3><span class="tags"><span>KPI</span><span>Оценка по конверсии</span></span></div>
             <p>С нуля сделал прозрачную систему KPI. Объём задачи считается по времени, оценка по конверсии карточки на маркетплейсе.</p>
           </li>
-          <li data-peek-alt="Дизайн-кит заглавок" data-stat="9 из 16" data-stat-cap="A/B-тестов заглавного фото дали рост конверсии">
+          <li data-peek-alt="Дизайн-кит заглавок" data-stat="3 маркетплейса" data-stat-cap="общая логика, разные картинки и ракурсы">
             <div class="r-title"><h3>Дизайн-кит для заглавок</h3><span class="tags"><span>Дизайн-система</span><span>Стиль Apple</span><span>3 маркетплейса</span></span></div>
-            <p>По запросу заказчика собрал дизайн-кит заглавок в стилистике Apple: SF Pro, спокойная палитра, одна мысль на слайд, логотип всегда сверху. Логика общая для трёх маркетплейсов, картинки и ракурсы свои. Цифры тестов ниже.</p>
+            <p>По запросу заказчика собрал дизайн-кит заглавок в стилистике Apple: SF Pro, спокойная палитра, одна мысль на слайд, логотип всегда сверху. Логика общая для трёх маркетплейсов, картинки и ракурсы свои.</p>
           </li>
           <li data-peek-alt="Процессы" data-stat="CEO и продажи" data-stat-cap="работа напрямую, задачи в Трекере и Битрикс24">
             <div class="r-title"><h3>Задачи и коммуникация</h3><span class="tags"><span>Яндекс.Трекер</span><span>Битрикс24</span></span></div>
@@ -94,6 +96,45 @@
             <p>По артикулу WB или Ozon показывает, есть ли фотобанк, макет коробки и последний дизайн. Внутренний инструмент, сейчас в разработке.</p>
           </li>
         </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" id="kit" aria-labelledby="kit-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="kit-h">Дизайн-кит заглавок</h2>
+          <p class="sum">Система для заглавных слайдов в стилистике Apple. Попробуйте собрать заглавку сами: правила кита работают прямо здесь.</p>
+        </div>
+        <div class="panel soft kit" id="kit">
+          <div class="kit-bar" id="kit-bar"></div>
+          <div class="kit-main">
+            <div class="stage-wrap">
+              <div class="slide" id="slide" data-pos="center">
+                <div class="frame"></div>
+                <div class="logo">LOGO</div>
+                <div class="txt"><div class="ttl">Быстрая зарядка</div><div class="pills"><span>3 в 1</span><span>Qi2</span></div></div>
+                <div class="prod"><i></i><b></b><u></u></div>
+                <div class="guides"><i class="m"></i><i class="c"></i><i class="t"></i><em class="e1">охранное поле</em><em class="e2">логотип по центру</em><em class="e3">тексты слева</em></div>
+              </div>
+            </div>
+            <div class="kit-side">
+              <div class="ctlg"><span>Слайд</span><div class="chips" id="k-type"><button class="kb" type="button" data-v="0" aria-pressed="true">Заглавка</button><button class="kb" type="button" data-v="1" aria-pressed="false">Доп-слайд</button></div></div>
+              <div class="ctlg"><span>Категория товара</span><div class="chips" id="k-cat"><button class="kb" type="button" data-v="cables" aria-pressed="true">Кабели</button><button class="kb" type="button" data-v="chargers" aria-pressed="false">Зарядки</button><button class="kb" type="button" data-v="ears" aria-pressed="false">Наушники</button><button class="kb" type="button" data-v="sets" aria-pressed="false">Комплекты</button><button class="kb" type="button" data-v="power" aria-pressed="false">Блоки питания</button></div></div>
+              <div class="ctlg"><span>Положение товара</span><div class="chips" id="k-pos"><button class="kb" type="button" data-v="left" aria-pressed="false">Слева</button><button class="kb" type="button" data-v="center" aria-pressed="true">По центру</button><button class="kb" type="button" data-v="right" aria-pressed="false">Справа</button></div></div>
+              <div class="ctlg"><span>Плашки</span><div class="chips" id="k-pill"><button class="kb" type="button" data-v="l" aria-pressed="true">Слева</button><button class="kb" type="button" data-v="r" aria-pressed="false">Справа снизу</button></div></div>
+              <div class="ctlg"><span>Заголовок</span><input class="kin" id="k-text" type="text" value="Быстрая зарядка" maxlength="28"></div>
+              <div class="ctlg"><span>Направляющие</span><div class="chips"><button class="kb" id="k-guides" type="button" aria-pressed="false">Показать сетку</button></div></div>
+              <ol class="rules">
+                <li><span><b>Рамка только на заглавке.</b> На доп-слайдах её нет.</span></li>
+                <li><span><b>Логотип всегда сверху.</b> На заглавке по центру и крупнее, на доп-слайдах меньше.</span></li>
+                <li><span><b>Одна мысль на слайд,</b> без плиток.</span></li>
+                <li><span><b>Товар в центре</b> по центру, слева или справа.</span></li>
+                <li><span><b>Надписи и плашки слева,</b> редкие справа снизу; не выше заголовка и в охранных полях.</span></li>
+                <li><span><b>У каждой категории свой цвет,</b> логика одна на три маркетплейса.</span></li>
+              </ol>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -184,5 +225,6 @@
 <script src="assets/noise.js" defer></script>
 <script src="assets/app.js" defer></script>
 <script src="assets/mobile.js" defer></script>
+<script src="assets/kit.js" defer></script>
 </body>
 </html>

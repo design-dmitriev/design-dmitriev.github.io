@@ -37,7 +37,7 @@
   document.addEventListener('results:ready',initCases);
 
   /* нижняя навигация */
-  var secs=[['results','Цифры'],['built','Система'],['works','Работы'],['experience','Опыт'],['contact','Связь']];
+  var secs=[['results','Цифры'],['built','Система'],['kit','Кит'],['works','Работы'],['experience','Опыт'],['contact','Связь']];
   var dock=document.createElement('nav');dock.className='dock';dock.setAttribute('aria-label','Разделы');
   dock.innerHTML=secs.map(function(s){return '<a href="#'+s[0]+'">'+s[1]+'</a>'}).join('')+'<i class="ind"></i>';
   document.body.appendChild(dock);

@@ -35,7 +35,7 @@
   /* нижняя навигация */
   .dock{position:fixed;left:50%;bottom:max(.75rem,env(safe-area-inset-bottom));z-index:50;display:flex;gap:.1rem;padding:.3rem;border-radius:999px;background:rgba(10,10,10,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28);transform:translate(-50%,160%);transition:transform .5s cubic-bezier(.2,.7,.2,1);max-width:calc(100vw - 1.5rem)}
   .dock.on{transform:translate(-50%,0)}
-  .dock a{position:relative;z-index:1;color:rgba(255,255,255,.7);text-decoration:none;font-size:.875rem;padding:.65rem .8rem;border-radius:999px;min-height:44px;display:grid;place-items:center;white-space:nowrap;transition:color .25s}
+  .dock a{position:relative;z-index:1;color:rgba(255,255,255,.7);text-decoration:none;font-size:.8125rem;padding:.65rem .55rem;border-radius:999px;min-height:44px;display:grid;place-items:center;white-space:nowrap;transition:color .25s}
   .dock a.on{color:#0a0a0a}
   .dock .ind{position:absolute;z-index:0;top:.3rem;bottom:.3rem;left:0;width:var(--w,0);transform:translateX(var(--x,0));background:#fff;border-radius:999px;transition:transform .4s cubic-bezier(.2,.7,.2,1),width .4s cubic-bezier(.2,.7,.2,1)}
   .foot{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))}
