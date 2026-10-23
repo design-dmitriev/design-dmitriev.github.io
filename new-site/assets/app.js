@@ -20,12 +20,12 @@
     $('#results-intro').textContent = d.intro || '';
     if (d.demo) $('#demo').hidden = false;
     function idx(c) { return c.ordersIndex || c.conversionIndex; }
-    var max = Math.max.apply(null, d.cases.map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); }));
     var html = '';
     ['Ozon', 'WB', null].forEach(function (mp) {
       var list = d.cases.filter(function (c) { return c.marketplace === mp; });
       if (!list.length) return;
       if (mp) html += '<li class="group"><h3>' + mp + '</h3></li>';
+      var max = Math.max.apply(null, list.map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); }));
       html += list.map(function (c) {
         var v = idx(c), growth = v[1] - v[0];
         var cap = c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
