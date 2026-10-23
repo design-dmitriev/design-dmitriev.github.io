@@ -43,21 +43,23 @@
     var d=DATA[key];if(!d)return;
     var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
-    if(d.demo)h+=demoHtml();
+    if(d.demo==='folderify')h+='<div class="fdemo"><iframe src="folderify/ui.html?demo=1" title="Как работает Folderify" loading="lazy"></iframe></div>';
+    else if(d.demo)h+=demoHtml();
     else if(d.stat)h+='<div class="sh-stat"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     var n=0;(d.blocks||[]).forEach(function(b){h+='<h4>'+esc(b.h)+'</h4><ul>'+b.items.map(function(t){return '<li style="--i:'+(n++)+'">'+esc(t)+'</li>'}).join('')+'</ul>'});
     if(d.tags)h+='<div class="tags">'+d.tags.map(function(t){return '<span>'+esc(t)+'</span>'}).join('')+'</div>';
+    if(d.files)h+='<a class="sh-link" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';
     if(d.link)h+='<a class="sh-link" href="'+d.link.href+'" data-close>'+esc(d.link.label)+'</a>';
     h+='<div id="figbar"></div></div>';
     sh.innerHTML=h;
     $('.sh-x',sh).onclick=closeSheet;
     $$('[data-close]',sh).forEach(function(a){a.addEventListener('click',closeSheet)});
-    if(d.demo)fetch('data/kit.json').then(function(r){return r.json()}).then(function(k){var x='';if(k.figma)x+='<a class="sh-link" href="'+k.figma+'" target="_blank" rel="noopener">Открыть в Figma ↗</a>';if(k.file)x+='<a class="sh-link alt" href="'+k.file+'" download>'+(k.fileLabel||'Скачать .fig')+'</a>';$('#figbar',sh).innerHTML=x}).catch(function(){});
+    if(d.demo===true)fetch('data/kit.json').then(function(r){return r.json()}).then(function(k){var x='';if(k.figma)x+='<a class="sh-link" href="'+k.figma+'" target="_blank" rel="noopener">Открыть в Figma ↗</a>';if(k.file)x+='<a class="sh-link alt" href="'+k.file+'" download>'+(k.fileLabel||'Скачать .fig')+'</a>';$('#figbar',sh).innerHTML=x}).catch(function(){});
   }
   function openSheet(key,push){
     if(!DATA)return;lastFocus=document.activeElement;clearInterval(timer);render(key);
     sheetOn=true;bg.classList.add('on');sh.classList.add('on');document.body.classList.add('lock');sh.scrollTop=0;$('.sh-body',sh).scrollTop=0;
-    if(DATA[key]&&DATA[key].demo)runDemo();
+    if(DATA[key]&&DATA[key].demo===true)runDemo();
     if(push!==false)history.replaceState(null,'','#built-'+key);
     setTimeout(function(){var x=$('.sh-x',sh);if(x)x.focus()},350);
   }

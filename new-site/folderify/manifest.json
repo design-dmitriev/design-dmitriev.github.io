@@ -1,0 +1,16 @@
+{
+  "name": "Folderify",
+  "id": "folderify-bridge",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": [
+      "https://cloud-api.yandex.net",
+      "https://*.disk.yandex.net",
+      "https://*.yandex.net"
+    ],
+    "reasoning": "Загружает экспортированные фреймы/картинки и исходники на Яндекс.Диск пользователя и показывает список папок для выбора места сохранения."
+  }
+}
