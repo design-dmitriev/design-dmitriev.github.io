@@ -1,0 +1,81 @@
+/* анимации появления */
+.js .rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+.js .case .bar i{width:0;transition:width 1.1s cubic-bezier(.2,.7,.2,1) .15s}
+.js .case.in .bar i{width:var(--w)}
+.js .case .bar.after i{transition-delay:.35s}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.hero-body>*{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero-body>:nth-child(2){animation-delay:.12s}.hero-body>:nth-child(3){animation-delay:.24s}
+.btn,.case,.dock a,.chip{-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.97)}
+.btn{transition:opacity .2s,transform .15s}
+
+/* превью-статы в «Что я выстроил» */
+.m-peek{display:none}
+.m-stat{display:grid;gap:.4rem;align-content:end;min-height:9rem;padding:1.25rem;border-radius:1.25rem;background:#0a0a0a;color:#fff;position:relative;overflow:hidden}
+.m-stat::before{content:"";position:absolute;inset:0;opacity:.18;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='14'><path d='M0 9 L5 3 L10 9 L15 3 L20 9' fill='none' stroke='white' stroke-width='1'/></svg>")}
+.m-stat b{position:relative;font-size:clamp(2.25rem,12vw,3.5rem);font-weight:500;letter-spacing:-.035em;line-height:1}
+.m-stat span{position:relative;font-size:.9375rem;color:rgba(255,255,255,.7)}
+.m-peek img{display:block;width:100%;height:auto;border-radius:1.25rem}
+
+@media (max-width:1099px),(hover:none){
+  .built>li[data-stat],.built>li[data-peek]{cursor:pointer;position:relative;padding-right:3.25rem}
+  .built>li[data-stat]::after,.built>li[data-peek]::after{content:"+";position:absolute;right:.25rem;top:1.15rem;width:2rem;height:2rem;border-radius:50%;background:#0a0a0a;color:#fff;display:grid;place-items:center;font-size:1.25rem;line-height:1;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .built>li.open::after{transform:rotate(45deg)}
+  .built>li .m-peek{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,.7,.2,1);grid-column:1/-1}
+  .built>li.open .m-peek{grid-template-rows:1fr}
+  .m-peek>div{overflow:hidden;min-height:0}
+  .built>li.open .m-peek>div{padding-top:1rem}
+  .m-peek>div>*{transform:translateY(12px);opacity:0;transition:all .5s .1s}
+  .built>li.open .m-peek>div>*{transform:none;opacity:1}
+}
+
+@media (max-width:899px){
+  /* нижняя навигация */
+  .dock{position:fixed;left:50%;bottom:max(.75rem,env(safe-area-inset-bottom));z-index:50;display:flex;gap:.1rem;padding:.3rem;border-radius:999px;background:rgba(10,10,10,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 10px 30px rgba(0,0,0,.28);transform:translate(-50%,160%);transition:transform .5s cubic-bezier(.2,.7,.2,1);max-width:calc(100vw - 1.5rem)}
+  .dock.on{transform:translate(-50%,0)}
+  .dock a{position:relative;z-index:1;color:rgba(255,255,255,.7);text-decoration:none;font-size:.875rem;padding:.65rem .8rem;border-radius:999px;min-height:44px;display:grid;place-items:center;white-space:nowrap;transition:color .25s}
+  .dock a.on{color:#0a0a0a}
+  .dock .ind{position:absolute;z-index:0;top:.3rem;bottom:.3rem;left:0;width:var(--w,0);transform:translateX(var(--x,0));background:#fff;border-radius:999px;transition:transform .4s cubic-bezier(.2,.7,.2,1),width .4s cubic-bezier(.2,.7,.2,1)}
+  .foot{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))}
+
+  /* результаты: карусель */
+  .panel.dark{padding-inline:0}
+  .panel.dark .source{padding-inline:1.5rem}
+  .panel.dark .cases{display:flex;gap:.75rem;overflow-x:auto;scroll-snap-type:x mandatory;border-top:0;padding:0 1.25rem .5rem;scroll-padding-inline:1.25rem;-webkit-overflow-scrolling:touch;scrollbar-width:none;overscroll-behavior-x:contain}
+  .cases::-webkit-scrollbar{display:none}
+  .cases .group{display:none}
+  .panel.dark .case{flex:0 0 84%;scroll-snap-align:start;border:1px solid rgba(255,255,255,.16);border-radius:1.5rem;padding:1.25rem;background:rgba(255,255,255,.05);align-content:start;transition:transform .35s,border-color .35s}
+  .panel.dark .case:active{transform:scale(.985)}
+  .case .who span{display:inline-block;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.15rem .65rem;margin-bottom:.6rem;color:#fff}
+  .dots{display:flex;align-items:center;gap:.4rem;padding:1rem 1.5rem 0}
+  .dots button{width:.5rem;height:.5rem;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.3);transition:width .3s,background .3s;cursor:pointer}
+  .dots button.on{width:1.5rem;background:#fff}
+  .dots .cnt{margin-left:auto;font-size:.875rem;color:rgba(255,255,255,.65);font-variant-numeric:tabular-nums}
+  .dots .hint{font-size:.875rem;color:rgba(255,255,255,.65);animation:nudge 1.6s ease-in-out 3}
+  @keyframes nudge{50%{transform:translateX(6px)}}
+  .panel.dark .source{margin-top:1.25rem}
+
+  /* работы: горизонтальная лента */
+  .works{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:.75rem;margin-inline:calc(var(--gutter,1.25rem)*-1);padding-inline:var(--gutter,1.25rem);scrollbar-width:none}
+  .works{scroll-padding-inline:var(--gutter,1.25rem)}
+  .works::-webkit-scrollbar{display:none}
+  .works .slot{flex:0 0 66%;aspect-ratio:4/5;scroll-snap-align:start}
+  .works li:not(.slot){flex:0 0 78%;scroll-snap-align:start}
+
+  /* контакты и ссылки: крупные зоны нажатия */
+  .facts a,.sec-head a,.rows li a{display:inline-flex;align-items:center;min-height:44px}
+  .rows li>p:last-child{grid-column:auto}
+}
+@media (max-width:899px) and (hover:none){.hero{min-height:92svh}}
+@media (min-width:900px){.dock,.dots{display:none}}
+@media (prefers-reduced-motion:reduce){
+  .js .rv{opacity:1;transform:none;transition:none}
+  .js .case .bar i{width:var(--w);transition:none}
+  .hero-body>*{animation:none}
+  .dock,.dock .ind,.built>li .m-peek,.dots .hint{transition:none;animation:none}
+}
+.peek .ph.stat{flex-direction:column;justify-content:flex-end;gap:.35rem;background:#0a0a0a;color:#fff}
+.peek .ph.stat b{font-size:2.75rem;font-weight:500;letter-spacing:-.035em;line-height:1}
+.peek .ph.stat span{font-size:.9375rem;color:rgba(255,255,255,.7)}

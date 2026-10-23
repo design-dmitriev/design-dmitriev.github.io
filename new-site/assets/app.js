@@ -41,6 +41,7 @@
       }).join('');
     });
     $('#cases').innerHTML = html;
+    document.dispatchEvent(new Event('results:ready'));
     var src = $('#source'), s = d.source || {};
     src.textContent = s.text || '';
     if (s.proof) {
@@ -92,7 +93,7 @@
   function show(li) {
     var src = li.getAttribute('data-peek');
     if (src) { img.hidden = false; ph.hidden = true; if (img.getAttribute('src') !== src) img.src = src; }
-    else { img.hidden = true; ph.hidden = false; }
+    else { img.hidden = true; ph.hidden = false; var st = li.getAttribute('data-stat'); ph.innerHTML = st ? '<b>' + st + '</b><span>' + (li.getAttribute('data-stat-cap') || '') + '</span>' : 'Превью появится позже'; ph.classList.toggle('stat', !!st); }
     var top = li.offsetTop + li.offsetHeight / 2 - peek.offsetHeight / 2;
     top = Math.max(0, Math.min(top, panel.clientHeight - peek.offsetHeight));
     if (!peek.classList.contains('on')) {
