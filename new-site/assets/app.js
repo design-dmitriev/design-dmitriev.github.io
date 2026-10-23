@@ -10,24 +10,37 @@
   function num(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
   function getJSON(url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(url); return r.json(); }); }
 
-  /* результаты: артикул, заказы (индекс) и CTR до и после */
+  /* результаты: артикул, заказы или конверсия (индекс) и CTR до и после */
   function pct(n) { return n.toLocaleString('ru-RU', { maximumFractionDigits: 2 }) + '%'; }
+  var LINKS = {
+    Ozon: function (a) { return 'https://www.ozon.ru/product/' + a + '/'; },
+    WB: function (a) { return 'https://www.wildberries.ru/catalog/' + a + '/detail.aspx'; }
+  };
   getJSON('data/results.json').then(function (d) {
     $('#results-intro').textContent = d.intro || '';
     if (d.demo) $('#demo').hidden = false;
-    var max = Math.max.apply(null, d.cases.map(function (c) { return Math.max(c.ordersIndex[0], c.ordersIndex[1]); }));
-    $('#cases').innerHTML = d.cases.map(function (c) {
-      var o = c.ordersIndex, growth = o[1] - o[0];
-      return '<li class="case">' +
-        '<div class="who"><span>Артикул</span><b>' + esc(c.article) + '</b></div>' +
-        '<div class="bars" role="img" aria-label="Заказы в день, индекс: до ' + o[0] + ', после ' + o[1] + '">' +
-          '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (o[0] / max * 100).toFixed(1) + '%"></i>' + o[0] + '</span></div>' +
-          '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (o[1] / max * 100).toFixed(1) + '%"></i><b>' + o[1] + '</b><em>' + (growth >= 0 ? '+' : '') + growth + '%</em></span></div>' +
-          '<p class="cap">заказы в день, индекс</p>' +
-        '</div>' +
-        '<dl class="m"><div><dt>CTR до</dt><dd>' + pct(c.ctr[0]) + '</dd></div><div><dt>CTR после</dt><dd>' + pct(c.ctr[1]) + '</dd></div></dl>' +
-        '</li>';
-    }).join('');
+    function idx(c) { return c.ordersIndex || c.conversionIndex; }
+    var max = Math.max.apply(null, d.cases.map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); }));
+    var html = '';
+    ['Ozon', 'WB', null].forEach(function (mp) {
+      var list = d.cases.filter(function (c) { return c.marketplace === mp; });
+      if (!list.length) return;
+      if (mp) html += '<li class="group"><h3>' + mp + '</h3></li>';
+      html += list.map(function (c) {
+        var v = idx(c), growth = v[1] - v[0];
+        var cap = c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
+        var metrics = c.ctr ? '<dl class="m"><div><dt>CTR до</dt><dd>' + pct(c.ctr[0]) + '</dd></div><div><dt>CTR после</dt><dd>' + pct(c.ctr[1]) + '</dd></div></dl>' : '';
+        if (c.note) metrics += '<p class="note">' + esc(c.note) + '</p>';
+        return '<li class="case">' +
+          '<div class="who"><span>Артикул' + (mp ? ' ' + mp : '') + '</span>' + (mp ? '<a href="' + esc(LINKS[mp](c.article)) + '" target="_blank" rel="noopener"><b>' + esc(c.article) + '</b></a>' : '<b>' + esc(c.article) + '</b>') + '</div>' +
+          '<div class="bars" role="img" aria-label="' + cap + ': до ' + v[0] + ', после ' + v[1] + '">' +
+            '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (v[0] / max * 100).toFixed(1) + '%"></i>' + v[0] + '</span></div>' +
+            '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (v[1] / max * 100).toFixed(1) + '%"></i><b>' + v[1] + '</b><em>' + (growth >= 0 ? '+' : '') + growth + '%</em></span></div>' +
+            '<p class="cap">' + cap + '</p>' +
+          '</div><div>' + metrics + '</div></li>';
+      }).join('');
+    });
+    $('#cases').innerHTML = html;
     var src = $('#source'), s = d.source || {};
     src.textContent = s.text || '';
     if (s.proof) {
