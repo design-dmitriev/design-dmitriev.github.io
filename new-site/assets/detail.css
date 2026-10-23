@@ -95,3 +95,5 @@ body.lock{overflow:hidden}
 @media(max-width:899px){.fy-layout{grid-template-columns:1fr;gap:1.5rem}.fy-stage{order:-1;position:static;height:auto}.fy-info{order:1}}
 @media(max-height:820px) and (min-width:900px){.fy-chip{display:none}.fy-info .lead{margin-bottom:.75rem}.fy-skills li{padding:.55rem 0}.fy-meta small{display:none}}
 @media(max-height:900px) and (min-width:900px){.fy-skills li{padding:.5rem 0}.fy-skills span{font-size:.875rem;line-height:1.35}.fy-info .lead{margin-bottom:.9rem;font-size:1rem}.fy-chip{margin-bottom:.75rem;padding:.35rem 1rem}.fy-skills li.is-plugin{padding:.6rem 1rem}.sh-body h3{margin-bottom:.6rem}}
+
+@media (min-width:1100px) and (hover:hover){.built>li.go{cursor:pointer}}

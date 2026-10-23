@@ -50,7 +50,8 @@
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
     h+='<div class="fy-stage" data-r="'+d.frame.ratio+'"><div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
-    if(d.download||d.files){h+='<div class="fy-act">';if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)h+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';h+='</div>'}
+    if(d.actions){h+='<div class="fy-act">'+d.actions.map(function(a,i){return '<a class="sh-link'+(i?' alt':'')+'" href="'+a.href+'" target="_blank" rel="noopener">'+esc(a.label)+' ↗</a>'}).join('')+'</div>'}
+    else if(d.download||d.files){h+='<div class="fy-act">';if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)h+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';h+='</div>'}
     if(d.install)h+='<small>'+esc(d.install)+'</small>';
     h+='</div></div></div>';
     sh.innerHTML=h;sh.classList.add('wide');$('.sh-x',sh).onclick=closeSheet;
@@ -105,6 +106,7 @@
       var b=document.createElement('button');b.type='button';b.className='more';b.innerHTML='Подробнее <span>→</span>';
       b.setAttribute('aria-label','Подробнее: '+d[key].title);b.onclick=function(e){e.stopPropagation();openSheet(key)};
       li.appendChild(b);
+      li.classList.add('go');li.addEventListener('click',function(e){if(e.target.closest('a,button'))return;if(matchMedia('(min-width:1100px) and (hover:hover)').matches)openSheet(key)});
     });
     var m=location.hash.match(/^#built-(\w+)/);if(m&&d[m[1]])openSheet(m[1],false);
   }).catch(function(){});
