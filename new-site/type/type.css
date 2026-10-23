@@ -47,9 +47,6 @@ a.card:hover{transform:translateY(-4px)}
 .foot{padding:2.5rem 0;color:var(--muted);font-size:.9375rem;border-top:1px solid var(--line)}
 @media (max-width:760px){.rowsw li{grid-template-columns:1fr;gap:.25rem}.glyphs{grid-template-columns:1fr}.big{order:-1;position:relative;aspect-ratio:auto;padding:1rem 0 2rem;font-size:8rem}}
 /* динамика */
-#hero{display:block;cursor:default;user-select:none;white-space:nowrap;font-size:clamp(2.5rem,11vw,13rem);padding-bottom:.5rem;overflow-x:clip}
-#hero span{display:inline-block;white-space:pre;transition:none}
-.heroctl{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 3rem}
 .chips{display:flex;flex-wrap:wrap;gap:.4rem}
 .chip{font:inherit;font-size:.9375rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.4rem .9rem;cursor:pointer}
 .chip[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -82,7 +79,6 @@ a.card:hover{transform:translateY(-4px)}
 .copied.on{opacity:1}
 @media (max-width:760px){.cmp,.uses{grid-template-columns:1fr}.use{aspect-ratio:auto;min-height:18rem}.fall div{grid-template-columns:2.5rem 1fr}}
 @media (max-width:760px){.top{flex-wrap:wrap;gap:.5rem 1rem}.top .sp{gap:.75rem;flex-wrap:wrap}.top .sp a{display:none}}
-#hero{touch-action:pan-y}
 .chips{-webkit-overflow-scrolling:touch}
 @media (max-width:760px){
   .ctl{gap:.9rem 1rem}
@@ -115,3 +111,62 @@ a.card:hover{transform:translateY(-4px)}
 .dl .btn:active{transform:scale(.97)}
 @media (hover:hover){.dl .btn:hover{opacity:.7}}
 .dl span{color:var(--muted);font-size:.9375rem}
+
+/* ——— образец и применение крупно ——— */
+.spec h1{padding-bottom:0;font-size:clamp(2.5rem,7vw,5.5rem);letter-spacing:-.03em}
+.big-cyr{margin:0;font-weight:900;font-size:clamp(8rem,34vw,32rem);line-height:.82;letter-spacing:-.05em;padding:2rem 0 3rem;overflow:hidden}
+.spec-row{display:grid;gap:1.5rem;align-items:end;padding-bottom:4rem}
+@media (min-width:900px){.spec-row{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}}
+.spec-row .lead{margin:0;font-size:clamp(1.25rem,2.2vw,1.75rem);line-height:1.3;color:var(--ink);max-width:34rem}
+.spec-row .dl{margin:0}
+.wrows{list-style:none;margin:0;padding:0}
+.wrows li{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:1rem;align-items:baseline;padding:1.5rem 0;border-top:1px solid var(--line)}
+.wrows .wn{font-size:1rem;display:grid;gap:.1rem}.wrows .wn small{color:var(--muted);font-size:.875rem}
+.wrows p{margin:0;font-size:clamp(1.75rem,4.8vw,4.25rem);line-height:1.08;letter-spacing:-.025em;overflow-wrap:anywhere}
+.wrows i{font-style:italic}
+@media (max-width:760px){.wrows li{grid-template-columns:1fr;gap:.25rem}}
+.uses-head{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:end;justify-content:space-between;margin-bottom:2rem}
+.uses-head h2{margin:0}
+.utext{display:flex;align-items:center;gap:.75rem;color:var(--muted);font-size:.9375rem}
+.utext input{font:inherit;font-size:1rem;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:.6rem 1.1rem;min-height:48px;width:min(16rem,60vw)}
+.mk{container-type:inline-size;border-radius:clamp(1.25rem,3vw,2.5rem);overflow:hidden;margin-bottom:1rem;position:relative}
+.mk h3{margin:0;font-weight:inherit;overflow-wrap:anywhere}
+.mk p{margin:0}
+/* афиша */
+.poster{background:linear-gradient(160deg,#ff4d2e 0%,#ff8a3d 55%,#ffc361 100%);color:#140a05;aspect-ratio:16/10;padding:4cqw 5cqw;display:flex;flex-direction:column;justify-content:space-between}
+.poster h3{font-weight:900;font-size:min(30cqw,50cqh);font-size:clamp(5rem,40cqw,40rem);line-height:.8;letter-spacing:-.05em}
+.poster .p-top{font-weight:500;font-size:max(1rem,1.6cqw)}
+.poster .p-bot{font-weight:300;font-style:italic;font-size:max(1.0625rem,2.2cqw);max-width:30ch;line-height:1.25}
+/* журнал */
+.editorial{background:#fff;color:#111;border:1px solid var(--line);display:grid;gap:4cqw;padding:6cqw;grid-template-columns:1.05fr 1fr}
+.editorial h3{font-weight:700;font-size:clamp(3rem,10cqw,10rem);line-height:.92;letter-spacing:-.045em}
+.editorial .deck{font-weight:300;font-style:italic;font-size:max(1.25rem,2.6cqw);line-height:1.25;margin-top:2.5cqw;max-width:22ch}
+.ed-r{font-size:max(1rem,1.5cqw);line-height:1.5;column-gap:3cqw}
+.ed-r p+p{margin-top:1em}
+.ed-r .drop{float:left;font-weight:900;font-size:5.2em;line-height:.78;padding:.06em .08em 0 0}
+.ed-r blockquote{margin:1.5em 0 0;font-weight:500;font-size:1.7em;line-height:1.12;letter-spacing:-.02em;border-top:3px solid #111;padding-top:.6em}
+@media (max-width:760px){.editorial{grid-template-columns:1fr;padding:7cqw}}
+.mk-pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.mk-pair .mk{margin:0}
+.slide{aspect-ratio:3/4;padding:7cqw;display:flex;flex-direction:column;justify-content:space-between}
+.slide h3{font-size:clamp(3rem,30cqw,14rem);line-height:.88;letter-spacing:-.045em;font-weight:700}
+.slide p{font-size:max(1rem,5cqw)}
+.slide .chip{align-self:flex-start;border-radius:999px;padding:.35rem 1rem;font-size:max(.875rem,3.4cqw)}
+.s-dark{background:#17181c;color:#fff}.s-dark .chip{background:#fff;color:#17181c;border-color:#fff}
+.s-dark p{color:rgba(255,255,255,.7)}
+.s-light{background:#e9e9ee;color:#17181c}.s-light h3{font-weight:500}.s-light .chip{background:#17181c;color:#fff;border-color:#17181c}
+@media (max-width:760px){.mk-pair{grid-template-columns:1fr}}
+/* интерфейс */
+.ui{background:#0d0e12;color:#fff;display:grid;place-items:center;padding:6cqw;gap:3cqw}
+.phone{width:min(22rem,100%);background:#1b1c22;border-radius:2.25rem;padding:1.75rem 1.5rem 1.5rem;display:grid;gap:.4rem}
+.phone .ui-time{font-weight:500;font-size:.9375rem;color:rgba(255,255,255,.7)}
+.phone h3{font-weight:700;font-size:3.5rem;letter-spacing:-.04em;line-height:1}
+.ui-sub{color:rgba(255,255,255,.6);font-size:.9375rem}
+.ui-list{list-style:none;margin:1.25rem 0 0;padding:0}
+.ui-list li{display:flex;justify-content:space-between;padding:.85rem 0;border-top:1px solid rgba(255,255,255,.12);font-size:1.0625rem}
+.ui-list b{font-weight:500;font-variant-numeric:tabular-nums}
+.ui-num{font-size:6rem;font-weight:100;letter-spacing:-.05em;line-height:1;margin-top:.5rem}
+.phone button{font:inherit;font-weight:500;min-height:52px;border:0;border-radius:99px;background:#fff;color:#0d0e12;margin-top:.75rem}
+.ui-note{color:rgba(255,255,255,.65);font-size:.9375rem;max-width:34ch;text-align:center}
+.mk h3{transition:none}
+@media (min-width:900px){.ui{grid-template-columns:auto auto;gap:6cqw}.ui-note{text-align:left;font-size:1.25rem}}
