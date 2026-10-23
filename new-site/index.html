@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru" data-role="head">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<title>Алексей Дмитриев — руководитель отдела дизайна</title>
+<meta name="description" content="Портфолио Алексея Дмитриева: CTR по каждой сделке, процесс отдела дизайна и инструменты, которые убирают рутину.">
+<link rel="icon" href="/favicon.ico">
+<link rel="preload" href="assets/fonts/onest-cyr.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#deals">К содержимому</a>
+
+<header class="top" id="top">
+  <a class="brand" href="#top">Алексей Дмитриев</a>
+  <nav class="nav" aria-label="Разделы">
+    <a href="#deals">Сделки</a>
+    <a href="#process">Процесс</a>
+    <a href="#tools">Инструменты</a>
+    <a href="#recruiter">Рекрутеру</a>
+  </nav>
+  <div class="roles" role="group" aria-label="Под какую вакансию показать сайт">
+    <button type="button" data-role-btn="head" aria-pressed="true">Руководитель отдела</button>
+    <button type="button" data-role-btn="commercial" aria-pressed="false">Коммерческий лид</button>
+  </div>
+</header>
+
+<section class="hero" aria-labelledby="h1">
+  <canvas id="noise" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="hero-body wrap">
+    <h1 id="h1">Руководитель отдела дизайна</h1>
+    <p class="lead" id="sub"></p>
+    <div class="actions">
+      <a class="btn btn-fill" href="/CV_Starlight.pdf">Резюме в PDF</a>
+      <a class="btn btn-line" href="https://t.me/starlight_lnk">Написать в Telegram</a>
+    </div>
+  </div>
+  <div class="hero-chart wrap">
+    <div class="chart-head">
+      <p class="legend">
+        <span><svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4" stroke="#fff" stroke-width="2"/></svg>CTR после правки</span>
+        <span><svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4" stroke="#fff" stroke-opacity=".5" stroke-width="1.5" stroke-dasharray="3 3"/></svg>до правки</span>
+      </p>
+      <p class="demo" id="demo-hero" hidden>Демо-данные, заменятся выгрузкой из Excel</p>
+    </div>
+    <div class="chart" id="chart" role="img" aria-label="График CTR от сделки к сделке. Те же данные в таблице ниже.">
+      <svg id="chart-svg" width="100%" height="100%"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+  </div>
+</section>
+
+<main id="main">
+  <section class="sec" id="deals" aria-labelledby="deals-h" style="--o:2">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="deals-h">CTR от сделки к сделке</h2>
+        <p class="sum" id="sum"></p>
+      </div>
+      <div class="tools-row">
+        <div class="chips" id="chips" role="group" aria-label="Площадка"></div>
+        <label class="search"><span class="sr">Поиск по сделкам</span><input id="q" type="search" placeholder="Клиент, категория, правка" autocomplete="off"></label>
+      </div>
+      <p class="demo" id="demo-list" hidden>Демо-данные, заменятся выгрузкой из Excel</p>
+      <ul class="deals" id="deals-list"></ul>
+      <p class="count" id="count" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="sec" id="process" aria-labelledby="process-h" style="--o:1">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="process-h">Как устроена работа отдела</h2>
+        <p class="sum">Каждая сделка проходит один и тот же путь, поэтому результат можно сравнивать и повторять.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="n">1</span><h3>Бриф</h3><p>Фиксируем цель сделки, площадку, категорию и текущий CTR.</p></li>
+        <li><span class="n">2</span><h3>Гипотеза</h3><p>Определяем, что в карточке мешает клику, и какую правку проверяем.</p></li>
+        <li><span class="n">3</span><h3>Макет</h3><p>Делаем по системе КЮА, чтобы правка одинаково работала на трёх площадках.</p></li>
+        <li><span class="n">4</span><h3>Тест</h3><p>Выкладываем макет и ждём, пока накопятся показы.</p></li>
+        <li><span class="n">5</span><h3>Разбор</h3><p>Сравниваем CTR до и после и записываем вывод в таблицу сделок.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="tools" aria-labelledby="tools-h" style="--o:3">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="tools-h">Инструменты, которые я сделал для работы</h2>
+        <p class="sum">Рутину отдела лучше убирать кодом, чем людьми.</p>
+      </div>
+      <ul class="projects" id="projects"></ul>
+    </div>
+  </section>
+
+  <section class="sec" id="recruiter" aria-labelledby="rec-h" style="--o:4">
+    <div class="wrap two">
+      <div>
+        <h2 id="rec-h">Рекрутеру</h2>
+        <p class="sum">Всё, что нужно для первого шага, на одном экране. Ссылку можно переслать дальше: роль в ней сохраняется.</p>
+        <button type="button" class="btn btn-outline" id="copy">Скопировать ссылку</button>
+        <span class="sr" id="copy-live" aria-live="polite"></span>
+      </div>
+      <dl class="facts">
+        <div><dt>Ищу</dt><dd>Руководитель отдела дизайна или коммерческий лид в дизайне</dd></div>
+        <div><dt>Telegram</dt><dd><a href="https://t.me/starlight_lnk">@starlight_lnk</a></dd></div>
+        <div><dt>Почта</dt><dd><a href="mailto:alex.strl1t@gmail.com">alex.strl1t@gmail.com</a></dd></div>
+        <div><dt>Резюме</dt><dd><a href="/CV_Starlight.pdf">Скачать PDF</a></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-row">
+    <p>Алексей Дмитриев © 2026</p>
+    <p><a href="https://t.me/starlight_lnk">Telegram</a> <a href="mailto:alex.strl1t@gmail.com">Почта</a> <a href="#top">Наверх</a></p>
+  </div>
+</footer>
+
+<script src="assets/noise.js" defer></script>
+<script src="assets/app.js" defer></script>
+</body>
+</html>
