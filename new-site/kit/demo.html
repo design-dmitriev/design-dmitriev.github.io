@@ -2,11 +2,15 @@
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Заглавка: сборка по правилам</title>
 <style>
-@font-face{font-family:Zarya;font-weight:500;src:url(../assets/fonts/zarya-500.woff2) format("woff2")}
-@font-face{font-family:Zarya;font-weight:700;src:url(../assets/fonts/zarya-700.woff2) format("woff2")}
+@font-face{font-family:InterKit;font-weight:500;src:url(fonts/inter-cyrillic-500-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:InterKit;font-weight:500;src:url(fonts/inter-latin-500-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:InterKit;font-weight:600;src:url(fonts/inter-cyrillic-600-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:InterKit;font-weight:600;src:url(fonts/inter-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:InterKit;font-weight:700;src:url(fonts/inter-cyrillic-700-normal.woff2) format("woff2");unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
+@font-face{font-family:InterKit;font-weight:700;src:url(fonts/inter-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 *{box-sizing:border-box;margin:0}
 html,body{height:100%;overflow:hidden;background:#f1f1f1}
-body{display:grid;place-items:center;font-family:Zarya,-apple-system,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{display:grid;place-items:center;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",InterKit,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
 #fit{width:900px;height:1200px;transform-origin:center;flex:none}
 #s{position:relative;width:900px;height:1200px;background:#fff;color:#0b0b0b;overflow:hidden;--g1:#4db8ff;--g2:#0a7aff;--g3:#5e5ce6;border-radius:0}
 .br{position:absolute;width:74px;height:74px;border:4px solid #000;opacity:0;transition:opacity .6s,transform .8s cubic-bezier(.2,.7,.2,1)}
@@ -19,10 +23,10 @@ body{display:grid;place-items:center;font-family:Zarya,-apple-system,"Helvetica 
 .st1 #logo{opacity:1;transform:none}
 #head{position:absolute;left:67px;top:148px;width:766px;opacity:0;transform:translateY(18px);transition:all .7s cubic-bezier(.2,.7,.2,1)}
 .st2 #head{opacity:1;transform:none}
-#ttl{font-weight:700;font-size:90px;line-height:80px;letter-spacing:-.02em}
+#ttl{font-weight:600;font-size:90px;line-height:80px;letter-spacing:-.02em}
 #sub{margin-top:14px;font-weight:500;font-size:64px;line-height:64px;letter-spacing:-.01em;color:#383837}
 #guard{position:absolute;left:67px;top:380px;width:766px;border-top:3px dashed #ff4f7b;opacity:0;transition:opacity .4s}
-#guard i{position:absolute;right:0;top:6px;font:500 24px Zarya;color:#ff4f7b;font-style:normal}
+#guard i{position:absolute;right:0;top:6px;font-weight:500;font-size:24px;font-family:inherit;color:#ff4f7b;font-style:normal}
 .st2.gd #guard{opacity:1}
 .of{position:absolute;left:67px;width:340px;height:76px;display:flex;align-items:center;gap:16px;opacity:0;transform:translateX(-40px);transition:opacity .5s,transform .7s cubic-bezier(.2,.7,.2,1)}
 .o1{top:428px}.o2{top:570px}.o3{top:712px}
@@ -35,15 +39,15 @@ body{display:grid;place-items:center;font-family:Zarya,-apple-system,"Helvetica 
 .st4 #zone{opacity:1;transform:none}
 #prod{width:250px;height:370px;border-radius:44px;background:linear-gradient(160deg,var(--g1),var(--g2) 55%,var(--g3));opacity:.92;box-shadow:0 40px 60px -30px rgba(0,0,0,.35);transform:translateY(30px) scale(.9);transition:transform .9s .2s cubic-bezier(.2,.7,.2,1),background .4s}
 .st4 #prod{transform:none}
-#prod::after{content:"товар";position:absolute;inset:auto 0 18px 0;text-align:center;color:rgba(255,255,255,.85);font:500 28px Zarya}
-#pct{position:absolute;right:26px;top:994px;font:700 40px Zarya;color:#8a8a8a;opacity:0;transition:opacity .5s .5s}
+#prod::after{content:"товар";position:absolute;inset:auto 0 18px 0;text-align:center;color:rgba(255,255,255,.85);font-weight:500;font-size:28px;font-family:inherit}
+#pct{position:absolute;right:26px;top:994px;font-weight:700;font-size:40px;font-family:inherit;color:#8a8a8a;opacity:0;transition:opacity .5s .5s}
 .st4 #pct{opacity:1}
 #cat{position:absolute;left:67px;top:1010px;display:flex;gap:10px;opacity:0;transition:opacity .4s}
 .st5 #cat{opacity:1}
 #cat i{font-style:normal;font-weight:500;font-size:26px;padding:8px 20px;border-radius:99px;background:#eee;color:#6b6b6b;transition:all .3s}
 #cat i.on{background:#0b0b0b;color:#fff}
-#cap{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);background:#0b0b0b;color:#fff;border-radius:99px;padding:16px 38px;font:500 32px Zarya;white-space:nowrap;transition:opacity .3s}
-#note{position:absolute;left:0;right:0;bottom:22px;text-align:center;font:500 20px Zarya;color:#9a9a9a}
+#cap{position:absolute;left:50%;bottom:58px;transform:translateX(-50%);background:#0b0b0b;color:#fff;border-radius:99px;padding:16px 38px;font-weight:500;font-size:32px;font-family:inherit;white-space:nowrap;transition:opacity .3s}
+#note{position:absolute;left:0;right:0;bottom:22px;text-align:center;font-weight:500;font-size:20px;font-family:inherit;color:#9a9a9a}
 @media (prefers-reduced-motion:reduce){#s *{transition-duration:.01s!important}}
 </style></head>
 <body>
