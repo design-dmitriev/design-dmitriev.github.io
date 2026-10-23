@@ -1,5 +1,6 @@
-@font-face{font-family:Onest;font-weight:100 900;font-display:swap;src:url(fonts/onest-cyr.woff2) format("woff2");unicode-range:U+301,U+400-45F,U+490-491,U+4B0-4B1,U+2116}
-@font-face{font-family:Onest;font-weight:100 900;font-display:swap;src:url(fonts/onest-lat.woff2) format("woff2");unicode-range:U+00-FF,U+131,U+152-153,U+2BB-2BC,U+2C6,U+2DA,U+2DC,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Zarya;font-weight:400;font-display:swap;src:url(fonts/zarya-400.woff2) format("woff2")}
+@font-face{font-family:Zarya;font-weight:500;font-display:swap;src:url(fonts/zarya-500.woff2) format("woff2")}
+@font-face{font-family:Zarya;font-weight:700;font-display:swap;src:url(fonts/zarya-700.woff2) format("woff2")}
 
 :root{
   --ink:#0a0a0a;
@@ -12,7 +13,7 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.55 Onest,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.55 Zarya,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
 h1,h2,h3,p,ul,ol,dl,dd{margin:0;padding:0}
 ul,ol{list-style:none}
 a{color:inherit}
