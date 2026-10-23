@@ -13,22 +13,33 @@
 <div class="wrap">
   <header class="top">
     <a href="../">← Шрифты</a>
-    <nav class="sp"><a href="#test">Тестер</a><a href="#weights">Начертания</a><a href="#glyphs">Знаки</a>
+    <nav class="sp"><a href="#test">Тестер</a><a href="#weights">Начертания</a><a href="#uses">В деле</a><a href="#glyphs">Знаки</a>
     <button class="btn" id="theme" type="button">Тёмная тема</button></nav>
   </header>
-  <h1>Zarya ST</h1>
-  <p class="lead">Гротеск с кириллицей. Шесть начертаний, каждое с курсивом.</p>
+  <h1 id="hero" aria-label="Zarya ST">Zarya ST</h1>
+  <div class="heroctl"><div class="chips" id="herotext"></div><div class="seg" role="group"><button type="button" id="wave" aria-pressed="true">Волна</button></div></div>
+  <p class="lead">Гротеск с кириллицей. Шесть начертаний, каждое с курсивом. Водите курсором по названию, меняйте текст, тяните ползунки.</p>
   <ul class="facts"><li>6 начертаний + курсив</li><li>Кириллица и латиница</li><li id="gcount"></li></ul>
 
   <section id="test">
     <h2>Тестер</h2>
     <div class="panel">
+      <div class="ctl"><div class="chips" id="presets"></div></div>
       <div class="ctl">
-        <label>Размер <input id="size" type="range" min="16" max="200" value="72"> <output id="sizeo">72</output></label>
-        <label>Насыщенность <input id="wt" type="range" min="100" max="900" step="100" value="400"> <output id="wto">400</output></label>
-        <div class="seg" role="group" aria-label="Стиль"><button type="button" data-it="0" aria-pressed="true">Прямой</button><button type="button" data-it="1" aria-pressed="false">Курсив</button></div>
+        <label>Размер <input id="size" type="range" min="12" max="220" value="72"> <output id="sizeo"></output></label>
+        <label>Насыщенность <input id="wt" type="range" min="100" max="900" step="100" value="400"> <output id="wto"></output></label>
+        <label>Интерлиньяж <input id="lh" type="range" min="80" max="200" value="110"> <output id="lho"></output></label>
+        <label>Трекинг <input id="tr" type="range" min="-8" max="30" value="-2"> <output id="tro"></output></label>
       </div>
-      <div id="tester" contenteditable="true" spellcheck="false" aria-label="Текст для проверки шрифта">Съешь ещё этих мягких французских булок, да выпей чаю 0123456789</div>
+      <div class="ctl">
+        <div class="seg" role="group" aria-label="Стиль"><button type="button" data-it="0" aria-pressed="true">Прямой</button><button type="button" data-it="1" aria-pressed="false">Курсив</button></div>
+        <div class="seg" role="group" aria-label="Выравнивание"><button type="button" data-al="left" aria-pressed="true">Слева</button><button type="button" data-al="center" aria-pressed="false">По центру</button></div>
+        <div class="seg" role="group" aria-label="Регистр"><button type="button" data-tc="none" aria-pressed="true">Аа</button><button type="button" data-tc="uppercase" aria-pressed="false">АА</button></div>
+        <span class="sw" id="sw" role="group" aria-label="Цвета"></span>
+        <button class="chip" id="reset" type="button">Сбросить</button>
+      </div>
+      <div id="tester" contenteditable="true" spellcheck="false" aria-label="Текст для проверки шрифта"></div>
+      <div class="fall" id="fall" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -37,40 +48,116 @@
     <ul class="rowsw" id="wlist"></ul>
   </section>
 
+  <section id="compare">
+    <h2>Сравнение</h2>
+    <div class="cmp">
+      <div><select id="ca" aria-label="Начертание слева"></select><p id="pa" contenteditable="true" spellcheck="false">Карточка товара</p></div>
+      <div><select id="cb" aria-label="Начертание справа"></select><p id="pb" contenteditable="true" spellcheck="false">Карточка товара</p></div>
+    </div>
+  </section>
+
+  <section id="uses">
+    <h2>В деле</h2>
+    <div class="panel">
+      <div class="ctl"><label style="flex:1;min-width:14rem">Ваш текст <input id="utext" type="text" value="Скидка на всё" maxlength="40" style="flex:1;font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.5rem 1rem;min-width:0"></label></div>
+      <div class="uses">
+        <div class="use u1"><span class="pill">Заглавка WB</span><h3 data-u>Скидка на всё</h3><p>Зарядка 3 в 1, быстрая зарядка</p></div>
+        <div class="use u2"><span class="pill">Афиша</span><h3 data-u>Скидка на всё</h3><p>Zarya ST Black</p></div>
+        <div class="use u3"><span class="pill">Интерфейс</span><h3 data-u>Скидка на всё</h3><div class="price">9 790 ₽</div></div>
+      </div>
+    </div>
+  </section>
+
   <section id="glyphs">
     <h2>Знаки</h2>
     <div class="glyphs">
       <ul class="grid" id="grid"></ul>
-      <div class="big" aria-hidden="true"><span id="big">А</span><small id="code">U+0410</small></div>
+      <div class="big"><span id="big">Р</span><small id="code">U+0420</small><span class="copied" id="copied">Скопировано</span></div>
     </div>
+    <div class="wrow"><label>Насыщенность знака <input id="gw" type="range" min="100" max="900" step="100" value="400"></label><span>Клик по знаку копирует его</span></div>
   </section>
 
   <p class="foot">Алексей Дмитриев © 2026 · <a href="../">Все шрифты</a></p>
 </div>
 <script>
 (function(){
-  var $=function(s){return document.querySelector(s)};
-  var t=$('#tester'),it=0;
-  function apply(){t.style.fontSize=$('#size').value+'px';t.style.fontWeight=$('#wt').value;t.style.fontStyle=it?'italic':'normal';$('#sizeo').textContent=$('#size').value;$('#wto').textContent=$('#wt').value}
-  $('#size').oninput=$('#wt').oninput=apply;
-  [].forEach.call(document.querySelectorAll('[data-it]'),function(b){b.onclick=function(){it=+b.dataset.it;[].forEach.call(document.querySelectorAll('[data-it]'),function(x){x.setAttribute('aria-pressed',String(x===b))});apply()}});
-  apply();
-  var names={100:'Thin',300:'Light',400:'Regular',500:'Medium',700:'Bold',900:'Black'};
-  $('#wlist').innerHTML=[100,300,400,500,700,900].map(function(w){
-    return '<li><span>'+names[w]+' '+w+'</span><p style="font-weight:'+w+'">Съешь ещё этих мягких французских булок <i style="font-style:italic">да выпей чаю</i></p></li>'}).join('');
+  var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
+  var W=[100,300,400,500,700,900],N={100:'Thin',300:'Light',400:'Regular',500:'Medium',700:'Bold',900:'Black'};
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function nearest(v){return W.reduce(function(a,b){return Math.abs(b-v)<Math.abs(a-v)?b:a})}
+  function pressed(list,el){list.forEach(function(x){x.setAttribute('aria-pressed',String(x===el))})}
+
+  /* hero: вес букв зависит от курсора, без курсора идёт волна */
+  var hero=$('#hero'),heroWords=['Zarya ST','Заря','Привет','0123456'],hi=0,mx=-1e4,my=-1e4,wave=!reduce,t0=0,letters=[];
+  function setHero(t){hero.setAttribute('aria-label',t);hero.innerHTML=t.split('').map(function(c){return '<span>'+(c===' '?'&nbsp;':c)+'</span>'}).join('');letters=$$('#hero span')}
+  setHero(heroWords[0]);
+  $('#herotext').innerHTML=heroWords.map(function(w,i){return '<button class="chip" type="button" aria-pressed="'+(i===0)+'" data-h="'+i+'">'+w+'</button>'}).join('');
+  $('#herotext').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;setHero(heroWords[+b.dataset.h]);pressed($$('#herotext button'),b)});
+  hero.addEventListener('pointermove',function(e){mx=e.clientX;my=e.clientY});
+  hero.addEventListener('pointerleave',function(){mx=my=-1e4});
+  $('#wave').onclick=function(){wave=!wave;this.setAttribute('aria-pressed',String(wave))};
+  var inView=true;new IntersectionObserver(function(e){inView=e[0].isIntersecting}).observe(hero);
+  function tick(ms){
+    requestAnimationFrame(tick);if(!inView||document.hidden)return;
+    letters.forEach(function(el,i){
+      var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,d=Math.hypot(cx-mx,cy-my),v;
+      if(mx>-1e3){v=900-Math.min(1,d/(r.height*2.2))*800}
+      else if(wave){v=500+Math.sin(ms/700-i*.7)*400}
+      else v=400;
+      var w=nearest(v);if(el._w!==w){el._w=w;el.style.fontWeight=w}
+    });
+  }
+  requestAnimationFrame(tick);
+
+  /* тестер */
+  var t=$('#tester'),st={it:0,al:'left',tc:'none',ci:0},DEF={size:72,wt:400,lh:110,tr:-2};
+  var PRE={'Заголовок':'Съешь ещё этих мягких французских булок','Абзац':'Дизайн карточки решает, купят товар или пролистают. Заглавка должна читаться за полсекунды: крупная цена, короткая выгода, чистый контраст. Шрифт здесь работает как интерфейс, а не как украшение.','Цифры':'0123456789 ₽ № % + − × ÷ 1 290 ₽ −30%','Алфавит':'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ abcdefghijklmnopqrstuvwxyz','Латиница':'Sphinx of black quartz, judge my vow'};
+  var COL=[['#0a0a0a','#f5f5f5'],['#ffffff','#0a0a0a'],['#0a0a0a','#e8ff3a'],['#f1ece4','#1a1a1a']];
+  $('#presets').innerHTML=Object.keys(PRE).map(function(k,i){return '<button class="chip" type="button" aria-pressed="'+(i===0)+'" data-p="'+k+'">'+k+'</button>'}).join('');
+  $('#sw').innerHTML=COL.map(function(c,i){return '<button type="button" aria-pressed="'+(i===0)+'" aria-label="Цвета '+(i+1)+'" data-c="'+i+'" style="background:linear-gradient(135deg,'+c[1]+' 50%,'+c[0]+' 50%)"></button>'}).join('');
+  var FALL=[12,16,24,36,56,88];
+  function render(){
+    var size=$('#size').value,wt=$('#wt').value,lh=$('#lh').value,tr=$('#tr').value,c=COL[st.ci];
+    t.style.cssText='font-size:'+size+'px;font-weight:'+wt+';line-height:'+lh/100+';letter-spacing:'+tr/100+'em;text-align:'+st.al+';text-transform:'+st.tc+';font-style:'+(st.it?'italic':'normal')+';color:'+c[0]+';background:'+c[1];
+    $('#sizeo').textContent=size+' px';$('#wto').textContent=wt+' '+N[wt];$('#lho').textContent=lh+'%';$('#tro').textContent=(tr/10).toFixed(1)+'%';
+    var sample=(t.textContent||'Съешь').trim().slice(0,28);
+    $('#fall').innerHTML=FALL.map(function(f){return '<div><small>'+f+'</small><span style="font-size:'+f+'px;font-weight:'+wt+';font-style:'+(st.it?'italic':'normal')+';letter-spacing:'+tr/100+'em;text-transform:'+st.tc+'">'+sample.replace(/</g,'&lt;')+'</span></div>'}).join('');
+  }
+  t.textContent=PRE['Заголовок'];
+  $('#presets').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;t.textContent=PRE[b.dataset.p];pressed($$('#presets button'),b);render()});
+  ['size','wt','lh','tr'].forEach(function(id){$('#'+id).oninput=render});
+  t.addEventListener('input',function(){pressed($$('#presets button'),null);render()});
+  function seg(attr,key){$$('['+attr+']').forEach(function(b){b.onclick=function(){st[key]=b.getAttribute(attr);if(key==='it')st.it=+st.it;pressed($$('['+attr+']'),b);render()}})}
+  seg('data-it','it');seg('data-al','al');seg('data-tc','tc');
+  $('#sw').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;st.ci=+b.dataset.c;pressed($$('#sw button'),b);render()});
+  $('#reset').onclick=function(){Object.keys(DEF).forEach(function(k){$('#'+k).value=DEF[k]});st.it=0;st.al='left';st.tc='none';st.ci=0;
+    pressed($$('[data-it]'),$$('[data-it]')[0]);pressed($$('[data-al]'),$$('[data-al]')[0]);pressed($$('[data-tc]'),$$('[data-tc]')[0]);pressed($$('#sw button'),$$('#sw button')[0]);t.textContent=PRE['Заголовок'];pressed($$('#presets button'),$$('#presets button')[0]);render()};
+  render();
+
+  $('#wlist').innerHTML=W.map(function(w){return '<li><span>'+N[w]+' '+w+'</span><p style="font-weight:'+w+'">Съешь ещё этих мягких французских булок <i style="font-style:italic">да выпей чаю</i></p></li>'}).join('');
+
+  /* сравнение */
+  var opts=W.map(function(w){return '<option value="'+w+'">'+N[w]+' '+w+'</option>'}).join('');
+  ['a','b'].forEach(function(k,i){var s=$('#c'+k);s.innerHTML=opts;s.value=i?900:300;var p=$('#p'+k);p.style.fontWeight=s.value;s.onchange=function(){p.style.fontWeight=s.value}});
+  $('#pa').addEventListener('input',function(){$('#pb').textContent=$('#pa').textContent});
+  $('#pb').addEventListener('input',function(){$('#pa').textContent=$('#pb').textContent});
+
+  /* в деле */
+  $('#utext').oninput=function(){var v=this.value||' ';$$('[data-u]').forEach(function(h){h.textContent=v})};
+
+  /* знаки */
+  var big=$('#big');
   fetch('glyphs.json').then(function(r){return r.json()}).then(function(g){
     $('#gcount').textContent=g.length+' знаков';
     var grid=$('#grid');
     grid.innerHTML=g.map(function(c,i){return '<li><button type="button" data-c="'+i+'" aria-label="'+c+'" aria-pressed="false">'+c.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</button></li>'}).join('');
-    function pick(b){
-      var c=g[+b.dataset.c];
-      [].forEach.call(grid.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',String(x===b))});
-      $('#big').textContent=c;$('#code').textContent='U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0');
-    }
-    grid.addEventListener('click',function(e){var b=e.target.closest('button');if(b)pick(b)});
+    function pick(b){var c=g[+b.dataset.c];pressed($$('#grid button'),b);big.textContent=c;$('#code').textContent='U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')}
+    grid.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;pick(b);var c=g[+b.dataset.c];try{navigator.clipboard.writeText(c).then(function(){var o=$('#copied');o.classList.add('on');setTimeout(function(){o.classList.remove('on')},900)})}catch(x){}});
     grid.addEventListener('mouseover',function(e){var b=e.target.closest('button');if(b&&matchMedia('(hover:hover)').matches)pick(b)});
     pick(grid.querySelector('button[aria-label="Р"]')||grid.querySelector('button'));
   });
+  $('#gw').oninput=function(){$('.big').style.fontWeight=this.value;$('#grid').style.fontWeight=this.value};
+
   var th=$('#theme');
   th.onclick=function(){var d=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=d?'light':'dark';th.textContent=d?'Тёмная тема':'Светлая тема'};
 })();
