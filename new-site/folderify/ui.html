@@ -117,6 +117,15 @@
   .s2 .fl div:last-child{border:0}
   .s2.on .fl div{animation:fadein2 .4s forwards;animation-delay:calc(var(--i)*.25s + 2.4s)}
   .s2 .fl div::before{content:"";width:14px;height:11px;border:1.5px solid var(--ink);border-radius:2px;opacity:.7}
+  html.demo .wl-bars i.cur::after{animation-duration:var(--d,3s)}
+  html.demo .s2.on .typ{animation:typ 1s steps(26) .2s forwards}
+  html.demo .s2.on .fl div{animation-delay:calc(var(--i)*.15s + 1.3s)}
+  html.demo .s1.on .dot{animation-duration:3s}html.demo .s1.on .t1{animation-duration:3s}html.demo .s1.on .t2{animation-duration:3s}html.demo .s1.on .tok{animation-duration:3s}
+  html.demo .s3.on .fr b{animation-delay:calc(var(--i)*.1s + .1s)}
+  html.demo .s3.on .prog i{animation:prog 1.2s ease-in-out .5s forwards}
+  html.demo .s3.on .share-card{animation:fadein2 .4s 1.9s forwards}
+  html.demo .s4.on .file-drop b{animation:filechip .6s .1s both}
+  html.demo .s4.on .share-card{animation:fadein2 .4s 1.4s forwards}
   @media (prefers-reduced-motion:reduce){.wl *{animation-duration:.001s!important;animation-delay:0s!important}}
 </style>
 </head>
@@ -691,6 +700,8 @@
       const scenes = Array.from(wl.querySelectorAll('.wl-scene'));
       const texts = Array.from(wl.querySelectorAll('#wlTxt > div'));
       const bars = Array.from(wl.querySelectorAll('#wlBars i'));
+      const demo = /[?&]demo/.test(location.search);
+      if (demo) document.documentElement.classList.add('demo');
       let cur = 0, timer = 0;
       function go(i) {
         clearTimeout(timer); cur = i;
@@ -698,10 +709,10 @@
         texts.forEach((t, k) => t.classList.toggle('on', k === i));
         bars.forEach((b, k) => { b.classList.remove('cur', 'done'); if (k < i) b.classList.add('done'); if (k === i) { void b.offsetWidth; b.classList.add('cur'); } });
         $('wlNext').textContent = i === scenes.length - 1 && !/[?&]demo/.test(location.search) ? 'Начать' : 'Дальше';
-        timer = setTimeout(() => (i < scenes.length - 1 ? go(i + 1) : close()), 5000);
+        const D = demo ? [3200, 3000, 3400, 3000][i] : 5000; wl.style.setProperty('--d', D / 1000 + 's');
+        timer = setTimeout(() => (i < scenes.length - 1 ? go(i + 1) : close()), D);
       }
       function open() { wl.classList.add('on'); go(0); }
-      const demo = /[?&]demo/.test(location.search);
       function close() {
         if (demo) { go(0); return; }
         clearTimeout(timer); wl.classList.remove('on'); setStorage('welcomeSeen', true);

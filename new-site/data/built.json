@@ -77,7 +77,7 @@
     "cap": "Так работает плагин: вход, папка, экспорт, исходники",
     "install": "Установка: распакуйте архив, в Figma выберите Plugins → Development → Import plugin from manifest… и укажите manifest.json.",
     "frame": {
-      "src": "folderify/ui.html?demo=1&v=2",
+      "src": "folderify/ui.html?demo=1&v=3",
       "ratio": 0.6
     }
   },
