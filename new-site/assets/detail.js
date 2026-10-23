@@ -63,6 +63,7 @@
     if(push!==false)history.replaceState(null,'','#built-'+key);
     setTimeout(function(){var x=$('.sh-x',sh);if(x)x.focus()},350);
   }
+  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-open]');if(t){e.stopPropagation();openSheet(t.getAttribute('data-open'))}},true);
   function closeSheet(){
     sheetOn=false;clearInterval(timer);bg.classList.remove('on');sh.classList.remove('on');if(!lb.classList.contains('on'))document.body.classList.remove('lock');
     if(location.hash.indexOf('#built-')===0)history.replaceState(null,'',location.pathname+location.search+'#built');

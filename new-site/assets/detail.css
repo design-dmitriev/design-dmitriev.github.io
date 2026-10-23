@@ -75,3 +75,12 @@ body.lock{overflow:hidden}
 
 .fdemo{width:100%;max-width:22.5rem;height:37.5rem;margin:0 0 1.5rem;border-radius:1.5rem;overflow:hidden;border:1px solid rgba(128,128,128,.25);background:#fff}
 .fdemo iframe{width:100%;height:100%;border:0;display:block}
+
+.fy{grid-column:1/-1;display:grid;grid-template-columns:11.25rem 1fr;gap:1.5rem;align-items:center;margin-top:1rem;padding:1rem;border-radius:1.5rem;background:rgba(128,128,128,.1)}
+.fy-pv{width:11.25rem;height:18.75rem;border-radius:1rem;overflow:hidden;border:1px solid rgba(128,128,128,.25);background:#fff;position:relative}
+.fy-pv iframe{width:22.5rem;height:37.5rem;border:0;transform:scale(.5);transform-origin:0 0;pointer-events:none}
+.fy-tx h4{margin:0 0 .5rem;font-size:1.25rem;font-weight:500;letter-spacing:-.02em}
+.fy-tx p{margin:0 0 1rem;opacity:.7;max-width:32rem}
+.fy-go{white-space:nowrap;font:inherit;font-weight:500;height:2.75rem;padding:0 1.25rem;border-radius:99px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer}
+.fy-go:hover{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
+@media(max-width:640px){.fy{grid-template-columns:1fr;justify-items:start}}
