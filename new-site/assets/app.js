@@ -91,11 +91,12 @@
   var rows = [].slice.call(panel.querySelectorAll('.built > li'));
 
   var frame = null;
-  function fit() { if (frame) frame.style.transform = 'scale(' + peek.clientWidth / 360 + ')'; }
+  function fit() {}
   function show(li) {
     var demo = li.getAttribute('data-demo');
-    peek.classList.toggle('demo', !!demo);
+    peek.classList.toggle('demo', !!demo); if (demo) peek.style.aspectRatio = li.getAttribute('data-ratio') || '0.6'; else peek.style.aspectRatio = '';
     if (demo) {
+      if (frame && frame.getAttribute('src') !== demo) frame.src = demo;
       if (!frame) { frame = document.createElement('iframe'); frame.title = 'Превью Folderify'; frame.tabIndex = -1; frame.src = demo; peek.appendChild(frame); }
       frame.hidden = false; img.hidden = true; ph.hidden = true; fit();
     } else if (frame) frame.hidden = true;

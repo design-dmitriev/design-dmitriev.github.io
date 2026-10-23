@@ -40,8 +40,8 @@
     go();if(!reduce)timer=setInterval(go,2400);
   }
   function fitFy(){
-    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),W=st.clientWidth,H=st.clientHeight-$('.fy-meta',st).offsetHeight-16;
-    var k=innerWidth<900?Math.min(1,(W-0)/360):Math.min(1.2,H/600,W/360);if(k<.5)k=.5;box.style.width=360*k+'px';box.style.height=600*k+'px';$('iframe',box).style.transform='scale('+k+')'
+    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),r=parseFloat(st.getAttribute('data-r'))||.6,W=st.clientWidth,H=st.clientHeight-$('.fy-meta',st).offsetHeight-16;
+    var w=innerWidth<900?Math.min(W,360):Math.min(W,H*r,540);if(w<180)w=180;box.style.width=w+'px';box.style.height=w/r+'px';
   }
   window.addEventListener('resize',function(){if(sheetOn)fitFy()});
   function renderSkills(d){
@@ -49,7 +49,10 @@
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
-    h+='<div class="fy-stage"><div class="fy-box"><iframe src="folderify/ui.html?demo=1" title="Превью плагина Folderify" tabindex="-1" inert aria-hidden="true"></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p><div class="fy-act"><a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a><a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a></div><small>'+esc(d.install)+'</small></div></div></div>';
+    h+='<div class="fy-stage" data-r="'+d.frame.ratio+'"><div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
+    if(d.download||d.files){h+='<div class="fy-act">';if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)h+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';h+='</div>'}
+    if(d.install)h+='<small>'+esc(d.install)+'</small>';
+    h+='</div></div></div>';
     sh.innerHTML=h;sh.classList.add('wide');$('.sh-x',sh).onclick=closeSheet;
   }
   function render(key){

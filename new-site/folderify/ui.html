@@ -713,6 +713,13 @@
       wl.addEventListener('pointerup', () => { wl.classList.remove('paused'); if (wl.classList.contains('on')) go(cur); });
       window.__folderifyWelcome = () => { if (!storage.welcomeSeen) open(); };
       if (demo) { wl.querySelector('.wl-act').style.display = 'none'; wl.style.pointerEvents = 'none'; open(); }
+      if (demo) {
+        const de = document.documentElement;
+        de.style.overflow = 'hidden';
+        document.body.style.cssText += ';width:360px;height:600px;transform-origin:0 0';
+        const demoFit = () => { document.body.style.transform = 'scale(' + Math.min(innerWidth / 360, innerHeight / 600) + ')'; };
+        addEventListener('resize', demoFit); demoFit();
+      }
     })();
 
     // window.onmessage выше уже подписан на этот момент (весь скрипт
