@@ -90,3 +90,16 @@
   .hstats li{min-width:0}
   .hstats span{font-size:.75rem;max-width:none}
 }
+@media (max-width:899px){
+  .brand{display:inline-block;padding-block:.8rem}
+  .case .who a{padding-block:.7rem;margin-block:-.7rem}
+  .dots button{position:relative}
+  .dots button::after{content:"";position:absolute;inset:-.9rem -.35rem}
+  .foot a{display:inline-block;padding:.8rem .35rem;margin-left:.5rem}
+  .hstats span{font-size:.8125rem}
+}
+@media (max-width:899px){
+  .foot a{margin-left:0}
+  .foot a:first-child{margin-left:-.35rem}
+  .facts dd a{display:inline-block;padding-block:.5rem;margin-block:-.5rem}
+}
