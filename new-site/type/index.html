@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Шрифты — Алексей Дмитриев</title>
+<link rel="stylesheet" href="faces.css">
+<link rel="stylesheet" href="type.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><a href="../">Алексей Дмитриев</a><nav class="sp"><a href="../#contact">Контакты</a></nav></header>
+  <h1>Шрифты</h1>
+  <p class="lead">Гарнитуры, которые я рисую сам.</p>
+  <ul class="cards" id="list"></ul>
+  <p class="foot" style="margin-top:4rem">Алексей Дмитриев © 2026</p>
+</div>
+<script>
+fetch('fonts.json').then(function(r){return r.json()}).then(function(l){
+  document.getElementById('list').innerHTML=l.map(function(f){
+    var inner='<span class="nm">'+(f.cyr||'···')+'</span><div><h2 style="font-size:1.5rem;margin:0">'+f.name+'</h2><p>'+f.text+'</p></div>';
+    return f.slug?'<li><a class="card" href="'+f.slug+'/">'+inner+'</a></li>':'<li><div class="card soon">'+inner+'</div></li>';
+  }).join('');
+});
+</script>
+</body>
+</html>

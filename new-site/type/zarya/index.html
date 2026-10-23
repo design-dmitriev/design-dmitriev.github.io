@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Zarya ST — шрифт Алексея Дмитриева</title>
+<meta name="description" content="Zarya ST: гротеск с кириллицей, шесть начертаний с курсивом.">
+<link rel="stylesheet" href="faces.css">
+<link rel="stylesheet" href="../type.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../">← Шрифты</a>
+    <nav class="sp"><a href="#test">Тестер</a><a href="#weights">Начертания</a><a href="#glyphs">Знаки</a>
+    <button class="btn" id="theme" type="button">Тёмная тема</button></nav>
+  </header>
+  <h1>Zarya ST</h1>
+  <p class="lead">Гротеск с кириллицей. Шесть начертаний, каждое с курсивом.</p>
+  <ul class="facts"><li>6 начертаний + курсив</li><li>Кириллица и латиница</li><li id="gcount"></li></ul>
+
+  <section id="test">
+    <h2>Тестер</h2>
+    <div class="panel">
+      <div class="ctl">
+        <label>Размер <input id="size" type="range" min="16" max="200" value="72"> <output id="sizeo">72</output></label>
+        <label>Насыщенность <input id="wt" type="range" min="100" max="900" step="100" value="400"> <output id="wto">400</output></label>
+        <div class="seg" role="group" aria-label="Стиль"><button type="button" data-it="0" aria-pressed="true">Прямой</button><button type="button" data-it="1" aria-pressed="false">Курсив</button></div>
+      </div>
+      <div id="tester" contenteditable="true" spellcheck="false" aria-label="Текст для проверки шрифта">Съешь ещё этих мягких французских булок, да выпей чаю 0123456789</div>
+    </div>
+  </section>
+
+  <section id="weights">
+    <h2>Начертания</h2>
+    <ul class="rowsw" id="wlist"></ul>
+  </section>
+
+  <section id="glyphs">
+    <h2>Знаки</h2>
+    <div class="glyphs">
+      <ul class="grid" id="grid"></ul>
+      <div class="big" aria-hidden="true"><span id="big">А</span><small id="code">U+0410</small></div>
+    </div>
+  </section>
+
+  <p class="foot">Алексей Дмитриев © 2026 · <a href="../">Все шрифты</a></p>
+</div>
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var t=$('#tester'),it=0;
+  function apply(){t.style.fontSize=$('#size').value+'px';t.style.fontWeight=$('#wt').value;t.style.fontStyle=it?'italic':'normal';$('#sizeo').textContent=$('#size').value;$('#wto').textContent=$('#wt').value}
+  $('#size').oninput=$('#wt').oninput=apply;
+  [].forEach.call(document.querySelectorAll('[data-it]'),function(b){b.onclick=function(){it=+b.dataset.it;[].forEach.call(document.querySelectorAll('[data-it]'),function(x){x.setAttribute('aria-pressed',String(x===b))});apply()}});
+  apply();
+  var names={100:'Thin',300:'Light',400:'Regular',500:'Medium',700:'Bold',900:'Black'};
+  $('#wlist').innerHTML=[100,300,400,500,700,900].map(function(w){
+    return '<li><span>'+names[w]+' '+w+'</span><p style="font-weight:'+w+'">Съешь ещё этих мягких французских булок <i style="font-style:italic">да выпей чаю</i></p></li>'}).join('');
+  fetch('glyphs.json').then(function(r){return r.json()}).then(function(g){
+    $('#gcount').textContent=g.length+' знаков';
+    var grid=$('#grid');
+    grid.innerHTML=g.map(function(c,i){return '<li><button type="button" data-c="'+i+'" aria-label="'+c+'" aria-pressed="false">'+c.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</button></li>'}).join('');
+    function pick(b){
+      var c=g[+b.dataset.c];
+      [].forEach.call(grid.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',String(x===b))});
+      $('#big').textContent=c;$('#code').textContent='U+'+c.codePointAt(0).toString(16).toUpperCase().padStart(4,'0');
+    }
+    grid.addEventListener('click',function(e){var b=e.target.closest('button');if(b)pick(b)});
+    grid.addEventListener('mouseover',function(e){var b=e.target.closest('button');if(b&&matchMedia('(hover:hover)').matches)pick(b)});
+    pick(grid.querySelector('button[aria-label="Р"]')||grid.querySelector('button'));
+  });
+  var th=$('#theme');
+  th.onclick=function(){var d=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=d?'light':'dark';th.textContent=d?'Тёмная тема':'Светлая тема'};
+})();
+</script>
+</body>
+</html>
