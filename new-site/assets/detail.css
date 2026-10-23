@@ -99,3 +99,5 @@ body.lock{overflow:hidden}
 @media (min-width:1100px) and (hover:hover){.built>li.go{cursor:pointer}}
 
 @media(min-width:900px){.fy-layout.land{grid-template-columns:minmax(0,1fr) minmax(0,40rem)}.fy-layout.land .fy-stage{height:auto}}
+
+.sh-x:focus:not(:focus-visible){outline:0}

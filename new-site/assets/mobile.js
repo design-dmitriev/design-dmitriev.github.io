@@ -44,7 +44,7 @@
   var links=$$('a',dock),ind=$('.ind',dock),active=null;
   function mark(id){
     active=id;var on=null;links.forEach(function(a){var m=a.getAttribute('href')==='#'+id;a.classList.toggle('on',m);if(m)on=a});
-    if(on){ind.style.setProperty('--x',on.offsetLeft+'px');ind.style.setProperty('--w',on.offsetWidth+'px');ind.style.opacity=1}else ind.style.opacity=0;
+    if(on){try{dock.scrollTo({left:on.offsetLeft-(dock.clientWidth-on.offsetWidth)/2,behavior:'smooth'})}catch(x){}ind.style.setProperty('--x',on.offsetLeft+'px');ind.style.setProperty('--w',on.offsetWidth+'px');ind.style.opacity=1}else ind.style.opacity=0;
   }
   var sio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id)})},{rootMargin:'-45% 0px -50% 0px'});
   secs.forEach(function(s){var el=document.getElementById(s[0]);if(el)sio.observe(el)});

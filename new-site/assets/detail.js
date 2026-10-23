@@ -41,7 +41,7 @@
   }
   function fitFy(){
     var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-200;
-    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,360):Math.min(W,H*r,336);if(w<180)w=180;box.style.width=w+'px';box.style.height=w/r+'px';
+    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,280):Math.min(W,H*r,336);if(w<180)w=180;box.style.width=w+'px';box.style.height=w/r+'px';
     if(fw){fr.style.transform='scale('+(w/fw)+')'}
   }
   window.addEventListener('resize',function(){if(sheetOn)fitFy()});
