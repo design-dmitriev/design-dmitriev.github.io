@@ -39,8 +39,23 @@
     function go(){var s=STEPS[i%STEPS.length],b=s[1];bx.style.left=b.l+'%';bx.style.top=b.t+'%';bx.style.width=b.w+'%';bx.style.height=b.h+'%';cap.textContent=s[0];$$('i',pg).forEach(function(x,k){x.classList.toggle('on',k===i%STEPS.length)});i++}
     go();if(!reduce)timer=setInterval(go,2400);
   }
+  function fitFy(){
+    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),W=st.clientWidth,H=st.clientHeight-$('.fy-meta',st).offsetHeight-16;
+    var k=innerWidth<900?Math.min(1,(W-0)/360):Math.min(1.2,H/600,W/360);if(k<.5)k=.5;box.style.width=360*k+'px';box.style.height=600*k+'px';$('iframe',box).style.transform='scale('+k+')'
+  }
+  window.addEventListener('resize',function(){if(sheetOn)fitFy()});
+  function renderSkills(d){
+    var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body fy-layout"><div class="fy-info">';
+    h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
+    if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
+    h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
+    h+='<div class="fy-stage"><div class="fy-box"><iframe src="folderify/ui.html?demo=1" title="Превью плагина Folderify" tabindex="-1" inert aria-hidden="true"></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p><div class="fy-act"><a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a><a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a></div><small>'+esc(d.install)+'</small></div></div></div>';
+    sh.innerHTML=h;sh.classList.add('wide');$('.sh-x',sh).onclick=closeSheet;
+  }
   function render(key){
+    sh.classList.remove('wide');
     var d=DATA[key];if(!d)return;
+    if(d.layout==='skills'){renderSkills(d);return}
     var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.demo==='folderify')h+='<div class="fdemo"><iframe src="folderify/ui.html?demo=1" title="Как работает Folderify" loading="lazy"></iframe></div>';
@@ -61,6 +76,7 @@
     if(!DATA)return;lastFocus=document.activeElement;clearInterval(timer);render(key);
     sheetOn=true;bg.classList.add('on');sh.classList.add('on');document.body.classList.add('lock');sh.scrollTop=0;$('.sh-body',sh).scrollTop=0;
     if(DATA[key]&&DATA[key].demo===true)runDemo();
+    if(DATA[key]&&DATA[key].layout==='skills'){fitFy();setTimeout(fitFy,600)}
     if(push!==false)history.replaceState(null,'','#built-'+key);
     setTimeout(function(){var x=$('.sh-x',sh);if(x)x.focus()},350);
   }

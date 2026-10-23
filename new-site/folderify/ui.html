@@ -712,7 +712,7 @@
       wl.addEventListener('pointerdown', () => { wl.classList.add('paused'); clearTimeout(timer); });
       wl.addEventListener('pointerup', () => { wl.classList.remove('paused'); if (wl.classList.contains('on')) go(cur); });
       window.__folderifyWelcome = () => { if (!storage.welcomeSeen) open(); };
-      if (demo) { $('wlSkip').style.display = 'none'; $('wlNext').textContent = 'Дальше'; open(); }
+      if (demo) { wl.querySelector('.wl-act').style.display = 'none'; wl.style.pointerEvents = 'none'; open(); }
     })();
 
     // window.onmessage выше уже подписан на этот момент (весь скрипт
