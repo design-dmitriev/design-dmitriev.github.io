@@ -173,3 +173,9 @@ a.card:hover{transform:translateY(-4px)}
 
 .lic{margin:1rem 0 0;max-width:34rem;color:var(--muted);font-size:.875rem;line-height:1.5}
 .spec-row .lic{grid-column:1/-1}
+
+.facts li,.seg button,.btn,.chip,.use .pill,.slide .chip,.dl .btn,.phone button,.cmp select,.utext input{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
+.cmp select,.utext input{display:inline-block;text-align-last:center}
+@supports (text-box:trim-both cap alphabetic){
+  .facts li,.chip,.use .pill,.slide .chip{text-box:trim-both cap alphabetic;padding-block:.6em}
+}

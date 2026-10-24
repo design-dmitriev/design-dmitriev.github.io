@@ -173,3 +173,5 @@
   .fy-steps .fs{height:44px}
   a.sh-link,.fy-act a{min-height:48px}
 }
+
+.dock a,.dock-tip,.case .who span,.dots .cnt{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
