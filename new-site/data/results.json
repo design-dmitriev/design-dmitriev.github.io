@@ -24,6 +24,19 @@
    ]
   },
   {
+   "marketplace": "Ozon",
+   "article": "360161804",
+   "orders": [
+    94,
+    146
+   ],
+   "ctr": [
+    2.34,
+    3.03
+   ],
+   "ordersCap": "заказов, расчёт по 58 694 показам"
+  },
+  {
    "marketplace": "WB",
    "article": "952905731",
    "orders": [
