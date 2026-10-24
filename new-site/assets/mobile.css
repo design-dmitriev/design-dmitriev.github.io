@@ -170,3 +170,10 @@
   .pinned .built>li[data-stat]:not([data-demo]):not([data-peek]) .m-stat{min-height:12rem}
 }
 @media (max-width:899px){.m-vis .m-badge{font-size:.6875rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:.2rem .5rem;left:.4rem;top:.4rem}}
+@media (max-width:899px){
+  #contact .panel.dark{padding:1.75rem 1.5rem 1.25rem;gap:1.5rem}
+  #contact .panel.dark .sum{padding-inline:0}
+  #contact .facts div{padding:.9rem 0}
+  #contact .facts div:last-child{border-bottom:0}
+  #contact .facts dd{word-break:break-word}
+}
