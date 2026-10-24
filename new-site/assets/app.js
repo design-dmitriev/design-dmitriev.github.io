@@ -31,8 +31,8 @@
         var v = idx(c) || [0, 0], ctrOnly = !(c.orders || c.ordersIndex || c.conversionIndex) && c.conv == null, growth = (c.orders || ctrOnly) ? Math.round((v[1] / v[0] - 1) * 100) : v[1] - v[0], fmt = function (n) { return ctrOnly ? pct(n) : n; };
         var cap = c.conv != null ? 'прирост конверсии по A/B-тесту' : ctrOnly ? 'CTR' : c.orders ? 'заказов в день' : c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
         var metrics = c.ctr && !ctrOnly ? '<dl class="m"><div><dt>CTR до</dt><dd>' + pct(c.ctr[0]) + '</dd></div><div><dt>CTR после</dt><dd>' + pct(c.ctr[1]) + '</dd></div></dl>' : '';
-        if (c.note) metrics += '<p class="note">' + esc(c.note) + '</p>';
-        return '<li class="case' + mpc + (ctrOnly ? ' static' : '') + '">' +
+        if (c.date) metrics += '<p class="note">Контент обновлён ' + esc(c.date) + '</p>';
+        return '<li data-art="' + esc(c.article) + '" class="case' + mpc + (ctrOnly ? ' static' : '') + '">' +
           '<div class="who"><span>Артикул' + (mp ? ' ' + mp : '') + '</span>' + (mp ? '<a href="' + esc(LINKS[mp](c.article)) + '" target="_blank" rel="noopener"><b>' + esc(c.article) + '</b></a>' : '<b>' + esc(c.article) + '</b>') + '</div>' +
           (c.conv != null ? '<div class="bars"><div class="bar after conv"><span>конверсия</span><span class="v"><b>+' + c.conv + '%</b></span></div><p class="cap">' + cap + '</p></div>' : '<div class="bars" role="img" aria-label="' + cap + ': до ' + v[0] + ', после ' + v[1] + '">' +
             '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (v[0] / max * 100).toFixed(1) + '%"></i>' + fmt(v[0]) + '</span></div>' +
@@ -120,4 +120,34 @@
   }
   rows.forEach(function (li) { li.addEventListener('mouseenter', function () { show(li); }); });
   panel.addEventListener('mouseleave', hide);
+})();
+
+/* превью карточки при наведении на артикул (только десктоп) */
+(function () {
+  if (!matchMedia('(min-width:1100px) and (hover:hover)').matches) return;
+  document.addEventListener('results:ready', function () {
+    var box = document.getElementById('cases'); if (!box) return;
+    var panel = box.closest('.panel') || box.parentNode;
+    if (getComputedStyle(panel).position === 'static') panel.style.position = 'relative';
+    var pk = document.createElement('div'); pk.className = 'rpeek'; pk.setAttribute('aria-hidden', 'true');
+    var img = document.createElement('img'); img.alt = ''; pk.appendChild(img); panel.appendChild(pk);
+    var ok = {};
+    img.addEventListener('error', function () { ok[img.dataset.a] = false; pk.classList.remove('on'); });
+    img.addEventListener('load', function () { ok[img.dataset.a] = true; });
+    function place(li) {
+      var pr = panel.getBoundingClientRect(), lr = li.getBoundingClientRect(), w = pk.offsetWidth;
+      var x = lr.right - pr.left + 16; if (x + w > pr.width - 16) x = lr.left - pr.left - w - 16;
+      var y = lr.top - pr.top + lr.height / 2 - pk.offsetHeight / 2;
+      pk.style.left = x + 'px'; pk.style.top = Math.max(16, Math.min(y, pr.height - pk.offsetHeight - 16)) + 'px';
+    }
+    [].forEach.call(box.querySelectorAll('.case[data-art]'), function (li) {
+      li.addEventListener('mouseenter', function () {
+        var a = li.getAttribute('data-art'); if (ok[a] === false) return;
+        if (img.dataset.a !== a) { img.dataset.a = a; img.src = 'assets/peek/results/' + a + '.jpg'; }
+        pk.classList.add('on'); place(li);
+        img.onload = function () { ok[a] = true; place(li); };
+      });
+      li.addEventListener('mouseleave', function () { pk.classList.remove('on'); });
+    });
+  });
 })();

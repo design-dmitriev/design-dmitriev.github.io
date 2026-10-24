@@ -263,3 +263,8 @@ h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
   .case>div:last-child{margin-top:auto}
 }
 @media(min-width:1200px){.panel.dark .cases{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+.rpeek{position:absolute;left:0;top:0;width:min(15rem,17%);border-radius:1.25rem;overflow:hidden;pointer-events:none;z-index:5;background:#ececec;box-shadow:0 18px 50px rgba(0,0,0,.4);opacity:0;transform:translateY(10px) scale(.96);transition:opacity .25s ease,transform .35s cubic-bezier(.2,.7,.2,1)}
+.rpeek.on{opacity:1;transform:none}
+.rpeek img{display:block;width:100%;height:auto}
+@media (max-width:1099px),(hover:none){.rpeek{display:none}}
