@@ -87,7 +87,7 @@
     var sx=0,sy=0,sl=0,on=false,lock=null;
     zone.style.touchAction='pan-y';
     zone.addEventListener('touchstart',function(e){if(row.contains(e.target))return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;sl=row.scrollLeft;on=true;lock=null},{passive:true});
-    zone.addEventListener('touchmove',function(e){if(!on)return;var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(lock===null&&(Math.abs(dx)>8||Math.abs(dy)>8))lock=Math.abs(dx)>Math.abs(dy)*1.2;if(lock){row.style.scrollSnapType='none';row.scrollLeft=sl-dx}},{passive:true});
+    zone.addEventListener('touchmove',function(e){if(!on)return;var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(lock===null&&(Math.abs(dx)>14||Math.abs(dy)>14))lock=Math.abs(dx)>Math.abs(dy)*2.2;if(lock){row.style.scrollSnapType='none';row.scrollLeft=sl-dx}},{passive:true});
     function end(){if(!on)return;on=false;if(!lock)return;var items=$$(item,row),pad=parseFloat(getComputedStyle(row).paddingLeft)||0,x=row.scrollLeft,best=items[0],bd=1e9;items.forEach(function(el){var d=Math.abs(el.offsetLeft-row.offsetLeft-pad-x);if(d<bd){bd=d;best=el}});row.style.scrollSnapType='';row.scrollTo({left:best.offsetLeft-row.offsetLeft-pad,behavior:reduce?'auto':'smooth'})}
     zone.addEventListener('touchend',end);zone.addEventListener('touchcancel',end);
   }
