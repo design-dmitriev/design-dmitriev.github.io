@@ -42,6 +42,15 @@
   },
   {
    "marketplace": "WB",
+   "article": "12340726",
+   "orders": [
+    470,
+    501
+   ],
+   "note": "Обновили второстепенные слайды кабеля Type-C для iPhone 15."
+  },
+  {
+   "marketplace": "WB",
    "article": "332485524",
    "orders": [
     274,
@@ -68,19 +77,6 @@
   },
   {
    "marketplace": "WB",
-   "article": "367754065",
-   "orders": [
-    80,
-    133
-   ],
-   "ctr": [
-    9,
-    10
-   ],
-   "note": "Обновили второстепенные слайды наушников Earphone POP-UP."
-  },
-  {
-   "marketplace": "WB",
    "article": "259137678",
    "orders": [
     170,
@@ -91,6 +87,19 @@
     5.41
    ],
    "note": "Новый rich-контент для кабеля Lightning–Type-C."
+  },
+  {
+   "marketplace": "WB",
+   "article": "367754065",
+   "orders": [
+    80,
+    133
+   ],
+   "ctr": [
+    9,
+    10
+   ],
+   "note": "Обновили второстепенные слайды наушников Earphone POP-UP."
   }
  ]
 }
