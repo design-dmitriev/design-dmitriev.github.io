@@ -55,23 +55,31 @@
   window.addEventListener('message',function(e){var fr=$('.fy-box iframe',sh),m=e.data;if(!fr||e.source!==fr.contentWindow||!m||!m.fy)return;if(m.fy==='steps')fsBuild(m.n);else if(m.fy==='step'){if(!fsEl()||!fsEl().children.length)fsBuild(m.n||fsN||4);fsSet(m.i,m.d)}});
   document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.fy-steps .fs');if(!b)return;var fr=$('.fy-box iframe',sh);if(fr&&fr.contentWindow){var k=+b.dataset.k;fsSet(k,3000);try{fr.contentWindow.postMessage({fy:'go',i:k},'*')}catch(x){}}});
   function fitFy(){
-    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-232;
-    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(168,Math.min(260,((window.visualViewport?visualViewport.height:innerHeight)-428)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';var fs=$('.fy-steps',st);if(fs)fs.style.width=w+'px';
-    if(fw){fr.style.transform='scale('+(w/fw)+')'}
+    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe,video',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-232;
+    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(168,Math.min(260,((window.visualViewport?visualViewport.height:innerHeight)-492)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';var fs=$('.fy-steps',st);if(fs)fs.style.width=w+'px';
+    if(fw&&fr.tagName==='IFRAME'){fr.style.transform='scale('+(w/fw)+')'}
   }
   window.addEventListener('resize',function(){if(sheetOn)fitFy()});window.addEventListener('orientationchange',function(){setTimeout(function(){if(sheetOn)fitFy()},300)});if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(sheetOn)fitFy()});
+
+  function vidInit(d){var v=$('.fy-box video',sh);if(!v||!d.frame.marks)return;var m=d.frame.marks,st=d.frame.steps||[],cb=$('.fy-cap b',sh),cs=$('.fy-cap span',sh),cur=-1;fsBuild(m.length);
+    function idx(t){var i=0;for(var k=0;k<m.length;k++)if(t>=m[k]-.02)i=k;return i}
+    function end(i){return i+1<m.length?m[i+1]:(v.duration||d.frame.dur)}
+    function upd(){var t=v.currentTime,i=idx(t);if(i!==cur){cur=i;fsSet(i,Math.max(300,(end(i)-m[i])*1000));if(st[i]){cb.textContent=st[i][0];cs.textContent=st[i][1]}}}
+    v.addEventListener('timeupdate',upd);v.addEventListener('play',upd);v.addEventListener('seeked',function(){cur=-1;upd()});
+    var go=function(e){var b=e.target.closest&&e.target.closest('.fy-steps .fs');if(!b)return;e.stopImmediatePropagation();var k=+b.dataset.k;cur=-1;v.currentTime=m[k]+.05;fsSet(k,Math.max(300,(end(k)-m[k])*1000));cur=k;if(st[k]){cb.textContent=st[k][0];cs.textContent=st[k][1]}v.play&&v.play().catch(function(){})};
+    $('.fy-steps',sh).addEventListener('click',go,true);upd();var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}
   function renderSkills(d){
     var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body fy-layout"><div class="fy-info">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
     var fv=d.frame.w?(innerWidth<900&&d.frame.mw?{w:d.frame.mw,h:d.frame.mh}:{w:d.frame.w,h:d.frame.h}):null,fr=fv?fv.w/fv.h:d.frame.ratio;
-    h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'<div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe></div><div class="fy-steps" role="group" aria-label="Шаги демо" hidden></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
+    h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'<div class="fy-box">'+(d.frame.video&&innerWidth<900?'<video src="'+d.frame.video+'" poster="'+d.frame.poster+'" muted playsinline loop autoplay preload="auto" aria-label="Демо"></video>':'<iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe>')+'</div><div class="fy-steps" role="group" aria-label="Шаги демо" hidden></div><div class="fy-cap" aria-live="off"'+(d.frame.video&&innerWidth<900?'':' hidden')+'><b></b><span></span></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
     if(d.actions){h+='<div class="fy-act">'+d.actions.map(function(a,i){return '<a class="sh-link'+(i?' alt':'')+'" href="'+a.href+'" target="_blank" rel="noopener">'+esc(a.label)+' ↗</a>'}).join('')+'</div>'}
     else if(d.download||d.files){h+='<div class="fy-act">';if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)h+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';h+='</div>'}
     if(d.install)h+='<small>'+esc(d.install)+'</small>';
     h+='</div></div></div>';
-    sh.innerHTML=h;sh.classList.add('wide');if(fr>1)$('.fy-layout',sh).classList.add('land');$('.sh-x',sh).onclick=closeSheet;
+    sh.innerHTML=h;vidInit(d);sh.classList.add('wide');if(fr>1)$('.fy-layout',sh).classList.add('land');$('.sh-x',sh).onclick=closeSheet;
   }
   function render(key){
     sh.classList.remove('wide');
