@@ -84,13 +84,13 @@
   /* свайп вбок по всей секции, а не только по ленте карточек */
   function wideSwipe(zone,row,item){
     if(!zone||!row||!matchMedia('(max-width:899px)').matches)return;
-    var sx=0,sy=0,sl=0,on=false,lock=null;
+    var sx=0,sy=0,sl=0,on=false,lock=null,lt=0,lx=0,vx=0;
     zone.style.touchAction='pan-y';
-    zone.addEventListener('touchstart',function(e){if(row.contains(e.target))return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;sl=row.scrollLeft;on=true;lock=null},{passive:true});
-    zone.addEventListener('touchmove',function(e){if(!on)return;var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(lock===null&&(Math.abs(dx)>14||Math.abs(dy)>14))lock=Math.abs(dx)>Math.abs(dy)*2.2;if(lock){row.style.scrollSnapType='none';row.scrollLeft=sl-dx}},{passive:true});
-    function end(){if(!on)return;on=false;if(!lock)return;var items=$$(item,row),pad=parseFloat(getComputedStyle(row).paddingLeft)||0,x=row.scrollLeft,best=items[0],bd=1e9;items.forEach(function(el){var d=Math.abs(el.offsetLeft-row.offsetLeft-pad-x);if(d<bd){bd=d;best=el}});row.style.scrollSnapType='';row.scrollTo({left:best.offsetLeft-row.offsetLeft-pad,behavior:reduce?'auto':'smooth'})}
+    zone.addEventListener('touchstart',function(e){var t=e.touches[0];sx=lx=t.clientX;sy=t.clientY;sl=row.scrollLeft;on=true;lock=null;vx=0;lt=e.timeStamp},{passive:true});
+    zone.addEventListener('touchmove',function(e){if(!on)return;var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(lock===null&&(Math.abs(dx)>16||Math.abs(dy)>16))lock=Math.abs(dx)>Math.abs(dy)*2.5;if(lock){row.style.scrollSnapType='none';row.scrollLeft=sl-dx;var dt=e.timeStamp-lt;if(dt>0)vx=(t.clientX-lx)/dt;lt=e.timeStamp;lx=t.clientX}},{passive:true});
+    function end(){if(!on)return;on=false;if(!lock)return;var items=$$(item,row),pad=parseFloat(getComputedStyle(row).paddingLeft)||0,x=row.scrollLeft-vx*160,best=items[0],bd=1e9;items.forEach(function(el){var d=Math.abs(el.offsetLeft-row.offsetLeft-pad-x);if(d<bd){bd=d;best=el}});row.style.scrollSnapType='';row.scrollTo({left:best.offsetLeft-row.offsetLeft-pad,behavior:reduce?'auto':'smooth'})}
     zone.addEventListener('touchend',end);zone.addEventListener('touchcancel',end);
   }
-  wideSwipe($('.panel.dark'),$('#cases'),'.case');
-  wideSwipe($('#zaglavki'),$('#zgs'),'li');
+  wideSwipe($('#cases'),$('#cases'),'.case');
+  wideSwipe($('#zgs'),$('#zgs'),'li');
 })();
