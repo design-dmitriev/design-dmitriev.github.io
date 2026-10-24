@@ -43,7 +43,7 @@
   }
   function fitFy(){
     var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-200;
-    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(168,Math.min(260,((window.visualViewport?visualViewport.height:innerHeight)-364)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';
+    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(168,Math.min(260,((window.visualViewport?visualViewport.height:innerHeight)-396)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';
     if(fw){fr.style.transform='scale('+(w/fw)+')'}
   }
   window.addEventListener('resize',function(){if(sheetOn)fitFy()});window.addEventListener('orientationchange',function(){setTimeout(function(){if(sheetOn)fitFy()},300)});if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(sheetOn)fitFy()});
@@ -53,7 +53,7 @@
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
     var fv=d.frame.w?(innerWidth<900&&d.frame.mw?{w:d.frame.mw,h:d.frame.mh}:{w:d.frame.w,h:d.frame.h}):null,fr=fv?fv.w/fv.h:d.frame.ratio;
-    h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'><div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'</div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
+    h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'<div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
     if(d.actions){h+='<div class="fy-act">'+d.actions.map(function(a,i){return '<a class="sh-link'+(i?' alt':'')+'" href="'+a.href+'" target="_blank" rel="noopener">'+esc(a.label)+' ↗</a>'}).join('')+'</div>'}
     else if(d.download||d.files){h+='<div class="fy-act">';if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)h+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';h+='</div>'}
     if(d.install)h+='<small>'+esc(d.install)+'</small>';
