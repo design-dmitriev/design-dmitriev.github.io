@@ -101,3 +101,13 @@ body.lock{overflow:hidden}
 @media(min-width:900px){.fy-layout.land{grid-template-columns:minmax(0,1fr) minmax(0,40rem)}.fy-layout.land .fy-stage{height:auto}}
 
 .sh-x:focus:not(:focus-visible){outline:0}
+
+.sh-stat b.long{font-size:clamp(1.5rem,6.4vw,2.75rem);letter-spacing:-.03em;white-space:nowrap}
+.sh-body li,.sh-body p,.fy-skills li{text-wrap:pretty}
+.sh-body h3,.sh-body .lead{text-wrap:balance}
+@media (max-width:899px){
+  .lb figure{height:min(calc(100svh - 8.5rem),calc((100vw - 1rem)*4/3));max-width:calc(100vw - 1rem);margin-bottom:3.5rem}
+  .lb .pv,.lb .nx{display:grid;top:auto;bottom:max(.75rem,env(safe-area-inset-bottom))}
+  .lb .pv{left:1rem}.lb .nx{right:1rem}
+  .lb .ct{bottom:max(1.35rem,calc(env(safe-area-inset-bottom) + .6rem))}
+}

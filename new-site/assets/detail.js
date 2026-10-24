@@ -15,8 +15,10 @@
   $$('.zg').forEach(function(b){b.onclick=function(){openLb(+b.dataset.i)}});
   $('.x',lb).onclick=closeLb;$('.pv',lb).onclick=function(){show(cur-1)};$('.nx',lb).onclick=function(){show(cur+1)};
   lb.addEventListener('click',function(e){if(e.target===lb)closeLb()});
-  var sx=0;li.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
-  li.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)show(cur+(d<0?1:-1))});
+  var fg=$('figure',lb),sx=0,sy=0,dx=0,drag=false;
+  li.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;drag=true;fg.style.transition='none'},{passive:true});
+  li.addEventListener('touchmove',function(e){if(!drag)return;var x=e.touches[0].clientX-sx,y=e.touches[0].clientY-sy;if(Math.abs(y)>Math.abs(x)*1.4&&Math.abs(dx)<10)return;dx=x;fg.style.transform='translateX('+dx+'px)'},{passive:true});
+  li.addEventListener('touchend',function(){drag=false;fg.style.transition='';if(Math.abs(dx)>50){var dir=dx<0?1:-1;fg.style.transition='none';show(cur+dir);fg.style.transform='translateX('+(dir*60)+'px)';fg.style.opacity='0';void fg.offsetWidth;fg.style.transition='transform .3s cubic-bezier(.2,.7,.2,1),opacity .3s';fg.style.transform='';fg.style.opacity=''}else fg.style.transform=''});
 
   /* шторка «Подробнее» */
   var sheetOn=false,DATA=null,bg=document.createElement('div'),sh=document.createElement('aside');
@@ -66,7 +68,7 @@
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.demo==='folderify')h+='<div class="fdemo"><iframe src="folderify/ui.html?demo=1" title="Как работает Folderify" loading="lazy"></iframe></div>';
     else if(d.demo)h+=demoHtml();
-    else if(d.stat)h+='<div class="sh-stat"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
+    else if(d.stat)h+='<div class="sh-stat"><b'+(String(d.stat[0]).length>8?' class="long"':'')+'>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     var n=0;(d.blocks||[]).forEach(function(b){h+='<h4>'+esc(b.h)+'</h4><ul>'+b.items.map(function(t){return '<li style="--i:'+(n++)+'">'+esc(t)+'</li>'}).join('')+'</ul>'});
     if(d.tags)h+='<div class="tags">'+d.tags.map(function(t){return '<span>'+esc(t)+'</span>'}).join('')+'</div>';
     if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a> ';
