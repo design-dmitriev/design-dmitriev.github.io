@@ -122,11 +122,11 @@
 }
 
 @media (max-width:899px){
-  #contact .panel.dark{padding:1.75rem 1.5rem 1.25rem;gap:1.5rem}
-  #contact .panel.dark .sum{padding-inline:0}
-  #contact .facts div{padding:.9rem 0}
-  #contact .facts div:last-child{border-bottom:0}
-  #contact .facts dd{word-break:break-word}
+  #contact .panel.dark,#team .panel.dark{padding:1.75rem 1.5rem 1.25rem;gap:1.5rem}
+  #contact .panel.dark .sum,#team .panel.dark .sum{padding-inline:0}
+  #contact .facts div,#team .facts div{padding:.9rem 0}
+  #contact .facts div:last-child,#team .facts div:last-child{border-bottom:0}
+  #contact .facts dd,#team .facts dd{word-break:break-word}
 }
 .sec-head .sum a{font:inherit;line-height:inherit;display:inline}
 @media (max-width:899px){.works .wfont{flex:0 0 100%}.works:has(.wfont:only-child){display:block;overflow:visible;margin-inline:0;padding-inline:0}}
