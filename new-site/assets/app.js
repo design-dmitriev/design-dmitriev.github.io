@@ -56,7 +56,7 @@
   /* личные работы: пока заглушка, фото подставятся из data/works.json */
   getJSON('data/works.json').then(function (list) {
     if (!list.length) return;
-    $('#works-list').innerHTML = list.map(function (w) {
+    var fc = $('#works-list .wfont'); $('#works-list').innerHTML = (fc ? fc.outerHTML : '') + list.map(function (w) {
       return '<li><figure class="work"><img src="' + esc(w.src) + '" alt="' + esc(w.alt || w.title || '') + '" loading="lazy">' +
         (w.title ? '<figcaption>' + esc(w.title) + (w.text ? '<span>' + esc(w.text) + '</span>' : '') + '</figcaption>' : '') + '</figure></li>';
     }).join('');

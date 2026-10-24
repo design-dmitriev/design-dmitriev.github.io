@@ -214,3 +214,15 @@ section[id]{scroll-margin-top:1rem}
 .m-badge::before{content:"";width:.4rem;height:.4rem;border-radius:50%;background:#3ddc84;flex:none;animation:pulse 1.6s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.35}}
 @media (prefers-reduced-motion:reduce){.m-badge::before{animation:none}}
+
+/* карточка шрифта в личных работах */
+.works .wfont{grid-column:1/-1}
+.wcard{display:grid;gap:1.25rem;align-content:end;min-height:19rem;padding:clamp(1.5rem,4vw,2.5rem);border-radius:2rem;background:#0a0a0a;color:#fff;text-decoration:none;position:relative;overflow:hidden}
+.wc-big{font-weight:900;font-size:clamp(4.5rem,22vw,11rem);letter-spacing:-.04em;line-height:.9}
+.wc-side{display:grid;gap:.5rem;align-content:end}
+.wc-name{font-weight:500;font-size:1.25rem}
+.wc-text{color:rgba(255,255,255,.72);max-width:28rem;line-height:1.5}
+.wc-go{margin-top:.4rem;font-weight:500}
+.wc-go i{font-style:normal;display:inline-block;transition:transform .3s}
+@media (min-width:900px){.wcard{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:end;min-height:20rem}}
+@media (hover:hover){.wcard:hover .wc-go i{transform:translateX(5px)}}

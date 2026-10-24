@@ -170,3 +170,6 @@ a.card:hover{transform:translateY(-4px)}
 .ui-note{color:rgba(255,255,255,.65);font-size:.9375rem;max-width:34ch;text-align:center}
 .mk h3{transition:none}
 @media (min-width:900px){.ui{grid-template-columns:auto auto;gap:6cqw}.ui-note{text-align:left;font-size:1.25rem}}
+
+.lic{margin:1rem 0 0;max-width:34rem;color:var(--muted);font-size:.875rem;line-height:1.5}
+.spec-row .lic{grid-column:1/-1}

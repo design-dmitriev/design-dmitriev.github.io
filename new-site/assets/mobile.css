@@ -187,3 +187,4 @@
   .pinned .bdots{display:none}
   .pinned .m-vis .m-demo,.pinned .m-vis img{width:min(100%,10rem)}
 }
+@media (max-width:899px){.works .wfont{flex:0 0 100%}.works:has(.wfont:only-child){display:block;overflow:visible;margin-inline:0;padding-inline:0}}
