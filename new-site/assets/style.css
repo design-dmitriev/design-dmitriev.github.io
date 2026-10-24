@@ -268,3 +268,7 @@ h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
 .rpeek.on{opacity:1;transform:none}
 .rpeek img{display:block;width:100%;height:auto}
 @media (max-width:1099px),(hover:none){.rpeek{display:none}}
+
+.case .when{display:flex;justify-content:space-between;align-items:baseline;gap:.75rem;margin:auto 0 0;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.14);font-size:.8125rem;color:rgba(255,255,255,.6)}
+.case .when b{font-weight:400;color:#fff;white-space:nowrap}
+.case .bar em.neg{color:rgba(255,255,255,.55)}

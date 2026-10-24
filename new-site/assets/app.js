@@ -26,21 +26,16 @@
       if (!list.length) return;
       var mpc = mp ? ' mp-' + mp.toLowerCase() : '', n = list.length, word = (n % 10 === 1 && n % 100 !== 11) ? 'артикул' : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 'артикула' : 'артикулов';
       if (mp) html += '<li class="group' + mpc + '"><h3>' + mp + '<small>' + n + ' ' + word + '</small></h3></li>';
-      function isCtr(c) { return !(c.orders || c.ordersIndex || c.conversionIndex) && c.conv == null; }
-      function maxOf(ctr) { return Math.max.apply(null, list.filter(function (c) { return idx(c) && isCtr(c) === ctr; }).map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); })) || 1; }
-      var maxes = { true: maxOf(true), false: maxOf(false) };
+      var vals = list.filter(function (c) { return c.ctr; }).map(function (c) { return Math.max(c.ctr[0], c.ctr[1]); }), max = Math.max.apply(null, vals) || 1;
       html += list.map(function (c) {
-        var v = idx(c) || [0, 0], ctrOnly = !(c.orders || c.ordersIndex || c.conversionIndex) && c.conv == null, growth = (c.orders || ctrOnly) ? Math.round((v[1] / v[0] - 1) * 100) : v[1] - v[0], fmt = function (n) { return ctrOnly ? pct(n) : n; };
-        var cap = c.conv != null ? 'прирост конверсии по A/B-тесту' : ctrOnly ? 'CTR' : c.orders ? (c.ordersCap || 'заказов в день') : c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
-        var metrics = c.ctr && !ctrOnly ? '<dl class="m"><div><dt>CTR до</dt><dd>' + pct(c.ctr[0]) + '</dd></div><div><dt>CTR после</dt><dd>' + pct(c.ctr[1]) + '</dd></div></dl>' : '';
-        if (c.date) metrics += '<p class="note">Контент обновлён ' + esc(c.date) + '</p>';
-        return '<li data-art="' + esc(c.article) + '" class="case' + mpc + (ctrOnly ? ' static' : '') + '">' +
+        var has = !!c.ctr, v = c.ctr || [0, 0], g = has ? Math.round((v[1] / v[0] - 1) * 100) : null, f = function (n) { return has ? pct(n) : '—'; };
+        return '<li data-art="' + esc(c.article) + '" class="case' + mpc + ' static">' +
           '<div class="who"><span>Артикул' + (mp ? ' ' + mp : '') + '</span>' + (mp ? '<a href="' + esc(LINKS[mp](c.article)) + '" target="_blank" rel="noopener"><b>' + esc(c.article) + '</b></a>' : '<b>' + esc(c.article) + '</b>') + '</div>' +
-          (c.conv != null ? '<div class="bars"><div class="bar after conv"><span>конверсия</span><span class="v"><b>+' + c.conv + '%</b></span></div><p class="cap">' + cap + '</p></div>' : '<div class="bars" role="img" aria-label="' + cap + ': до ' + v[0] + ', после ' + v[1] + '">' +
-            '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (v[0] / maxes[ctrOnly] * 100).toFixed(1) + '%"></i>' + fmt(v[0]) + '</span></div>' +
-            '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (v[1] / maxes[ctrOnly] * 100).toFixed(1) + '%"></i><b>' + fmt(v[1]) + '</b><em>' + (growth >= 0 ? '+' : '') + growth + '%</em></span></div>' +
-            '<p class="cap">' + cap + '</p>' +
-          '</div>') + '<div>' + metrics + '</div></li>';
+          '<div class="bars" role="img" aria-label="CTR: до ' + f(v[0]) + ', после ' + f(v[1]) + '">' +
+            '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (v[0] / max * 100).toFixed(1) + '%"></i>' + f(v[0]) + '</span></div>' +
+            '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (v[1] / max * 100).toFixed(1) + '%"></i><b>' + f(v[1]) + '</b>' + (has ? '<em' + (g < 0 ? ' class="neg"' : '') + '>' + (g >= 0 ? '+' : '') + g + '%</em>' : '') + '</span></div>' +
+            '<p class="cap">CTR</p>' +
+          '</div><p class="when"><span>Дата контента и показателей</span><b>' + (c.date ? esc(c.date) : '—') + '</b></p></li>';
       }).join('');
     });
     $('#cases').innerHTML = html;
