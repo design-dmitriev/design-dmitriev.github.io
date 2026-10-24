@@ -19,7 +19,7 @@
   getJSON('data/results.json').then(function (d) {
     $('#results-intro').textContent = d.intro || '';
     if (d.demo) $('#demo').hidden = false;
-    function idx(c) { return c.ordersIndex || c.conversionIndex; }
+    function idx(c) { return c.orders || c.ordersIndex || c.conversionIndex; }
     var html = '';
     ['Ozon', 'WB', null].forEach(function (mp) {
       var list = d.cases.filter(function (c) { return c.marketplace === mp; });
@@ -27,8 +27,8 @@
       if (mp) html += '<li class="group"><h3>' + mp + '</h3></li>';
       var max = Math.max.apply(null, list.map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); }));
       html += list.map(function (c) {
-        var v = idx(c), growth = v[1] - v[0];
-        var cap = c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
+        var v = idx(c), growth = c.orders ? Math.round((v[1] / v[0] - 1) * 100) : v[1] - v[0];
+        var cap = c.orders ? 'заказов в день' : c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
         var metrics = c.ctr ? '<dl class="m"><div><dt>CTR до</dt><dd>' + pct(c.ctr[0]) + '</dd></div><div><dt>CTR после</dt><dd>' + pct(c.ctr[1]) + '</dd></div></dl>' : '';
         if (c.note) metrics += '<p class="note">' + esc(c.note) + '</p>';
         return '<li class="case">' +
