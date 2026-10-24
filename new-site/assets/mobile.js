@@ -65,8 +65,6 @@
   dock.addEventListener('touchend',stop);dock.addEventListener('touchcancel',stop);
   dock.addEventListener('contextmenu',function(e){e.preventDefault()});
   dock.addEventListener('click',function(e){if(Date.now()<quiet){e.preventDefault();e.stopImmediatePropagation()}},true);
-  function prog(){var h=document.documentElement.scrollHeight-innerHeight;dock.style.setProperty('--p',h>0?Math.min(1,scrollY/h).toFixed(3):0)}
-  addEventListener('scroll',prog,{passive:true});prog();
 
   /* «Что я выстроил»: на телефоне строка целиком открывает панель */
   var built=$('.built');

@@ -152,7 +152,7 @@
 }
 
 @media (max-width:899px){
-  .dock{background-image:linear-gradient(#fff,#fff);background-repeat:no-repeat;background-size:calc(var(--p,0)*100%) 2px;background-position:0 calc(100% - 1px);-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .2s}
+  .dock{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .2s}
   .dock a{-webkit-touch-callout:none}
   .dock.scrub{transform:translate(-50%,-6px) scale(1.05);box-shadow:0 18px 44px rgba(0,0,0,.4);overflow:hidden}
   .dock.scrub .ind{transition-duration:.12s}
