@@ -10,8 +10,8 @@
 <link rel="icon" href="/favicon.ico">
 <link rel="preload" href="assets/fonts/zarya-400.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.className+=" js"</script>
-<link rel="stylesheet" href="assets/style.css?v=4">
-<link rel="stylesheet" href="assets/mobile.css?v=20">
+<link rel="stylesheet" href="assets/style.css?v=5">
+<link rel="stylesheet" href="assets/mobile.css?v=22">
 <link rel="stylesheet" href="assets/detail.css?v=6">
 </head>
 <body data-view="work">
@@ -20,13 +20,13 @@
 <header class="top" id="top">
   <a class="brand" href="#top">Алексей Дмитриев</a>
   <nav class="nav" aria-label="Разделы">
+    <a href="#zaglavki">Портфолио</a>
     <a href="#results">Результаты</a>
-    <a href="#team">Команда</a>
     <a href="#built">Что я выстроил</a>
-    <a href="#zaglavki">Заглавки</a>
-    <a href="type/zarya/">Шрифт</a>
-    <a href="#works">Работы</a>
+    <a href="#team">Команда</a>
     <a href="#experience">Опыт</a>
+    <a href="#works">Работы</a>
+    <a href="type/zarya/">Шрифт</a>
     <a href="#terms">Условия</a>
     <a href="#contact">Контакты</a>
   </nav>
@@ -41,21 +41,31 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="hero-body wrap">
     <h1 id="h1">Тим-лид отдела дизайна</h1>
-    <p class="lead">Алексей Дмитриев. Руковожу командой из шести человек в GQbox: четыре дизайнера, видеограф и маркетолог. С 2021 года делаю карточки для WB и Ozon.</p>
+    <p class="lead">Алексей. Опыт руководства командой из шести человек: ставлю задачи, веду ревью, принимаю результат. С 2021 года делаю карточки, rich-контент, упаковку и баннеры для WB и Ozon, знаком с требованиями Яндекс Маркета, М.Видео, DNS и Самоката. Выстроил процессы на Figma и нейросетях, решения подтверждаю цифрами.</p>
     <ul class="hstats">
-      <li><b>6</b><span>человек в команде</span></li>
-      <li><b>3000+</b><span>слайдов за два года</span></li>
-      <li><b>+4%</b><span>медианный рост CTR по 130 сделкам</span></li>
+      <li><b>6</b><span>человек: опыт руководства</span></li>
+      <li><b>+4%</b><span>CTR: медиана по 130 сделкам</span></li>
     </ul>
+    <p class="hkeys">Figma · нейросети · арт-дирекшн · дизайн‑система · A/B‑тесты · упаковка · наружная реклама</p>
     <div class="actions">
-      <a class="btn btn-fill" href="/CV_Starlight.pdf">Резюме в PDF</a>
-      <a class="btn btn-line" href="https://t.me/starlight_lnk">Написать в Telegram</a>
+      <a class="btn btn-fill" href="#zaglavki">Смотреть портфолио</a>
+      <a class="btn btn-line" href="https://t.me/starlight_lnk">Написать в TG</a>
+      <a class="btn btn-line" href="/CV_Starlight.pdf">Резюме PDF</a>
     </div>
   </div>
 </section>
 
 <main id="main">
   <div data-show="work">
+    <section class="sec" id="zaglavki" aria-labelledby="zag-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="zag-h">Заглавки</h2>
+          <p class="sum">Заглавные слайды карточек, собранные по дизайн-киту. Нажмите на слайд, чтобы открыть крупно.</p>
+        </div>
+        <ul class="zgs" id="zgs"><li><button class="zg" type="button" data-i="0" aria-label="Открыть: Зарядка 3в1 беспроводная, тёмная заглавка"><img src="assets/zag/1-s.webp" width="450" height="600" alt="Зарядка 3в1 беспроводная, тёмная заглавка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="1" aria-label="Открыть: Мощная зарядка с технологией GaN, 30 Вт"><img src="assets/zag/2-s.webp" width="450" height="600" alt="Мощная зарядка с технологией GaN, 30 Вт" loading="lazy"></button></li><li><button class="zg" type="button" data-i="2" aria-label="Открыть: Кабель для iPhone, быстрая зарядка"><img src="assets/zag/3-s.webp" width="450" height="600" alt="Кабель для iPhone, быстрая зарядка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="3" aria-label="Открыть: Зарядка 3 в 1 беспроводная: смартфон, часы, наушники"><img src="assets/zag/4-s.webp" width="450" height="600" alt="Зарядка 3 в 1 беспроводная: смартфон, часы, наушники" loading="lazy"></button></li><li><button class="zg" type="button" data-i="4" aria-label="Открыть: Зарядка в автомобиль 52 Вт, Type-C и USB"><img src="assets/zag/5-s.webp" width="450" height="600" alt="Зарядка в автомобиль 52 Вт, Type-C и USB" loading="lazy"></button></li></ul>
+      </div>
+    </section>
     <section class="sec" id="results" aria-labelledby="results-h">
       <div class="wrap">
         <div class="sec-head">
@@ -69,26 +79,6 @@
         </div>
       </div>
     </section>
-
-    <section class="sec" id="team" aria-labelledby="team-h">
-      <div class="wrap">
-        <div class="panel soft two">
-          <div>
-            <h2 id="team-h">Команда и процессы</h2>
-            <p class="sum">Как устроена работа отдела. Дизайнер и ИИ у нас рабочий стандарт.</p>
-          </div>
-          <dl class="facts">
-            <div><dt>Состав</dt><dd>Четыре дизайнера, видеограф, маркетолог в смежном звене. Я тим-лид: задачи, арт-дирекшн, обучение, распределение людей.</dd></div>
-            <div><dt>Задачи</dt><dd>Ставим через CRM: ТЗ, референсы, ссылки на дизайн-коды и иконки. Проекты ведём в Яндекс.Трекере и Битрикс24.</dd></div>
-            <div><dt>KPI</dt><dd>Сначала фиксировал действия и вывел среднюю норму за день. Объём и результат карточки складываются в итоговый балл. Сделали инструмент, который считает баллы. Видеографу KPI прописали отдельно.</dd></div>
-            <div><dt>Аналитика</dt><dd>Менеджеры дают данные сплит-тестов (Sellum), маркетолог даёт данные по аудитории. По ним решаем, как усилить слайд: охранные поля, масштаб, размер офферов, видимость, близость к покупателю. Идеи строим от Jobs To Be Done.</dd></div>
-            <div><dt>ИИ</dt><dd>Оплачиваем ИИ-агентов и сервисы, которые ускоряют работу дизайнера.</dd></div>
-            <div><dt>CRM</dt><dd>Участвовал в разработке внутренней CRM вместе с руководителем: тестировал и предлагал идеи. Отвечал за раздел для дизайнеров, от ТЗ до улучшения показателей контента.</dd></div>
-          </dl>
-        </div>
-      </div>
-    </section>
-
     <section class="sec" id="built" aria-labelledby="built-h">
       <div class="wrap">
         <div class="sec-head">
@@ -121,34 +111,24 @@
         </div>
       </div>
     </section>
-
-    <section class="sec" id="zaglavki" aria-labelledby="zag-h">
+    <section class="sec" id="team" aria-labelledby="team-h">
       <div class="wrap">
-        <div class="sec-head">
-          <h2 id="zag-h">Заглавки</h2>
-          <p class="sum">Заглавные слайды карточек, собранные по дизайн-киту. Нажмите на слайд, чтобы открыть крупно.</p>
+        <div class="panel soft two">
+          <div>
+            <h2 id="team-h">Команда и процессы</h2>
+            <p class="sum">Как устроена работа отдела. Дизайнер и ИИ у нас рабочий стандарт.</p>
+          </div>
+          <dl class="facts">
+            <div><dt>Состав</dt><dd>Четыре дизайнера, видеограф, маркетолог в смежном звене. Я тим-лид: задачи, арт-дирекшн, обучение, распределение людей.</dd></div>
+            <div><dt>Задачи</dt><dd>Ставим через CRM: ТЗ, референсы, ссылки на дизайн-коды и иконки. Проекты ведём в Яндекс.Трекере и Битрикс24.</dd></div>
+            <div><dt>KPI</dt><dd>Сначала фиксировал действия и вывел среднюю норму за день. Объём и результат карточки складываются в итоговый балл. Сделали инструмент, который считает баллы. Видеографу KPI прописали отдельно.</dd></div>
+            <div><dt>Аналитика</dt><dd>Менеджеры дают данные сплит-тестов (Sellum), маркетолог даёт данные по аудитории. По ним решаем, как усилить слайд: охранные поля, масштаб, размер офферов, видимость, близость к покупателю. Идеи строим от Jobs To Be Done.</dd></div>
+            <div><dt>ИИ</dt><dd>Оплачиваем ИИ-агентов и сервисы, которые ускоряют работу дизайнера.</dd></div>
+            <div><dt>CRM</dt><dd>Участвовал в разработке внутренней CRM вместе с руководителем: тестировал и предлагал идеи. Отвечал за раздел для дизайнеров, от ТЗ до улучшения показателей контента.</dd></div>
+          </dl>
         </div>
-        <ul class="zgs" id="zgs"><li><button class="zg" type="button" data-i="0" aria-label="Открыть: Зарядка 3в1 беспроводная, тёмная заглавка"><img src="assets/zag/1-s.webp" width="450" height="600" alt="Зарядка 3в1 беспроводная, тёмная заглавка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="1" aria-label="Открыть: Мощная зарядка с технологией GaN, 30 Вт"><img src="assets/zag/2-s.webp" width="450" height="600" alt="Мощная зарядка с технологией GaN, 30 Вт" loading="lazy"></button></li><li><button class="zg" type="button" data-i="2" aria-label="Открыть: Кабель для iPhone, быстрая зарядка"><img src="assets/zag/3-s.webp" width="450" height="600" alt="Кабель для iPhone, быстрая зарядка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="3" aria-label="Открыть: Зарядка 3 в 1 беспроводная: смартфон, часы, наушники"><img src="assets/zag/4-s.webp" width="450" height="600" alt="Зарядка 3 в 1 беспроводная: смартфон, часы, наушники" loading="lazy"></button></li><li><button class="zg" type="button" data-i="4" aria-label="Открыть: Зарядка в автомобиль 52 Вт, Type-C и USB"><img src="assets/zag/5-s.webp" width="450" height="600" alt="Зарядка в автомобиль 52 Вт, Type-C и USB" loading="lazy"></button></li></ul>
       </div>
     </section>
-
-    <section class="sec" id="works" aria-labelledby="works-h">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2 id="works-h">Личные дизайн-работы</h2>
-          <p class="sum" id="works-note">Проекты, которые я делаю для себя.</p>
-        </div>
-        <ul class="works" id="works-list">
-          <li class="wfont">
-            <a class="wcard" href="type/zarya/" aria-label="Открыть шрифт Zarya ST">
-              <span class="wc-big" aria-hidden="true">Заря</span>
-              <span class="wc-side"><span class="wc-name">Zarya ST, мой шрифт</span><span class="wc-text">Неогротеск с кириллицей и латиницей, 12 начертаний. Можно скачать бесплатно.</span><span class="wc-go">Открыть шрифт <i>→</i></span></span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </section>
-
     <section class="sec" id="experience" aria-labelledby="exp-h">
       <div class="wrap">
         <div class="sec-head">
@@ -179,7 +159,22 @@
         </ul>
       </div>
     </section>
-
+    <section class="sec" id="works" aria-labelledby="works-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="works-h">Личные дизайн-работы</h2>
+          <p class="sum" id="works-note">Проекты, которые я делаю для себя.</p>
+        </div>
+        <ul class="works" id="works-list">
+          <li class="wfont">
+            <a class="wcard" href="type/zarya/" aria-label="Открыть шрифт Zarya ST">
+              <span class="wc-big" aria-hidden="true">Заря</span>
+              <span class="wc-side"><span class="wc-name">Zarya ST, мой шрифт</span><span class="wc-text">Неогротеск с кириллицей и латиницей, 12 начертаний. Можно скачать бесплатно.</span><span class="wc-go">Открыть шрифт <i>→</i></span></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
     <section class="sec" id="terms" aria-labelledby="terms-h">
       <div class="wrap">
         <div class="panel soft two">
@@ -196,7 +191,6 @@
         </div>
       </div>
     </section>
-
     <section class="sec" id="contact" aria-labelledby="contact-h">
       <div class="wrap">
       <div class="panel dark two">
@@ -234,7 +228,7 @@
 
 <script src="assets/noise.js" defer></script>
 <script src="assets/app.js?v=2" defer></script>
-<script src="assets/mobile.js?v=10" defer></script>
+<script src="assets/mobile.js?v=11" defer></script>
 <script src="assets/detail.js?v=7" defer></script>
 </body>
 </html>

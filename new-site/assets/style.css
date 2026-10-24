@@ -226,3 +226,5 @@ section[id]{scroll-margin-top:1rem}
 .wc-go i{font-style:normal;display:inline-block;transition:transform .3s}
 @media (min-width:900px){.wcard{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:end;min-height:20rem}}
 @media (hover:hover){.wcard:hover .wc-go i{transform:translateX(5px)}}
+
+.hkeys{margin-top:1.5rem;max-width:44rem;font-size:.8125rem;line-height:1.7;color:rgba(255,255,255,.6);text-wrap:balance}
