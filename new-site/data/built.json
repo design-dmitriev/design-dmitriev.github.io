@@ -180,7 +180,7 @@
   "lead": "Мой инструмент: вводите размер товара и сразу получаете развёртку для типографии и 3D-примерку макета.",
   "layout": "skills",
   "frame": {
-   "src": "https://design-dmitriev.github.io/box-builder/index.html?demo=1&v=3",
+   "src": "https://design-dmitriev.github.io/box-builder/index.html?demo=1&v=4",
    "ratio": 0.6,
    "w": 420,
    "h": 700,
