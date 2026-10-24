@@ -43,50 +43,54 @@
   {
    "marketplace": "WB",
    "article": "332485524",
-   "ctr": [
-    3.13,
-    4.98
-   ],
    "orders": [
     274,
     365
+   ],
+   "ctr": [
+    3.13,
+    4.98
    ],
    "note": "Сделка: комплект Lightning–Type-C + СЗУ 20 Вт"
   },
   {
    "marketplace": "WB",
-   "article": "367754065",
+   "article": "197770943",
+   "orders": [
+    195,
+    251
+   ],
    "ctr": [
-    9,
+    6,
     10
    ],
+   "note": "Сделка: rich-контент к 14 февраля, наушники PRO Lightning BT"
+  },
+  {
+   "marketplace": "WB",
+   "article": "367754065",
    "orders": [
     80,
     133
+   ],
+   "ctr": [
+    9,
+    10
    ],
    "note": "Сделка: наушники Earphone POP-UP Type-C"
   },
   {
    "marketplace": "WB",
-   "article": "54638159",
+   "article": "259137678",
    "orders": [
-    23,
-    34
+    170,
+    207
    ],
    "ctr": [
-    4.09,
-    5.03
+    6.15,
+    5.41
    ],
-   "note": "Сделка: комплект СЗУ PD 20 Вт + Lightning–Type-C"
-  },
-  {
-   "marketplace": "WB",
-   "article": "201498105",
-   "ctr": [
-    4.11,
-    5.24
-   ],
-   "note": "Сделка: СЗУ 1 USB, заглавка и дополнительные слайды"
+   "note": "Сделка: rich-контент, кабель Lightning–Type-C 1 м"
   }
  ]
 }
