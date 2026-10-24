@@ -181,3 +181,5 @@
   .panel.dark .cases,.zgs,.works{overscroll-behavior-x:contain}
 }
 @media(min-width:900px){.case .who span{display:block;text-align:left}}
+
+@media(min-width:1100px){.hero .lead{max-width:min(76rem,100%);font-size:clamp(1.0625rem,1.3vw,1.25rem);line-height:1.5;text-wrap:balance;color:#fff;text-shadow:0 1px 16px rgba(0,0,0,.5)}}
