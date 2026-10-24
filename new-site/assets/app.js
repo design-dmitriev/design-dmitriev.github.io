@@ -24,14 +24,15 @@
     ['Ozon', 'WB', null].forEach(function (mp) {
       var list = d.cases.filter(function (c) { return c.marketplace === mp; });
       if (!list.length) return;
-      if (mp) html += '<li class="group"><h3>' + mp + '</h3></li>';
+      var mpc = mp ? ' mp-' + mp.toLowerCase() : '', n = list.length, word = (n % 10 === 1 && n % 100 !== 11) ? 'артикул' : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)) ? 'артикула' : 'артикулов';
+      if (mp) html += '<li class="group' + mpc + '"><h3>' + mp + '<small>' + n + ' ' + word + '</small></h3></li>';
       var max = Math.max.apply(null, list.filter(function (c) { return idx(c); }).map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); })) || 1;
       html += list.map(function (c) {
         var v = idx(c) || [0, 0], ctrOnly = !(c.orders || c.ordersIndex || c.conversionIndex) && c.conv == null, growth = (c.orders || ctrOnly) ? Math.round((v[1] / v[0] - 1) * 100) : v[1] - v[0], fmt = function (n) { return ctrOnly ? pct(n) : n; };
         var cap = c.conv != null ? 'прирост конверсии по A/B-тесту' : ctrOnly ? 'CTR' : c.orders ? 'заказов в день' : c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
         var metrics = c.ctr && !ctrOnly ? '<dl class="m"><div><dt>CTR до</dt><dd>' + pct(c.ctr[0]) + '</dd></div><div><dt>CTR после</dt><dd>' + pct(c.ctr[1]) + '</dd></div></dl>' : '';
         if (c.note) metrics += '<p class="note">' + esc(c.note) + '</p>';
-        return '<li class="case' + (ctrOnly ? ' static' : '') + '">' +
+        return '<li class="case' + mpc + (ctrOnly ? ' static' : '') + '">' +
           '<div class="who"><span>Артикул' + (mp ? ' ' + mp : '') + '</span>' + (mp ? '<a href="' + esc(LINKS[mp](c.article)) + '" target="_blank" rel="noopener"><b>' + esc(c.article) + '</b></a>' : '<b>' + esc(c.article) + '</b>') + '</div>' +
           (c.conv != null ? '<div class="bars"><div class="bar after conv"><span>конверсия</span><span class="v"><b>+' + c.conv + '%</b></span></div><p class="cap">' + cap + '</p></div>' : '<div class="bars" role="img" aria-label="' + cap + ': до ' + v[0] + ', после ' + v[1] + '">' +
             '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (v[0] / max * 100).toFixed(1) + '%"></i>' + fmt(v[0]) + '</span></div>' +

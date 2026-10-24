@@ -236,3 +236,30 @@ section[id]{scroll-margin-top:1rem}
 p,li,dd,figcaption,.sum,.lead{text-wrap:pretty}
 h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
 .nw{white-space:nowrap}
+
+/* результаты: единая карточка (ПК: сетка, телефон: карусель), цвета площадок и зелёный рост */
+.case.mp-ozon,.group.mp-ozon{--mp:#4d86ff;--mp-bg:rgba(0,91,255,.2)}
+.case.mp-wb,.group.mp-wb{--mp:#e65bd4;--mp-bg:rgba(203,17,171,.22)}
+.case .who span{background:var(--mp-bg,transparent);border-color:var(--mp,rgba(255,255,255,.3));color:#fff}
+.case .who span::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--mp,#fff);margin-right:.45rem;flex:none}
+.panel.dark .bar em,.panel.dark .bar.conv .v b{color:#3ddc84}
+.cases .group h3 small{font-weight:400;font-size:.875rem;color:rgba(255,255,255,.6);margin-left:.75rem}
+@media(min-width:900px){
+  .panel.dark .cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;border-top:0;padding-top:0}
+  .cases .group{grid-column:1/-1;padding:2rem .25rem .25rem;border:0}
+  .cases .group:first-child{padding-top:.25rem}
+  .cases .group h3{display:flex;align-items:baseline;font-size:1.375rem;font-weight:500;color:#fff;letter-spacing:-.01em}
+  .cases .group h3::before{content:"";width:.75rem;height:.75rem;border-radius:50%;background:var(--mp,#fff);align-self:center;margin-right:.7rem}
+  .panel.dark .case{display:flex;flex-direction:column;gap:.9rem;padding:1.25rem 1.25rem 1.1rem;border:1px solid rgba(255,255,255,.14);border-radius:1.5rem;background:rgba(255,255,255,.04);align-items:stretch}
+  .case .who{display:grid;justify-items:start;gap:.5rem}
+  .case .who span{display:inline-flex;align-items:center;border:1px solid;border-radius:999px;padding:.2rem .75rem;font-size:.8125rem}
+  .case .bars{gap:.5rem}
+  .case .bar{grid-template-columns:3.25rem minmax(0,1fr);font-size:.9375rem}
+  .case .bar>span:first-child{color:rgba(255,255,255,.65)}
+  .case .bar .v{min-width:0}
+  .case .bar .v i{flex:0 1 var(--w);min-width:.5rem}
+  .case .bar em{font-size:.9375rem}
+  .case .bars .cap{margin-top:0}
+  .case>div:last-child{margin-top:auto}
+}
+@media(min-width:1200px){.panel.dark .cases{grid-template-columns:repeat(3,minmax(0,1fr))}}
