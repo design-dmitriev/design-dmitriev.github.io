@@ -1,4 +1,5 @@
 (function(){
+  var ST=document.currentScript&&document.currentScript.hasAttribute('data-static');
   var NB=' ',W='а|в|и|к|о|с|у|я|на|по|за|от|до|из|не|ни|но|же|ли|бы|во|ко|со|об|то|для|при|про|без|над|под|или|что|как|так|его|её|их|мы|вы|он|она|они|это|все|всё|ещё|уже|вот|тут|там',
   re1=new RegExp('(^|[\\s(«„"—–-])('+W+')[ \\t]+(?=\\S)','gi'),
   re2=/(\d)[ \t]+(?=(?:[a-zA-Zа-яА-ЯёЁ%°×xх]|[×]))/g,
@@ -26,6 +27,7 @@
   function run(){busy=false;var l=q;q=[];l.forEach(walk)}
   function init(){
     walk(document.body);
+    if(ST)return;
     new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){if(n.nodeType===1||n.nodeType===3)q.push(n.nodeType===3?n.parentNode:n)});if(m.type==='characterData')q.push(m.target.parentNode)});if(!busy&&q.length){busy=true;requestAnimationFrame(run)}}).observe(document.body,{childList:true,subtree:true})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

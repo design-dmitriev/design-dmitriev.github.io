@@ -1080,7 +1080,7 @@ function lobby(){
   if(!db&&canP2P&&sp&&sp.code)cont.push(`<button class="mrow ${cont.length?'':'sel'}" data-act="p2pResume"><span class="tx"><b>Вернуться за стол ${esc(sp.code)}</b><small>игра по ссылке</small></span></button>`);
   if(db)for(const t of my)cont.push(`<button class="mrow" data-act="resume" data-code="${esc(t.id)}"><span class="tx"><b>Стол ${esc(t.id)}</b><small>${t.open?'ждёт соперника':t.winner>=0?'партия закончена':'идёт игра'}</small></span></button>`);
   const fan=['10H','KD','JK','QS','AC'].map((c,i)=>`<div class="card sk${backSel} ${wearCls(c,backSel)} ${red(c)?'red':''} ${c==='JK'?'jk':''}" style="--i:${i-2}">${faceHtml(c,backSel)}</div>`).join('');
-  return `<div class="home"><aside class="hero" aria-hidden="true"><div class="fan">${fan}</div></aside><div class="hcol"><header class="hbar"><div class="brand"><b>Караван</b><span>Карточная игра пустошей на двоих</span></div><button class="pchip ${nm?'':'empty'}" data-act="settings" aria-label="Имя и настройки">${ICON.user}<span>${nm?esc(nm):'Ваше имя'}</span></button></header>
+  return `<div class="home"><aside class="hero" aria-hidden="true"><div class="fan">${fan}</div></aside><div class="hcol"><header class="hbar"><div class="brand"><b>Караван</b><span>Карточная игра пустошей на&nbsp;двоих</span></div><button class="pchip ${nm?'':'empty'}" data-act="settings" aria-label="Имя и настройки">${ICON.user}<span>${nm?esc(nm):'Ваше имя'}</span></button></header>
   <main class="menu">
   ${cont.length?`<section class="mgroup"><h3>Незаконченные</h3>${cont.join('')}</section>`:''}
   <section class="mgroup"><h3>Новая партия</h3>
@@ -1837,5 +1837,6 @@ app.addEventListener('pointerleave',()=>{coolCard(hotEl);hotEl=null;if(use3d)GL.
 load3d();
 init();
 </script>
+<script src="../../new-site/assets/typo.js?v=4" defer data-static></script>
 </body>
 </html>
