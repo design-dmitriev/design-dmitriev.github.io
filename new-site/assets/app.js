@@ -35,7 +35,7 @@
             '<p class="cap">CTR</p>' +
             '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (v[0] / (Math.max(v[0], v[1]) || 1) * 100).toFixed(1) + '%"></i>' + f(v[0]) + '</span></div>' +
             '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (v[1] / (Math.max(v[0], v[1]) || 1) * 100).toFixed(1) + '%"></i><b>' + f(v[1]) + '</b>' + (has ? '<em' + (g < 0 ? ' class="neg"' : '') + '>' + (g >= 0 ? '+' : '') + g + '%</em>' : '') + '</span></div>' +
-          '</div><p class="when"><span>Дата контента и показателей</span><b>' + (c.date ? esc(c.date) : '—') + '</b></p></li>';
+          '</div><p class="when"><span>Дата показателей контента</span><b>' + (c.date ? esc(c.date) : '—') + '</b></p></li>';
       }).join('');
     });
     $('#cases').innerHTML = html;
