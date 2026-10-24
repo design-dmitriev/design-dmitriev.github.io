@@ -177,3 +177,13 @@
   #contact .facts div:last-child{border-bottom:0}
   #contact .facts dd{word-break:break-word}
 }
+.sec-head .sum a{font:inherit;line-height:inherit;display:inline}
+@media (max-width:899px) and (max-height:559px){
+  html.pinned #built{height:auto!important}
+  .pinned #built>.wrap{position:static;height:auto;overflow:visible;padding-block:0}
+  .pinned #built .sum{display:block}
+  .pinned .panel.soft .built{transform:none!important;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-1.25rem;padding-inline:1.25rem}
+  .pinned .panel.soft .built>li{flex-basis:72%}
+  .pinned .bdots{display:none}
+  .pinned .m-vis .m-demo,.pinned .m-vis img{width:min(100%,10rem)}
+}
