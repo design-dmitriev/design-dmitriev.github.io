@@ -16,8 +16,12 @@
     if(ready[t])li.src=url(t);else pre(t).then(function(){if(cur===t)li.src=url(t)});
     pre(cur+1);pre(cur-1)}
   function preAll(){for(var k=0;k<ALT.length;k++)pre(k)}
-  function openLb(i){preAll();show(i);lb.classList.add('on');document.body.classList.add('lock')}
-  function closeLb(){lb.classList.remove('on');if(!sheetOn)document.body.classList.remove('lock')}
+  var lockY=0,locked=false;
+  function lockPage(on){var b=document.body,h=document.documentElement;
+    if(on&&!locked){locked=true;lockY=window.pageYOffset;b.classList.add('lock');b.style.top=(-lockY)+'px'}
+    else if(!on&&locked){locked=false;b.classList.remove('lock');b.style.top='';h.style.scrollBehavior='auto';window.scrollTo(0,lockY);h.style.scrollBehavior=''}}
+  function openLb(i){preAll();show(i);lb.classList.add('on');lockPage(true)}
+  function closeLb(){lb.classList.remove('on');if(!sheetOn)lockPage(false)}
   $$('.zg').forEach(function(b){b.onclick=function(){openLb(+b.dataset.i)}});
   $('.x',lb).onclick=closeLb;$('.pv',lb).onclick=function(){show(cur-1)};$('.nx',lb).onclick=function(){show(cur+1)};
   lb.addEventListener('click',function(e){if(e.target===lb)closeLb()});
@@ -103,7 +107,7 @@
   }
   function openSheet(key,push){
     if(!DATA)return;lastFocus=document.activeElement;clearInterval(timer);render(key);
-    sheetOn=true;bg.classList.add('on');sh.classList.add('on');document.body.classList.add('lock');sh.scrollTop=0;$('.sh-body',sh).scrollTop=0;
+    sheetOn=true;bg.classList.add('on');sh.classList.add('on');lockPage(true);sh.scrollTop=0;$('.sh-body',sh).scrollTop=0;
     if(DATA[key]&&DATA[key].demo===true)runDemo();
     if(DATA[key]&&DATA[key].layout==='skills'){fitFy();setTimeout(fitFy,600)}
     if(push!==false)history.replaceState(null,'','#built-'+key);
@@ -111,7 +115,7 @@
   }
   document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('[data-open]');if(t){e.stopPropagation();openSheet(t.getAttribute('data-open'))}},true);
   function closeSheet(){
-    sheetOn=false;clearInterval(timer);bg.classList.remove('on');sh.classList.remove('on');if(!lb.classList.contains('on'))document.body.classList.remove('lock');
+    sheetOn=false;clearInterval(timer);bg.classList.remove('on');sh.classList.remove('on');if(!lb.classList.contains('on'))lockPage(false);
     if(location.hash.indexOf('#built-')===0)history.replaceState(null,'',location.pathname+location.search+'#built');
     if(lastFocus&&lastFocus.focus)lastFocus.focus();
   }

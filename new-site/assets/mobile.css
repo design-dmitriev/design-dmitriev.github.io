@@ -164,3 +164,12 @@
 
 @media (max-width:899px){.hstats{grid-template-columns:1fr 1fr}.hkeys{font-size:.75rem;margin-top:1.25rem}.hero .actions{flex-wrap:wrap}}
 @media (max-width:899px){.hero .actions{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.hero .actions .btn-fill{grid-column:1/-1}.hero .actions .btn{justify-content:center;text-align:center}}
+
+@media (max-width:899px){
+  .dots button{position:relative}
+  .dots button::after{content:"";position:absolute;top:50%;left:50%;width:calc(100% + .4rem);min-width:1.75rem;height:2.75rem;transform:translate(-50%,-50%)}
+  .sec-head .sum a,.sum a{display:inline-block;padding:.75rem 0;margin:-.75rem 0}
+  .sh-x{min-width:44px;min-height:44px}
+  .fy-steps .fs{height:44px}
+  a.sh-link,.fy-act a{min-height:48px}
+}

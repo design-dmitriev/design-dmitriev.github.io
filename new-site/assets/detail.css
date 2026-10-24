@@ -58,7 +58,9 @@
   .sh-top{position:relative;padding-top:1.25rem}
   .kdemo{max-width:none}
 }
-body.lock{overflow:hidden}
+body.lock{overflow:hidden;position:fixed;left:0;right:0;width:100%}
+.sheet,.sh-body,.lb{overscroll-behavior:contain}
+.sh-bg{touch-action:none}.sh-body{touch-action:pan-y}
 @media (prefers-reduced-motion:reduce){.sheet,.sh-bg,.lb,.lb figure,.zg,.zg img,.sh-body ul li,.kdemo .bx{transition:none}}
 
 .fontcard{display:grid;gap:1rem;padding:clamp(1.5rem,4vw,3rem);border-radius:2rem;background:#0a0a0a;color:#fff;text-decoration:none;position:relative;overflow:hidden;min-height:22rem;align-content:space-between;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
@@ -121,7 +123,7 @@ body.lock{overflow:hidden}
 
 .fy-steps{display:flex;gap:6px;flex:0 0 auto;margin:0 auto}
 .fy-steps[hidden]{display:none}
-.fy-steps .fs{flex:1;height:30px;min-width:0;padding:0;border:0;background:none;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+.fy-steps .fs{flex:1;height:44px;min-width:0;padding:0;border:0;background:none;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
 .fy-steps .fs::before,.fy-steps .fs i{content:"";position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;border-radius:4px}
 .fy-steps .fs::before{background:rgba(10,10,10,.14)}
 .fy-steps .fs i{background:#0a0a0a;transform:scaleX(0);transform-origin:left}
