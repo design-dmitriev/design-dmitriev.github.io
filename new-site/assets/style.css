@@ -240,7 +240,7 @@ h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
 /* результаты: единая карточка (ПК: сетка, телефон: карусель), цвета площадок и зелёный рост */
 .case.mp-ozon,.group.mp-ozon{--mp:#4d86ff}
 .case.mp-wb,.group.mp-wb{--mp:#e65bd4}
-.case .who span{background:transparent;border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.85)}
+.case .who span{background:transparent;border:0;padding:0;color:rgba(255,255,255,.85)}
 .case .who span::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--mp,#fff);margin-right:.45rem;flex:none}
 .panel.dark .bar em,.panel.dark .bar.conv .v b{color:#3ddc84}
 .cases .group h3 small{font-weight:400;font-size:.875rem;color:rgba(255,255,255,.6);margin-left:.75rem}
@@ -252,7 +252,7 @@ h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
   .cases .group h3::before{content:"";width:.75rem;height:.75rem;border-radius:50%;background:var(--mp,#fff);align-self:center;margin-right:.7rem}
   .panel.dark .case{display:flex;flex-direction:column;gap:.9rem;padding:1.25rem 1.25rem 1.1rem;border:1px solid rgba(255,255,255,.14);border-radius:1.5rem;background:rgba(255,255,255,.04);align-items:stretch}
   .case .who{display:grid;justify-items:start;gap:.5rem}
-  .case .who span{display:inline-flex;align-items:center;border:1px solid;border-radius:999px;padding:.2rem .75rem;font-size:.8125rem}
+  .case .who span{display:inline-flex;align-items:center;font-size:.8125rem;padding:0}
   .case .bars{gap:.5rem}
   .case .bar{grid-template-columns:3.25rem minmax(0,1fr);font-size:.9375rem}
   .case .bar>span:first-child{color:rgba(255,255,255,.65)}

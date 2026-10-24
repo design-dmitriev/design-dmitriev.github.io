@@ -50,7 +50,7 @@
   .cases .group{display:none}
   .panel.dark .case{flex:0 0 84%;scroll-snap-align:start;border:1px solid rgba(255,255,255,.16);border-radius:1.5rem;padding:1.25rem;background:rgba(255,255,255,.05);align-content:start;transition:transform .35s,border-color .35s}
   .panel.dark .case:active{transform:scale(.985)}
-  .case .who span{display:inline-block;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.15rem .65rem;margin-bottom:.6rem;color:#fff}
+  .case .who span{display:inline-flex;align-items:center;padding:0;margin-bottom:.6rem;color:rgba(255,255,255,.85)}
   .dots{display:flex;align-items:center;gap:.4rem;padding:1rem 1.5rem 0}
   .dots button{width:.5rem;height:.5rem;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.3);transition:width .3s,background .3s;cursor:pointer}
   .dots button.on{width:1.5rem;background:#fff}
