@@ -179,3 +179,17 @@ a.card:hover{transform:translateY(-4px)}
 @supports (text-box:trim-both cap alphabetic){
   .facts li,.chip,.use .pill,.slide .chip{text-box:trim-both cap alphabetic;padding-block:.6em}
 }
+
+@media (max-width:899px){
+  .chip,.seg button,.btn,.cmp select,.utext input,.sw button,button.tab,.tabs button{min-height:44px}
+  .sw button{min-width:44px;min-height:44px;position:relative;background-clip:padding-box}
+  .grid button,.facts a,main a,footer a,header a,nav a{position:relative}
+  header a,nav a,footer a{display:inline-flex;align-items:center;min-height:44px}
+  html,body{overflow-x:clip;max-width:100%}
+  .seg,.chips,.tabs{overscroll-behavior-x:contain}
+}
+
+@media (max-width:899px){
+  input[type=range]{min-height:44px;margin-block:0;touch-action:pan-y}
+  a[href="../"],a[download]{display:inline-flex;align-items:center;min-height:44px}
+}
