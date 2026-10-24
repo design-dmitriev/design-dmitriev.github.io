@@ -54,6 +54,20 @@
   addEventListener('resize',function(){mark(active||'')});
   dock.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;e.preventDefault();var t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:reduce?'auto':'smooth'});if(navigator.vibrate)try{navigator.vibrate(8)}catch(x){}});
 
+  /* док как скраббер: долгое касание, ведём пальцем, страница прыгает по блокам */
+  var tip=document.createElement('div');tip.className='dock-tip';tip.setAttribute('aria-hidden','true');document.body.appendChild(tip);
+  var scrub=false,tm=0,tx=0,ty=0,cur=-1,quiet=0;
+  function pick(x){var r=dock.getBoundingClientRect(),f=Math.min(.999,Math.max(0,(x-r.left)/r.width));return Math.floor(f*secs.length)}
+  function go(i){if(i===cur)return;cur=i;var el=document.getElementById(secs[i][0]);if(!el)return;window.scrollTo({top:el.getBoundingClientRect().top+scrollY-12,behavior:'instant'});tip.textContent=secs[i][1];mark(secs[i][0]);if(navigator.vibrate)try{navigator.vibrate(6)}catch(x){}}
+  function stop(){clearTimeout(tm);if(scrub){quiet=Date.now()+450}scrub=false;cur=-1;dock.classList.remove('scrub');tip.classList.remove('on')}
+  dock.addEventListener('touchstart',function(e){var t=e.touches[0];tx=t.clientX;ty=t.clientY;clearTimeout(tm);tm=setTimeout(function(){scrub=true;dock.classList.add('scrub');tip.classList.add('on');if(navigator.vibrate)try{navigator.vibrate(14)}catch(x){}go(pick(tx))},260)},{passive:true});
+  dock.addEventListener('touchmove',function(e){var t=e.touches[0];if(!scrub){if(Math.abs(t.clientX-tx)>10||Math.abs(t.clientY-ty)>10)clearTimeout(tm);return}if(e.cancelable)e.preventDefault();go(pick(t.clientX))},{passive:false});
+  dock.addEventListener('touchend',stop);dock.addEventListener('touchcancel',stop);
+  dock.addEventListener('contextmenu',function(e){e.preventDefault()});
+  dock.addEventListener('click',function(e){if(Date.now()<quiet){e.preventDefault();e.stopImmediatePropagation()}},true);
+  function prog(){var h=document.documentElement.scrollHeight-innerHeight;dock.style.setProperty('--p',h>0?Math.min(1,scrollY/h).toFixed(3):0)}
+  addEventListener('scroll',prog,{passive:true});prog();
+
   /* «Что я выстроил»: на телефоне строка целиком открывает панель */
   var built=$('.built');
   if(built&&matchMedia('(max-width:899px)').matches){
