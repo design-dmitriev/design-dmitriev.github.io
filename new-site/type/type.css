@@ -4,7 +4,7 @@
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.55 "Zarya Spec",system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
 a{color:inherit}
-.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(1rem,4vw,3rem)}
+.wrap{width:100%;max-width:var(--maxw,1480px);margin-inline:auto;padding-inline:var(--gutter,1.25rem)}
 .top{display:flex;align-items:center;gap:1.5rem;padding:1.25rem 0}
 .top a{text-decoration:none;font-weight:500}
 .top .sp{margin-left:auto;display:flex;gap:1.25rem}
@@ -14,7 +14,7 @@ h1{font-size:clamp(3rem,13vw,11rem);line-height:.95;letter-spacing:-.04em;paddin
 .lead{max-width:36rem;color:var(--muted);margin:0 0 2.5rem;font-size:1.25rem}
 .facts{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 4rem;padding:0;list-style:none}
 .facts li{border:1px solid var(--line);border-radius:999px;padding:.4rem 1rem;font-size:.9375rem}
-section{padding:clamp(2.5rem,6vw,5rem) 0;border-top:1px solid var(--line)}
+section{padding-block:var(--pad);border-top:1px solid var(--line)}
 h2{font-size:clamp(1.75rem,3.6vw,2.75rem);letter-spacing:-.025em;margin-bottom:2rem}
 .panel{background:var(--soft);border-radius:var(--r);padding:clamp(1.25rem,3vw,2.5rem)}
 .ctl{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;align-items:center;margin-bottom:1.5rem;font-size:.9375rem;color:var(--muted)}
