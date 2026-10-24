@@ -207,3 +207,10 @@ section[id]{scroll-margin-top:1rem}
 .panel.soft .facts div{border-bottom-color:#dcdcdc}
 .facts dd{max-width:40rem}
 .two h2+.sum{margin-top:1rem}
+
+/* метка «Демо» поверх анимации */
+.m-badge{position:absolute;z-index:2;left:.6rem;top:.6rem;display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .65rem;border-radius:999px;background:rgba(10,10,10,.82);color:#fff;font-size:.75rem;line-height:1.2;pointer-events:none;max-width:calc(100% - 1.2rem)}
+.m-badge[hidden]{display:none}
+.m-badge::before{content:"";width:.4rem;height:.4rem;border-radius:50%;background:#3ddc84;flex:none;animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.m-badge::before{animation:none}}

@@ -103,3 +103,47 @@
   .foot a:first-child{margin-left:-.35rem}
   .facts dd a{display:inline-block;padding-block:.5rem;margin-block:-.5rem}
 }
+
+/* «Что я выстроил»: карусель карточек */
+@media (max-width:899px){
+  .panel.soft .built{display:flex;gap:.75rem;overflow-x:auto;scroll-snap-type:x mandatory;border-top:0;margin-inline:calc(-1 * clamp(1.25rem,4vw,3rem));padding:0 clamp(1.25rem,4vw,3rem) .5rem;scroll-padding-inline:clamp(1.25rem,4vw,3rem);scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+  .built::-webkit-scrollbar{display:none}
+  .panel.soft .built>li{flex:0 0 88%;scroll-snap-align:start;display:flex;flex-direction:column;gap:.6rem;padding:1rem;border:1px solid #dcdcdc;border-radius:1.5rem;background:#fff;cursor:default}
+  .built>li[data-stat],.built>li[data-peek]{padding-right:1rem}
+  .built>li[data-stat]::after,.built>li[data-peek]::after{display:none}
+  .built>li .r-title{display:grid;gap:.5rem}
+  .built>li .r-title h3{font-size:1.25rem}
+  .built>li p{font-size:.9375rem;line-height:1.5}
+  .built>li>p:not(.m-cap){display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .built>li .more{margin-top:auto;align-self:flex-start}
+  .m-vis{display:grid;gap:.6rem;justify-items:center}
+  .m-vis .m-demo{position:relative;width:min(100%,calc(52svh * .6));max-width:none;margin:0}
+  .m-vis .m-demo iframe{position:absolute;inset:0;pointer-events:none}
+  .m-vis img{width:min(100%,calc(52svh * .6));aspect-ratio:3/5;object-fit:cover;border-radius:1.25rem;background:#ececec}
+  .m-vis .m-stat{width:100%;min-height:9rem}
+  .m-cap{font-size:.8125rem;line-height:1.4;color:var(--muted);text-align:center;max-width:22rem}
+  .bdots{display:flex;align-items:center;gap:.4rem;padding:.9rem .25rem 0}
+  .bdots button{position:relative;width:.5rem;height:.5rem;padding:0;border:0;border-radius:99px;background:#c9c9c9;transition:width .3s,background .3s}
+  .bdots button::after{content:"";position:absolute;inset:-.9rem -.35rem}
+  .bdots button.on{width:1.5rem;background:#0a0a0a}
+  .bdots .cnt{margin-left:auto;font-size:.875rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* результаты: аккуратные столбики */
+  .panel.dark .case{flex-basis:86%;display:flex;flex-direction:column;gap:1rem;padding:1.25rem}
+  .case .who{display:grid;justify-items:start;gap:.35rem}
+  .case .who span{margin-bottom:0}
+  .case .bars{gap:1rem}
+  .case .bar{grid-template-columns:1fr;gap:.35rem}
+  .case .bar>span:first-child{font-size:.8125rem;color:rgba(255,255,255,.65)}
+  .case .bar .v{flex-wrap:wrap;gap:.35rem .6rem;font-size:1.25rem;line-height:1.2}
+  .case .bar .v i{order:2;flex:0 0 var(--w);margin-top:.15rem}
+  .case .bar .v::after{content:"";order:1;flex:0 0 100%;height:0}
+  .case .bar em{font-size:.875rem;color:#3ddc84}
+  .case .bars .cap{margin-top:0}
+  .case>div:last-child{margin-top:auto}
+}
+@media (max-width:899px){
+  .built>li .tags{display:none}
+  .built>li>p:not(.m-cap){-webkit-line-clamp:2}
+  .m-vis .m-demo,.m-vis img{width:min(100%,calc(44svh * .6))}
+}

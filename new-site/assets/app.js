@@ -85,7 +85,7 @@
   if (!panel || !matchMedia('(min-width:1100px) and (hover:hover)').matches) return;
   var peek = document.createElement('div');
   peek.className = 'peek'; peek.setAttribute('aria-hidden', 'true');
-  peek.innerHTML = '<div class="ph">Превью появится позже</div><img alt="" hidden>';
+  peek.innerHTML = '<div class="ph">Превью появится позже</div><img alt="" hidden><span class="m-badge" hidden></span>';
   panel.appendChild(peek);
   var img = peek.querySelector('img'), ph = peek.querySelector('.ph');
   var rows = [].slice.call(panel.querySelectorAll('.built > li'));
@@ -94,6 +94,7 @@
   function fit() {}
   function show(li) {
     var demo = li.getAttribute('data-demo');
+    var pb = peek.querySelector('.m-badge'); pb.textContent = li.getAttribute('data-badge') || ''; pb.hidden = !(demo && pb.textContent);
     peek.classList.toggle('demo', !!demo); if (demo) peek.style.aspectRatio = li.getAttribute('data-ratio') || '0.6'; else peek.style.aspectRatio = '';
     if (demo) {
       if (frame && frame.getAttribute('src') !== demo) frame.src = demo;
