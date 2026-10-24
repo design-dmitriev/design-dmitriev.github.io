@@ -1,0 +1,14 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><link rel="stylesheet" href="../assets/tokens.css"><link rel="stylesheet" href="../assets/style.css?v=8"><link rel="stylesheet" href="../assets/mobile.css?v=25"><link rel="stylesheet" href="../assets/detail.css?v=10"><link rel="stylesheet" href="proto.css?v=1"><title>Вариант B: страница портфолио</title><style>body{background:#fff;color:#0a0a0a}</style></head><body>
+<header class="pm-top"><div class="wrap"><a href="b.html">← На сайт</a><a href="../index.html#contact">Связаться</a></div></header>
+<main><div class="wrap">
+<p class="pm-note" style="margin-top:1rem">Макет варианта B. Картинки-заглушки, категории условные</p>
+<h1 class="pm-h1">Портфолио</h1>
+<p class="sum" style="max-width:36rem;color:var(--muted)">Заглавные слайды карточек, упаковка и баннеры. Нажмите на работу, чтобы открыть крупно.</p>
+<div class="pm-filters"><div class="pm-chips" id="chips" role="group" aria-label="Категории"></div></div>
+<p class="pm-count" id="cnt" style="margin-top:0"></p>
+<ul class="pm-grid" id="grid"></ul>
+<div style="height:clamp(3rem,8vw,6rem)"></div>
+</div></main>
+<script src="proto.js?v=1"></script>
+<script>(function(){var g=document.getElementById('grid'),c=document.getElementById('chips'),cnt=document.getElementById('cnt');PM.render(g);PM.chips(c,g,cnt);cnt.textContent=g.children.length+' из '+g.children.length;PM.lightbox(g)})();</script>
+</body></html>
