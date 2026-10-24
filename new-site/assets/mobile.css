@@ -180,3 +180,4 @@
   html,body{overflow-x:clip;max-width:100%;overscroll-behavior-x:none}
   .panel.dark .cases,.zgs,.works{overscroll-behavior-x:contain}
 }
+@media(min-width:900px){.case .who span{display:block;text-align:left}}
