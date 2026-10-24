@@ -9,8 +9,14 @@
   lb.innerHTML='<figure><img alt=""></figure><button class="x" type="button" aria-label="Закрыть">×</button><button class="pv" type="button" aria-label="Назад">‹</button><button class="nx" type="button" aria-label="Вперёд">›</button><span class="ct"></span>';
   document.body.appendChild(lb);
   var li=$('img',lb),ct=$('.ct',lb);
-  function show(i){cur=(i+ALT.length)%ALT.length;li.src='assets/zag/'+(cur+1)+'.webp';li.alt=ALT[cur];ct.textContent=(cur+1)+' / '+ALT.length}
-  function openLb(i){show(i);lb.classList.add('on');document.body.classList.add('lock')}
+  var ready={},pend={};
+  function url(i){return 'assets/zag/'+(i+1)+'.webp'}
+  function pre(i){i=(i+ALT.length)%ALT.length;if(ready[i]||pend[i])return pend[i]||Promise.resolve();var im=new Image();im.decoding='async';im.src=url(i);pend[i]=(im.decode?im.decode():new Promise(function(r){im.onload=r;im.onerror=r})).catch(function(){}).then(function(){ready[i]=true;delete pend[i]});return pend[i]}
+  function show(i){cur=(i+ALT.length)%ALT.length;var t=cur;li.alt=ALT[cur];ct.textContent=(cur+1)+' / '+ALT.length;
+    if(ready[t])li.src=url(t);else pre(t).then(function(){if(cur===t)li.src=url(t)});
+    pre(cur+1);pre(cur-1)}
+  function preAll(){for(var k=0;k<ALT.length;k++)pre(k)}
+  function openLb(i){preAll();show(i);lb.classList.add('on');document.body.classList.add('lock')}
   function closeLb(){lb.classList.remove('on');if(!sheetOn)document.body.classList.remove('lock')}
   $$('.zg').forEach(function(b){b.onclick=function(){openLb(+b.dataset.i)}});
   $('.x',lb).onclick=closeLb;$('.pv',lb).onclick=function(){show(cur-1)};$('.nx',lb).onclick=function(){show(cur+1)};
