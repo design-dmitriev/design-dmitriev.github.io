@@ -54,23 +54,10 @@
   addEventListener('resize',function(){mark(active||'')});
   dock.addEventListener('click',function(e){var a=e.target.closest('a');if(!a)return;e.preventDefault();var t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:reduce?'auto':'smooth'});if(navigator.vibrate)try{navigator.vibrate(8)}catch(x){}});
 
-  /* «Что я выстроил»: на телефоне карусель карточек с превью */
+  /* «Что я выстроил»: на телефоне строка целиком открывает панель */
   var built=$('.built');
   if(built&&matchMedia('(max-width:899px)').matches){
-    var cards=$$('li',built);
-    cards.forEach(function(li){
-      var src=li.getAttribute('data-peek'),stat=li.getAttribute('data-stat'),demo=li.getAttribute('data-demo'),cap=li.getAttribute('data-cap')||li.getAttribute('data-stat-cap')||'',badge=li.getAttribute('data-badge');
-      var v=document.createElement('div');v.className='m-vis';
-      if(demo)v.innerHTML='<div class="m-demo" style="aspect-ratio:'+(li.getAttribute('data-ratio')||'.6')+'"><iframe data-src="'+demo+'" title="Демо" tabindex="-1" inert aria-hidden="true"></iframe>'+(badge?'<span class="m-badge">'+badge+'</span>':'')+'</div>';
-      else if(src)v.innerHTML='<img src="'+src+'" alt="" loading="lazy">';
-      else if(stat)v.innerHTML='<div class="m-stat"><b>'+stat+'</b></div>';
-      if(cap&&(demo||src))v.insertAdjacentHTML('beforeend','<p class="m-cap">'+cap+'</p>');
-      else if(cap&&stat)v.firstChild.insertAdjacentHTML('beforeend','<span>'+cap+'</span>');
-      li.insertBefore(v,li.firstChild);
-    });
-    var fio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var f=$('iframe[data-src]',e.target);if(f){f.src=f.getAttribute('data-src');f.removeAttribute('data-src')}fio.unobserve(e.target)}})},{rootMargin:'300px 0px'});
-    cards.forEach(function(li){fio.observe(li)});
-    cards.forEach(function(li){li.addEventListener('click',function(e){if(e.target.closest('a,button'))return;var b=$('button.more',li);if(b)b.click()})});
+    $$('li',built).forEach(function(li){li.addEventListener('click',function(e){if(e.target.closest('a,button'))return;var b=$('button.more',li);if(b)b.click()})});
   }else if(built&&matchMedia('(max-width:1099px),(hover:none)').matches){
     $$('.built>li').forEach(function(li){
       var src=li.getAttribute('data-peek'),stat=li.getAttribute('data-stat'),demo=li.getAttribute('data-demo');if(!src&&!stat&&!demo)return;

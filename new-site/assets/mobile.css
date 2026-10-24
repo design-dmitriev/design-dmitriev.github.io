@@ -104,29 +104,7 @@
   .facts dd a{display:inline-block;padding-block:.5rem;margin-block:-.5rem}
 }
 
-/* «Что я выстроил»: карусель карточек */
 @media (max-width:899px){
-  .panel.soft .built{display:flex;gap:.75rem;overflow-x:auto;scroll-snap-type:x mandatory;border-top:0;margin-inline:calc(-1 * clamp(1.25rem,4vw,3rem));padding:0 clamp(1.25rem,4vw,3rem) .5rem;scroll-padding-inline:clamp(1.25rem,4vw,3rem);scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
-  .built::-webkit-scrollbar{display:none}
-  .panel.soft .built>li{flex:0 0 88%;scroll-snap-align:start;display:flex;flex-direction:column;gap:.6rem;padding:1rem;border:1px solid #dcdcdc;border-radius:1.5rem;background:#fff;cursor:default}
-  .built>li[data-stat],.built>li[data-peek]{padding-right:1rem}
-  .built>li[data-stat]::after,.built>li[data-peek]::after{display:none}
-  .built>li .r-title{display:grid;gap:.5rem}
-  .built>li .r-title h3{font-size:1.25rem}
-  .built>li p{font-size:.9375rem;line-height:1.5}
-  .built>li>p:not(.m-cap){display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-  .built>li .more{margin-top:auto;align-self:flex-start}
-  .m-vis{display:grid;gap:.6rem;justify-items:center}
-  .m-vis .m-demo{position:relative;width:min(100%,calc(52svh * .6));max-width:none;margin:0}
-  .m-vis .m-demo iframe{position:absolute;inset:0;pointer-events:none}
-  .m-vis img{width:min(100%,calc(52svh * .6));aspect-ratio:3/5;object-fit:cover;border-radius:1.25rem;background:#ececec}
-  .m-vis .m-stat{width:100%;min-height:9rem}
-  .m-cap{font-size:.8125rem;line-height:1.4;color:var(--muted);text-align:center;max-width:22rem}
-  .bdots{display:flex;align-items:center;gap:.4rem;padding:.9rem .25rem 0}
-  .bdots button{position:relative;width:.5rem;height:.5rem;padding:0;border:0;border-radius:99px;background:#c9c9c9;transition:width .3s,background .3s}
-  .bdots button::after{content:"";position:absolute;inset:-.9rem -.35rem}
-  .bdots button.on{width:1.5rem;background:#0a0a0a}
-  .bdots .cnt{margin-left:auto;font-size:.875rem;color:var(--muted);font-variant-numeric:tabular-nums}
 
   /* результаты: аккуратные столбики */
   .panel.dark .case{flex-basis:86%;display:flex;flex-direction:column;gap:1rem;padding:1.25rem}
@@ -142,34 +120,7 @@
   .case .bars .cap{margin-top:0}
   .case>div:last-child{margin-top:auto}
 }
-@media (max-width:899px){
-  .built>li .tags{display:none}
-  .built>li>p:not(.m-cap){-webkit-line-clamp:2}
-  .m-vis .m-demo,.m-vis img{width:min(100%,calc(44svh * .6))}
-}
 
-/* закреплённый раздел: вертикальная прокрутка двигает карточки вбок */
-@media (max-width:899px){
-  .pinned #built{padding-block:0}
-  .pinned #built>.wrap{position:sticky;top:0;height:100svh;display:flex;flex-direction:column;justify-content:center;gap:1rem;overflow:hidden;padding-bottom:5.5rem}
-  .pinned #built .sec-head{margin-bottom:0;gap:.4rem}
-  .pinned #built h2{font-size:1.75rem}
-  .pinned #built .sum{font-size:.9375rem}
-  .pinned #built .panel.soft{padding:0;background:none;overflow:hidden;border-radius:0}
-  .pinned .panel.soft .built{overflow:visible;margin:0;padding:0;scroll-snap-type:none;gap:.75rem;will-change:transform}
-  .pinned .panel.soft .built>li{flex:0 0 100%;min-width:0}
-  .pinned .m-vis .m-demo,.pinned .m-vis img{width:min(100%,calc((100svh - 24rem) * .6),15rem)}
-  .pinned .bdots{padding:.8rem .25rem 0}
-}
-@media (max-width:899px){
-  .pinned #built .sum{display:none}
-  .pinned #built>.wrap{padding-top:1rem;padding-bottom:4.75rem;gap:.75rem}
-  .pinned .built>li[data-demo]>p:not(.m-cap),.pinned .built>li[data-peek]>p:not(.m-cap){display:none}
-  .pinned .m-vis .m-demo,.pinned .m-vis img{width:min(100%,calc((100svh - 25rem) * .6),15rem)}
-  .pinned .built>li .more{margin-top:.25rem}
-  .pinned .built>li[data-stat]:not([data-demo]):not([data-peek]) .m-stat{min-height:12rem}
-}
-@media (max-width:899px){.m-vis .m-badge{font-size:.6875rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:.2rem .5rem;left:.4rem;top:.4rem}}
 @media (max-width:899px){
   #contact .panel.dark{padding:1.75rem 1.5rem 1.25rem;gap:1.5rem}
   #contact .panel.dark .sum{padding-inline:0}
@@ -178,23 +129,18 @@
   #contact .facts dd{word-break:break-word}
 }
 .sec-head .sum a{font:inherit;line-height:inherit;display:inline}
-@media (max-width:899px) and (max-height:559px){
-  html.pinned #built{height:auto!important}
-  .pinned #built>.wrap{position:static;height:auto;overflow:visible;padding-block:0}
-  .pinned #built .sum{display:block}
-  .pinned .panel.soft .built{transform:none!important;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-1.25rem;padding-inline:1.25rem}
-  .pinned .panel.soft .built>li{flex-basis:72%}
-  .pinned .bdots{display:none}
-  .pinned .m-vis .m-demo,.pinned .m-vis img{width:min(100%,10rem)}
-}
 @media (max-width:899px){.works .wfont{flex:0 0 100%}.works:has(.wfont:only-child){display:block;overflow:visible;margin-inline:0;padding-inline:0}}
 
-/* «Что я выстроил»: вертикальный список карточек вместо слайдера */
+
+/* «Что я выстроил»: компактные строки, нажатие открывает панель */
 @media (max-width:899px){
-  .panel.soft .built{display:grid;gap:1rem;overflow:visible;transform:none;margin:0;padding:0;scroll-snap-type:none}
-  .panel.soft .built>li{flex:none;width:auto;min-width:0}
-  .built>li>p:not(.m-cap){-webkit-line-clamp:3}
-  .m-vis .m-demo,.m-vis img{width:min(100%,15rem)}
-  .built>li .more{margin-top:.25rem}
-  .bdots{display:none}
+  .panel.soft{padding:.25rem 1.25rem}
+  .built>li,.built>li[data-stat],.built>li[data-peek],.built>li[data-demo]{padding:1.25rem 0;cursor:pointer;gap:.55rem;-webkit-tap-highlight-color:transparent}
+  .built>li::after,.built>li[data-stat]::after,.built>li[data-peek]::after,.built>li[data-demo]::after{display:none}
+  .built>li:active{background:rgba(0,0,0,.03)}
+  .built>li .r-title{display:grid;gap:.55rem}
+  .built>li .r-title h3{font-size:1.1875rem}
+  .built>li>p{font-size:.9375rem;line-height:1.5}
+  .built>li .more{margin-top:.25rem;align-self:flex-start}
 }
+@media (max-width:899px){.panel.soft .built{border-top:0}.panel.soft{padding-top:.5rem}}
