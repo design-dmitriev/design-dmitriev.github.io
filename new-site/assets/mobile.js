@@ -86,11 +86,11 @@
     if(!zone||!row||!matchMedia('(max-width:899px)').matches)return;
     var sx=0,sy=0,sl=0,on=false,lock=null,lt=0,lx=0,vx=0,raf=0;
     zone.style.touchAction='pan-y';
-    zone.addEventListener('touchstart',function(e){if(raf){cancelAnimationFrame(raf);raf=0;row.style.scrollSnapType='none'}var t=e.touches[0];sx=lx=t.clientX;sy=t.clientY;sl=row.scrollLeft;on=true;lock=null;vx=0;lt=e.timeStamp},{passive:true});
-    zone.addEventListener('touchmove',function(e){if(!on)return;var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(lock===null&&(Math.abs(dx)>16||Math.abs(dy)>16))lock=Math.abs(dx)>Math.abs(dy)*2.5;if(lock){row.style.scrollSnapType='none';row.scrollLeft=sl-dx;var dt=e.timeStamp-lt;if(dt>0)vx=(t.clientX-lx)/dt;lt=e.timeStamp;lx=t.clientX}},{passive:true});
+    zone.addEventListener('touchstart',function(e){if(row.contains(e.target))return;if(raf){cancelAnimationFrame(raf);raf=0;row.style.scrollSnapType='none'}var t=e.touches[0];sx=lx=t.clientX;sy=t.clientY;sl=row.scrollLeft;on=true;lock=null;vx=0;lt=e.timeStamp},{passive:true});
+    zone.addEventListener('touchmove',function(e){if(!on)return;var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(lock===null&&(Math.abs(dx)>12||Math.abs(dy)>12))lock=Math.abs(dx)>Math.abs(dy)*1.7;if(lock){row.style.scrollSnapType='none';row.scrollLeft=sl-dx;var dt=e.timeStamp-lt;if(dt>0)vx=(t.clientX-lx)/dt;lt=e.timeStamp;lx=t.clientX}},{passive:true});
     function end(){if(!on)return;on=false;if(!lock)return;var items=$$(item,row),pad=parseFloat(getComputedStyle(row).paddingLeft)||0,x=row.scrollLeft-vx*(soft?260:160),best=items[0],bd=1e9;items.forEach(function(el){var d=Math.abs(el.offsetLeft-row.offsetLeft-pad-x);if(d<bd){bd=d;best=el}});var to=best.offsetLeft-row.offsetLeft-pad;if(!soft||reduce){row.style.scrollSnapType='';row.scrollTo({left:to,behavior:reduce?'auto':'smooth'});return}var from=row.scrollLeft,dist=to-from,dur=Math.min(620,Math.max(320,Math.abs(dist)*1.1+260)),t0=performance.now();row.style.scrollSnapType='none';(function step(now){var k=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-k,4);row.scrollLeft=from+dist*e;if(k<1)raf=requestAnimationFrame(step);else{raf=0;row.style.scrollSnapType=''}})(t0)}
     zone.addEventListener('touchend',end);zone.addEventListener('touchcancel',end);
   }
-  wideSwipe($('#cases'),$('#cases'),'.case',true);
-  wideSwipe($('#zgs'),$('#zgs'),'li');
+  wideSwipe($('.panel.dark'),$('#cases'),'.case',true);
+  wideSwipe($('#zaglavki'),$('#zgs'),'li');
 })();

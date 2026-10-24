@@ -175,3 +175,8 @@
 }
 
 .dock a,.dock-tip,.case .who span,.dots .cnt{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
+
+@media (max-width:899px){
+  html,body{overflow-x:clip;max-width:100%;overscroll-behavior-x:none}
+  .panel.dark .cases,.zgs,.works{overscroll-behavior-x:contain}
+}
