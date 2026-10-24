@@ -144,3 +144,4 @@
   .built>li .more{margin-top:.25rem;align-self:flex-start}
 }
 @media (max-width:899px){.panel.soft .built{border-top:0}.panel.soft{padding-top:.5rem}}
+@media (max-width:899px){.panel.dark .cases{padding-bottom:1.25rem}.panel.dark{padding-top:1.5rem;padding-bottom:1.25rem}}

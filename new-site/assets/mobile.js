@@ -68,4 +68,15 @@
       li.addEventListener('click',tg);li.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();tg(e)}});
     });
   }
+
+  /* результаты: свайп вбок работает по всей тёмной плитке */
+  (function(){
+    var panel=$('.panel.dark'),row=$('#cases');if(!panel||!row||!matchMedia('(max-width:899px)').matches)return;
+    var sx=0,sy=0,sl=0,on=false,lock=null;
+    panel.style.touchAction='pan-y';
+    panel.addEventListener('touchstart',function(e){if(row.contains(e.target))return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;sl=row.scrollLeft;on=true;lock=null},{passive:true});
+    panel.addEventListener('touchmove',function(e){if(!on)return;var t=e.touches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(lock===null&&(Math.abs(dx)>8||Math.abs(dy)>8))lock=Math.abs(dx)>Math.abs(dy)*1.2;if(lock){row.style.scrollSnapType='none';row.scrollLeft=sl-dx}},{passive:true});
+    function end(){if(!on)return;on=false;if(!lock)return;var c=$$('.case',row),x=row.scrollLeft,best=c[0],bd=1e9;c.forEach(function(el){var d=Math.abs(el.offsetLeft-row.offsetLeft-parseFloat(getComputedStyle(row).paddingLeft)-x);if(d<bd){bd=d;best=el}});row.style.scrollSnapType='';row.scrollTo({left:best.offsetLeft-row.offsetLeft-parseFloat(getComputedStyle(row).paddingLeft),behavior:reduce?'auto':'smooth'})}
+    panel.addEventListener('touchend',end);panel.addEventListener('touchcancel',end);
+  })();
 })();
