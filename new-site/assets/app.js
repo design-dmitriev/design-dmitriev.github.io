@@ -25,19 +25,19 @@
       var list = d.cases.filter(function (c) { return c.marketplace === mp; });
       if (!list.length) return;
       if (mp) html += '<li class="group"><h3>' + mp + '</h3></li>';
-      var max = Math.max.apply(null, list.map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); }));
+      var max = Math.max.apply(null, list.filter(function (c) { return idx(c); }).map(function (c) { var v = idx(c); return Math.max(v[0], v[1]); })) || 1;
       html += list.map(function (c) {
-        var v = idx(c), growth = c.orders ? Math.round((v[1] / v[0] - 1) * 100) : v[1] - v[0];
-        var cap = c.orders ? 'заказов в день' : c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
+        var v = idx(c) || [0, 0], growth = c.orders ? Math.round((v[1] / v[0] - 1) * 100) : v[1] - v[0];
+        var cap = c.conv != null ? 'прирост конверсии по A/B-тесту' : c.orders ? 'заказов в день' : c.ordersIndex ? 'заказы в день, индекс' : 'конверсия, индекс';
         var metrics = c.ctr ? '<dl class="m"><div><dt>CTR до</dt><dd>' + pct(c.ctr[0]) + '</dd></div><div><dt>CTR после</dt><dd>' + pct(c.ctr[1]) + '</dd></div></dl>' : '';
         if (c.note) metrics += '<p class="note">' + esc(c.note) + '</p>';
         return '<li class="case">' +
           '<div class="who"><span>Артикул' + (mp ? ' ' + mp : '') + '</span>' + (mp ? '<a href="' + esc(LINKS[mp](c.article)) + '" target="_blank" rel="noopener"><b>' + esc(c.article) + '</b></a>' : '<b>' + esc(c.article) + '</b>') + '</div>' +
-          '<div class="bars" role="img" aria-label="' + cap + ': до ' + v[0] + ', после ' + v[1] + '">' +
+          (c.conv != null ? '<div class="bars"><div class="bar after conv"><span>конверсия</span><span class="v"><b>+' + c.conv + '%</b></span></div><p class="cap">' + cap + '</p></div>' : '<div class="bars" role="img" aria-label="' + cap + ': до ' + v[0] + ', после ' + v[1] + '">' +
             '<div class="bar before"><span>до</span><span class="v"><i style="--w:' + (v[0] / max * 100).toFixed(1) + '%"></i>' + v[0] + '</span></div>' +
             '<div class="bar after"><span>после</span><span class="v"><i style="--w:' + (v[1] / max * 100).toFixed(1) + '%"></i><b>' + v[1] + '</b><em>' + (growth >= 0 ? '+' : '') + growth + '%</em></span></div>' +
             '<p class="cap">' + cap + '</p>' +
-          '</div><div>' + metrics + '</div></li>';
+          '</div>') + '<div>' + metrics + '</div></li>';
       }).join('');
     });
     $('#cases').innerHTML = html;

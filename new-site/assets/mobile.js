@@ -13,9 +13,9 @@
   var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;cio.unobserve(e.target);e.target.classList.add('in');count(e.target)})},{threshold:.55});
   function count(c){
     if(reduce)return;
-    var b=$('.bar.after .v b',c),em=$('.bar.after .v em',c);if(!b)return;
-    var to=+b.textContent,g=parseInt(em.textContent,10),t0=performance.now();
-    (function f(t){var k=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-k,3);b.textContent=Math.round(100+(to-100)*e);em.textContent=(g>=0?'+':'')+Math.round(g*e)+'%';if(k<1)requestAnimationFrame(f);else{b.textContent=to;em.textContent=(g>=0?'+':'')+g+'%'}})(t0);
+    var b=$('.bar.after .v b',c),em=$('.bar.after .v em',c);if(!b||!em)return;
+    var bf=parseFloat(($('.bar.before .v',c)||{}).textContent)||100,to=+b.textContent,g=parseInt(em.textContent,10),t0=performance.now();
+    (function f(t){var k=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-k,3);b.textContent=Math.round(bf+(to-bf)*e);em.textContent=(g>=0?'+':'')+Math.round(g*e)+'%';if(k<1)requestAnimationFrame(f);else{b.textContent=to;em.textContent=(g>=0?'+':'')+g+'%'}})(t0);
   }
   function initCases(){
     var box=$('#cases'),cs=$$('.case',box);if(!cs.length||box._init)return;box._init=true;

@@ -228,3 +228,4 @@ section[id]{scroll-margin-top:1rem}
 @media (hover:hover){.wcard:hover .wc-go i{transform:translateX(5px)}}
 
 .hkeys{margin-top:1.5rem;max-width:44rem;font-size:.8125rem;line-height:1.7;color:rgba(255,255,255,.6);text-wrap:balance}
+.bar.conv .v b{font-size:clamp(1.75rem,6vw,2.5rem);letter-spacing:-.02em;line-height:1}
