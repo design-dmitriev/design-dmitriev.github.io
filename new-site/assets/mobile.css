@@ -188,3 +188,13 @@
   .pinned .m-vis .m-demo,.pinned .m-vis img{width:min(100%,10rem)}
 }
 @media (max-width:899px){.works .wfont{flex:0 0 100%}.works:has(.wfont:only-child){display:block;overflow:visible;margin-inline:0;padding-inline:0}}
+
+/* «Что я выстроил»: вертикальный список карточек вместо слайдера */
+@media (max-width:899px){
+  .panel.soft .built{display:grid;gap:1rem;overflow:visible;transform:none;margin:0;padding:0;scroll-snap-type:none}
+  .panel.soft .built>li{flex:none;width:auto;min-width:0}
+  .built>li>p:not(.m-cap){-webkit-line-clamp:3}
+  .m-vis .m-demo,.m-vis img{width:min(100%,15rem)}
+  .built>li .more{margin-top:.25rem}
+  .bdots{display:none}
+}
