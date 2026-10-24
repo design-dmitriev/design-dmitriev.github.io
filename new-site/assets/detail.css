@@ -111,3 +111,9 @@ body.lock{overflow:hidden}
   .lb .pv{left:1rem}.lb .nx{right:1rem}
   .lb .ct{bottom:max(1.35rem,calc(env(safe-area-inset-bottom) + .6rem))}
 }
+
+@media (max-width:899px){
+  .sheet{height:92vh;height:92dvh}
+  .sh-body{padding-bottom:calc(1.5rem + env(safe-area-inset-bottom))}
+  .fy-box{flex:none}
+}

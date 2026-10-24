@@ -43,10 +43,10 @@
   }
   function fitFy(){
     var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-200;
-    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,240):Math.min(W,H*r,336);if(w<180)w=180;box.style.width=w+'px';box.style.height=w/r+'px';
+    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(168,Math.min(260,((window.visualViewport?visualViewport.height:innerHeight)-364)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';
     if(fw){fr.style.transform='scale('+(w/fw)+')'}
   }
-  window.addEventListener('resize',function(){if(sheetOn)fitFy()});
+  window.addEventListener('resize',function(){if(sheetOn)fitFy()});window.addEventListener('orientationchange',function(){setTimeout(function(){if(sheetOn)fitFy()},300)});if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(sheetOn)fitFy()});
   function renderSkills(d){
     var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body fy-layout"><div class="fy-info">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
