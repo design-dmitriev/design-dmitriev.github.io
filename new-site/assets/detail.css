@@ -118,3 +118,15 @@ body.lock{overflow:hidden}
 }
 
 .fy-stage>.m-badge{position:static;display:flex;margin:0 auto .7rem;width:max-content;max-width:100%;background:#0a0a0a}
+
+.fy-steps{display:flex;gap:6px;flex:0 0 auto;margin:0 auto}
+.fy-steps[hidden]{display:none}
+.fy-steps .fs{flex:1;height:30px;min-width:0;padding:0;border:0;background:none;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent}
+.fy-steps .fs::before,.fy-steps .fs i{content:"";position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;border-radius:4px}
+.fy-steps .fs::before{background:rgba(10,10,10,.14)}
+.fy-steps .fs i{background:#0a0a0a;transform:scaleX(0);transform-origin:left}
+.fy-steps .fs.done i{transform:none}
+.fy-steps .fs.cur i{animation:fsbar var(--d,3s) linear forwards}
+.fy-steps .fs:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px;border-radius:6px}
+@keyframes fsbar{to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.fy-steps .fs.cur i{animation:none;transform:none}}

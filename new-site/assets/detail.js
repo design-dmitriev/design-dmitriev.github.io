@@ -47,9 +47,16 @@
     function go(){var s=STEPS[i%STEPS.length],b=s[1];bx.style.left=b.l+'%';bx.style.top=b.t+'%';bx.style.width=b.w+'%';bx.style.height=b.h+'%';cap.textContent=s[0];$$('i',pg).forEach(function(x,k){x.classList.toggle('on',k===i%STEPS.length)});i++}
     go();if(!reduce)timer=setInterval(go,2400);
   }
+  /* шаги демо: полоски живут в интерфейсе, а не внутри видео */
+  var fsN=0;
+  function fsEl(){return $('.fy-steps',sh)}
+  function fsBuild(n){var el=fsEl();if(!el)return;fsN=n;el.innerHTML='';for(var k=0;k<n;k++){var b=document.createElement('button');b.type='button';b.className='fs';b.setAttribute('aria-label','Шаг '+(k+1)+' из '+n);b.innerHTML='<i></i>';b.dataset.k=k;el.appendChild(b)}el.hidden=false}
+  function fsSet(i,ms){var el=fsEl();if(!el)return;$$('.fs',el).forEach(function(b,k){b.classList.remove('cur','done');if(k<i)b.classList.add('done');if(k===i){b.style.setProperty('--d',(ms||3000)+'ms');void b.offsetWidth;b.classList.add('cur')}})}
+  window.addEventListener('message',function(e){var fr=$('.fy-box iframe',sh),m=e.data;if(!fr||e.source!==fr.contentWindow||!m||!m.fy)return;if(m.fy==='steps')fsBuild(m.n);else if(m.fy==='step'){if(!fsEl()||!fsEl().children.length)fsBuild(m.n||fsN||4);fsSet(m.i,m.d)}});
+  document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.fy-steps .fs');if(!b)return;var fr=$('.fy-box iframe',sh);if(fr&&fr.contentWindow){var k=+b.dataset.k;fsSet(k,3000);try{fr.contentWindow.postMessage({fy:'go',i:k},'*')}catch(x){}}});
   function fitFy(){
-    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-200;
-    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(168,Math.min(260,((window.visualViewport?visualViewport.height:innerHeight)-396)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';
+    var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-232;
+    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(168,Math.min(260,((window.visualViewport?visualViewport.height:innerHeight)-428)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';var fs=$('.fy-steps',st);if(fs)fs.style.width=w+'px';
     if(fw){fr.style.transform='scale('+(w/fw)+')'}
   }
   window.addEventListener('resize',function(){if(sheetOn)fitFy()});window.addEventListener('orientationchange',function(){setTimeout(function(){if(sheetOn)fitFy()},300)});if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(sheetOn)fitFy()});
@@ -59,7 +66,7 @@
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
     var fv=d.frame.w?(innerWidth<900&&d.frame.mw?{w:d.frame.mw,h:d.frame.mh}:{w:d.frame.w,h:d.frame.h}):null,fr=fv?fv.w/fv.h:d.frame.ratio;
-    h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'<div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
+    h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'<div class="fy-box"><iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe></div><div class="fy-steps" role="group" aria-label="Шаги демо" hidden></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
     if(d.actions){h+='<div class="fy-act">'+d.actions.map(function(a,i){return '<a class="sh-link'+(i?' alt':'')+'" href="'+a.href+'" target="_blank" rel="noopener">'+esc(a.label)+' ↗</a>'}).join('')+'</div>'}
     else if(d.download||d.files){h+='<div class="fy-act">';if(d.download)h+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)h+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>';h+='</div>'}
     if(d.install)h+='<small>'+esc(d.install)+'</small>';

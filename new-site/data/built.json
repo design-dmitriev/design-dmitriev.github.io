@@ -77,7 +77,7 @@
   "cap": "Так работает плагин: вход, папка, экспорт, исходники",
   "install": "Установка: распакуйте архив, в Figma выберите Plugins → Development → Import plugin from manifest… и укажите manifest.json.",
   "frame": {
-   "src": "folderify/ui.html?demo=1&v=3",
+   "src": "folderify/ui.html?demo=1&v=4",
    "ratio": 0.6,
    "badge": "Демо: плагин Folderify"
   }
@@ -110,7 +110,7 @@
   "lead": "По запросу заказчика собрал систему заглавок для карточек товаров в стилистике Apple. Общая логика для трёх маркетплейсов, картинки и ракурсы свои.",
   "layout": "skills",
   "frame": {
-   "src": "kit/demo.html?v=4",
+   "src": "kit/demo.html?v=5",
    "ratio": 0.6,
    "badge": "Демо: сборка заглавки"
   },
@@ -180,7 +180,7 @@
   "lead": "Мой инструмент: вводите размер товара и сразу получаете развёртку для типографии и 3D-примерку макета.",
   "layout": "skills",
   "frame": {
-   "src": "https://design-dmitriev.github.io/box-builder/index.html?demo=1&v=4",
+   "src": "https://design-dmitriev.github.io/box-builder/index.html?demo=1&v=5",
    "ratio": 0.6,
    "w": 420,
    "h": 700,

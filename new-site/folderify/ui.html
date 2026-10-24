@@ -117,7 +117,7 @@
   .s2 .fl div:last-child{border:0}
   .s2.on .fl div{animation:fadein2 .4s forwards;animation-delay:calc(var(--i)*.25s + 2.4s)}
   .s2 .fl div::before{content:"";width:14px;height:11px;border:1.5px solid var(--ink);border-radius:2px;opacity:.7}
-  html.demo .wl-bars i.cur::after{animation-duration:var(--d,3s)}
+  html.demo .wl-bars{display:none}
   html.demo .s2.on .typ{animation:typ 1s steps(26) .2s forwards}
   html.demo .s2.on .fl div{animation-delay:calc(var(--i)*.15s + 1.3s)}
   html.demo .s1.on .dot{animation-duration:3s}html.demo .s1.on .t1{animation-duration:3s}html.demo .s1.on .t2{animation-duration:3s}html.demo .s1.on .tok{animation-duration:3s}
@@ -711,6 +711,7 @@
         $('wlNext').textContent = i === scenes.length - 1 && !/[?&]demo/.test(location.search) ? 'Начать' : 'Дальше';
         const D = demo ? [3200, 3000, 3400, 3000][i] : 5000; wl.style.setProperty('--d', D / 1000 + 's');
         timer = setTimeout(() => (i < scenes.length - 1 ? go(i + 1) : close()), D);
+        if (demo) parent.postMessage({ fy: 'step', i, n: scenes.length, d: D }, '*');
       }
       function open() { wl.classList.add('on'); go(0); }
       function close() {
@@ -723,6 +724,8 @@
       wl.addEventListener('pointerdown', () => { wl.classList.add('paused'); clearTimeout(timer); });
       wl.addEventListener('pointerup', () => { wl.classList.remove('paused'); if (wl.classList.contains('on')) go(cur); });
       window.__folderifyWelcome = () => { if (!storage.welcomeSeen) open(); };
+      if (demo) addEventListener('message', e => { const m = e.data; if (m && m.fy === 'go' && m.i >= 0 && m.i < scenes.length) go(m.i); });
+      if (demo) { parent.postMessage({ fy: 'steps', n: scenes.length }, '*'); }
       if (demo) { wl.querySelector('.wl-act').style.display = 'none'; wl.style.pointerEvents = 'none'; open(); }
       if (demo) {
         const de = document.documentElement;
