@@ -163,7 +163,7 @@
 @media (prefers-reduced-motion:reduce){.dock-tip{transition:none}}
 
 @media (max-width:899px){.hstats{grid-template-columns:1fr 1fr}.hkeys{font-size:.75rem;margin-top:1.25rem}.hero .actions{flex-wrap:wrap}}
-@media (max-width:899px){.hero .actions{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.hero .actions .btn-fill{grid-column:1/-1}.hero .actions .btn{justify-content:center;text-align:center}}
+@media (max-width:899px){.hero .actions{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}.hero .actions .btn-fill,.hero .actions .btn-line:last-child{grid-column:1/-1}.hero .actions .btn{justify-content:center;text-align:center}}
 
 @media (max-width:899px){
   .dots button{position:relative}
