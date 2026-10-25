@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0b0b0c">
 <title>Портфолио — Алексей Дмитриев</title>
 <link rel="preload" href="../../assets/fonts/zarya-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../card.css?v=17">
+<link rel="stylesheet" href="../card.css?v=18">
 </head>
 <body data-n="2">
 <main class="stage" id="stage">
@@ -15,11 +15,11 @@
   <div class="col">
     <div class="ticks" id="ticks" aria-hidden="true"></div>
     <figure id="fig"><div class="amb" id="ambA"></div><div class="amb" id="ambB"></div><img id="img" alt="" width="900" height="1200" draggable="false"><span class="hint" id="hint">Листайте →</span></figure>
-    <div class="bar"><button id="pv2" type="button" aria-label="Назад">‹</button><span class="ct" id="ct" aria-live="polite">&nbsp;</span><button id="nx2" type="button" aria-label="Вперёд">›</button></div>
+    <div class="bar"><button class="ctl" id="pv2" type="button" aria-label="Назад"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button><span class="ct" id="ct" aria-live="polite">&nbsp;</span><button class="ctl" id="nx2" type="button" aria-label="Вперёд"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5L16 12l-6.5 6.5"/></svg></button></div>
   </div>
-  <button class="x" id="x" type="button" aria-label="Закрыть">×</button>
-  <button class="pv" id="pv" type="button" aria-label="Назад">‹</button>
-  <button class="nx" id="nx" type="button" aria-label="Вперёд">›</button>
+  <button class="ctl x" id="x" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="ctl pv" id="pv" type="button" aria-label="Назад"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
+  <button class="ctl nx" id="nx" type="button" aria-label="Вперёд"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5L16 12l-6.5 6.5"/></svg></button>
 </main>
 <script src="../card.js?v=17"></script>
 </body>
