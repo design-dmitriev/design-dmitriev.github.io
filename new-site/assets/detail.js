@@ -40,11 +40,11 @@
   window.addEventListener('message',function(e){if(e.origin===location.origin&&e.data==='vw-close')closeVw()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&vwOn)closeVw()});
   $$('#zgs .zg').forEach(function(b){b.onclick=function(){openLb(+b.dataset.i)}});
-  fetch('portfolio/cards.json?v=4').then(function(r){return r.json()}).then(function(d){
+  fetch('portfolio/cards.json?v=5').then(function(r){return r.json()}).then(function(d){
     var ul=$('#cgs');if(!ul||!d.cards.length)return;
     function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
     d.cards.forEach(function(c,k){var li=document.createElement('li');
-      li.innerHTML='<button class="zg zc" type="button" data-card="'+(k+1)+'" aria-label="Открыть презентацию: '+esc(c.title)+'"><img src="portfolio/'+c.cover+'" width="450" height="600" alt="" loading="lazy"><span class="bdg">'+w(c.slides.length)+'</span></button><span class="cap">'+esc(c.title)+'</span>';
+      li.innerHTML='<div class="zw"><i class="stk s2"></i><i class="stk s1"></i><button class="zg zc" type="button" data-card="'+(k+1)+'" aria-label="Открыть презентацию: '+esc(c.title)+', '+w(c.slides.length)+'"><img src="portfolio/'+c.cover+'" width="450" height="600" alt="" loading="lazy"><span class="bdg">'+w(c.slides.length)+'</span></button></div><span class="cap">'+esc(c.title)+'</span>';
       ul.appendChild(li)});
     $('#cgn').textContent=d.cards.length;$('#g-cards').hidden=false;
     $$('.zc',ul).forEach(function(b){b.onclick=function(){openVw(b.dataset.card)}});

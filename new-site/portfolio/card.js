@@ -2,6 +2,7 @@
   var $ = function (i) { return document.getElementById(i); };
   var fr = window.self !== window.top;
   if (fr) document.documentElement.classList.add('fr');
+  var hint = $('hint'), tickEl = $('ticks'), seen = {}, tk = [];
   var fig = $('fig'), img = $('img'), ct = $('ct'), ttl = $('ttl'), ambs = [$('ambA'), $('ambB')], ai = 0;
   var S = [], T = [], cur = 0, ready = {};
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -15,7 +16,9 @@
   }
   function show(i, dir) {
     cur = (i + S.length) % S.length; var t = cur;
-    ct.textContent = (cur + 1) + ' / ' + S.length;
+    ct.textContent = (cur + 1) + ' / ' + S.length; seen[cur] = 1;
+    tk.forEach(function (e, k) { e.className = k === cur ? 'on' : seen[k] ? 'seen' : ''; });
+    if (dir) hint.classList.add('off');
     pre(t).then(function () {
       if (cur !== t) return;
       img.src = S[t]; img.alt = T[t];
@@ -28,6 +31,8 @@
     pre(t + 1); pre(t - 1);
   }
   function go(d) { show(cur + d, d); }
+  $('pv2').addEventListener('click', function () { go(-1); });
+  $('nx2').addEventListener('click', function () { go(1); });
 
   $('x').addEventListener('click', close);
   $('pv').addEventListener('click', function () { go(-1); });
@@ -56,7 +61,10 @@
     S = c.slides.map(function (s) { return '../' + s.img; });
     T = c.slides.map(function (s, i) { return 'Слайд ' + (i + 1) + ': ' + s.title; });
     ttl.textContent = c.title; document.title = c.title + ' — Алексей Дмитриев';
-    if (S.length < 2) { $('pv').hidden = $('nx').hidden = true; }
+    if (S.length < 2) { $('pv').hidden = $('nx').hidden = $('pv2').hidden = $('nx2').hidden = true; hint.hidden = true; }
+    S.forEach(function (s, i) { var t = document.createElement('i'); t.addEventListener('click', function () { show(i, i > cur ? 1 : -1); }); tickEl.appendChild(t); tk.push(t); });
+    hint.textContent = matchMedia('(hover:hover)').matches ? 'Листайте ← →' : 'Листайте →';
+    setTimeout(function () { hint.classList.add('off'); }, 3500);
     show(0);
   });
   setTimeout(function () { try { window.focus(); } catch (e) {} }, 0);
