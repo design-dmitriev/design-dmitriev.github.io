@@ -168,3 +168,5 @@ html:has(body.lock){overflow-y:scroll}
 .wt-img img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
 .wcard.tool .wc-go{margin-top:.6rem}
 @media (min-width:900px){.wcard.tool{grid-template-columns:none}}
+
+.fy-hash{display:flex;flex-wrap:wrap;gap:.4rem .5rem;margin:0 0 1.25rem}.fy-hash span{font-size:.9375rem;font-weight:700;letter-spacing:-.01em;padding:.3rem .8rem;border-radius:99px;background:rgba(128,128,128,.12);background-clip:padding-box}

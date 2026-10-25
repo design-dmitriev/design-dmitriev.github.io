@@ -99,6 +99,7 @@
     var h='<div class="sh-top"><small>'+esc(d.label||'Что я выстроил')+'</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body fy-layout"><div class="fy-info">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
+    if(d.hash)h+='<div class="fy-hash">'+d.hash.map(function(t){return '<span>#'+esc(t)+'</span>'}).join('')+'</div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
     var fv=d.frame.w?(innerWidth<900&&d.frame.mw?{w:d.frame.mw,h:d.frame.mh}:{w:d.frame.w,h:d.frame.h}):null,fr=fv?fv.w/fv.h:d.frame.ratio;
     h+='<div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'<div class="fy-box">'+(d.frame.video&&innerWidth<900?'<video src="'+d.frame.video+'" poster="'+d.frame.poster+'" muted playsinline loop autoplay preload="auto" aria-label="Демо"></video>':'<iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe>')+'</div><div class="fy-steps" role="group" aria-label="Шаги демо" hidden></div><div class="fy-cap" aria-live="off"'+(d.frame.video&&innerWidth<900?'':' hidden')+'><b></b><span></span></div><div class="fy-meta"><p>'+esc(d.cap)+'</p>';
@@ -150,7 +151,7 @@
   var y0=0,top0=0;sh.addEventListener('touchstart',function(e){y0=e.touches[0].clientY;top0=$('.sh-body',sh)?$('.sh-body',sh).scrollTop:0},{passive:true});
   sh.addEventListener('touchend',function(e){if(innerWidth<900&&top0<=0&&e.changedTouches[0].clientY-y0>110)closeSheet()});
 
-  fetch('data/built.json?v=5').then(function(r){return r.json()}).then(function(d){
+  fetch('data/built.json?v=6').then(function(r){return r.json()}).then(function(d){
     DATA=d;
     $$('.built>li[data-key]').forEach(function(li){
       var key=li.dataset.key;if(!d[key])return;
