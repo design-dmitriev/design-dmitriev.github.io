@@ -4,7 +4,7 @@
 :root{--w:min(36rem,calc((100svh - 10.5rem) * .75));--ink:#0a0a0a;--paper:#fff;--soft:#f4f4f4;--green:#3ddc84;--g:clamp(1.25rem,4vw,3rem);--ease:cubic-bezier(.2,.7,.2,1)}
 *{box-sizing:border-box;margin:0}
 html{overflow-x:clip;-webkit-text-size-adjust:100%}
-body{font-family:Zarya,system-ui,sans-serif;background:var(--ink);color:#fff;min-height:100svh;overflow-x:clip;overscroll-behavior-x:none;line-height:1.4}
+body{position:relative;font-family:Zarya,system-ui,sans-serif;background:#0b0b0c;color:#fff;min-height:100svh;overflow-x:clip;overscroll-behavior-x:none;line-height:1.4}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 a{color:inherit;text-decoration:none}
 .bar{display:flex;justify-content:space-between;align-items:center;padding:1rem var(--g);font-size:.9375rem;color:rgba(255,255,255,.72)}
@@ -66,3 +66,24 @@ a{color:inherit;text-decoration:none}
 }
 @media (max-width:899px){.side{display:none}}
 @media (prefers-reduced-motion:reduce){.slide.on,.slide.off,.slide.on img,.ticks i.cur::after{animation:none!important}.slide.on{opacity:1}.ticks i.cur::after{transform:scaleX(1)}}
+
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#0b0b0c}
+.bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75;will-change:transform}
+.bg i:nth-child(1){width:60vmax;height:60vmax;left:-15vmax;bottom:-25vmax;background:#3b3b3e;animation:d1 22s ease-in-out infinite alternate}
+.bg i:nth-child(2){width:50vmax;height:50vmax;right:-15vmax;top:-20vmax;background:#2f2f33;animation:d2 28s ease-in-out infinite alternate}
+.bg i:nth-child(3){width:34vmax;height:34vmax;left:35%;top:30%;background:#242427;animation:d3 34s ease-in-out infinite alternate}
+.bg b{position:absolute;inset:-50%;opacity:.28;mix-blend-mode:screen;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");animation:grain 1.2s steps(6) infinite}
+@keyframes d1{to{transform:translate(18vmax,-10vmax) scale(1.15)}}
+@keyframes d2{to{transform:translate(-20vmax,14vmax) scale(1.2)}}
+@keyframes d3{to{transform:translate(-14vmax,-12vmax) scale(.85)}}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-5%,-2%)}80%{transform:translate(4%,4%)}100%{transform:translate(0,0)}}
+.ctrl .ar{min-width:44px;padding:.5rem;font-size:1.125rem;line-height:1}
+.ctrl .ar:hover,.ctrl #pp:hover{background:rgba(255,255,255,.1)}
+.ctrl{flex-wrap:wrap}
+.tag{margin-left:.25rem}
+.ticks{pointer-events:auto}
+.ticks i{cursor:pointer;background-clip:content-box}
+.ticks i::before{content:"";position:absolute;left:0;right:0;top:-12px;bottom:-12px}
+.stage.drag .slide.on{transition:transform .05s}
+.stage.hold .ticks{opacity:.0}
+@media (prefers-reduced-motion:reduce){.bg i,.bg b{animation:none}}

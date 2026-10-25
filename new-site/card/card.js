@@ -66,13 +66,31 @@
   }
   $('start').addEventListener('click', function () { go(0); });
   $('again').addEventListener('click', function () { go(0); });
-  $('next').addEventListener('click', function () { go(cur + 1); });
-  $('prev').addEventListener('click', function () { go(cur - 1); });
+  $('nx').addEventListener('click', function () { go(cur + 1); });
+  $('pv').addEventListener('click', function () { go(cur - 1); });
+  [].forEach.call(tk, function (t, i) { t.addEventListener('click', function () { go(i); }); });
+  var px0 = 0, py0 = 0, pt0 = 0, held = false, hid = 0, down = false;
+  function release() { if (held && paused) toggle(); held = false; stage.classList.remove('hold'); }
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.target.closest('button')) return;
+    down = true; px0 = e.clientX; py0 = e.clientY; pt0 = Date.now(); held = false;
+    clearTimeout(hid); hid = setTimeout(function () { if (down && running && !paused) { held = true; toggle(); stage.classList.add('hold'); } }, 260);
+  });
+  stage.addEventListener('pointerup', function (e) {
+    if (!down) return; down = false; clearTimeout(hid);
+    var dx = e.clientX - px0, dy = e.clientY - py0, dt = Date.now() - pt0, wasHeld = held;
+    release();
+    if (!running && cur < 0) return;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { go(dx < 0 ? cur + 1 : cur - 1); return; }
+    if (wasHeld || dt > 400 || Math.abs(dx) > 12 || Math.abs(dy) > 12) return;
+    var r = stage.getBoundingClientRect(); go((e.clientX - r.left) < r.width * .4 ? cur - 1 : cur + 1);
+  });
+  stage.addEventListener('pointercancel', function () { down = false; clearTimeout(hid); release(); });
+  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   pp.addEventListener('click', toggle);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowRight') go(cur + 1); else if (e.key === 'ArrowLeft') go(cur - 1); else if (e.key === ' ' && running) { e.preventDefault(); toggle(); }
   });
-  ['next', 'prev'].forEach(function (id) { $(id).addEventListener('keydown', function (e) { if (e.key === 'Enter') this.click(); }); });
   document.addEventListener('visibilitychange', function () { if (document.hidden && running && !paused) toggle(); });
   setTimeout(function () { if (cur < 0 && !reduce) { /* автозапуск не делаем: интро ждёт нажатия */ } }, 0);
 })();
