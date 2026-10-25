@@ -40,10 +40,14 @@ svg.ln line{stroke:#c9c9d2;stroke-width:3;stroke-dasharray:8 8;stroke-dashoffset
 .bb small{display:block;font-size:20px;font-weight:700;opacity:.65;margin-bottom:4px}
 .b1{top:20px}.b2{top:150px}.b3{top:290px}.b4{top:410px}
 .st3:not(.st4) .bb{opacity:1;transform:none}.st3:not(.st4) .b2{transition-delay:.7s}.st3:not(.st4) .b3{transition-delay:1.4s}.st3:not(.st4) .b4{transition-delay:2.1s}
-.nt2{position:absolute;padding:16px 26px;border-radius:99px;font-size:28px;font-weight:600;background:#fff;box-shadow:0 12px 26px -16px rgba(0,0,0,.4);opacity:0;white-space:nowrap;transition:all 1s var(--e)}
-.n1{left:0;top:10px;transform:translate(-30px,-30px)}.n2{right:0;top:10px;transform:translate(30px,-30px)}.n3{left:200px;top:-20px;transform:translateY(-30px)}
-.st4:not(.st5) .nt2{opacity:1;transform:none}.st4:not(.st5) .n1{left:40px;top:160px}.st4:not(.st5) .n2{left:300px;top:90px}.st4:not(.st5) .n3{left:80px;top:300px}
-.tz{position:absolute;left:150px;right:150px;top:380px;height:140px;border-radius:30px;background:#0b0b0b;color:#fff;display:grid;place-items:center;font-size:36px;font-weight:700;opacity:0;transform:scale(.9);transition:all .6s 1.6s var(--e)}
+.nt2{position:absolute;top:40px;width:260px;height:84px;border-radius:26px;display:grid;place-items:center;text-align:center;padding:0 16px;font-size:26px;line-height:1.15;font-weight:600;background:#fff;box-shadow:0 12px 26px -16px rgba(0,0,0,.4);opacity:0;transform:translateY(-30px);transition:opacity .5s,transform .7s var(--e)}
+.n1{left:0}.n2{left:280px}.n3{left:560px}
+.st4:not(.st5) .nt2{opacity:1;transform:none}.st4:not(.st5) .n2{transition-delay:.25s}.st4:not(.st5) .n3{transition-delay:.5s}
+.p4 svg{position:absolute;left:0;top:0;width:820px;height:540px;overflow:visible}
+.p4 svg path{fill:none;stroke:#b6b6c0;stroke-width:3;stroke-dasharray:6 8;opacity:0;transition:opacity .5s}
+.st4:not(.st5) .p4 svg path{opacity:1;transition-delay:1s}
+.tz{position:absolute;left:130px;right:130px;top:290px;height:160px;border-radius:32px;background:#0b0b0b;color:#fff;display:grid;place-items:center;text-align:center;font-size:40px;font-weight:700;letter-spacing:-.02em;opacity:0;transform:scale(.92) translateY(20px);transition:all .7s 1.5s var(--e)}
+.tz small{display:block;margin-top:6px;font-size:22px;font-weight:500;color:#a9a9b2;letter-spacing:0}
 .st4:not(.st5) .tz{opacity:1;transform:none}
 .cr{position:absolute;left:0;right:0;top:0;bottom:0;padding:30px 34px}
 .cr h4{font-size:34px;font-weight:700;letter-spacing:-.01em}
@@ -67,7 +71,7 @@ svg.ln line{stroke:#c9c9d2;stroke-width:3;stroke-dasharray:8 8;stroke-dashoffset
   <div class="pn p2"><div class="cl" style="left:0"><h6>Новая</h6></div><div class="cl" style="left:250px"><h6>В работе</h6></div><div class="cl" style="left:500px;width:220px"><h6>Готово</h6></div>
     <div class="kc k1">Заглавка<i></i></div><div class="kc k2">Баннер<i></i></div><div class="kc k3">Правки<i></i></div></div>
   <div class="pn p3"><div class="bb l b1"><small>#Продажи</small>Нужна заглавка до пятницы</div><div class="bb r b2"><small>#Контент</small>Беру, макет будет завтра</div><div class="bb l b3"><small>#ВЭД</small>Добавьте данные по сертификату</div><div class="bb r b4"><small>#Гарантия</small>Условия гарантии в карточке</div></div>
-  <div class="pn p4"><div class="nt2 n1">Опыт дизайнеров</div><div class="nt2 n2">Опыт менеджеров</div><div class="nt2 n3">Мои тесты</div><div class="tz">ТЗ на CRM</div></div>
+  <div class="pn p4"><svg viewBox="0 0 820 540"><path d="M130 124V210Q130 250 170 250H410V290"/><path d="M410 124V290"/><path d="M690 124V210Q690 250 650 250H410V290"/></svg><div class="nt2 n1">Опыт дизайнеров</div><div class="nt2 n2">Опыт менеджеров</div><div class="nt2 n3">Мои тесты</div><div class="tz"><div>ТЗ на CRM<small>из опыта команды</small></div></div></div>
   <div class="pn p5 card"><div class="cr"><h4>Задача в CRM</h4><div class="f f1">ТЗ<em>описание</em></div><div class="f f2">Референсы<em>файлы</em></div><div class="f f3">Ссылки<em>на дизайн-коды</em></div><div class="f f4">Статус<em>на виду у отделов</em></div></div></div>
 </div>
   <div id="cap"></div>

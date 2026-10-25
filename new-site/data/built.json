@@ -30,16 +30,16 @@
       "src": "motion/figma.html?v=1",
       "ratio": 0.6,
       "badge": "Демо: единый стандарт",
-      "video": "assets/demo/standard.mp4?v=1",
-      "poster": "assets/demo/standard.jpg?v=1",
+      "video": "assets/demo/standard.mp4?v=3",
+      "poster": "assets/demo/standard.jpg?v=3",
       "marks": [
-        0.3,
-        3.1,
-        5.9,
-        8.9,
-        12.1
+        0.0,
+        3.3,
+        6.17,
+        9.43,
+        12.83
       ],
-      "dur": 17.0,
+      "dur": 18.6,
       "steps": [
         [
           "Было: Photoshop",
@@ -91,16 +91,16 @@
       "src": "motion/kpi.html?v=1",
       "ratio": 0.6,
       "badge": "Демо: система KPI",
-      "video": "assets/demo/kpi.mp4?v=1",
-      "poster": "assets/demo/kpi.jpg?v=1",
+      "video": "assets/demo/kpi.mp4?v=3",
+      "poster": "assets/demo/kpi.jpg?v=3",
       "marks": [
-        0.3,
-        2.7,
-        5.9,
-        9.1,
-        12.7
+        0.03,
+        2.97,
+        6.67,
+        10.47,
+        14.43
       ],
-      "dur": 17.6,
+      "dur": 20.0,
       "steps": [
         [
           "Задача в CRM",
@@ -233,19 +233,19 @@
       }
     ],
     "frame": {
-      "src": "motion/tasks.html?v=1",
+      "src": "motion/tasks.html?v=2",
       "ratio": 0.6,
       "badge": "Демо: коммуникация",
-      "video": "assets/demo/tasks.mp4?v=1",
-      "poster": "assets/demo/tasks.jpg?v=1",
+      "video": "assets/demo/tasks.mp4?v=3",
+      "poster": "assets/demo/tasks.jpg?v=3",
       "marks": [
-        0.3,
-        3.5,
-        7.1,
-        10.7,
-        14.1
+        0.63,
+        3.97,
+        7.97,
+        12.03,
+        16.03
       ],
-      "dur": 18.8,
+      "dur": 21.07,
       "steps": [
         [
           "Битрикс24",
