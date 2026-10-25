@@ -4,7 +4,7 @@
    "id": "zaryadka-iphone",
    "title": "Быстрая зарядка для iPhone",
    "short": "Зарядка для iPhone",
-   "lead": "Блок и кабель. Девять слайдов: от заглавной до инфографики.",
+   "lead": "Блок и кабель. Восемь слайдов: от заглавной до инфографики.",
    "slides": [
     {
      "img": "img/zaryadka-iphone/1.webp",
@@ -28,13 +28,6 @@
      "note": "Зарядка и передача данных на рабочем месте."
     },
     {
-     "img": "img/zaryadka-iphone/4.webp",
-     "thumb": "img/zaryadka-iphone/4-t.webp",
-     "kind": "Возражение",
-     "title": "Не перегревается",
-     "note": "Закрываем страх перегрева наглядной сценой."
-    },
-    {
      "img": "img/zaryadka-iphone/5.webp",
      "thumb": "img/zaryadka-iphone/5-t.webp",
      "kind": "Бренд и совместимость",
@@ -46,7 +39,7 @@
      "thumb": "img/zaryadka-iphone/6-t.webp",
      "kind": "Возражение",
      "title": "Не перегревается",
-     "note": "Светлый вариант того же аргумента."
+     "note": "Закрываем страх перегрева наглядной сценой."
     },
     {
      "img": "img/zaryadka-iphone/7.webp",
