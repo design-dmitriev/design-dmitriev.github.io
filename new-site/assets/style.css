@@ -276,3 +276,4 @@ h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
 
 .duty{list-style:none;max-width:40rem;display:grid;gap:.55rem;padding:0}.duty li{display:block;position:relative;padding:0 0 0 1.1rem;border:0}.duty li::before{content:"";position:absolute;left:0;top:.72em;width:.4rem;height:1px;background:currentColor}
 .sec-head .sum a.cv{display:flex;align-items:center;width:max-content;min-height:44px;margin:.25rem 0 0;padding:0}
+.jobs h3 .aka{display:block;margin-top:.15rem;font-size:.9375rem;font-weight:400;color:var(--muted);letter-spacing:0}
