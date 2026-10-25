@@ -150,7 +150,7 @@
   var y0=0,top0=0;sh.addEventListener('touchstart',function(e){y0=e.touches[0].clientY;top0=$('.sh-body',sh)?$('.sh-body',sh).scrollTop:0},{passive:true});
   sh.addEventListener('touchend',function(e){if(innerWidth<900&&top0<=0&&e.changedTouches[0].clientY-y0>110)closeSheet()});
 
-  fetch('data/built.json?v=4').then(function(r){return r.json()}).then(function(d){
+  fetch('data/built.json?v=5').then(function(r){return r.json()}).then(function(d){
     DATA=d;
     $$('.built>li[data-key]').forEach(function(li){
       var key=li.dataset.key;if(!d[key])return;
