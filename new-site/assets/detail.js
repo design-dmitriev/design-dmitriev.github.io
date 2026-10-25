@@ -82,6 +82,7 @@
   window.addEventListener('message',function(e){var fr=$('.fy-box iframe',sh),m=e.data;if(!fr||e.source!==fr.contentWindow||!m||!m.fy)return;if(m.fy==='steps')fsBuild(m.n);else if(m.fy==='step'){if(!fsEl()||!fsEl().children.length)fsBuild(m.n||fsN||4);fsSet(m.i,m.d)}});
   document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.fy-steps .fs');if(!b)return;var fr=$('.fy-box iframe',sh);if(fr&&fr.contentWindow){var k=+b.dataset.k;fsSet(k,3000);try{fr.contentWindow.postMessage({fy:'go',i:k},'*')}catch(x){}}});
   function fitFy(){
+    if(sh.classList.contains('reels'))return fitM();
     var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe,video',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-232;
     var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(180,Math.min(340,((window.visualViewport?visualViewport.height:innerHeight)-352)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';var fs=$('.fy-steps',st);if(fs)fs.style.width=w+'px';
     if(fw&&fr.tagName==='IFRAME'){fr.style.transform='scale('+(w/fw)+')'}
@@ -108,10 +109,63 @@
     h+='</div></div></div>';
     sh.innerHTML=h;vidInit(d);sh.classList.add('wide');if(fr>1)$('.fy-layout',sh).classList.add('land');$('.sh-x',sh).onclick=closeSheet;
   }
+
+  /* телефон: медиа сверху, панель с текстом снизу (как комментарии в Reels) */
+  var XSVG='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',mK=1;
+  function renderSkillsM(d){
+    var fv=d.frame.w?(d.frame.mw?{w:d.frame.mw,h:d.frame.mh}:{w:d.frame.w,h:d.frame.h}):null,fr=fv?fv.w/fv.h:d.frame.ratio,vid=!!d.frame.video;
+    var h='<div class="m-top"><small>Что я выстроил</small><button class="m-x" type="button" aria-label="Закрыть">'+XSVG+'</button></div>';
+    h+='<div class="m-zone"><div class="fy-stage" data-r="'+fr+'"'+(fv?' data-fw="'+fv.w+'"':'')+'>'+(d.frame.badge?'<span class="m-badge">'+esc(d.frame.badge)+'</span>':'')+'<div class="fy-box">'+(vid?'<video src="'+d.frame.video+'" poster="'+d.frame.poster+'" muted playsinline loop autoplay preload="auto" aria-label="Демо"></video>':'<iframe src="'+d.frame.src+'" title="Превью" tabindex="-1" inert aria-hidden="true"'+(fv?' style="inset:auto;left:0;top:0;width:'+fv.w+'px;height:'+fv.h+'px;transform-origin:0 0"':'')+'></iframe>')+'</div><div class="fy-steps" role="group" aria-label="Шаги демо" hidden></div><div class="fy-cap" aria-live="off"'+(vid?'':' hidden')+'><b></b><span></span></div></div></div>';
+    h+='<div class="m-panel"><div class="m-grab" aria-hidden="true"></div><div class="m-scroll sh-body"><div class="fy-info"><h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
+    if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
+    h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
+    h+='<div class="fy-meta"><p>'+esc(d.cap)+'</p>'+(d.install?'<small>'+esc(d.install)+'</small>':'')+'</div></div>';
+    var a='';
+    if(d.actions)a=d.actions.map(function(x,i){return '<a class="sh-link'+(i?' alt':'')+'" href="'+x.href+'" target="_blank" rel="noopener">'+esc(x.label)+' ↗</a>'}).join('');
+    else{if(d.download)a+='<a class="sh-link" href="'+d.download.href+'" download>'+esc(d.download.label)+'</a>';if(d.files)a+='<a class="sh-link alt" href="'+d.files.href+'" target="_blank" rel="noopener">'+esc(d.files.label)+'</a>'}
+    if(a)h+='<div class="m-act">'+a+'</div>';
+    h+='</div>';
+    sh.innerHTML=h;sh.classList.add('reels');vidInit(d);
+    $('.m-x',sh).onclick=closeSheet;
+    $('.m-zone',sh).addEventListener('click',function(e){if(e.target===this||e.target.classList.contains('fy-stage'))closeSheet()});
+    mGesture();
+  }
+  function fitM(){
+    var z=$('.m-zone',sh),st=$('.fy-stage',sh);if(!z||!st)return;
+    var box=$('.fy-box',st),fr=$('iframe,video',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=z.clientWidth;
+    var panel=$('.m-panel',sh),ph=Math.round(innerHeight*.52);sh.style.setProperty('--ph',ph+'px');
+    var used=8+($('.m-badge',st)?38:0)+($('.fy-steps',st)&&!$('.fy-steps',st).hidden?44:0)+(!$('.fy-cap',st).hidden?56:0);
+    var availH=innerHeight-ph-$('.m-top',sh).offsetHeight-used,w=Math.max(120,Math.min(W-32,availH*r,340));
+    box.style.width=w+'px';box.style.height=w/r+'px';var fs=$('.fy-steps',st);if(fs)fs.style.width=Math.max(w,200)+'px';
+    var cp=$('.fy-cap',st);if(cp)cp.style.maxWidth=Math.max(w,260)+'px';
+    if(fw&&fr.tagName==='IFRAME')fr.style.transform='scale('+(w/fw)+')';
+    var wBig=Math.max(w,Math.min(W-16,(innerHeight-$('.m-top',sh).offsetHeight-110)*r,420));mK=Math.min(2.2,wBig/w);
+  }
+  function mEnter(){
+    var box=$('.fy-box',sh);if(!box)return;
+    box.style.transition='none';box.style.transform='scale('+mK+')';void box.offsetWidth;
+    requestAnimationFrame(function(){requestAnimationFrame(function(){box.style.transition='transform .6s cubic-bezier(.2,.7,.2,1)';box.style.transform='scale(1)'})});
+  }
+  function mGesture(){
+    var panel=$('.m-panel',sh),sc=$('.m-scroll',sh),box=$('.fy-box',sh),y0=0,dy=0,on=false,drag=false,grab=false,s0=0,t0=0;
+    function reset(){panel.style.transition='';panel.style.transform='';box.style.transition='';box.style.transform=''}
+    panel.addEventListener('touchstart',function(e){y0=e.touches[0].clientY;dy=0;on=true;drag=false;grab=!!e.target.closest('.m-grab');s0=sc.scrollTop;t0=e.timeStamp},{passive:true});
+    panel.addEventListener('touchmove',function(e){
+      if(!on)return;var d=e.touches[0].clientY-y0;
+      if(!drag){if(d>6&&(grab||(s0<=0&&sc.scrollTop<=0))){drag=true;panel.style.transition='none';box.style.transition='none'}else return}
+      if(e.cancelable)e.preventDefault();
+      dy=Math.max(0,d);var p=Math.min(dy/(panel.offsetHeight||1),1);
+      panel.style.transform='translateY('+dy+'px)';box.style.transform='scale('+(1+(mK-1)*p)+')';
+    },{passive:false});
+    function end(e){if(!on)return;on=false;if(!drag)return;drag=false;var v=dy/Math.max(1,e.timeStamp-t0);
+      if(dy>110||v>.7){reset();closeSheet()}else{panel.style.transition='transform .35s cubic-bezier(.2,.7,.2,1)';box.style.transition='transform .35s cubic-bezier(.2,.7,.2,1)';panel.style.transform='';box.style.transform='scale(1)';setTimeout(function(){panel.style.transition='';box.style.transition=''},380)}}
+    panel.addEventListener('touchend',end);panel.addEventListener('touchcancel',end);
+  }
   function render(key){
     sh.classList.remove('wide');
     var d=DATA[key];if(!d)return;
-    if(d.layout==='skills'){renderSkills(d);return}
+    sh.classList.remove('reels');
+    if(d.layout==='skills'){if(innerWidth<900)renderSkillsM(d);else renderSkills(d);return}
     var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.demo==='folderify')h+='<div class="fdemo"><iframe src="folderify/ui.html?demo=1" title="Как работает Folderify" loading="lazy"></iframe></div>';
@@ -132,7 +186,8 @@
     if(!DATA)return;lastFocus=document.activeElement;clearInterval(timer);render(key);
     sheetOn=true;bg.classList.add('on');sh.classList.add('on');lockPage(true);sh.scrollTop=0;$('.sh-body',sh).scrollTop=0;
     if(DATA[key]&&DATA[key].demo===true)runDemo();
-    if(DATA[key]&&DATA[key].layout==='skills'){fitFy();setTimeout(fitFy,600)}
+    bg.classList.toggle('dk',sh.classList.contains('reels'));
+    if(DATA[key]&&DATA[key].layout==='skills'){fitFy();if(sh.classList.contains('reels'))mEnter();setTimeout(fitFy,600)}
     if(push!==false)history.replaceState(null,'','#built-'+key);
     setTimeout(function(){var x=$('.sh-x',sh);if(x)x.focus()},350);
   }
