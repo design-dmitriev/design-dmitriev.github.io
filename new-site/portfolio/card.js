@@ -125,3 +125,9 @@
     pick((d.cards[n - 1] || d.cards[0]).id);
   });
 })();
+(function () {
+  if (window.self === window.top) return;
+  var b = document.querySelector('.back');
+  if (b) { b.textContent = '← Закрыть'; b.addEventListener('click', function (e) { e.preventDefault(); parent.postMessage('vw-close', location.origin); }); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') parent.postMessage('vw-close', location.origin); });
+})();

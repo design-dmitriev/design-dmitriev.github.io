@@ -22,7 +22,24 @@
     else if(!on&&locked){locked=false;b.classList.remove('lock');b.style.top='';h.style.scrollBehavior='auto';window.scrollTo(0,lockY);h.style.scrollBehavior=''}}
   function openLb(i){preAll();show(i);lb.classList.add('on');lockPage(true)}
   function closeLb(){lb.classList.remove('on');if(!sheetOn)lockPage(false)}
-  $$('.zg').forEach(function(b){b.onclick=function(){openLb(+b.dataset.i)}});
+  var vw=null,vwF=null,vwOn=false;
+  function openVw(n){
+    if(!vw){vw=document.createElement('div');vw.className='vw';vw.setAttribute('role','dialog');vw.setAttribute('aria-modal','true');vw.setAttribute('aria-label','Презентация карточки');
+      vwF=document.createElement('iframe');vwF.title='Презентация карточки';vwF.allow='fullscreen';vw.appendChild(vwF);document.body.appendChild(vw)}
+    vwF.src='portfolio/'+n+'/';vwF.onload=function(){try{vwF.contentWindow.focus()}catch(e){}};
+    lockPage(true);void vw.offsetWidth;vw.classList.add('on');vwOn=true;
+    try{history.scrollRestoration='manual';history.pushState({vw:n},'')}catch(e){}
+  }
+  function closeVw(back){
+    if(!vwOn)return;vwOn=false;vw.classList.remove('on');
+    setTimeout(function(){if(!vwOn){vwF.src='about:blank';try{history.scrollRestoration='auto'}catch(e){}}},500);
+    if(!sheetOn&&!lb.classList.contains('on'))lockPage(false);
+    if(back!==true){try{if(history.state&&history.state.vw)history.back()}catch(e){}}
+  }
+  window.addEventListener('popstate',function(){if(vwOn)closeVw(true)});
+  window.addEventListener('message',function(e){if(e.origin===location.origin&&e.data==='vw-close')closeVw()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&vwOn)closeVw()});
+  $$('.zg').forEach(function(b){b.onclick=function(){if(b.dataset.card)openVw(b.dataset.card);else openLb(+b.dataset.i)}});
   $('.x',lb).onclick=closeLb;$('.pv',lb).onclick=function(){show(cur-1)};$('.nx',lb).onclick=function(){show(cur+1)};
   lb.addEventListener('click',function(e){if(e.target===lb)closeLb()});
   var fg=$('figure',lb),sx=0,sy=0,dx=0,drag=false;
