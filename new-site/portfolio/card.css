@@ -78,8 +78,8 @@ a{color:inherit;text-decoration:none}
 .cards{display:flex;gap:.5rem;overflow-x:auto;overscroll-behavior-x:contain;max-width:100%;scrollbar-width:none;padding-bottom:.25rem}
 .cards::-webkit-scrollbar{display:none}
 .cards[hidden]{display:none}
-.cards button{flex:none;min-height:44px;padding:.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);white-space:nowrap}
-.cards button.cur{background:#fff;color:var(--ink);border-color:#fff}
+.cards a{display:inline-flex;align-items:center;text-decoration:none;flex:none;min-height:44px;padding:.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);white-space:nowrap}
+.cards a.cur{background:#fff;color:var(--ink);border-color:#fff}
 .stage-col{width:100%}
 .stage-col .cards{width:var(--w)}
 @media (max-width:899px){.stage-col .cards{width:100%}}

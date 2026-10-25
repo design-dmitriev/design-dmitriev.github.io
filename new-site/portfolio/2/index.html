@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0a0a0a">
+<title>Портфолио — карточки товаров — Алексей Дмитриев</title>
+<link rel="preload" href="../../assets/fonts/zarya-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../card.css?v=13">
+</head>
+<body data-n="2">
+<div class="bg" aria-hidden="true"><b></b></div>
+<header class="bar">
+  <a class="back" href="../../#zaglavki">← Портфолио</a>
+  <span class="who">Алексей Дмитриев</span>
+</header>
+
+<main class="deck" id="deck">
+  <section class="stage-col">
+    <nav class="cards" id="cards" aria-label="Карточки" hidden></nav>
+    <div class="frame">
+      <div class="ticks" id="ticks" aria-hidden="true"></div>
+      <button class="side-ar l" id="sl" type="button" aria-label="Назад">←</button>
+      <button class="side-ar r" id="sr" type="button" aria-label="Вперёд">→</button>
+      <div class="amb-wrap"><div class="amb" id="ambA"></div><div class="amb" id="ambB"></div>
+      <div class="stage" id="stage">
+        <div class="intro" id="intro">
+          <p class="eyebrow">Карточка товара</p>
+          <h1 id="ttl"></h1>
+          <p class="lead" id="lead"></p>
+          <button class="go" id="start" type="button">Смотреть <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="slides" id="slides"></div>
+        <div class="outro" id="outro" hidden>
+          <p class="eyebrow">Все слайды</p>
+          <div class="grid" id="grid"></div>
+          <div class="row"><button class="go" id="again" type="button">Смотреть заново <span aria-hidden="true">↻</span></button><button class="go ghost" id="nextCard" type="button" hidden>Следующая карточка <span aria-hidden="true">→</span></button></div>
+        </div>
+      </div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <button id="pv" type="button" class="ar" aria-label="Назад">←</button>
+      <button id="pp" type="button" aria-label="Пауза">Пауза</button>
+      <button id="nx" type="button" class="ar" aria-label="Вперёд">→</button>
+      <span class="tag" id="tag" hidden></span>
+    </div>
+  </section>
+  <aside class="side">
+    <div class="head">
+      <p class="eyebrow" id="eb">Карточка товара</p>
+      <h2 class="card-t" id="cardT"></h2>
+      <ul class="meta" id="meta"></ul>
+    </div>
+    <div class="now">
+    <p class="count" id="count">&nbsp;</p>
+    <h3 class="cap-t" id="capT">Выберите слайд</h3>
+    <p class="cap-n" id="capN">Нажмите «Смотреть» или выберите любой слайд ниже.</p>
+    </div>
+    <div class="thumbs" id="thumbs" role="list"></div>
+    <p class="keys">← → листать · пробел пауза · удерживайте слайд, чтобы остановить</p>
+  </aside>
+</main>
+<script src="../card.js?v=11"></script>
+</body>
+</html>

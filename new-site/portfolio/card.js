@@ -75,7 +75,7 @@
 
   $('start').addEventListener('click', function () { go(0); });
   $('again').addEventListener('click', function () { go(0); });
-  $('nextCard').addEventListener('click', function () { var k = DATA.cards.indexOf(card); pick(DATA.cards[(k + 1) % DATA.cards.length].id, true); go(0); });
+  $('nextCard').addEventListener('click', function () { location.href = '../' + (DATA.cards.indexOf(card) % DATA.cards.length + 2 > DATA.cards.length ? 1 : DATA.cards.indexOf(card) + 2) + '/'; });
   $('nx').addEventListener('click', function () { go(cur + 1); });
   $('pv').addEventListener('click', function () { go(cur - 1); });
   $('sr').addEventListener('click', function () { go(cur + 1); });
@@ -105,23 +105,23 @@
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden && running && !paused) toggle(); });
 
-  function pick(id, push) {
+  function pick(id) {
     var c = DATA.cards.filter(function (x) { return x.id === id; })[0] || DATA.cards[0];
     build(c);
     [].forEach.call(cardsNav.children, function (b) { b.classList.toggle('cur', b.dataset.id === c.id); });
-    if (push) { try { history.replaceState(null, '', '?c=' + c.id); } catch (e) {} }
   }
-  fetch('cards.json?v=2').then(function (r) { return r.json(); }).then(function (d) {
+  fetch('../cards.json?v=3').then(function (r) { return r.json(); }).then(function (d) {
     DATA = d;
+    d.cards.forEach(function (c) { c.slides.forEach(function (s) { s.img = '../' + s.img; if (s.thumb) s.thumb = '../' + s.thumb; }); });
     if (d.cards.length > 1) {
       cardsNav.hidden = false;
-      d.cards.forEach(function (c) {
-        var b = document.createElement('button'); b.type = 'button'; b.dataset.id = c.id; b.textContent = c.short || c.title;
-        b.addEventListener('click', function () { pick(c.id, true); }); cardsNav.appendChild(b);
+      d.cards.forEach(function (c, k) {
+        var b = document.createElement('a'); b.dataset.id = c.id; b.href = '../' + (k + 1) + '/'; b.textContent = c.short || c.title;
+        cardsNav.appendChild(b);
       });
+      $('nextCard').hidden = false;
     }
-    if (d.cards.length > 1) $('nextCard').hidden = false;
-    var m = /[?&]c=([^&]+)/.exec(location.search);
-    pick(m ? decodeURIComponent(m[1]) : d.cards[0].id, false);
+    var n = parseInt(document.body.dataset.n, 10) || 1;
+    pick((d.cards[n - 1] || d.cards[0]).id);
   });
 })();
