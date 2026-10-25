@@ -91,7 +91,7 @@ h2{font-weight:500;letter-spacing:-.025em;line-height:1.08;font-size:clamp(1.875
 .jobs .when{color:var(--muted);font-size:.9375rem}
 @media (min-width:900px){
   .jobs li{grid-template-columns:12rem minmax(0,.9fr) minmax(0,1.6fr)}
-  .jobs li>p:last-child{grid-column:auto}
+  .jobs li>p:last-child,.jobs li>.duty{grid-column:auto}
 }
 
 /* личные работы */
@@ -273,3 +273,5 @@ h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
 .case .when b{font-weight:400;color:#fff;white-space:nowrap}
 .case .bar em.neg{color:rgba(255,255,255,.55)}
 .case .bars .cap{margin:0 0 .1rem;color:rgba(255,255,255,.75)}
+
+.duty{list-style:none;max-width:40rem;display:grid;gap:.55rem;padding:0}.duty li{display:block;position:relative;padding:0 0 0 1.1rem;border:0}.duty li::before{content:"";position:absolute;left:0;top:.72em;width:.4rem;height:1px;background:currentColor}
