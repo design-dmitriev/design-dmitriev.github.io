@@ -2,13 +2,13 @@
 @font-face{font-family:Zarya;font-weight:500;font-display:block;src:url(../assets/fonts/zarya-500.woff2) format("woff2")}
 :root{--ease:cubic-bezier(.2,.7,.2,1)}
 *{box-sizing:border-box;margin:0}
-html,body{height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;touch-action:none;-webkit-text-size-adjust:100%}
 body{position:fixed;inset:0;font-family:Zarya,system-ui,sans-serif;background:#0b0b0c;color:#fff;display:grid;place-items:center}
 html.fr,html.fr body{background:transparent}
 button{font:inherit;color:inherit;border:0;cursor:pointer}
-.stage{position:relative;width:100%;height:100%;display:grid;place-items:center}
+.stage{position:relative;width:100%;height:100%;display:grid;place-items:center;touch-action:none}
 .col{opacity:0;transition:opacity .25s;--w:min(calc((100svh - 9.5rem)*.75),calc(100vw - 2rem));width:var(--w);display:grid;gap:.75rem}
-figure{position:relative;width:100%;aspect-ratio:3/4;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+figure{position:relative;width:100%;aspect-ratio:3/4;touch-action:none;user-select:none;-webkit-user-select:none}
 .ticks{display:flex;gap:4px}
 .ticks i{flex:1;height:3px;padding:0;border-radius:2px;background:rgba(255,255,255,.28);position:relative;cursor:pointer;transition:background .25s}
 .ticks i::after{content:"";position:absolute;inset:-12px 0}
@@ -28,7 +28,13 @@ figure img{position:relative;display:block;width:100%;height:100%;object-fit:con
 .pv{left:1rem}.nx{right:1rem}
 .ct{color:rgba(255,255,255,.8);font-size:.9375rem;min-width:4.5rem;text-align:center;white-space:nowrap}
 .ttl{position:absolute;top:max(1.5rem,calc(env(safe-area-inset-top) + .5rem));left:1.25rem;right:5rem;color:rgba(255,255,255,.7);font-size:.9375rem;z-index:3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media (max-width:899px){.pv,.nx{display:none}}
+@media (max-width:899px){
+.pv,.nx{display:none}
+.stage{box-sizing:border-box;padding:calc(3.5rem + env(safe-area-inset-top)) 0 calc(.75rem + env(safe-area-inset-bottom))}
+.col{--w:min(calc((100svh - 9.25rem - env(safe-area-inset-top) - env(safe-area-inset-bottom))*.75),calc(100vw - 2rem));gap:.5rem}
+.x{top:max(.5rem,env(safe-area-inset-top));width:44px;height:44px}
+.bar{min-height:40px;gap:.75rem}.bar button{width:40px;height:40px}
+}
 @media (min-width:900px){.bar button{display:none}}
 @media (max-width:640px){.ttl{display:none}}
 @media (prefers-reduced-motion:reduce){.amb,.col{transition:none}}
