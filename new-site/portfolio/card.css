@@ -1,5 +1,5 @@
-@font-face{font-family:Zarya;font-weight:400;font-display:swap;src:url(../assets/fonts/zarya-400.woff2) format("woff2")}
-@font-face{font-family:Zarya;font-weight:500;font-display:swap;src:url(../assets/fonts/zarya-500.woff2) format("woff2")}
+@font-face{font-family:Zarya;font-weight:400;font-display:block;src:url(../assets/fonts/zarya-400.woff2) format("woff2")}
+@font-face{font-family:Zarya;font-weight:500;font-display:block;src:url(../assets/fonts/zarya-500.woff2) format("woff2")}
 :root{--ease:cubic-bezier(.2,.7,.2,1)}
 *{box-sizing:border-box;margin:0}
 html,body{height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
@@ -7,7 +7,7 @@ body{position:fixed;inset:0;font-family:Zarya,system-ui,sans-serif;background:#0
 html.fr,html.fr body{background:transparent}
 button{font:inherit;color:inherit;border:0;cursor:pointer}
 .stage{position:relative;width:100%;height:100%;display:grid;place-items:center}
-.col{--w:min(calc((100svh - 9.5rem)*.75),calc(100vw - 2rem));width:var(--w);display:grid;gap:.75rem}
+.col{opacity:0;transition:opacity .25s;--w:min(calc((100svh - 9.5rem)*.75),calc(100vw - 2rem));width:var(--w);display:grid;gap:.75rem}
 figure{position:relative;width:100%;aspect-ratio:3/4;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ticks{display:flex;gap:4px}
 .ticks i{flex:1;height:3px;padding:0;border-radius:2px;background:rgba(255,255,255,.28);position:relative;cursor:pointer;transition:background .25s}
@@ -31,4 +31,6 @@ figure img{position:relative;display:block;width:100%;height:100%;object-fit:con
 @media (max-width:899px){.pv,.nx{display:none}}
 @media (min-width:900px){.bar button{display:none}}
 @media (max-width:640px){.ttl{display:none}}
-@media (prefers-reduced-motion:reduce){.amb{transition:none}}
+@media (prefers-reduced-motion:reduce){.amb,.col{transition:none}}
+
+.col.in{opacity:1}

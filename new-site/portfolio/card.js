@@ -2,7 +2,7 @@
   var $ = function (i) { return document.getElementById(i); };
   var fr = window.self !== window.top;
   if (fr) document.documentElement.classList.add('fr');
-  var hint = $('hint'), tickEl = $('ticks'), seen = {}, tk = [];
+  var col = document.querySelector('.col'), needReady = false, hintT = 0, hint = $('hint'), tickEl = $('ticks'), seen = {}, tk = [];
   var fig = $('fig'), img = $('img'), ct = $('ct'), ttl = $('ttl'), ambs = [$('ambA'), $('ambB')], ai = 0;
   var S = [], T = [], cur = 0, ready = {};
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -22,6 +22,8 @@
     pre(t).then(function () {
       if (cur !== t) return;
       img.src = S[t]; img.alt = T[t];
+      col.classList.add('in');
+      if (needReady) { needReady = false; (img.decode ? img.decode() : Promise.resolve()).catch(function () {}).then(function () { parent.postMessage('vw-ready', location.origin); }); }
       ai = 1 - ai; ambs[ai].style.backgroundImage = 'url("' + S[t] + '")'; ambs[ai].classList.add('on'); ambs[1 - ai].classList.remove('on');
       if (dir && !reduce) {
         fig.style.transition = 'none'; fig.style.transform = 'translateX(' + (dir * 60) + 'px)'; fig.style.opacity = '0'; void fig.offsetWidth;
@@ -65,8 +67,14 @@
     if (S.length < 2) { $('pv').hidden = $('nx').hidden = $('pv2').hidden = $('nx2').hidden = true; hint.hidden = true; }
     S.forEach(function (s, i) { var t = document.createElement('i'); t.addEventListener('click', function () { show(i, i > cur ? 1 : -1); }); tickEl.appendChild(t); tk.push(t); });
     hint.textContent = matchMedia('(hover:hover)').matches ? 'Листайте ← →' : 'Листайте →';
-    setTimeout(function () { hint.classList.add('off'); }, 3500);
-    var q = /[?&]i=(\d+)/.exec(location.search); show(q ? Math.min(+q[1], S.length - 1) : 0);
+    hintT = setTimeout(function () { hint.classList.add('off'); }, 3500);
+    if (fr) { pre(0); pre(1); parent.postMessage('vw-loaded', location.origin); }
+    else { var q = /[?&]i=(\d+)/.exec(location.search); show(q ? Math.min(+q[1], S.length - 1) : 0); }
+  });
+  window.addEventListener('message', function (e) {
+    if (e.origin !== location.origin || !e.data || e.data.t !== 'open' || !S.length) return;
+    seen = {}; needReady = true; hint.classList.remove('off'); clearTimeout(hintT); hintT = setTimeout(function () { hint.classList.add('off'); }, 3500);
+    img.removeAttribute('src'); show(Math.min(e.data.i || 0, S.length - 1));
   });
   setTimeout(function () { try { window.focus(); } catch (e) {} }, 0);
 })();
