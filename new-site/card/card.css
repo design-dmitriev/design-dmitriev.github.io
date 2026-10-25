@@ -17,12 +17,7 @@ a{color:inherit;text-decoration:none}
 .slides,.intro,.outro{position:absolute;inset:0}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden}
 .slide img{width:100%;height:100%;object-fit:cover;display:block;transform-origin:50% 40%}
-.slide.on{opacity:1;visibility:visible;animation:reveal .9s var(--ease) both;z-index:2}
-.slide.on img{animation:push var(--dur,3.4s) linear both}
-.slide.off{visibility:visible;opacity:1;z-index:1;animation:leave .7s var(--ease) both}
-@keyframes reveal{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
-@keyframes leave{to{transform:translateY(-6%) scale(.96);opacity:0}}
-@keyframes push{from{transform:scale(1.07)}to{transform:scale(1)}}
+.slide.on{opacity:1;visibility:visible;z-index:2}
 .tap{position:absolute;top:0;bottom:0;z-index:5;width:40%;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .tap-l{left:0}.tap-r{right:0;width:60%}
 .ticks{display:flex;gap:.3rem;pointer-events:none}
@@ -30,23 +25,20 @@ a{color:inherit;text-decoration:none}
 .ticks i::after{content:"";position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:0 50%}
 .ticks i.done::after{transform:scaleX(1)}
 .ticks i.cur::after{animation:fill var(--dur,3.4s) linear both}
-.paused .ticks i.cur::after,.paused .slide.on img{animation-play-state:paused}
+.paused .ticks i.cur::after{animation-play-state:paused}
 @keyframes fill{to{transform:scaleX(1)}}
-.tag{display:inline-flex;align-items:center;gap:.45rem;font-size:.9375rem;color:#fff;animation:tagin .6s .2s var(--ease) both}
+.tag{display:inline-flex;align-items:center;gap:.45rem;font-size:.9375rem;color:#fff}
 .tag[hidden]{display:none}
 .tag::before{content:"";width:.4rem;height:.4rem;border-radius:50%;background:var(--green);flex:none}
-@keyframes tagin{from{opacity:0;transform:translateY(8px)}}
 .intro,.outro{display:flex;flex-direction:column;justify-content:center;gap:1rem;padding:clamp(1.5rem,6%,2.5rem);z-index:7}
 .intro[hidden],.outro[hidden]{display:none}
 .eyebrow{font-size:.875rem;color:rgba(255,255,255,.65)}
-.intro h1{font-size:clamp(1.75rem,6.5vw,3rem);font-weight:500;letter-spacing:-.02em;line-height:1.08;text-wrap:balance;animation:up .8s var(--ease) both}
-.intro .eyebrow{animation:up .8s var(--ease) both}
-.lead{color:rgba(255,255,255,.72);max-width:24rem;text-wrap:pretty;animation:up .8s .15s var(--ease) both}
-.go{align-self:flex-start;margin-top:.5rem;min-height:44px;padding:.6rem 1.25rem;border-radius:999px;background:#fff;color:var(--ink);font-weight:500;animation:up .8s .3s var(--ease) both}
-@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.intro h1{font-size:clamp(1.75rem,6.5vw,3rem);font-weight:500;letter-spacing:-.02em;line-height:1.08;text-wrap:balance}
+.lead{color:rgba(255,255,255,.72);max-width:24rem;text-wrap:pretty}
+.go{align-self:flex-start;margin-top:.5rem;min-height:44px;padding:.6rem 1.25rem;border-radius:999px;background:#fff;color:var(--ink);font-weight:500}
 .outro{gap:.6rem;padding:1.25rem}
 .outro .grid{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(0,1fr);gap:.5rem;flex:1;min-height:0}
-.outro .grid button{border-radius:.75rem;overflow:hidden;min-height:0;border:1px solid rgba(255,255,255,.14);animation:up .6s var(--ease) both}
+.outro .grid button{border-radius:.75rem;overflow:hidden;min-height:0;border:1px solid rgba(255,255,255,.14)}
 .outro .grid img{width:100%;height:100%;object-fit:cover;display:block}
 .ctrl{display:flex;align-items:center;gap:1rem;font-size:.875rem;color:rgba(255,255,255,.6)}
 .ctrl button{min-height:44px;padding:.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:#fff}
@@ -65,18 +57,10 @@ a{color:inherit;text-decoration:none}
   .side{padding-top:.5rem}
 }
 @media (max-width:899px){.side{display:none}}
-@media (prefers-reduced-motion:reduce){.slide.on,.slide.off,.slide.on img,.ticks i.cur::after{animation:none!important}.slide.on{opacity:1}.ticks i.cur::after{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.ticks i.cur::after{animation:none!important}.ticks i.cur::after{transform:scaleX(1)}}
 
-.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#0b0b0c}
-.bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.75;will-change:transform}
-.bg i:nth-child(1){width:60vmax;height:60vmax;left:-15vmax;bottom:-25vmax;background:#3b3b3e;animation:d1 22s ease-in-out infinite alternate}
-.bg i:nth-child(2){width:50vmax;height:50vmax;right:-15vmax;top:-20vmax;background:#2f2f33;animation:d2 28s ease-in-out infinite alternate}
-.bg i:nth-child(3){width:34vmax;height:34vmax;left:35%;top:30%;background:#242427;animation:d3 34s ease-in-out infinite alternate}
-.bg b{position:absolute;inset:-50%;opacity:.28;mix-blend-mode:screen;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");animation:grain 1.2s steps(6) infinite}
-@keyframes d1{to{transform:translate(18vmax,-10vmax) scale(1.15)}}
-@keyframes d2{to{transform:translate(-20vmax,14vmax) scale(1.2)}}
-@keyframes d3{to{transform:translate(-14vmax,-12vmax) scale(.85)}}
-@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-5%,-2%)}80%{transform:translate(4%,4%)}100%{transform:translate(0,0)}}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:radial-gradient(ellipse 60% 80% at 8% 110%,#2a2a2c,transparent 70%),radial-gradient(ellipse 50% 70% at 95% -10%,#262628,transparent 70%),#0b0b0c}
+.bg b{position:absolute;inset:0;opacity:.16;mix-blend-mode:screen;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 .ctrl .ar{min-width:44px;padding:.5rem;font-size:1.125rem;line-height:1}
 .ctrl .ar:hover,.ctrl #pp:hover{background:rgba(255,255,255,.1)}
 .ctrl{flex-wrap:wrap}
@@ -86,4 +70,17 @@ a{color:inherit;text-decoration:none}
 .ticks i::before{content:"";position:absolute;left:0;right:0;top:-12px;bottom:-12px}
 .stage.drag .slide.on{transition:transform .05s}
 .stage.hold .ticks{opacity:.0}
-@media (prefers-reduced-motion:reduce){.bg i,.bg b{animation:none}}
+
+.amb-wrap{position:relative}
+.amb{position:absolute;inset:-8% -12%;background-size:cover;background-position:center;filter:blur(40px) saturate(2);opacity:0;transition:opacity .6s ease;pointer-events:none;border-radius:2rem}
+.amb.on{opacity:.9}
+.stage{z-index:1}
+.cards{display:flex;gap:.5rem;overflow-x:auto;overscroll-behavior-x:contain;max-width:100%;scrollbar-width:none;padding-bottom:.25rem}
+.cards::-webkit-scrollbar{display:none}
+.cards[hidden]{display:none}
+.cards button{flex:none;min-height:44px;padding:.5rem 1rem;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.8);white-space:nowrap}
+.cards button.cur{background:#fff;color:var(--ink);border-color:#fff}
+.stage-col{width:100%}
+.stage-col .cards{width:var(--w)}
+@media (max-width:899px){.stage-col .cards{width:100%}}
+.ticks,.ctrl,.cards{position:relative;z-index:3}

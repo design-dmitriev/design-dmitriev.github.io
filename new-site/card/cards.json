@@ -1,0 +1,75 @@
+{
+ "cards": [
+  {
+   "id": "zaryadka-iphone",
+   "title": "Быстрая зарядка для iPhone",
+   "short": "Зарядка для iPhone",
+   "lead": "Блок и кабель. Девять слайдов: от заглавной до инфографики.",
+   "slides": [
+    {
+     "img": "img/zaryadka-iphone/1.webp",
+     "thumb": "img/zaryadka-iphone/1-t.webp",
+     "kind": "Заглавный слайд",
+     "title": "Быстрая для iPhone",
+     "note": "Главная мысль и комплект сразу в кадре."
+    },
+    {
+     "img": "img/zaryadka-iphone/2.webp",
+     "thumb": "img/zaryadka-iphone/2-t.webp",
+     "kind": "Сценарий",
+     "title": "Зарядка на весь день",
+     "note": "Выгода показана на жизненной ситуации."
+    },
+    {
+     "img": "img/zaryadka-iphone/3.webp",
+     "thumb": "img/zaryadka-iphone/3-t.webp",
+     "kind": "Скорость",
+     "title": "Меньше проводов",
+     "note": "Зарядка и передача данных на рабочем месте."
+    },
+    {
+     "img": "img/zaryadka-iphone/4.webp",
+     "thumb": "img/zaryadka-iphone/4-t.webp",
+     "kind": "Возражение",
+     "title": "Не перегревается",
+     "note": "Закрываем страх перегрева наглядной сценой."
+    },
+    {
+     "img": "img/zaryadka-iphone/5.webp",
+     "thumb": "img/zaryadka-iphone/5-t.webp",
+     "kind": "Бренд и совместимость",
+     "title": "Создана для Apple",
+     "note": "Устройства рядом, понятно, с чем работает."
+    },
+    {
+     "img": "img/zaryadka-iphone/6.webp",
+     "thumb": "img/zaryadka-iphone/6-t.webp",
+     "kind": "Возражение",
+     "title": "Не перегревается",
+     "note": "Светлый вариант того же аргумента."
+    },
+    {
+     "img": "img/zaryadka-iphone/7.webp",
+     "thumb": "img/zaryadka-iphone/7-t.webp",
+     "kind": "Гарантия",
+     "title": "Ещё раз о безопасности",
+     "note": "Поддержка и QR на гарантийном талоне."
+    },
+    {
+     "img": "img/zaryadka-iphone/8.webp",
+     "thumb": "img/zaryadka-iphone/8-t.webp",
+     "kind": "Комплект",
+     "title": "Всё в одном комплекте",
+     "note": "Блок питания и кабель, что входит в заказ."
+    },
+    {
+     "img": "img/zaryadka-iphone/9.webp",
+     "thumb": "img/zaryadka-iphone/9-t.webp",
+     "kind": "Итог",
+     "title": "Инфографика",
+     "note": "Все характеристики на одном экране."
+    }
+   ]
+  }
+ ]
+}

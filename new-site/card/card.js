@@ -1,62 +1,61 @@
 (function () {
-  var S = [
-    ['Заглавный слайд', 'Быстрая для iPhone', 'Главная мысль и комплект сразу в кадре.'],
-    ['Сценарий', 'Зарядка на весь день', 'Выгода показана на жизненной ситуации.'],
-    ['Скорость', 'Меньше проводов', 'Зарядка и передача данных на рабочем месте.'],
-    ['Возражение', 'Не перегревается', 'Закрываем страх перегрева наглядной сценой.'],
-    ['Бренд и совместимость', 'Создана для Apple', 'Устройства рядом, понятно, с чем работает.'],
-    ['Возражение', 'Не перегревается', 'Светлый вариант того же аргумента.'],
-    ['Гарантия', 'Ещё раз о безопасности', 'Поддержка и QR на гарантийном талоне.'],
-    ['Комплект', 'Всё в одном комплекте', 'Блок питания и кабель, что входит в заказ.'],
-    ['Итог', 'Инфографика', 'Все характеристики на одном экране.']
-  ];
-  var DUR = 3400, $ = function (i) { return document.getElementById(i); };
-  var stage = $('stage'), slides = $('slides'), ticks = $('ticks'), tag = $('tag'), list = $('list'), intro = $('intro'), outro = $('outro'), grid = $('grid'), pp = $('pp');
-  var cur = -1, timer = null, left = 0, t0 = 0, paused = false, running = false;
+  var $ = function (i) { return document.getElementById(i); };
+  var stage = $('stage'), slides = $('slides'), ticks = $('ticks'), tag = $('tag'), list = $('list'), intro = $('intro'), outro = $('outro'), grid = $('grid'), pp = $('pp'), cardsNav = $('cards');
+  var ambs = [$('ambA'), $('ambB')], ambI = 0;
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  stage.style.setProperty('--dur', DUR + 'ms');
+  var DATA = null, card = null, S = [], DUR = 3400, cur = -1, timer = null, left = 0, t0 = 0, paused = false, running = false, els, tk, items;
 
-  S.forEach(function (s, i) {
-    var d = document.createElement('div'); d.className = 'slide';
-    d.innerHTML = '<img src="img/' + (i + 1) + '.webp" alt="Слайд ' + (i + 1) + ': ' + s[1] + '" width="900" height="1200"' + (i ? ' loading="lazy"' : '') + '>';
-    slides.appendChild(d);
-    ticks.appendChild(document.createElement('i'));
-    var li = document.createElement('li');
-    li.innerHTML = '<button type="button"><span>' + (i + 1) + '</span><b>' + s[1] + '</b><small>' + s[0] + '. ' + s[2] + '</small></button>';
-    li.firstChild.addEventListener('click', function () { go(i); });
-    list.appendChild(li);
-    var g = document.createElement('button'); g.type = 'button'; g.style.animationDelay = (i * .05) + 's';
-    g.innerHTML = '<img src="img/' + (i + 1) + '-t.webp" alt="Слайд ' + (i + 1) + '" loading="lazy">';
-    g.addEventListener('click', function () { go(i); });
-    grid.appendChild(g);
-  });
-  var els = slides.children, tk = ticks.children, items = list.children;
-
+  function amb(src) {
+    if (!src) { ambs.forEach(function (a) { a.classList.remove('on'); }); return; }
+    ambI = 1 - ambI;
+    var a = ambs[ambI], o = ambs[1 - ambI];
+    a.style.backgroundImage = 'url("' + src + '")'; a.classList.add('on'); o.classList.remove('on');
+  }
   function clear() { clearTimeout(timer); timer = null; }
   function arm(ms) { clear(); if (reduce) return; left = ms; t0 = Date.now(); timer = setTimeout(function () { go(cur + 1); }, ms); }
+
+  function build(c) {
+    clear(); card = c; S = c.slides; DUR = c.duration || 3400; cur = -1; running = false; paused = false;
+    stage.style.setProperty('--dur', DUR + 'ms'); stage.classList.remove('paused');
+    slides.innerHTML = ''; ticks.innerHTML = ''; list.innerHTML = ''; grid.innerHTML = '';
+    $('ttl').textContent = c.title; $('lead').textContent = c.lead || ''; document.title = c.title + ' — Алексей Дмитриев';
+    S.forEach(function (s, i) {
+      var d = document.createElement('div'); d.className = 'slide';
+      d.innerHTML = '<img src="' + s.img + '" alt="Слайд ' + (i + 1) + ': ' + s.title + '" width="900" height="1200"' + (i ? ' loading="lazy"' : '') + '>';
+      slides.appendChild(d);
+      var t = document.createElement('i'); t.addEventListener('click', function () { go(i); }); ticks.appendChild(t);
+      var li = document.createElement('li');
+      li.innerHTML = '<button type="button"><span>' + (i + 1) + '</span><b>' + s.title + '</b><small>' + s.kind + '. ' + (s.note || '') + '</small></button>';
+      li.firstChild.addEventListener('click', function () { go(i); });
+      list.appendChild(li);
+      var g = document.createElement('button'); g.type = 'button';
+      g.innerHTML = '<img src="' + (s.thumb || s.img) + '" alt="Слайд ' + (i + 1) + '" loading="lazy">';
+      g.addEventListener('click', function () { go(i); });
+      grid.appendChild(g);
+    });
+    els = slides.children; tk = ticks.children; items = list.children;
+    intro.hidden = false; outro.hidden = true; tag.hidden = true; pp.style.visibility = ''; pp.textContent = 'Пауза';
+    amb(null);
+  }
 
   function go(i) {
     if (i < 0) i = 0;
     intro.hidden = true;
     if (i >= S.length) { finish(); return; }
     outro.hidden = true; running = true; pp.style.visibility = '';
-    var prev = cur; cur = i;
-    for (var k = 0; k < els.length; k++) { els[k].classList.remove('on', 'off'); }
-    if (prev >= 0 && prev !== i && els[prev]) { els[prev].classList.add('off'); }
-    void stage.offsetWidth;
-    els[i].classList.add('on');
+    cur = i;
+    for (var k = 0; k < els.length; k++) { els[k].classList.toggle('on', k === i); }
     for (k = 0; k < tk.length; k++) { tk[k].className = k < i ? 'done' : k === i ? 'cur' : ''; items[k].className = k === i ? 'cur' : ''; }
-    tag.hidden = false; tag.style.animation = 'none'; void tag.offsetWidth; tag.style.animation = '';
-    tag.textContent = S[i][0];
+    tag.hidden = false; tag.textContent = S[i].kind;
+    amb(S[i].thumb || S[i].img);
     paused = false; stage.classList.remove('paused'); pp.textContent = 'Пауза'; pp.setAttribute('aria-label', 'Пауза');
     arm(DUR);
   }
   function finish() {
     clear(); running = false; cur = S.length;
-    for (var k = 0; k < els.length; k++) els[k].classList.remove('on', 'off');
+    for (var k = 0; k < els.length; k++) els[k].classList.remove('on');
     for (k = 0; k < tk.length; k++) { tk[k].className = 'done'; items[k].className = ''; }
-    tag.hidden = true; outro.hidden = false; pp.style.visibility = 'hidden';
-    var b = grid.children; for (k = 0; k < b.length; k++) { b[k].style.animation = 'none'; void b[k].offsetWidth; b[k].style.animation = ''; }
+    tag.hidden = true; outro.hidden = false; pp.style.visibility = 'hidden'; amb(null);
   }
   function toggle() {
     if (!running) return;
@@ -64,11 +63,13 @@
     pp.textContent = paused ? 'Продолжить' : 'Пауза'; pp.setAttribute('aria-label', pp.textContent);
     if (paused) { clear(); left = Math.max(300, left - (Date.now() - t0)); } else arm(left);
   }
+
   $('start').addEventListener('click', function () { go(0); });
   $('again').addEventListener('click', function () { go(0); });
   $('nx').addEventListener('click', function () { go(cur + 1); });
   $('pv').addEventListener('click', function () { go(cur - 1); });
-  [].forEach.call(tk, function (t, i) { t.addEventListener('click', function () { go(i); }); });
+  pp.addEventListener('click', toggle);
+
   var px0 = 0, py0 = 0, pt0 = 0, held = false, hid = 0, down = false;
   function release() { if (held && paused) toggle(); held = false; stage.classList.remove('hold'); }
   stage.addEventListener('pointerdown', function (e) {
@@ -87,10 +88,27 @@
   });
   stage.addEventListener('pointercancel', function () { down = false; clearTimeout(hid); release(); });
   stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-  pp.addEventListener('click', toggle);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowRight') go(cur + 1); else if (e.key === 'ArrowLeft') go(cur - 1); else if (e.key === ' ' && running) { e.preventDefault(); toggle(); }
   });
   document.addEventListener('visibilitychange', function () { if (document.hidden && running && !paused) toggle(); });
-  setTimeout(function () { if (cur < 0 && !reduce) { /* автозапуск не делаем: интро ждёт нажатия */ } }, 0);
+
+  function pick(id, push) {
+    var c = DATA.cards.filter(function (x) { return x.id === id; })[0] || DATA.cards[0];
+    build(c);
+    [].forEach.call(cardsNav.children, function (b) { b.classList.toggle('cur', b.dataset.id === c.id); });
+    if (push) { try { history.replaceState(null, '', '?c=' + c.id); } catch (e) {} }
+  }
+  fetch('cards.json').then(function (r) { return r.json(); }).then(function (d) {
+    DATA = d;
+    if (d.cards.length > 1) {
+      cardsNav.hidden = false;
+      d.cards.forEach(function (c) {
+        var b = document.createElement('button'); b.type = 'button'; b.dataset.id = c.id; b.textContent = c.short || c.title;
+        b.addEventListener('click', function () { pick(c.id, true); }); cardsNav.appendChild(b);
+      });
+    }
+    var m = /[?&]c=([^&]+)/.exec(location.search);
+    pick(m ? decodeURIComponent(m[1]) : d.cards[0].id, false);
+  });
 })();
