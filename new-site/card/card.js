@@ -1,6 +1,6 @@
 (function () {
   var $ = function (i) { return document.getElementById(i); };
-  var stage = $('stage'), slides = $('slides'), ticks = $('ticks'), tag = $('tag'), list = $('list'), intro = $('intro'), outro = $('outro'), grid = $('grid'), pp = $('pp'), cardsNav = $('cards');
+  var stage = $('stage'), slides = $('slides'), ticks = $('ticks'), tag = $('tag'), thumbs = $('thumbs'), count = $('count'), cardT = $('cardT'), meta = $('meta'), eb = $('eb'), capT = $('capT'), capN = $('capN'), intro = $('intro'), outro = $('outro'), grid = $('grid'), pp = $('pp'), cardsNav = $('cards');
   var ambs = [$('ambA'), $('ambB')], ambI = 0;
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
   var DATA = null, card = null, S = [], DUR = 3400, cur = -1, timer = null, left = 0, t0 = 0, paused = false, running = false, els, tk, items;
@@ -17,27 +17,36 @@
   function build(c) {
     clear(); card = c; S = c.slides; DUR = c.duration || 3400; cur = -1; running = false; paused = false;
     stage.style.setProperty('--dur', DUR + 'ms'); stage.classList.remove('paused');
-    slides.innerHTML = ''; ticks.innerHTML = ''; list.innerHTML = ''; grid.innerHTML = '';
+    slides.innerHTML = ''; ticks.innerHTML = ''; thumbs.innerHTML = ''; grid.innerHTML = '';
     $('ttl').textContent = c.title; $('lead').textContent = c.lead || ''; document.title = c.title + ' — Алексей Дмитриев';
     S.forEach(function (s, i) {
       var d = document.createElement('div'); d.className = 'slide';
       d.innerHTML = '<img src="' + s.img + '" alt="Слайд ' + (i + 1) + ': ' + s.title + '" width="900" height="1200"' + (i ? ' loading="lazy"' : '') + '>';
       slides.appendChild(d);
       var t = document.createElement('i'); t.addEventListener('click', function () { go(i); }); ticks.appendChild(t);
-      var li = document.createElement('li');
-      li.innerHTML = '<button type="button"><span>' + (i + 1) + '</span><b>' + s.title + '</b><small>' + s.kind + '. ' + (s.note || '') + '</small></button>';
-      li.firstChild.addEventListener('click', function () { go(i); });
-      list.appendChild(li);
+      var th = document.createElement('button'); th.type = 'button'; th.setAttribute('role', 'listitem'); th.setAttribute('aria-label', 'Слайд ' + (i + 1) + ': ' + s.title);
+      th.innerHTML = '<img src="' + (s.thumb || s.img) + '" alt="" loading="lazy"><span>' + (i + 1) + '</span>';
+      th.addEventListener('click', function () { go(i); });
+      thumbs.appendChild(th);
       var g = document.createElement('button'); g.type = 'button';
       g.innerHTML = '<img src="' + (s.thumb || s.img) + '" alt="Слайд ' + (i + 1) + '" loading="lazy">';
       g.addEventListener('click', function () { go(i); });
       grid.appendChild(g);
     });
-    els = slides.children; tk = ticks.children; items = list.children;
+    els = slides.children; tk = ticks.children; items = thumbs.children; info(-1);
+    cardT.textContent = c.title; eb.textContent = 'Карточка товара' + (DATA.cards.length > 1 ? ' · ' + (DATA.cards.indexOf(c) + 1) + ' из ' + DATA.cards.length : '');
+    var mt = c.meta || [S.length + ' слайдов', '≈ ' + Math.round(S.length * DUR / 1000) + ' сек'];
+    meta.innerHTML = mt.map(function (m) { return '<li>' + m + '</li>'; }).join('');
     intro.hidden = false; outro.hidden = true; tag.hidden = true; pp.style.visibility = ''; pp.textContent = 'Пауза';
     amb(null);
   }
 
+  function info(i) {
+    if (i < 0 || i >= S.length) { count.textContent = ''; capT.textContent = 'Выберите слайд'; capN.textContent = 'Нажмите «Смотреть» или выберите любой слайд ниже.'; return; }
+    count.textContent = (i + 1) + ' / ' + S.length; capT.textContent = S[i].title; capN.textContent = S[i].kind + '. ' + (S[i].note || '');
+    var nw = document.querySelector('.now'); nw.classList.remove('swap'); void nw.offsetWidth; nw.classList.add('swap');
+    var b = items[i]; if (b && thumbs.scrollWidth > thumbs.clientWidth + 2) thumbs.scrollTo({ left: b.offsetLeft - (thumbs.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' });
+  }
   function go(i) {
     if (i < 0) i = 0;
     intro.hidden = true;
@@ -46,7 +55,7 @@
     cur = i;
     for (var k = 0; k < els.length; k++) { els[k].classList.toggle('on', k === i); }
     for (k = 0; k < tk.length; k++) { tk[k].className = k < i ? 'done' : k === i ? 'cur' : ''; items[k].className = k === i ? 'cur' : ''; }
-    tag.hidden = false; tag.textContent = S[i].kind;
+    tag.hidden = false; tag.textContent = (i + 1) + ' / ' + S.length; info(i);
     amb(S[i].thumb || S[i].img);
     paused = false; stage.classList.remove('paused'); pp.textContent = 'Пауза'; pp.setAttribute('aria-label', 'Пауза');
     arm(DUR);
@@ -55,7 +64,7 @@
     clear(); running = false; cur = S.length;
     for (var k = 0; k < els.length; k++) els[k].classList.remove('on');
     for (k = 0; k < tk.length; k++) { tk[k].className = 'done'; items[k].className = ''; }
-    tag.hidden = true; outro.hidden = false; pp.style.visibility = 'hidden'; amb(null);
+    tag.hidden = true; outro.hidden = false; pp.style.visibility = 'hidden'; amb(null); info(-1);
   }
   function toggle() {
     if (!running) return;
@@ -66,8 +75,11 @@
 
   $('start').addEventListener('click', function () { go(0); });
   $('again').addEventListener('click', function () { go(0); });
+  $('nextCard').addEventListener('click', function () { var k = DATA.cards.indexOf(card); pick(DATA.cards[(k + 1) % DATA.cards.length].id, true); go(0); });
   $('nx').addEventListener('click', function () { go(cur + 1); });
   $('pv').addEventListener('click', function () { go(cur - 1); });
+  $('sr').addEventListener('click', function () { go(cur + 1); });
+  $('sl').addEventListener('click', function () { go(cur - 1); });
   pp.addEventListener('click', toggle);
 
   var px0 = 0, py0 = 0, pt0 = 0, held = false, hid = 0, down = false;
@@ -108,6 +120,7 @@
         b.addEventListener('click', function () { pick(c.id, true); }); cardsNav.appendChild(b);
       });
     }
+    if (d.cards.length > 1) $('nextCard').hidden = false;
     var m = /[?&]c=([^&]+)/.exec(location.search);
     pick(m ? decodeURIComponent(m[1]) : d.cards[0].id, false);
   });
