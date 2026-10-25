@@ -28,7 +28,7 @@ a{color:inherit;text-decoration:none}
 .paused .ticks i.cur::after{animation-play-state:paused}
 @keyframes fill{to{transform:scaleX(1)}}
 .tag{display:inline-flex;align-items:center;gap:.45rem;font-size:.9375rem;color:#fff}
-.tag[hidden]{display:none}
+.tag[hidden]{display:inline-flex;visibility:hidden}
 .tag::before{content:"";width:.4rem;height:.4rem;border-radius:50%;background:var(--green);flex:none}
 .intro,.outro{display:flex;flex-direction:column;justify-content:center;gap:1rem;padding:clamp(1.5rem,6%,2.5rem);z-index:7}
 .intro[hidden],.outro[hidden]{display:none}
@@ -109,7 +109,7 @@ a{color:inherit;text-decoration:none}
   .thumbs button{width:auto}
   .keys{display:block}
 }
-@media (max-width:899px){.side{padding:0 0 1rem}.cap-n{min-height:0}.thumbs button{width:3.75rem}}
+@media (max-width:899px){.side{padding:0 0 1rem}.cap-n{min-height:3em}.thumbs button{width:3.75rem}}
 
 .head{display:grid;gap:.5rem;padding-bottom:1.1rem;border-bottom:1px solid rgba(255,255,255,.18);margin-bottom:.4rem}
 .card-t{font-size:clamp(1.5rem,3.2vw,2.25rem);font-weight:500;letter-spacing:-.02em;line-height:1.1;text-wrap:balance}
@@ -135,3 +135,5 @@ a{color:inherit;text-decoration:none}
 
 @media (min-width:900px){.thumbs{max-width:22rem}.deck{align-content:start;padding-top:1rem}}
 @media (max-width:899px){.head{display:none}.side{padding-top:.25rem}}
+.count{min-height:1.25rem}
+.cap-t{min-height:1.15em}

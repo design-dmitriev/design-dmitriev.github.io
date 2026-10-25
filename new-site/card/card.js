@@ -37,12 +37,12 @@
     cardT.textContent = c.title; eb.textContent = 'Карточка товара' + (DATA.cards.length > 1 ? ' · ' + (DATA.cards.indexOf(c) + 1) + ' из ' + DATA.cards.length : '');
     var mt = c.meta || [S.length + ' слайдов', '≈ ' + Math.round(S.length * DUR / 1000) + ' сек'];
     meta.innerHTML = mt.map(function (m) { return '<li>' + m + '</li>'; }).join('');
-    intro.hidden = false; outro.hidden = true; tag.hidden = true; pp.style.visibility = ''; pp.textContent = 'Пауза';
+    intro.hidden = false; outro.hidden = true; tag.hidden = true; tag.textContent = '1 / ' + S.length; pp.style.visibility = ''; pp.textContent = 'Пауза';
     amb(null);
   }
 
   function info(i) {
-    if (i < 0 || i >= S.length) { count.textContent = ''; capT.textContent = 'Выберите слайд'; capN.textContent = 'Нажмите «Смотреть» или выберите любой слайд ниже.'; return; }
+    if (i < 0 || i >= S.length) { count.textContent = ''; capT.textContent = 'Выберите слайд'; capN.textContent = 'Выберите любой слайд ниже или посмотрите заново.'; return; }
     count.textContent = (i + 1) + ' / ' + S.length; capT.textContent = S[i].title; capN.textContent = S[i].kind + '. ' + (S[i].note || '');
     var nw = document.querySelector('.now'); nw.classList.remove('swap'); void nw.offsetWidth; nw.classList.add('swap');
     var b = items[i]; if (b && thumbs.scrollWidth > thumbs.clientWidth + 2) thumbs.scrollTo({ left: b.offsetLeft - (thumbs.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' });
@@ -64,7 +64,7 @@
     clear(); running = false; cur = S.length;
     for (var k = 0; k < els.length; k++) els[k].classList.remove('on');
     for (k = 0; k < tk.length; k++) { tk[k].className = 'done'; items[k].className = ''; }
-    tag.hidden = true; outro.hidden = false; pp.style.visibility = 'hidden'; amb(null); info(-1);
+    tag.hidden = true; tag.textContent = S.length + ' / ' + S.length; outro.hidden = false; pp.style.visibility = 'hidden'; amb(null); info(-1);
   }
   function toggle() {
     if (!running) return;
