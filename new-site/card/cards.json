@@ -63,6 +63,98 @@
      "note": "Все характеристики на одном экране."
     }
    ]
+  },
+  {
+   "id": "zaryadka-3v1",
+   "title": "Беспроводная зарядка 3в1",
+   "short": "Зарядка 3в1",
+   "lead": "Qi2 и MagSafe. Двенадцать слайдов: от заглавной до гарантии.",
+   "slides": [
+    {
+     "img": "img/zaryadka-3v1/1.webp",
+     "thumb": "img/zaryadka-3v1/1-t.webp",
+     "kind": "Сценарии",
+     "title": "Удобно везде",
+     "note": "Рабочий стол, кухня, спальня: товар в жизни."
+    },
+    {
+     "img": "img/zaryadka-3v1/2.webp",
+     "thumb": "img/zaryadka-3v1/2-t.webp",
+     "kind": "Заглавный слайд",
+     "title": "Зарядка 3в1",
+     "note": "Что заряжает и какие стандарты поддерживает."
+    },
+    {
+     "img": "img/zaryadka-3v1/3.webp",
+     "thumb": "img/zaryadka-3v1/3-t.webp",
+     "kind": "Преимущество",
+     "title": "Притягивает сам",
+     "note": "Магнит работает на расстоянии до 3 см."
+    },
+    {
+     "img": "img/zaryadka-3v1/4.webp",
+     "thumb": "img/zaryadka-3v1/4-t.webp",
+     "kind": "Технология",
+     "title": "Мощный магнит",
+     "note": "Внутреннее устройство и совместимость."
+    },
+    {
+     "img": "img/zaryadka-3v1/5.webp",
+     "thumb": "img/zaryadka-3v1/5-t.webp",
+     "kind": "Материалы",
+     "title": "Premium",
+     "note": "Корпус, шарнир и основание."
+    },
+    {
+     "img": "img/zaryadka-3v1/6.webp",
+     "thumb": "img/zaryadka-3v1/6-t.webp",
+     "kind": "Размер",
+     "title": "Компактная конструкция",
+     "note": "Складывается и помещается в карман."
+    },
+    {
+     "img": "img/zaryadka-3v1/7.webp",
+     "thumb": "img/zaryadka-3v1/7-t.webp",
+     "kind": "Надёжность",
+     "title": "Механизм шарниров",
+     "note": "Размеры, вес и ресурс складывания."
+    },
+    {
+     "img": "img/zaryadka-3v1/8.webp",
+     "thumb": "img/zaryadka-3v1/8-t.webp",
+     "kind": "Сценарий",
+     "title": "Для просмотра видео",
+     "note": "Смартфон можно повернуть."
+    },
+    {
+     "img": "img/zaryadka-3v1/9.webp",
+     "thumb": "img/zaryadka-3v1/9-t.webp",
+     "kind": "Совместимость",
+     "title": "Заряжай всё сразу",
+     "note": "Телефон, часы и наушники одновременно."
+    },
+    {
+     "img": "img/zaryadka-3v1/10.webp",
+     "thumb": "img/zaryadka-3v1/10-t.webp",
+     "kind": "Безопасность",
+     "title": "Безопасность на первом месте",
+     "note": "Qi2, отвод тепла и защита от перегрева."
+    },
+    {
+     "img": "img/zaryadka-3v1/11.webp",
+     "thumb": "img/zaryadka-3v1/11-t.webp",
+     "kind": "Комплект",
+     "title": "Что входит в комплект",
+     "note": "Станция, кабель, упаковка и гарантийный талон."
+    },
+    {
+     "img": "img/zaryadka-3v1/12.webp",
+     "thumb": "img/zaryadka-3v1/12-t.webp",
+     "kind": "Гарантия",
+     "title": "12 месяцев гарантии",
+     "note": "Поддержка каждый день и онлайн."
+    }
+   ]
   }
  ]
 }

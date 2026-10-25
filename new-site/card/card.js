@@ -111,7 +111,7 @@
     [].forEach.call(cardsNav.children, function (b) { b.classList.toggle('cur', b.dataset.id === c.id); });
     if (push) { try { history.replaceState(null, '', '?c=' + c.id); } catch (e) {} }
   }
-  fetch('cards.json').then(function (r) { return r.json(); }).then(function (d) {
+  fetch('cards.json?v=2').then(function (r) { return r.json(); }).then(function (d) {
     DATA = d;
     if (d.cards.length > 1) {
       cardsNav.hidden = false;
