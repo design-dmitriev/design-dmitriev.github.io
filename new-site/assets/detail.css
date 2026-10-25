@@ -140,3 +140,5 @@ body.lock{overflow:hidden;position:fixed;left:0;right:0;width:100%}
 
 .sh-body .tags span,.sh-link,.kdemo .cap,.fc-go,.fy-chip,.sh-x,.lb button{display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.2}
 .sh-x,.lb button{padding:0}
+html{scrollbar-gutter:stable}
+html:has(body.lock){overflow-y:scroll}
