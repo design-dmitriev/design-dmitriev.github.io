@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Folderify — плагин Figma Алексея Дмитриева</title>
+<meta name="description" content="Folderify: плагин Figma, который выгружает кадры и исходники на Яндекс.Диск и сразу даёт ссылку. Открытый код.">
+<link rel="preload" href="../assets/fonts/zarya-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/tokens.css?v=1">
+<link rel="stylesheet" href="page.css?v=1">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="../">← На главную</a>
+    <nav><a href="#how">Как работает</a><a href="#can">Возможности</a><a href="#install">Установка</a></nav>
+  </header>
+
+  <section style="border:0;padding-top:0" aria-labelledby="h1">
+    <h1 id="h1">Folderify</h1>
+    <div class="hero-row">
+      <p class="lead">Плагин Figma: кадры и исходники уходят на Яндекс.Диск прямо из файла, а ссылка на результат копируется одним нажатием.</p>
+      <div>
+        <div class="acts">
+          <a class="b" href="folderify-plugin.zip" download>Скачать плагин (.zip)</a>
+          <a class="b alt" href="https://github.com/design-dmitriev/design-dmitriev.github.io/tree/main/new-site/folderify" target="_blank" rel="noopener">Исходный код на GitHub ↗</a>
+        </div>
+        <p class="meta">folderify-plugin.zip · 50 КБ · открытый код</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" aria-labelledby="how-h">
+    <h2 id="how-h">Как работает</h2>
+    <div class="demo">
+      <div class="vbox"><video id="v" src="../assets/demo/folderify.mp4" poster="../assets/demo/folderify.jpg" muted playsinline loop autoplay preload="metadata" aria-label="Демонстрация плагина"></video></div>
+      <ol class="steps" id="steps">
+        <li><button type="button" data-t="0.05"><span class="n">1</span><b>Войдите через Яндекс</b><span class="t">Подтвердите доступ и вставьте показанный токен.</span></button></li>
+        <li><button type="button" data-t="3.23"><span class="n">2</span><b>Выберите папку</b><span class="t">Впишите путь или пройдите по списку папок на Диске.</span></button></li>
+        <li><button type="button" data-t="6.23"><span class="n">3</span><b>Выделите и выгрузите</b><span class="t">Отметьте кадры, выберите формат и масштаб. Плагин отправит их на Диск и даст ссылку.</span></button></li>
+        <li><button type="button" data-t="9.63"><span class="n">4</span><b>Добавьте исходники</b><span class="t">Файл .fig или PDF ляжет в подпапку Sources рядом с кадрами.</span></button></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="can" aria-labelledby="can-h">
+    <h2 id="can-h">Что умеет</h2>
+    <ul class="rows">
+      <li><b>Выгрузка кадров</b><span>Выделенные кадры в PNG, JPG, SVG или PDF в нужном масштабе.</span></li>
+      <li><b>Исходники</b><span>Файлы .fig и PDF уходят в подпапку Sources, чтобы макет и исходник лежали вместе.</span></li>
+      <li><b>Папка на Диске</b><span>Выберите существующую или создайте новую, не выходя из Figma.</span></li>
+      <li><b>Ссылка на результат</b><span>Копируется одним нажатием, её можно сразу отправлять коллегам и другим отделам.</span></li>
+      <li><b>Инструкция внутри</b><span>Кнопка «Как это работает» всегда под рукой, отдельная документация не нужна.</span></li>
+    </ul>
+  </section>
+
+  <section id="safe" aria-labelledby="safe-h">
+    <h2 id="safe-h">Доступ и безопасность</h2>
+    <div class="panel">
+      <ul class="rows">
+        <li><b>Куда ходит плагин</b><span>Только на серверы Яндекса: <span class="code">cloud-api.yandex.net</span> и <span class="code">*.yandex.net</span>.</span></li>
+        <li><b>Где хранится токен</b><span>В хранилище Figma на вашем компьютере. На сторонние серверы он не отправляется.</span></li>
+        <li><b>Открытый код</b><span>Весь код плагина лежит на GitHub, его можно прочитать и проверить перед установкой.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="install" aria-labelledby="inst-h">
+    <h2 id="inst-h">Установка и работа</h2>
+    <div class="sec2">
+      <div>
+        <h3>Установить</h3>
+        <ol class="how">
+          <li><span>Скачайте архив и распакуйте его.</span></li>
+          <li><span>В Figma откройте Plugins → Development → Import plugin from manifest…</span></li>
+          <li><span>Выберите файл <span class="code">manifest.json</span> и запустите плагин.</span></li>
+        </ol>
+      </div>
+      <div>
+        <h3>Пользоваться</h3>
+        <ol class="how">
+          <li><span>Войдите через Яндекс и вставьте токен.</span></li>
+          <li><span>Выберите или создайте папку на Диске.</span></li>
+          <li><span>Выделите кадры, выберите формат и масштаб, нажмите «Экспортировать».</span></li>
+          <li><span>Для исходников сохраните локальную копию (File → Save local copy) и загрузите файл: он попадёт в Sources.</span></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">Алексей Дмитриев © 2026 · <a href="../">На главную</a> · <a href="folderify-plugin.zip" download>Скачать Folderify</a></footer>
+</div>
+<script>
+(function(){
+  var v=document.getElementById('v'),bs=[].slice.call(document.querySelectorAll('#steps button')),m=bs.map(function(b){return +b.dataset.t}),cur=-1;
+  function idx(t){var i=0;for(var k=0;k<m.length;k++)if(t>=m[k]-.02)i=k;return i}
+  function upd(){var i=idx(v.currentTime);if(i!==cur){cur=i;bs.forEach(function(b,k){b.classList.toggle('on',k===i)})}}
+  v.addEventListener('timeupdate',upd);v.addEventListener('seeked',upd);upd();
+  bs.forEach(function(b,k){b.addEventListener('click',function(){v.currentTime=m[k]+.05;cur=-1;upd();var p=v.play();if(p&&p.catch)p.catch(function(){})})});
+})();
+</script>
+<script src="../assets/typo.js?v=4" defer></script>
+</body>
+</html>

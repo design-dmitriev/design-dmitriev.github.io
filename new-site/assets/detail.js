@@ -96,7 +96,7 @@
     var go=function(e){var b=e.target.closest&&e.target.closest('.fy-steps .fs');if(!b)return;e.stopImmediatePropagation();var k=+b.dataset.k;cur=-1;v.currentTime=m[k]+.05;fsSet(k,Math.max(300,(end(k)-m[k])*1000));cur=k;if(st[k]){cb.textContent=st[k][0];cs.textContent=st[k][1]}v.play&&v.play().catch(function(){})};
     $('.fy-steps',sh).addEventListener('click',go,true);upd();var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}
   function renderSkills(d){
-    var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body fy-layout"><div class="fy-info">';
+    var h='<div class="sh-top"><small>'+esc(d.label||'Что я выстроил')+'</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body fy-layout"><div class="fy-info">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.stat)h+='<div class="fy-chip"><b>'+esc(d.stat[0])+'</b><span>'+esc(d.stat[1])+'</span></div>';
     h+='<ul class="fy-skills">'+d.skills.map(function(s,i){return '<li style="--i:'+i+'"'+(s.plugin?' class="is-plugin"':'')+'><b>'+esc(s.h)+'</b><span>'+esc(s.t)+'</span></li>'}).join('')+'</ul></div>';
@@ -112,7 +112,7 @@
     sh.classList.remove('wide');
     var d=DATA[key];if(!d)return;
     if(d.layout==='skills'){renderSkills(d);return}
-    var h='<div class="sh-top"><small>Что я выстроил</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body">';
+    var h='<div class="sh-top"><small>'+esc(d.label||'Что я выстроил')+'</small><button class="sh-x" type="button" aria-label="Закрыть">×</button></div><div class="sh-body">';
     h+='<h3>'+esc(d.title)+'</h3><p class="lead">'+esc(d.lead)+'</p>';
     if(d.demo==='folderify')h+='<div class="fdemo"><iframe src="folderify/ui.html?demo=1" title="Как работает Folderify" loading="lazy"></iframe></div>';
     else if(d.demo)h+=demoHtml();

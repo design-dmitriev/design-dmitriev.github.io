@@ -58,7 +58,7 @@
       return '<li><figure class="work"><img src="' + esc(w.src) + '" alt="' + esc(w.alt || w.title || '') + '" loading="lazy">' +
         (w.title ? '<figcaption>' + esc(w.title) + (w.text ? '<span>' + esc(w.text) + '</span>' : '') + '</figcaption>' : '') + '</figure></li>';
     }).join('');
-    $('#works-note').textContent = 'Проекты, которые я делаю для себя.';
+    $('#works-note').textContent = 'Проекты, которые я делаю для себя и моей команды.';
   }).catch(function () {});
 
   /* хобби: переключатель появляется, когда в data/hobbies.json есть записи */
