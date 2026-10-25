@@ -199,10 +199,11 @@ section[id]{scroll-margin-top:1rem}
 .peek iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
 /* цифры в шапке */
-.hstats{margin-top:2.25rem;display:flex;flex-wrap:wrap;gap:1.25rem 2.5rem;max-width:44rem}
+.hstats{margin-top:2.25rem;display:flex;flex-wrap:wrap;gap:1.25rem 4rem;max-width:48rem}
 .hstats li{display:grid;gap:.2rem;min-width:7rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.35)}
 .hstats b{font-weight:500;font-size:clamp(1.5rem,3vw,2.25rem);letter-spacing:-.02em;line-height:1}
 .hstats span{font-size:.875rem;color:rgba(255,255,255,.72);max-width:12rem}
+@media (min-width:900px){.hstats span{max-width:none;white-space:nowrap}}
 .panel.soft .facts{border-top-color:#cfcfcf}
 .panel.soft .facts div{border-bottom-color:#dcdcdc}
 .facts dd{max-width:40rem}
