@@ -40,7 +40,7 @@
   window.addEventListener('message',function(e){if(e.origin===location.origin&&e.data==='vw-close')closeVw()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&vwOn)closeVw()});
   $$('#zgs .zg').forEach(function(b){b.onclick=function(){openLb(+b.dataset.i)}});
-  fetch('portfolio/cards.json?v=3').then(function(r){return r.json()}).then(function(d){
+  fetch('portfolio/cards.json?v=4').then(function(r){return r.json()}).then(function(d){
     var ul=$('#cgs');if(!ul||!d.cards.length)return;
     function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
     d.cards.forEach(function(c,k){var li=document.createElement('li');

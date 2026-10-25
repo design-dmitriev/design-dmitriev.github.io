@@ -1,133 +1,63 @@
 (function () {
   var $ = function (i) { return document.getElementById(i); };
-  var stage = $('stage'), slides = $('slides'), ticks = $('ticks'), tag = $('tag'), thumbs = $('thumbs'), count = $('count'), cardT = $('cardT'), meta = $('meta'), eb = $('eb'), capT = $('capT'), capN = $('capN'), intro = $('intro'), outro = $('outro'), grid = $('grid'), pp = $('pp'), cardsNav = $('cards');
-  var ambs = [$('ambA'), $('ambB')], ambI = 0;
+  var fr = window.self !== window.top;
+  if (fr) document.documentElement.classList.add('fr');
+  var fig = $('fig'), img = $('img'), ct = $('ct'), ttl = $('ttl'), ambs = [$('ambA'), $('ambB')], ai = 0;
+  var S = [], T = [], cur = 0, ready = {};
   var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var DATA = null, card = null, S = [], DUR = 3400, cur = -1, timer = null, left = 0, t0 = 0, paused = false, running = false, els, tk, items;
 
-  function amb(src) {
-    if (!src) { ambs.forEach(function (a) { a.classList.remove('on'); }); return; }
-    ambI = 1 - ambI;
-    var a = ambs[ambI], o = ambs[1 - ambI];
-    a.style.backgroundImage = 'url("' + src + '")'; a.classList.add('on'); o.classList.remove('on');
+  function close() { if (fr) parent.postMessage('vw-close', location.origin); else location.href = '../../#zaglavki'; }
+  function pre(i) {
+    i = (i + S.length) % S.length;
+    if (ready[i]) return Promise.resolve();
+    var im = new Image(); im.src = S[i];
+    return (im.decode ? im.decode() : new Promise(function (r) { im.onload = r; im.onerror = r; })).catch(function () {}).then(function () { ready[i] = true; });
   }
-  function clear() { clearTimeout(timer); timer = null; }
-  function arm(ms) { clear(); if (reduce) return; left = ms; t0 = Date.now(); timer = setTimeout(function () { go(cur + 1); }, ms); }
-
-  function build(c) {
-    clear(); card = c; S = c.slides; DUR = c.duration || 3400; cur = -1; running = false; paused = false;
-    stage.style.setProperty('--dur', DUR + 'ms'); stage.classList.remove('paused');
-    slides.innerHTML = ''; ticks.innerHTML = ''; thumbs.innerHTML = ''; grid.innerHTML = '';
-    $('ttl').textContent = c.title; $('lead').textContent = c.lead || ''; document.title = c.title + ' — Алексей Дмитриев';
-    S.forEach(function (s, i) {
-      var d = document.createElement('div'); d.className = 'slide';
-      d.innerHTML = '<img src="' + s.img + '" alt="Слайд ' + (i + 1) + ': ' + s.title + '" width="900" height="1200"' + (i ? ' loading="lazy"' : '') + '>';
-      slides.appendChild(d);
-      var t = document.createElement('i'); t.addEventListener('click', function () { go(i); }); ticks.appendChild(t);
-      var th = document.createElement('button'); th.type = 'button'; th.setAttribute('role', 'listitem'); th.setAttribute('aria-label', 'Слайд ' + (i + 1) + ': ' + s.title);
-      th.innerHTML = '<img src="' + (s.thumb || s.img) + '" alt="" loading="lazy"><span>' + (i + 1) + '</span>';
-      th.addEventListener('click', function () { go(i); });
-      thumbs.appendChild(th);
-      var g = document.createElement('button'); g.type = 'button';
-      g.innerHTML = '<img src="' + (s.thumb || s.img) + '" alt="Слайд ' + (i + 1) + '" loading="lazy">';
-      g.addEventListener('click', function () { go(i); });
-      grid.appendChild(g);
+  function show(i, dir) {
+    cur = (i + S.length) % S.length; var t = cur;
+    ct.textContent = (cur + 1) + ' / ' + S.length;
+    pre(t).then(function () {
+      if (cur !== t) return;
+      img.src = S[t]; img.alt = T[t];
+      ai = 1 - ai; ambs[ai].style.backgroundImage = 'url("' + S[t] + '")'; ambs[ai].classList.add('on'); ambs[1 - ai].classList.remove('on');
+      if (dir && !reduce) {
+        fig.style.transition = 'none'; fig.style.transform = 'translateX(' + (dir * 60) + 'px)'; fig.style.opacity = '0'; void fig.offsetWidth;
+        fig.style.transition = 'transform .3s cubic-bezier(.2,.7,.2,1),opacity .3s'; fig.style.transform = ''; fig.style.opacity = '';
+      }
     });
-    els = slides.children; tk = ticks.children; items = thumbs.children; info(-1);
-    cardT.textContent = c.title; eb.textContent = 'Карточка товара' + (DATA.cards.length > 1 ? ' · ' + (DATA.cards.indexOf(c) + 1) + ' из ' + DATA.cards.length : '');
-    var mt = c.meta || [S.length + ' слайдов', '≈ ' + Math.round(S.length * DUR / 1000) + ' сек'];
-    meta.innerHTML = mt.map(function (m) { return '<li>' + m + '</li>'; }).join('');
-    intro.hidden = false; outro.hidden = true; tag.hidden = true; tag.textContent = '1 / ' + S.length; pp.style.visibility = ''; pp.textContent = 'Пауза';
-    amb(null);
+    pre(t + 1); pre(t - 1);
   }
+  function go(d) { show(cur + d, d); }
 
-  function info(i) {
-    if (i < 0 || i >= S.length) { count.textContent = ''; capT.textContent = 'Выберите слайд'; capN.textContent = 'Выберите любой слайд ниже или посмотрите заново.'; return; }
-    count.textContent = (i + 1) + ' / ' + S.length; capT.textContent = S[i].title; capN.textContent = S[i].kind + '. ' + (S[i].note || '');
-    var nw = document.querySelector('.now'); nw.classList.remove('swap'); void nw.offsetWidth; nw.classList.add('swap');
-    var b = items[i]; if (b && thumbs.scrollWidth > thumbs.clientWidth + 2) thumbs.scrollTo({ left: b.offsetLeft - (thumbs.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' });
-  }
-  function go(i) {
-    if (i < 0) i = 0;
-    intro.hidden = true;
-    if (i >= S.length) { finish(); return; }
-    outro.hidden = true; running = true; pp.style.visibility = '';
-    cur = i;
-    for (var k = 0; k < els.length; k++) { els[k].classList.toggle('on', k === i); }
-    for (k = 0; k < tk.length; k++) { tk[k].className = k < i ? 'done' : k === i ? 'cur' : ''; items[k].className = k === i ? 'cur' : ''; }
-    tag.hidden = false; tag.textContent = (i + 1) + ' / ' + S.length; info(i);
-    amb(S[i].thumb || S[i].img);
-    paused = false; stage.classList.remove('paused'); pp.textContent = 'Пауза'; pp.setAttribute('aria-label', 'Пауза');
-    arm(DUR);
-  }
-  function finish() {
-    clear(); running = false; cur = S.length;
-    for (var k = 0; k < els.length; k++) els[k].classList.remove('on');
-    for (k = 0; k < tk.length; k++) { tk[k].className = 'done'; items[k].className = ''; }
-    tag.hidden = true; tag.textContent = S.length + ' / ' + S.length; outro.hidden = false; pp.style.visibility = 'hidden'; amb(null); info(-1);
-  }
-  function toggle() {
-    if (!running) return;
-    paused = !paused; stage.classList.toggle('paused', paused);
-    pp.textContent = paused ? 'Продолжить' : 'Пауза'; pp.setAttribute('aria-label', pp.textContent);
-    if (paused) { clear(); left = Math.max(300, left - (Date.now() - t0)); } else arm(left);
-  }
-
-  $('start').addEventListener('click', function () { go(0); });
-  $('again').addEventListener('click', function () { go(0); });
-  $('nextCard').addEventListener('click', function () { location.href = '../' + (DATA.cards.indexOf(card) % DATA.cards.length + 2 > DATA.cards.length ? 1 : DATA.cards.indexOf(card) + 2) + '/'; });
-  $('nx').addEventListener('click', function () { go(cur + 1); });
-  $('pv').addEventListener('click', function () { go(cur - 1); });
-  $('sr').addEventListener('click', function () { go(cur + 1); });
-  $('sl').addEventListener('click', function () { go(cur - 1); });
-  pp.addEventListener('click', toggle);
-
-  var px0 = 0, py0 = 0, pt0 = 0, held = false, hid = 0, down = false;
-  function release() { if (held && paused) toggle(); held = false; stage.classList.remove('hold'); }
-  stage.addEventListener('pointerdown', function (e) {
-    if (e.target.closest('button')) return;
-    down = true; px0 = e.clientX; py0 = e.clientY; pt0 = Date.now(); held = false;
-    clearTimeout(hid); hid = setTimeout(function () { if (down && running && !paused) { held = true; toggle(); stage.classList.add('hold'); } }, 260);
-  });
-  stage.addEventListener('pointerup', function (e) {
-    if (!down) return; down = false; clearTimeout(hid);
-    var dx = e.clientX - px0, dy = e.clientY - py0, dt = Date.now() - pt0, wasHeld = held;
-    release();
-    if (!running && cur < 0) return;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.3) { go(dx < 0 ? cur + 1 : cur - 1); return; }
-    if (wasHeld || dt > 400 || Math.abs(dx) > 12 || Math.abs(dy) > 12) return;
-    var r = stage.getBoundingClientRect(); go((e.clientX - r.left) < r.width * .4 ? cur - 1 : cur + 1);
-  });
-  stage.addEventListener('pointercancel', function () { down = false; clearTimeout(hid); release(); });
-  stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  $('x').addEventListener('click', close);
+  $('pv').addEventListener('click', function () { go(-1); });
+  $('nx').addEventListener('click', function () { go(1); });
+  $('stage').addEventListener('click', function (e) { if (e.target === $('stage')) close(); });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowRight') go(cur + 1); else if (e.key === 'ArrowLeft') go(cur - 1); else if (e.key === ' ' && running) { e.preventDefault(); toggle(); }
+    if (e.key === 'ArrowRight') go(1); else if (e.key === 'ArrowLeft') go(-1); else if (e.key === 'Escape') close();
   });
-  document.addEventListener('visibilitychange', function () { if (document.hidden && running && !paused) toggle(); });
 
-  function pick(id) {
-    var c = DATA.cards.filter(function (x) { return x.id === id; })[0] || DATA.cards[0];
-    build(c);
-    [].forEach.call(cardsNav.children, function (b) { b.classList.toggle('cur', b.dataset.id === c.id); });
-  }
-  fetch('../cards.json?v=3').then(function (r) { return r.json(); }).then(function (d) {
-    DATA = d;
-    d.cards.forEach(function (c) { c.slides.forEach(function (s) { s.img = '../' + s.img; if (s.thumb) s.thumb = '../' + s.thumb; }); });
-    if (d.cards.length > 1) {
-      cardsNav.hidden = false;
-      d.cards.forEach(function (c, k) {
-        var b = document.createElement('a'); b.dataset.id = c.id; b.href = '../' + (k + 1) + '/'; b.textContent = c.short || c.title;
-        cardsNav.appendChild(b);
-      });
-      $('nextCard').hidden = false;
-    }
-    var n = parseInt(document.body.dataset.n, 10) || 1;
-    pick((d.cards[n - 1] || d.cards[0]).id);
+  var sx = 0, sy = 0, dx = 0, drag = false, lock = null;
+  fig.addEventListener('pointerdown', function (e) { sx = e.clientX; sy = e.clientY; dx = 0; drag = true; lock = null; fig.style.transition = 'none'; try { fig.setPointerCapture(e.pointerId); } catch (x) {} });
+  fig.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    var x = e.clientX - sx, y = e.clientY - sy;
+    if (lock === null && (Math.abs(x) > 8 || Math.abs(y) > 8)) lock = Math.abs(x) > Math.abs(y);
+    if (lock) { dx = x; fig.style.transform = 'translateX(' + dx + 'px)'; }
   });
-})();
-(function () {
-  if (window.self === window.top) return;
-  var b = document.querySelector('.back');
-  if (b) { b.textContent = '← Закрыть'; b.addEventListener('click', function (e) { e.preventDefault(); parent.postMessage('vw-close', location.origin); }); }
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') parent.postMessage('vw-close', location.origin); });
+  function end() {
+    if (!drag) return; drag = false; fig.style.transition = '';
+    if (lock && Math.abs(dx) > 50) { fig.style.transform = ''; go(dx < 0 ? 1 : -1); } else fig.style.transform = '';
+  }
+  fig.addEventListener('pointerup', end); fig.addEventListener('pointercancel', end);
+
+  fetch('../cards.json?v=4').then(function (r) { return r.json(); }).then(function (d) {
+    var n = parseInt(document.body.dataset.n, 10) || 1, c = d.cards[n - 1] || d.cards[0];
+    S = c.slides.map(function (s) { return '../' + s.img; });
+    T = c.slides.map(function (s, i) { return 'Слайд ' + (i + 1) + ': ' + s.title; });
+    ttl.textContent = c.title; document.title = c.title + ' — Алексей Дмитриев';
+    if (S.length < 2) { $('pv').hidden = $('nx').hidden = true; }
+    show(0);
+  });
+  setTimeout(function () { try { window.focus(); } catch (e) {} }, 0);
 })();
