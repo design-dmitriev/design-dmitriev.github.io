@@ -158,5 +158,30 @@
    ],
    "cover": "img/zaryadka-3v1/cover.webp"
   }
- ]
+ ],
+ "slides": {
+  "title": "Заглавные слайды",
+  "items": [
+   {
+    "img": "^assets/zag/1.webp",
+    "title": "Зарядка 3в1 беспроводная, тёмная заглавка"
+   },
+   {
+    "img": "^assets/zag/2.webp",
+    "title": "Мощная зарядка с технологией GaN, 30 Вт"
+   },
+   {
+    "img": "^assets/zag/3.webp",
+    "title": "Кабель для iPhone, быстрая зарядка"
+   },
+   {
+    "img": "^assets/zag/4.webp",
+    "title": "Зарядка 3 в 1 беспроводная: смартфон, часы, наушники"
+   },
+   {
+    "img": "^assets/zag/5.webp",
+    "title": "Зарядка в автомобиль 52 Вт, Type-C и USB"
+   }
+  ]
+ }
 }

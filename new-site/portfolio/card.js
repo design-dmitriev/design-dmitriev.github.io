@@ -56,16 +56,17 @@
   }
   fig.addEventListener('pointerup', end); fig.addEventListener('pointercancel', end);
 
-  fetch('../cards.json?v=4').then(function (r) { return r.json(); }).then(function (d) {
-    var n = parseInt(document.body.dataset.n, 10) || 1, c = d.cards[n - 1] || d.cards[0];
-    S = c.slides.map(function (s) { return '../' + s.img; });
-    T = c.slides.map(function (s, i) { return 'Слайд ' + (i + 1) + ': ' + s.title; });
+  fetch('../cards.json?v=6').then(function (r) { return r.json(); }).then(function (d) {
+    var n = parseInt(document.body.dataset.n, 10) || 1, set = document.body.dataset.set, c = set ? { title: d[set].title, slides: d[set].items } : (d.cards[n - 1] || d.cards[0]);
+    function p(u) { return u.charAt(0) === '^' ? '../../' + u.slice(1) : '../' + u; }
+    S = c.slides.map(function (s) { return p(s.img); });
+    T = c.slides.map(function (s, i) { return set ? s.title : 'Слайд ' + (i + 1) + ': ' + s.title; });
     ttl.textContent = c.title; document.title = c.title + ' — Алексей Дмитриев';
     if (S.length < 2) { $('pv').hidden = $('nx').hidden = $('pv2').hidden = $('nx2').hidden = true; hint.hidden = true; }
     S.forEach(function (s, i) { var t = document.createElement('i'); t.addEventListener('click', function () { show(i, i > cur ? 1 : -1); }); tickEl.appendChild(t); tk.push(t); });
     hint.textContent = matchMedia('(hover:hover)').matches ? 'Листайте ← →' : 'Листайте →';
     setTimeout(function () { hint.classList.add('off'); }, 3500);
-    show(0);
+    var q = /[?&]i=(\d+)/.exec(location.search); show(q ? Math.min(+q[1], S.length - 1) : 0);
   });
   setTimeout(function () { try { window.focus(); } catch (e) {} }, 0);
 })();
