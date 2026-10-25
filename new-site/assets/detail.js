@@ -25,8 +25,7 @@
   }
   function closeVw(back){
     if(!vwOn)return;vwOn=false;vw.classList.remove('on');
-    setTimeout(function(){if(!vwOn){try{history.scrollRestoration='auto'}catch(e){}}},500);
-    if(!sheetOn)lockPage(false);
+        if(!sheetOn)lockPage(false);
     if(back!==true){try{if(history.state&&history.state.vw)history.back()}catch(e){}}
   }
   window.addEventListener('popstate',function(){if(vwOn)closeVw(true)});
