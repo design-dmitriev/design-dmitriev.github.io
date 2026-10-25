@@ -62,7 +62,8 @@
      "title": "Инфографика",
      "note": "Все характеристики на одном экране."
     }
-   ]
+   ],
+   "cover": "img/zaryadka-iphone/cover.webp"
   },
   {
    "id": "zaryadka-3v1",
@@ -154,7 +155,8 @@
      "title": "12 месяцев гарантии",
      "note": "Поддержка каждый день и онлайн."
     }
-   ]
+   ],
+   "cover": "img/zaryadka-3v1/cover.webp"
   }
  ]
 }

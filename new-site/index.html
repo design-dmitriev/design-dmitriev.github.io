@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="assets/tokens.css?v=1">
 <link rel="stylesheet" href="assets/style.css?v=18">
 <link rel="stylesheet" href="assets/mobile.css?v=35">
-<link rel="stylesheet" href="assets/detail.css?v=12">
+<link rel="stylesheet" href="assets/detail.css?v=14">
 </head>
 <body data-view="work">
 <a class="skip" href="#results">К содержимому</a>
@@ -62,9 +62,16 @@
       <div class="wrap">
         <div class="sec-head">
           <h2 id="zag-h">Портфолио</h2>
-          <p class="sum">Заглавные слайды карточек. Строю их на аналитике: учитываю охранные поля, типичные ошибки и интересы аудитории. Нажмите на слайд, чтобы открыть крупно.</p>
+          <p class="sum">Карточки целиком и их заглавные слайды. Строю на аналитике: учитываю охранные поля, типичные ошибки и интересы аудитории.</p>
         </div>
-        <ul class="zgs" id="zgs"><li><button class="zg" type="button" data-i="0" data-card="2" aria-label="Открыть: Зарядка 3в1 беспроводная, тёмная заглавка"><img src="assets/zag/1-s.webp" width="450" height="600" alt="Зарядка 3в1 беспроводная, тёмная заглавка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="1" aria-label="Открыть: Мощная зарядка с технологией GaN, 30 Вт"><img src="assets/zag/2-s.webp" width="450" height="600" alt="Мощная зарядка с технологией GaN, 30 Вт" loading="lazy"></button></li><li><button class="zg" type="button" data-i="2" aria-label="Открыть: Кабель для iPhone, быстрая зарядка"><img src="assets/zag/3-s.webp" width="450" height="600" alt="Кабель для iPhone, быстрая зарядка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="3" aria-label="Открыть: Зарядка 3 в 1 беспроводная: смартфон, часы, наушники"><img src="assets/zag/4-s.webp" width="450" height="600" alt="Зарядка 3 в 1 беспроводная: смартфон, часы, наушники" loading="lazy"></button></li><li><button class="zg" type="button" data-i="4" aria-label="Открыть: Зарядка в автомобиль 52 Вт, Type-C и USB"><img src="assets/zag/5-s.webp" width="450" height="600" alt="Зарядка в автомобиль 52 Вт, Type-C и USB" loading="lazy"></button></li></ul>
+        <div class="pgrp" id="g-cards" hidden>
+          <div class="pg-h"><h3>Карточки целиком <span class="n" id="cgn"></span></h3><p>Все слайды в порядке показа. Нажмите, чтобы листать.</p></div>
+          <ul class="zgs zcs" id="cgs"></ul>
+        </div>
+        <div class="pgrp" id="g-slides">
+          <div class="pg-h"><h3>Заглавные слайды <span class="n">5</span></h3><p>По первому слайду решают, открыть ли карточку. Нажмите, чтобы открыть крупно.</p></div>
+          <ul class="zgs" id="zgs"><li><button class="zg" type="button" data-i="0" aria-label="Открыть: Зарядка 3в1 беспроводная, тёмная заглавка"><img src="assets/zag/1-s.webp" width="450" height="600" alt="Зарядка 3в1 беспроводная, тёмная заглавка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="1" aria-label="Открыть: Мощная зарядка с технологией GaN, 30 Вт"><img src="assets/zag/2-s.webp" width="450" height="600" alt="Мощная зарядка с технологией GaN, 30 Вт" loading="lazy"></button></li><li><button class="zg" type="button" data-i="2" aria-label="Открыть: Кабель для iPhone, быстрая зарядка"><img src="assets/zag/3-s.webp" width="450" height="600" alt="Кабель для iPhone, быстрая зарядка" loading="lazy"></button></li><li><button class="zg" type="button" data-i="3" aria-label="Открыть: Зарядка 3 в 1 беспроводная: смартфон, часы, наушники"><img src="assets/zag/4-s.webp" width="450" height="600" alt="Зарядка 3 в 1 беспроводная: смартфон, часы, наушники" loading="lazy"></button></li><li><button class="zg" type="button" data-i="4" aria-label="Открыть: Зарядка в автомобиль 52 Вт, Type-C и USB"><img src="assets/zag/5-s.webp" width="450" height="600" alt="Зарядка в автомобиль 52 Вт, Type-C и USB" loading="lazy"></button></li></ul>
+        </div>
       </div>
     </section>
     <section class="sec" id="results" aria-labelledby="results-h">
@@ -227,8 +234,8 @@
 
 <script src="assets/noise.js" defer></script>
 <script src="assets/app.js?v=15" defer></script>
-<script src="assets/mobile.js?v=17" defer></script>
-<script src="assets/detail.js?v=16" defer></script>
+<script src="assets/mobile.js?v=18" defer></script>
+<script src="assets/detail.js?v=17" defer></script>
 <script src="assets/typo.js?v=4" defer></script>
 </body>
 </html>

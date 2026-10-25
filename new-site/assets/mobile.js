@@ -92,5 +92,6 @@
     zone.addEventListener('touchend',end);zone.addEventListener('touchcancel',end);
   }
   wideSwipe($('.panel.dark'),$('#cases'),'.case',true);
-  wideSwipe($('#zaglavki'),$('#zgs'),'li');
+  wideSwipe($('#g-slides'),$('#zgs'),'li');
+  document.addEventListener('portfolio:ready',function(){wideSwipe($('#g-cards'),$('#cgs'),'li')});
 })();

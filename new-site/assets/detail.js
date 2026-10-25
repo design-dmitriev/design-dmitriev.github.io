@@ -39,7 +39,17 @@
   window.addEventListener('popstate',function(){if(vwOn)closeVw(true)});
   window.addEventListener('message',function(e){if(e.origin===location.origin&&e.data==='vw-close')closeVw()});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&vwOn)closeVw()});
-  $$('.zg').forEach(function(b){b.onclick=function(){if(b.dataset.card)openVw(b.dataset.card);else openLb(+b.dataset.i)}});
+  $$('#zgs .zg').forEach(function(b){b.onclick=function(){openLb(+b.dataset.i)}});
+  fetch('portfolio/cards.json?v=3').then(function(r){return r.json()}).then(function(d){
+    var ul=$('#cgs');if(!ul||!d.cards.length)return;
+    function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
+    d.cards.forEach(function(c,k){var li=document.createElement('li');
+      li.innerHTML='<button class="zg zc" type="button" data-card="'+(k+1)+'" aria-label="Открыть презентацию: '+esc(c.title)+'"><img src="portfolio/'+c.cover+'" width="450" height="600" alt="" loading="lazy"><span class="bdg">'+w(c.slides.length)+'</span></button><span class="cap">'+esc(c.title)+'</span>';
+      ul.appendChild(li)});
+    $('#cgn').textContent=d.cards.length;$('#g-cards').hidden=false;
+    $$('.zc',ul).forEach(function(b){b.onclick=function(){openVw(b.dataset.card)}});
+    document.dispatchEvent(new Event('portfolio:ready'));
+  }).catch(function(){});
   $('.x',lb).onclick=closeLb;$('.pv',lb).onclick=function(){show(cur-1)};$('.nx',lb).onclick=function(){show(cur+1)};
   lb.addEventListener('click',function(e){if(e.target===lb)closeLb()});
   var fg=$('figure',lb),sx=0,sy=0,dx=0,drag=false;
