@@ -67,11 +67,16 @@
   }
   st.addEventListener('pointerup', end); st.addEventListener('pointercancel', end);
 
-  fetch('../cards.json?v=6').then(function (r) { return r.json(); }).then(function (d) {
+  fetch('../cards.json?v=7').then(function (r) { return r.json(); }).then(function (d) {
     var n = parseInt(document.body.dataset.n, 10) || 1, set = document.body.dataset.set, c = set ? { title: d[set].title, slides: d[set].items } : (d.cards[n - 1] || d.cards[0]);
     function p(u) { return u.charAt(0) === '^' ? '../../' + u.slice(1) : '../' + u; }
     S = c.slides.map(function (s) { return p(s.img); });
     T = c.slides.map(function (s, i) { return set ? s.title : 'Слайд ' + (i + 1) + ': ' + s.title; });
+    if (c.adult) { var ok = false; try { ok = sessionStorage.getItem('adult18') === '1'; } catch (z) {}
+      if (!ok) { fig.classList.add('veil'); var g = document.createElement('div'); g.className = 'gate'; g.setAttribute('role', 'group'); g.setAttribute('aria-label', 'Товар для взрослых');
+        g.innerHTML = '<b>18+</b><p>Товар для взрослых. Нажимая кнопку, вы подтверждаете, что вам есть 18 лет.</p><button type="button">Мне есть 18, показать</button>';
+        g.querySelector('button').addEventListener('click', function () { fig.classList.remove('veil'); g.remove(); try { sessionStorage.setItem('adult18', '1'); } catch (z) {} });
+        fig.appendChild(g); } }
     ttl.textContent = c.title; document.title = c.title + ' — Алексей Дмитриев';
     if (S.length < 2) { $('pv').hidden = $('nx').hidden = $('pv2').hidden = $('nx2').hidden = true; hint.hidden = true; }
     S.forEach(function (s, i) { var t = document.createElement('i'); t.addEventListener('click', function () { show(i, i > cur ? 1 : -1); }); tickEl.appendChild(t); tk.push(t); });

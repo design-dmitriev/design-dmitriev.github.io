@@ -69,15 +69,8 @@
    "id": "zaryadka-3v1",
    "title": "Беспроводная зарядка 3в1",
    "short": "Зарядка 3в1",
-   "lead": "Qi2 и MagSafe. Двенадцать слайдов: от заглавной до гарантии.",
+   "lead": "Qi2 и MagSafe. Двенадцать слайдов: от заглавной до сценариев использования.",
    "slides": [
-    {
-     "img": "img/zaryadka-3v1/1.webp",
-     "thumb": "img/zaryadka-3v1/1-t.webp",
-     "kind": "Сценарии",
-     "title": "Удобно везде",
-     "note": "Рабочий стол, кухня, спальня: товар в жизни."
-    },
     {
      "img": "img/zaryadka-3v1/2.webp",
      "thumb": "img/zaryadka-3v1/2-t.webp",
@@ -154,9 +147,96 @@
      "kind": "Гарантия",
      "title": "12 месяцев гарантии",
      "note": "Поддержка каждый день и онлайн."
+    },
+    {
+     "img": "img/zaryadka-3v1/1.webp",
+     "thumb": "img/zaryadka-3v1/1-t.webp",
+     "kind": "Сценарии",
+     "title": "Удобно везде",
+     "note": "Рабочий стол, кухня, спальня: товар в жизни."
     }
    ],
    "cover": "img/zaryadka-3v1/cover.webp"
+  },
+  {
+   "id": "vibrator",
+   "title": "Вибратор, товар 18+",
+   "short": "Вибратор 18+",
+   "lead": "Десять слайдов: от заглавной до ухода и приватности.",
+   "adult": true,
+   "cover": "img/vibrator/cover.webp",
+   "slides": [
+    {
+     "img": "img/vibrator/1.webp",
+     "thumb": "img/vibrator/1-t.webp",
+     "kind": "Заглавный слайд",
+     "title": "Вибратор для точки G",
+     "note": "Название, ключевая функция и товар в кадре."
+    },
+    {
+     "img": "img/vibrator/2.webp",
+     "thumb": "img/vibrator/2-t.webp",
+     "kind": "Зарядка",
+     "title": "USB-зарядка",
+     "note": "Четыре способа зарядить: без привязки к одному адаптеру."
+    },
+    {
+     "img": "img/vibrator/3.webp",
+     "thumb": "img/vibrator/3-t.webp",
+     "kind": "Размеры",
+     "title": "Твой идеальный размер",
+     "note": "Общая и рабочая длина, диаметр на самом товаре."
+    },
+    {
+     "img": "img/vibrator/4.webp",
+     "thumb": "img/vibrator/4-t.webp",
+     "kind": "Режимы",
+     "title": "Много режимов",
+     "note": "Три группы по семь режимов, у каждой своя иконка."
+    },
+    {
+     "img": "img/vibrator/5.webp",
+     "thumb": "img/vibrator/5-t.webp",
+     "kind": "Защита",
+     "title": "Водостойкий",
+     "note": "Защита от влаги и честная оговорка про погружение."
+    },
+    {
+     "img": "img/vibrator/6.webp",
+     "thumb": "img/vibrator/6-t.webp",
+     "kind": "Функции",
+     "title": "Несколько точек сразу",
+     "note": "Схема: что именно и где стимулирует каждая часть."
+    },
+    {
+     "img": "img/vibrator/7.webp",
+     "thumb": "img/vibrator/7-t.webp",
+     "kind": "Комплект",
+     "title": "Станет отличным подарком",
+     "note": "Коробка, магнитный кабель и фирменный лубрикант."
+    },
+    {
+     "img": "img/vibrator/8.webp",
+     "thumb": "img/vibrator/8-t.webp",
+     "kind": "Приватность",
+     "title": "Анонимная упаковка",
+     "note": "Непрозрачный пакет и этикетка без названия товара."
+    },
+    {
+     "img": "img/vibrator/9.webp",
+     "thumb": "img/vibrator/9-t.webp",
+     "kind": "Использование",
+     "title": "Использование и уход",
+     "note": "Правила мытья, зарядки и хранения."
+    },
+    {
+     "img": "img/vibrator/10.webp",
+     "thumb": "img/vibrator/10-t.webp",
+     "kind": "Приватность",
+     "title": "Убрать из истории покупок",
+     "note": "Как скрыть товар в профиле: инструкция по шагам."
+    }
+   ]
   }
  ],
  "slides": {
