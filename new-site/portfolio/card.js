@@ -67,7 +67,7 @@
   }
   st.addEventListener('pointerup', end); st.addEventListener('pointercancel', end);
 
-  fetch('../cards.json?v=7').then(function (r) { return r.json(); }).then(function (d) {
+  fetch('../cards.json?v=8').then(function (r) { return r.json(); }).then(function (d) {
     var n = parseInt(document.body.dataset.n, 10) || 1, set = document.body.dataset.set, c = set ? { title: d[set].title, slides: d[set].items } : (d.cards[n - 1] || d.cards[0]);
     function p(u) { return u.charAt(0) === '^' ? '../../' + u.slice(1) : '../' + u; }
     S = c.slides.map(function (s) { return p(s.img); });
