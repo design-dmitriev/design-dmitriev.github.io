@@ -101,32 +101,30 @@ body{display:grid;place-items:center;font-family:-apple-system,BlinkMacSystemFon
     s.classList.add('sw');setTimeout(apply,160);
   }
   var STEPS=[
-    ['Рамка и логотип всегда на одном месте',1],
+    ['Рамка и логотип на одном месте',1],
     ['Заголовок: одна мысль, до двух строк',2],
-    ['До трёх офферов слева: иконка, выгода, подпись',3],
+    ['До трёх офферов, только слева',3],
     ['Товар занимает около 70% слайда',4],
-    ['Градиент выбирается по категории товара',5]
+    ['Градиент зависит от категории товара',5]
   ];
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   function show(text){cap.style.opacity=0;setTimeout(function(){cap.textContent=text;cap.style.opacity=1},200)}
   function cls(n){for(var i=1;i<=5;i++)s.classList.toggle('st'+i,i<=n)}
   var t=[];function at(ms,f){t.push(setTimeout(f,ms))}
-  function rep(i,d){try{parent.postMessage({fy:'step',i:i,n:STEPS.length+1,d:d},'*')}catch(e){}}
+  function rep(i,d){try{parent.postMessage({fy:'step',i:i,n:STEPS.length,d:d},'*')}catch(e){}}
   function run(from){
     from=from||0;t.forEach(clearTimeout);t=[];
-    var T=reduce?400:1800,C=reduce?500:1080,o=from?0:300;
-    cls(from?STEPS[from-1]?STEPS[from-1][1]:5:0);s.classList.remove('gd');setCat(CAT[0],true);
+    var T=reduce?400:1800,C=reduce?500:1080,K=reduce?400:900,H=reduce?300:800,o=from?0:300,last=STEPS.length-1;
+    cls(from?STEPS[from-1][1]:0);s.classList.remove('gd');setCat(CAT[0],true);
     if(!from){cap.textContent='';cap.style.opacity=0}
-    for(var i=from;i<STEPS.length;i++)(function(i,st){at(o+(i-from)*T,function(){cls(st[1]);show(st[0]);rep(i,T);if(i===1)at(850,function(){s.classList.add('gd')});if(i===2)s.classList.remove('gd')})})(i,STEPS[i]);
-    var base=Math.max(0,o+(STEPS.length-from)*T-T*.4);
-    if(from<=STEPS.length){
-      at(base,function(){cls(5);rep(STEPS.length,4*C+800)});
-      [1,2,3,0].forEach(function(k,i){at(base+i*C,function(){setCat(CAT[k])})});
-      at(base+4*C+800,function(){run(0)});
-    }
+    for(var i=from;i<STEPS.length;i++)(function(i,st){at(o+(i-from)*T,function(){cls(st[1]);show(st[0]);rep(i,i===last?K+C+H:T);if(i===1)at(850,function(){s.classList.add('gd')});if(i===2)s.classList.remove('gd')})})(i,STEPS[i]);
+    var b=o+(last-from)*T;
+    at(b+K,function(){setCat(CAT[1])});
+    at(b+K+C,function(){setCat(CAT[2])});
+    at(b+K+C+H,function(){run(0)});
   }
-  try{parent.postMessage({fy:'steps',n:STEPS.length+1},'*')}catch(e){}
-  addEventListener('message',function(e){var m=e.data;if(m&&m.fy==='go'&&m.i>=0&&m.i<=STEPS.length)run(m.i)});
+  try{parent.postMessage({fy:'steps',n:STEPS.length},'*')}catch(e){}
+  addEventListener('message',function(e){var m=e.data;if(m&&m.fy==='go'&&m.i>=0&&m.i<STEPS.length)run(m.i)});
   document.fonts.ready.then(function(){run(0)});
 })();
 </script>
