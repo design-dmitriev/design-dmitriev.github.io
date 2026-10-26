@@ -40,7 +40,7 @@
   function warm(){['portfolio/slides/'].concat($$('.zc').map(function(b){return 'portfolio/'+b.dataset.card+'/'})).forEach(function(p,k){setTimeout(function(){frameFor(p)},k*400)})}
   document.addEventListener('portfolio:ready',function(){(window.requestIdleCallback||function(f){setTimeout(f,1500)})(warm)});
   $$('#zgs .zg').forEach(function(b){b.onclick=function(){openVw('portfolio/slides/?i='+b.dataset.i)}});
-  fetch('portfolio/cards.json?v=8').then(function(r){return r.json()}).then(function(d){
+  fetch('portfolio/cards.json?v=10').then(function(r){return r.json()}).then(function(d){
     var ul=$('#cgs');if(!ul||!d.cards.length)return;
     function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
     d.cards.forEach(function(c,k){var li=document.createElement('li');
