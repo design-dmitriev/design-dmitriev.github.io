@@ -67,8 +67,9 @@
   }
   st.addEventListener('pointerup', end); st.addEventListener('pointercancel', end);
 
-  fetch('../cards.json?v=14').then(function (r) { return r.json(); }).then(function (d) {
-    var n = parseInt(document.body.dataset.n, 10) || 1, set = document.body.dataset.set, c = set ? { title: d[set].title, slides: d[set].items } : (d.cards[n - 1] || d.cards[0]);
+  fetch('../cards.json?v=14', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+    var n = parseInt(document.body.dataset.n, 10) || 1, set = document.body.dataset.set, c = set ? { title: d[set].title, slides: d[set].items } : d.cards[n - 1];
+    if (!c) { close(); return; }
     function p(u) { return u.charAt(0) === '^' ? '../../' + u.slice(1) : '../' + u; }
     S = c.slides.map(function (s) { return p(s.img); });
     T = c.slides.map(function (s, i) { return set ? s.title : 'Слайд ' + (i + 1) + ': ' + s.title; });
