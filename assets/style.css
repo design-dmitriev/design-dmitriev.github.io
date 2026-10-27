@@ -279,3 +279,4 @@ h1,h2,h3,h4,.sum,.lead,.tags,.r-title{text-wrap:balance}
 .jobs h3 .aka{display:block;margin-top:.15rem;font-size:.9375rem;font-weight:400;color:var(--muted);letter-spacing:0}
 .rows .duty a,.jobs li h3 a{display:inline;min-height:0;font-weight:inherit;text-decoration:underline;text-underline-offset:.15em;text-decoration-thickness:1px}
 @media (min-width:900px){.sec-head{align-items:start}.sec-head .sum{padding-top:.7rem;text-wrap:pretty}}
+@media (min-width:900px) and (hover:hover){.hero h1{color:#fff;mix-blend-mode:difference}}
