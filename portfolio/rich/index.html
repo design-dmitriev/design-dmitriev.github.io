@@ -151,7 +151,7 @@ button{font:inherit;color:inherit;border:0;cursor:pointer;-webkit-tap-highlight-
 
   fetch('../cards.json?v=17', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
     items = d.rich.items; document.title = d.rich.title + ' — Алексей Дмитриев';
-    if (fr) { parent.postMessage('vw-loaded', location.origin); items.forEach(function (it) { var q = new Image(); q.src = '../' + it.lq; }); }
+    if (fr) { parent.postMessage('vw-loaded', location.origin); }
     else { var q = /[?&]i=(\d+)/.exec(location.search); show(q ? +q[1] : 0, true); resetState(); }
   });
   window.addEventListener('message', function (e) {

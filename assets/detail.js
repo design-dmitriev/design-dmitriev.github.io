@@ -38,14 +38,14 @@
     else if(k==='vw-ready'&&f&&f===curF)f.classList.add('ready');
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&vwOn)closeVw()});
-  function warm(){['portfolio/rich/'].concat($$('.zc').map(function(b){return 'portfolio/'+b.dataset.card+'/'})).forEach(function(p,k){setTimeout(function(){frameFor(p)},k*400)})}
+  function warm(){var c=navigator.connection||{};if(c.saveData||(c.effectiveType&&c.effectiveType!=='4g')||matchMedia('(hover:none)').matches)return;$$('#cgs .zc').slice(0,3).map(function(b){return 'portfolio/'+b.dataset.card+'/'}).forEach(function(p,k){setTimeout(function(){frameFor(p)},k*600)})}
   document.addEventListener('portfolio:ready',function(){(window.requestIdleCallback||function(f){setTimeout(f,1500)})(warm)});
   $$('#rgs .zg').forEach(function(b){b.onclick=function(){openVw('portfolio/rich/?i='+b.dataset.i)}});
   fetch('portfolio/cards.json?v=17',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
     var ul=$('#cgs');if(!ul||!d.cards.length)return;
     function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
     d.cards.forEach(function(c,k){var li=document.createElement('li');
-      li.innerHTML='<div class="zw"><i class="stk s2"></i><i class="stk s1"></i><button class="zg zc" type="button" data-card="'+(k+1)+'" aria-label="Открыть презентацию: '+esc(c.title)+(c.adult?', товар для взрослых 18+':'')+', '+w(c.slides.length)+'"><img src="portfolio/'+c.cover+'" width="450" height="600" alt="" decoding="async">'+(c.adult?'<span class="age"><b>18+</b><i>Товар для взрослых</i></span>':'')+'<span class="bdg">'+w(c.slides.length)+'</span></button></div><span class="cap">'+esc(c.title)+'</span>';
+      li.innerHTML='<div class="zw"><i class="stk s2"></i><i class="stk s1"></i><button class="zg zc" type="button" data-card="'+(k+1)+'" aria-label="Открыть презентацию: '+esc(c.title)+(c.adult?', товар для взрослых 18+':'')+', '+w(c.slides.length)+'"><img src="portfolio/'+c.cover+'" width="450" height="600" alt="" decoding="async"'+(k>1||c.adult||c.more?' loading="lazy"':'')+'>'+(c.adult?'<span class="age"><b>18+</b><i>Товар для взрослых</i></span>':'')+'<span class="bdg">'+w(c.slides.length)+'</span></button></div><span class="cap">'+esc(c.title)+'</span>';
       (c.adult||c.more?$('#cmore'):ul).appendChild(li)});
     var mo=$('#cmore'),mb=$('#cmb');if(mo.children.length){$('#cmw').hidden=false;mb.onclick=function(){var o=mo.hidden;mo.hidden=!o;mb.setAttribute('aria-expanded',o);mb.firstChild.nodeValue=o?'Скрыть':'Смотреть больше карточек'}}
     $('#cgn').textContent=ul.children.length;$('#g-cards').hidden=false;
