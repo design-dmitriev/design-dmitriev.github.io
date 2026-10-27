@@ -41,7 +41,7 @@
   function warm(){var c=navigator.connection||{};if(c.saveData||(c.effectiveType&&c.effectiveType!=='4g')||matchMedia('(hover:none)').matches)return;$$('#cgs .zc').slice(0,3).map(function(b){return 'portfolio/'+b.dataset.card+'/'}).forEach(function(p,k){setTimeout(function(){frameFor(p)},k*600)})}
   document.addEventListener('portfolio:ready',function(){(window.requestIdleCallback||function(f){setTimeout(f,1500)})(warm)});
   $$('#rgs .zg').forEach(function(b){b.onclick=function(){openVw('portfolio/rich/?i='+b.dataset.i)}});
-  fetch('portfolio/cards.json?v=19',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+  fetch('portfolio/cards.json?v=20',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
     var ul=$('#cgs');if(!ul||!d.cards.length)return;
     function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
     d.cards.forEach(function(c,k){var li=document.createElement('li');

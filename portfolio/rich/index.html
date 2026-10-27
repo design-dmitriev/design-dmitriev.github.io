@@ -149,7 +149,7 @@ button{font:inherit;color:inherit;border:0;cursor:pointer;-webkit-tap-highlight-
 
   function resetState() { col.style.transform = ''; col.style.opacity = ''; col.style.transition = ''; hint.classList.remove('off'); clearTimeout(hintT); hintT = setTimeout(function () { hint.classList.add('off'); }, 3500); }
 
-  fetch('../cards.json?v=19', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+  fetch('../cards.json?v=20', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
     items = d.rich.items; document.title = d.rich.title + ' — Алексей Дмитриев';
     if (fr) { parent.postMessage('vw-loaded', location.origin); }
     else { var q = /[?&]i=(\d+)/.exec(location.search); show(q ? +q[1] : 0, true); resetState(); }
