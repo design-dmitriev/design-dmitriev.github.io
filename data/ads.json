@@ -1,0 +1,43 @@
+{
+ "title": "Реклама",
+ "formats": [
+  {
+   "id": "metro",
+   "order": 3,
+   "title": "Метро",
+   "items": [
+    {
+     "img": "portfolio/img/ads/metro-mock.webp",
+     "kind": "Мокап, ИИ",
+     "cap": "Метро: мокап ИИ",
+     "alt": "Мокап рекламного баннера GQbox на станции метро, сгенерирован ИИ"
+    },
+    {
+     "img": "portfolio/img/ads/metro-fact.webp",
+     "kind": "Реальное фото",
+     "cap": "Метро: фото",
+     "alt": "Реальная фотография баннера GQbox на станции метро"
+    }
+   ]
+  },
+  {
+   "id": "pvz",
+   "order": 4,
+   "title": "ПВЗ",
+   "items": [
+    {
+     "img": "portfolio/img/ads/pvz-mock.webp",
+     "kind": "Мокап, ИИ",
+     "cap": "ПВЗ: мокап ИИ",
+     "alt": "Мокап рекламного экрана GQbox в пункте выдачи, сгенерирован ИИ"
+    },
+    {
+     "img": "portfolio/img/ads/pvz-fact.webp",
+     "kind": "Реальное фото",
+     "cap": "ПВЗ: фото",
+     "alt": "Реальная фотография рекламного экрана GQbox в пункте выдачи"
+    }
+   ]
+  }
+ ]
+}

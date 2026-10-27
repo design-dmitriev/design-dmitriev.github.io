@@ -54,6 +54,17 @@
     $$('.zg img').forEach(function(im){if(im.decode)im.decode().catch(function(){})});
   }).catch(function(){});
 
+
+  fetch('data/ads.json?v=3',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+    var fm=d.formats.slice().sort(function(a,b){return a.order-b.order}),ul=$('#ads'),mo=$('#adm'),k=0;
+    if(!ul||!fm.length)return;
+    fm.forEach(function(f){f.items.forEach(function(it){var li=document.createElement('li');
+      li.innerHTML='<div class="zg zad"><img src="'+it.img+'" width="450" height="600" alt="'+esc(it.alt||it.cap)+'" decoding="async"'+(k>1?' loading="lazy"':'')+'><span class="bdg">'+esc(it.kind)+'</span></div><span class="cap">'+esc(it.cap)+'</span>';
+      (k++<5?ul:mo).appendChild(li)})});
+    $('#adn').textContent=fm.length;$('#g-ads').hidden=false;
+    if(mo.children.length){var w=$('#adw'),b=$('#adb');w.hidden=false;b.onclick=function(){var o=mo.hidden;mo.hidden=!o;b.setAttribute('aria-expanded',o);b.firstChild.nodeValue=o?'Скрыть':'Смотреть больше рекламы'}}
+  }).catch(function(){});
+
   /* шторка «Подробнее» */
   var sheetOn=false,DATA=null,bg=document.createElement('div'),sh=document.createElement('aside');
   bg.className='sh-bg';sh.className='sheet';sh.setAttribute('role','dialog');sh.setAttribute('aria-modal','true');sh.setAttribute('aria-label','Подробнее');
