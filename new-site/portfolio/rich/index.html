@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0b0c">
+<title>Рич-контент — Алексей Дмитриев</title>
+<style>
+@font-face{font-family:Zarya;font-weight:400;font-display:block;src:url(../../assets/fonts/zarya-400.woff2) format("woff2")}
+@font-face{font-family:Zarya;font-weight:500;font-display:block;src:url(../../assets/fonts/zarya-500.woff2) format("woff2")}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+body{position:fixed;inset:0;font-family:Zarya,system-ui,sans-serif;background:#0b0b0c;color:#fff}
+html.fr,html.fr body{background:transparent}
+button{font:inherit;color:inherit;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none;background:rgba(11,11,12,.0)}
+#sc::-webkit-scrollbar{display:none}
+.col{width:min(100%,640px);margin:0 auto;padding-top:calc(60px + env(safe-area-inset-top));padding-bottom:calc(1rem + env(safe-area-inset-bottom));transition:opacity .25s}
+.col.out{opacity:0}
+.pic{position:relative;width:100%;background:#1a1a1c center top/100% auto no-repeat;overflow:hidden}
+.pic img{display:block;width:100%;height:100%;opacity:0;transition:opacity .35s}
+.pic img.ok{opacity:1}
+.end{display:grid;gap:.75rem;justify-items:center;padding:2rem 1rem 1.5rem;text-align:center}
+.end p{color:rgba(255,255,255,.6);font-size:.9375rem;line-height:1.4}
+.btn{min-height:48px;padding:0 1.5rem;border-radius:999px;background:#fff;color:#0b0b0c;font-size:1rem;display:inline-flex;align-items:center;justify-content:center;max-width:100%}
+.btn.line{background:rgba(255,255,255,.12);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+.top{position:absolute;left:0;right:0;top:0;z-index:5;padding:max(.5rem,env(safe-area-inset-top)) .75rem .5rem;display:flex;align-items:center;gap:.5rem;background:linear-gradient(rgba(11,11,12,.92),rgba(11,11,12,.7) 70%,rgba(11,11,12,0));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);mask-image:linear-gradient(#000 78%,transparent);-webkit-mask-image:linear-gradient(#000 78%,transparent)}
+.ttl{flex:1;min-width:0;font-size:.9375rem;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:.5rem}
+.ct{color:rgba(255,255,255,.6);font-size:.875rem;white-space:nowrap}
+.ctl{--s:44px;flex:none;width:var(--s);height:var(--s);padding:0;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);transition:background .2s,transform .2s}
+.ctl svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+@media (hover:hover){.ctl:hover{background:rgba(255,255,255,.22)}}
+.ctl:active{transform:scale(.94)}
+.ctl:focus-visible,.btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.ctl[hidden]{display:none}
+#pr{position:absolute;left:0;top:0;height:2px;width:100%;z-index:6;background:#fff;transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
+.hint{position:absolute;left:50%;bottom:calc(1.25rem + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:6;padding:.6rem 1.1rem;border-radius:999px;background:rgba(10,10,10,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:.875rem;white-space:nowrap;pointer-events:none;transition:opacity .5s}
+.hint.off{opacity:0}
+@media (min-width:900px){.col{width:min(100%,720px)}.pic{border-radius:1.25rem}.col{padding-top:calc(72px + env(safe-area-inset-top))}}
+@media (prefers-reduced-motion:reduce){.col,.pic img,.hint{transition:none}}
+</style>
+</head>
+<body>
+<div id="pr"></div>
+<header class="top">
+  <span class="ttl" id="ttl"></span>
+  <span class="ct" id="ct">&nbsp;</span>
+  <button class="ctl" id="pv" type="button" aria-label="Предыдущий макет"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
+  <button class="ctl" id="nx" type="button" aria-label="Следующий макет"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5L16 12l-6.5 6.5"/></svg></button>
+  <button class="ctl" id="x" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</header>
+<main id="sc">
+  <div class="col" id="col">
+    <div class="pic" id="pic"><img id="img" alt="" decoding="async" draggable="false"></div>
+    <div class="end" id="end"></div>
+  </div>
+</main>
+<span class="hint" id="hint">Листайте вниз</span>
+<script>
+(function () {
+  var $ = function (i) { return document.getElementById(i); };
+  var fr = window.self !== window.top;
+  if (fr) document.documentElement.classList.add('fr');
+  var sc = $('sc'), col = $('col'), pic = $('pic'), img = $('img'), pr = $('pr'), hint = $('hint'), end = $('end');
+  var items = [], cur = 0, needReady = false, hintT = 0;
+  var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function close() { if (fr) parent.postMessage('vw-close', location.origin); else location.href = '../../#zaglavki'; }
+  function lq(it) { return new Promise(function (r) { var q = new Image(); q.onload = q.onerror = function () { r(); }; q.src = '../' + it.lq; }); }
+
+  function renderEnd() {
+    end.innerHTML = '';
+    var nxt = items[cur + 1];
+    if (nxt) {
+      var p = document.createElement('p'); p.textContent = 'Следующий макет'; end.appendChild(p);
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.textContent = nxt.title + ' →'; b.addEventListener('click', function () { go(1); }); end.appendChild(b);
+    }
+    var t = document.createElement('button'); t.type = 'button'; t.className = 'btn line'; t.textContent = 'Наверх';
+    t.addEventListener('click', function () { sc.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }); end.appendChild(t);
+    var c = document.createElement('button'); c.type = 'button'; c.className = 'btn line'; c.textContent = 'Закрыть'; c.addEventListener('click', close); end.appendChild(c);
+  }
+
+  function show(i, instant) {
+    cur = Math.max(0, Math.min(items.length - 1, i));
+    var it = items[cur], t = cur;
+    $('ttl').textContent = it.title; $('ct').textContent = (cur + 1) + ' / ' + items.length;
+    $('pv').hidden = $('nx').hidden = items.length < 2;
+    $('pv').disabled = cur === 0; $('nx').disabled = cur === items.length - 1;
+    $('pv').style.opacity = cur === 0 ? .35 : ''; $('nx').style.opacity = cur === items.length - 1 ? .35 : '';
+    document.title = it.title + ' — Алексей Дмитриев';
+    col.classList.add('out');
+    var finish = function () {
+      if (cur !== t) return;
+      img.classList.remove('ok'); img.removeAttribute('src');
+      pic.style.backgroundImage = 'url("../' + it.lq + '")';
+      pic.style.aspectRatio = it.w + ' / ' + it.h;
+      img.alt = it.title; sc.scrollTop = 0; renderEnd(); upd();
+      lq(it).then(function () {
+        if (cur !== t) return;
+        col.classList.remove('out');
+        if (needReady) { needReady = false; parent.postMessage('vw-ready', location.origin); }
+        img.onload = function () { (img.decode ? img.decode() : Promise.resolve()).catch(function () {}).then(function () { if (cur === t) img.classList.add('ok'); }); };
+        img.src = '../' + it.img;
+      });
+    };
+    if (instant || reduce) finish(); else setTimeout(finish, 180);
+  }
+  function go(d) { var n = cur + d; if (n < 0 || n >= items.length) return; show(n); }
+  function upd() { var m = sc.scrollHeight - sc.clientHeight; pr.style.transform = 'scaleX(' + (m > 0 ? Math.min(1, sc.scrollTop / m) : 0) + ')'; if (sc.scrollTop > 40) hint.classList.add('off'); }
+  sc.addEventListener('scroll', upd, { passive: true });
+
+  $('x').addEventListener('click', close);
+  $('pv').addEventListener('click', function () { go(-1); });
+  $('nx').addEventListener('click', function () { go(1); });
+  document.addEventListener('click', function (e) { if (e.target === sc || e.target === col) { if (e.clientX < col.getBoundingClientRect().left || e.clientX > col.getBoundingClientRect().right) close(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'ArrowLeft') go(-1);
+    else if (e.key === 'Home') sc.scrollTo(0, 0);
+    else if (e.key === 'End') sc.scrollTo(0, sc.scrollHeight);
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'PageDown' || e.key === 'PageUp' || e.key === ' ') { if (document.activeElement && document.activeElement.tagName === 'BUTTON') return; sc.focus && sc.focus({ preventScroll: true }); }
+  });
+  sc.tabIndex = -1; sc.style.outline = 'none';
+
+  /* тянем вниз у самого верха, чтобы закрыть */
+  var ty = 0, tx = 0, pulling = false, dy = 0, lock = null;
+  sc.addEventListener('touchstart', function (e) {
+    if (e.touches.length !== 1) return; ty = e.touches[0].clientY; tx = e.touches[0].clientX; dy = 0; lock = null; pulling = sc.scrollTop <= 0;
+  }, { passive: true });
+  sc.addEventListener('touchmove', function (e) {
+    if (!pulling) return;
+    var y = e.touches[0].clientY - ty, x = e.touches[0].clientX - tx;
+    if (lock === null && (Math.abs(y) > 8 || Math.abs(x) > 8)) lock = (Math.abs(y) > Math.abs(x) && y > 0) ? 'v' : 'n';
+    if (lock !== 'v') { pulling = false; return; }
+    if (sc.scrollTop > 0) { pulling = false; return; }
+    dy = y; col.style.transition = 'none'; col.style.transform = 'translateY(' + dy * .5 + 'px)'; col.style.opacity = String(1 - Math.min(dy, 300) / 420);
+    if (e.cancelable) e.preventDefault();
+  }, { passive: false });
+  function endPull() {
+    if (dy === 0 && !pulling) return;
+    col.style.transition = ''; var closeIt = lock === 'v' && dy > 110;
+    if (!closeIt) { col.style.transform = ''; col.style.opacity = ''; }
+    else close();
+    pulling = false; dy = 0; lock = null;
+  }
+  sc.addEventListener('touchend', endPull); sc.addEventListener('touchcancel', endPull);
+
+  function resetState() { col.style.transform = ''; col.style.opacity = ''; col.style.transition = ''; hint.classList.remove('off'); clearTimeout(hintT); hintT = setTimeout(function () { hint.classList.add('off'); }, 3500); }
+
+  fetch('../cards.json?v=11').then(function (r) { return r.json(); }).then(function (d) {
+    items = d.rich.items; document.title = d.rich.title + ' — Алексей Дмитриев';
+    if (fr) { parent.postMessage('vw-loaded', location.origin); items.forEach(function (it) { var q = new Image(); q.src = '../' + it.lq; }); }
+    else { var q = /[?&]i=(\d+)/.exec(location.search); show(q ? +q[1] : 0, true); resetState(); }
+  });
+  window.addEventListener('message', function (e) {
+    if (e.origin !== location.origin || !e.data || e.data.t !== 'open' || !items.length) return;
+    needReady = true; resetState(); show(e.data.i || 0, true);
+  });
+  setTimeout(function () { try { window.focus(); } catch (e) {} }, 0);
+})();
+</script>
+</body>
+</html>

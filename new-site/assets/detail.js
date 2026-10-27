@@ -20,6 +20,7 @@
     if(curF&&curF!==f)curF.classList.remove('cur','ready');
     curF=f;f.classList.remove('ready');f.classList.add('cur');
     if(f.loaded)sendOpen(f,i);else f.pend=i;
+    vw.classList.toggle('rich',/portfolio\/rich\//.test(path));
     lockPage(true);void vw.offsetWidth;vw.classList.add('on');vwOn=true;
     try{history.scrollRestoration='manual';history.pushState({vw:1},'')}catch(e){}
   }
@@ -37,10 +38,11 @@
     else if(k==='vw-ready'&&f&&f===curF)f.classList.add('ready');
   });
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&vwOn)closeVw()});
-  function warm(){['portfolio/slides/'].concat($$('.zc').map(function(b){return 'portfolio/'+b.dataset.card+'/'})).forEach(function(p,k){setTimeout(function(){frameFor(p)},k*400)})}
+  function warm(){['portfolio/slides/','portfolio/rich/'].concat($$('.zc').map(function(b){return 'portfolio/'+b.dataset.card+'/'})).forEach(function(p,k){setTimeout(function(){frameFor(p)},k*400)})}
   document.addEventListener('portfolio:ready',function(){(window.requestIdleCallback||function(f){setTimeout(f,1500)})(warm)});
+  $$('#rgs .zg').forEach(function(b){b.onclick=function(){openVw('portfolio/rich/?i='+b.dataset.i)}});
   $$('#zgs .zg').forEach(function(b){b.onclick=function(){openVw('portfolio/slides/?i='+b.dataset.i)}});
-  fetch('portfolio/cards.json?v=10').then(function(r){return r.json()}).then(function(d){
+  fetch('portfolio/cards.json?v=11').then(function(r){return r.json()}).then(function(d){
     var ul=$('#cgs');if(!ul||!d.cards.length)return;
     function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
     d.cards.forEach(function(c,k){var li=document.createElement('li');
