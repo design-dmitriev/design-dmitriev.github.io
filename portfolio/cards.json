@@ -817,6 +817,15 @@
     "cover": "img/rich/4-cover.webp",
     "w": 1080,
     "h": 2700
+   },
+   {
+    "title": "Силиконовый кабель",
+    "note": "Длинный макет: цвета, фактура, сценарии, история бренда.",
+    "img": "img/rich/5.webp",
+    "lq": "img/rich/5-lq.webp",
+    "cover": "img/rich/5-cover.webp",
+    "w": 1080,
+    "h": 6750
    }
   ]
  }
