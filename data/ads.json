@@ -26,9 +26,9 @@
    "id": "pvz",
    "order": 4,
    "title": "ПВЗ",
-   "cover": "portfolio/img/ads/pvz-mock.webp",
+   "cover": "portfolio/img/ads/pvz-mock.webp?v=2",
    "mock": {
-    "img": "portfolio/img/ads/pvz-mock-full.webp",
+    "img": "portfolio/img/ads/pvz-mock-full.webp?v=2",
     "w": 1600,
     "h": 893,
     "cx": 0.5,
