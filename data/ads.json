@@ -5,9 +5,9 @@
    "id": "metro",
    "order": 3,
    "title": "Метро",
-   "cover": "portfolio/img/ads/metro-mock.webp",
+   "cover": "portfolio/img/ads/metro-mock.webp?v=2",
    "mock": {
-    "img": "portfolio/img/ads/metro-mock-full.webp",
+    "img": "portfolio/img/ads/metro-mock-full.webp?v=2",
     "w": 1600,
     "h": 893,
     "cx": 0.5,
