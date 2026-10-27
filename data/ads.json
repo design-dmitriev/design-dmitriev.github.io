@@ -63,6 +63,28 @@
     "label": "Реальное фото, без обработки",
     "alt": "Реальная фотография рекламного щита GQbox на улице"
    }
+  },
+  {
+   "id": "super",
+   "order": 1,
+   "title": "Суперфасады",
+   "cover": "portfolio/img/ads/super-mock.webp",
+   "mock": {
+    "img": "portfolio/img/ads/super-mock-full.webp",
+    "w": 1600,
+    "h": 893,
+    "cx": 0.0,
+    "label": "Мокап, сгенерирован ИИ",
+    "alt": "Мокап суперфасада GQbox на здании, сгенерирован ИИ"
+   },
+   "fact": {
+    "img": "portfolio/img/ads/super-fact.webp",
+    "w": 1280,
+    "h": 960,
+    "cx": 0.0,
+    "label": "Реальное фото, без обработки",
+    "alt": "Реальная фотография суперфасада GQbox"
+   }
   }
  ]
 }
