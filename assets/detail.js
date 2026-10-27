@@ -55,7 +55,7 @@
   }).catch(function(){});
 
 
-  fetch('data/ads.json?v=4',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+  fetch('data/ads.json?v=7',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
     var fm=d.formats.slice().sort(function(a,b){return a.order-b.order}),ul=$('#ads'),mo=$('#adm');
     if(!ul||!fm.length)return;
     fm.forEach(function(f,k){var li=document.createElement('li');

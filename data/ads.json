@@ -42,6 +42,27 @@
     "label": "Реальное фото, без обработки",
     "alt": "Реальная фотография рекламного экрана GQbox в пункте выдачи"
    }
+  },
+  {
+   "id": "street",
+   "order": 2,
+   "title": "Улица",
+   "cover": "portfolio/img/ads/street-mock.webp",
+   "mock": {
+    "img": "portfolio/img/ads/street-mock-full.webp",
+    "w": 1600,
+    "h": 893,
+    "cx": 0.3,
+    "label": "Мокап, сгенерирован ИИ",
+    "alt": "Мокап рекламного щита GQbox на улице, сгенерирован ИИ"
+   },
+   "fact": {
+    "img": "portfolio/img/ads/street-fact.webp",
+    "w": 900,
+    "h": 1200,
+    "label": "Реальное фото, без обработки",
+    "alt": "Реальная фотография рекламного щита GQbox на улице"
+   }
   }
  ]
 }
