@@ -606,6 +606,93 @@
      "note": "Три шага: нажать, повернуть, снять."
     }
    ]
+  },
+  {
+   "id": "cable-3in1",
+   "title": "Кабель 3 в 1 Premium",
+   "short": "Кабель 3 в 1",
+   "lead": "Два Type-C и Lightning. Одиннадцать слайдов: от заглавной до преимуществ.",
+   "more": true,
+   "cover": "img/cable3/cover.webp",
+   "slides": [
+    {
+     "img": "img/cable3/1.webp",
+     "thumb": "img/cable3/1-t.webp",
+     "kind": "Заглавный слайд",
+     "title": "Кабель 3в1 Premium",
+     "note": "Два Type-C и Lightning, USB для блока."
+    },
+    {
+     "img": "img/cable3/2.webp",
+     "thumb": "img/cable3/2-t.webp",
+     "kind": "Сценарии",
+     "title": "Три устройства, один кабель",
+     "note": "Одновременная зарядка трёх смартфонов."
+    },
+    {
+     "img": "img/cable3/3.webp",
+     "thumb": "img/cable3/3-t.webp",
+     "kind": "Сценарии",
+     "title": "Практичен в любой обстановке",
+     "note": "Два сценария: дома и в машине."
+    },
+    {
+     "img": "img/cable3/4.webp",
+     "thumb": "img/cable3/4-t.webp",
+     "kind": "Материалы",
+     "title": "Карбоновый дизайн",
+     "note": "Карбон, стойкость и гибкость, ресурс до 60 000 изгибов."
+    },
+    {
+     "img": "img/cable3/5.webp",
+     "thumb": "img/cable3/5-t.webp",
+     "kind": "Материалы",
+     "title": "Износостойкое нейлоновое плетение",
+     "note": "Крупный план оплётки."
+    },
+    {
+     "img": "img/cable3/6.webp",
+     "thumb": "img/cable3/6-t.webp",
+     "kind": "Безопасность",
+     "title": "Безопасен: чип C94IP-E75",
+     "note": "Конденсатор от скачков напряжения и предохранитель от замыканий."
+    },
+    {
+     "img": "img/cable3/7.webp",
+     "thumb": "img/cable3/7-t.webp",
+     "kind": "Гарантия",
+     "title": "Гарантия 12 месяцев",
+     "note": "Обслуживание в РФ и СНГ, связь 7 дней в неделю."
+    },
+    {
+     "img": "img/cable3/8.webp",
+     "thumb": "img/cable3/8-t.webp",
+     "kind": "Размеры",
+     "title": "Удобный: длина 120 см",
+     "note": "100 см основной кабель и 20 см разъёмы."
+    },
+    {
+     "img": "img/cable3/9.webp",
+     "thumb": "img/cable3/9-t.webp",
+     "kind": "Разъёмы",
+     "title": "Три разъёма для трёх устройств",
+     "note": "USB, Lightning и Type-C с подсказками по моделям."
+    },
+    {
+     "img": "img/cable3/10.webp",
+     "thumb": "img/cable3/10-t.webp",
+     "kind": "Комплектация",
+     "title": "Фиксатор кабеля в комплекте",
+     "note": "Липучка для аккуратной укладки."
+    },
+    {
+     "img": "img/cable3/11.webp",
+     "thumb": "img/cable3/11-t.webp",
+     "kind": "Итоговый слайд",
+     "title": "Все преимущества на одном слайде",
+     "note": "Шесть блоков: совместимость, чип, фиксация, сценарии, прочность, длина."
+    }
+   ]
   }
  ],
  "slides": {
