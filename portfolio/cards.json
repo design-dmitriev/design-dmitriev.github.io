@@ -540,6 +540,72 @@
     }
    ],
    "more": true
+  },
+  {
+   "id": "strap-2in1",
+   "title": "Ремешок-зарядка 2 в 1",
+   "short": "Ремешок-зарядка",
+   "lead": "Кабель на шее. Восемь слайдов: от заглавной до фиксатора.",
+   "more": true,
+   "cover": "img/strap/cover.webp",
+   "slides": [
+    {
+     "img": "img/strap/1.webp",
+     "thumb": "img/strap/1-t.webp",
+     "kind": "Заглавный слайд",
+     "title": "Ремешок-зарядка 2 в 1",
+     "note": "Название, металлическое крепление и разъём в увеличении."
+    },
+    {
+     "img": "img/strap/2.webp",
+     "thumb": "img/strap/2-t.webp",
+     "kind": "Сценарии",
+     "title": "Подходит под любой случай",
+     "note": "Два сценария на прогулке и длина кабеля 1,2 метра."
+    },
+    {
+     "img": "img/strap/3.webp",
+     "thumb": "img/strap/3-t.webp",
+     "kind": "Быстрая зарядка",
+     "title": "Которая всегда с тобой",
+     "note": "50% за 30 минут, Power Delivery и Type-C."
+    },
+    {
+     "img": "img/strap/4.webp",
+     "thumb": "img/strap/4-t.webp",
+     "kind": "Сценарии",
+     "title": "Удобно даже на работе",
+     "note": "Два кадра в офисе."
+    },
+    {
+     "img": "img/strap/5.webp",
+     "thumb": "img/strap/5-t.webp",
+     "kind": "Сравнение",
+     "title": "Удобнее, чем искать кабель в сумке",
+     "note": "Ремешок против кабеля в сумке."
+    },
+    {
+     "img": "img/strap/6.webp",
+     "thumb": "img/strap/6-t.webp",
+     "kind": "Сценарии",
+     "title": "Для любых прогулок",
+     "note": "Крепление и плетение как преимущества."
+    },
+    {
+     "img": "img/strap/7.webp",
+     "thumb": "img/strap/7-t.webp",
+     "kind": "Совместимость",
+     "title": "Универсально",
+     "note": "iPhone от 15 модели и Android, чехлы, с которыми работает."
+    },
+    {
+     "img": "img/strap/8.webp",
+     "thumb": "img/strap/8-t.webp",
+     "kind": "Использование",
+     "title": "Удобный фиксатор",
+     "note": "Три шага: нажать, повернуть, снять."
+    }
+   ]
   }
  ],
  "slides": {
