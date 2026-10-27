@@ -20,7 +20,7 @@
     if(curF&&curF!==f)curF.classList.remove('cur','ready');
     curF=f;f.classList.remove('ready');f.classList.add('cur');
     if(f.loaded)sendOpen(f,i);else f.pend=i;
-    vw.classList.toggle('rich',/portfolio\/rich\//.test(path));
+    vw.classList.toggle('rich',/portfolio\/rich\//.test(path));vw.classList.toggle('ad',/portfolio\/ad\//.test(path));
     lockPage(true);void vw.offsetWidth;vw.classList.add('on');vwOn=true;
     try{history.scrollRestoration='manual';history.pushState({vw:1},'')}catch(e){}
   }
@@ -55,12 +55,13 @@
   }).catch(function(){});
 
 
-  fetch('data/ads.json?v=3',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
-    var fm=d.formats.slice().sort(function(a,b){return a.order-b.order}),ul=$('#ads'),mo=$('#adm'),k=0;
+  fetch('data/ads.json?v=4',{cache:'no-cache'}).then(function(r){return r.json()}).then(function(d){
+    var fm=d.formats.slice().sort(function(a,b){return a.order-b.order}),ul=$('#ads'),mo=$('#adm');
     if(!ul||!fm.length)return;
-    fm.forEach(function(f){f.items.forEach(function(it){var li=document.createElement('li');
-      li.innerHTML='<div class="zg zad"><img src="'+it.img+'" width="450" height="600" alt="'+esc(it.alt||it.cap)+'" decoding="async"'+(k>1?' loading="lazy"':'')+'><span class="bdg">'+esc(it.kind)+'</span></div><span class="cap">'+esc(it.cap)+'</span>';
-      (k++<5?ul:mo).appendChild(li)})});
+    fm.forEach(function(f,k){var li=document.createElement('li');
+      li.innerHTML='<button type="button" class="zg zad" data-i="'+k+'" aria-label="'+esc(f.title)+': открыть мокап и фото"><img src="'+f.cover+'" width="450" height="600" alt="'+esc(f.mock.alt)+'" decoding="async"'+(k>1?' loading="lazy"':'')+'><span class="bdg">Мокап и фото</span></button><span class="cap">'+esc(f.title)+'</span>';
+      (k<5?ul:mo).appendChild(li)});
+    $$('#g-ads .zad').forEach(function(b){b.onclick=function(){openVw('portfolio/ad/?i='+b.dataset.i)}});
     $('#adn').textContent=fm.length;$('#g-ads').hidden=false;
     if(mo.children.length){var w=$('#adw'),b=$('#adb');w.hidden=false;b.onclick=function(){var o=mo.hidden;mo.hidden=!o;b.setAttribute('aria-expanded',o);b.firstChild.nodeValue=o?'Скрыть':'Смотреть больше рекламы'}}
   }).catch(function(){});

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b0b0c">
+<title>Реклама — Алексей Дмитриев</title>
+<style>
+@font-face{font-family:Zarya;font-weight:400;font-display:block;src:url(../../assets/fonts/zarya-400.woff2) format("woff2")}
+@font-face{font-family:Zarya;font-weight:500;font-display:block;src:url(../../assets/fonts/zarya-500.woff2) format("woff2")}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+body{position:fixed;inset:0;font-family:Zarya,system-ui,sans-serif;background:#0b0b0c;color:#fff;display:flex;flex-direction:column}
+html.fr,html.fr body{background:transparent}
+button{font:inherit;color:inherit;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.top{flex:none;padding:max(.5rem,env(safe-area-inset-top)) .75rem .5rem;display:flex;align-items:center;gap:.5rem;min-height:calc(60px + env(safe-area-inset-top))}
+.ttl{flex:1;min-width:0;font-size:.9375rem;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:.5rem}
+.ct{color:rgba(255,255,255,.6);font-size:.875rem;white-space:nowrap}
+.ctl{--s:44px;flex:none;width:var(--s);height:var(--s);padding:0;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);transition:background .2s,transform .2s,opacity .2s}
+.ctl svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+@media (hover:hover){.ctl:hover{background:rgba(255,255,255,.22)}}
+.ctl:active{transform:scale(.94)}
+.ctl:focus-visible,.seg button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.ctl[hidden]{display:none}
+.stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:0 .75rem;transition:opacity .25s}
+.stage.out{opacity:0}
+.sc{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sc.pan{justify-content:flex-start;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sc.pan::-webkit-scrollbar{display:none}
+.fig{position:relative;flex:none;max-width:100%;max-height:100%;border-radius:1rem;overflow:hidden;background:#1a1a1c}
+.fig img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transition:opacity .3s}
+.sc.pan .fig{max-width:none;height:100%;aspect-ratio:var(--ar)}
+.sc.pan .fig img{max-width:none;height:100%;width:100%}
+.lbl{position:absolute;left:1.5rem;top:.75rem;z-index:2;display:inline-flex;align-items:center;min-height:2rem;padding:0 .75rem;border-radius:999px;background:rgba(10,10,10,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:.8125rem;line-height:1;pointer-events:none}
+.bar{flex:none;display:grid;justify-items:center;gap:.5rem;padding:.75rem .75rem calc(.9rem + env(safe-area-inset-bottom))}
+.seg{display:inline-flex;padding:4px;border-radius:999px;background:rgba(255,255,255,.12);box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);max-width:100%}
+.seg button{min-height:44px;padding:0 1.15rem;border-radius:999px;background:transparent;font-size:.9375rem;white-space:nowrap;transition:background .2s,color .2s}
+.seg button[aria-pressed=true]{background:#fff;color:#0b0b0c}
+.sub{font-size:.8125rem;color:rgba(255,255,255,.55);text-align:center;min-height:1.1em;transition:opacity .4s}
+@media (min-width:900px){.stage{padding:0 1.5rem}.top{min-height:72px}}
+@media (prefers-reduced-motion:reduce){.stage,.fig img,.ctl,.seg button,.sub{transition:none}}
+</style>
+<meta name="robots" content="noimageindex"><script src="../../assets/guard.js?v=1"></script></head>
+<body>
+<header class="top">
+  <span class="ttl" id="ttl"></span>
+  <span class="ct" id="ct">&nbsp;</span>
+  <button class="ctl" id="pv" type="button" aria-label="Предыдущий формат"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg></button>
+  <button class="ctl" id="nx" type="button" aria-label="Следующий формат"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5L16 12l-6.5 6.5"/></svg></button>
+  <button class="ctl" id="x" type="button" aria-label="Закрыть"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</header>
+<main class="stage" id="stage">
+  <span class="lbl" id="lbl"></span><div class="sc" id="sc"><div class="fig" id="fig"><img id="img" alt="" decoding="async" draggable="false"></div></div>
+</main>
+<div class="bar">
+  <div class="seg" role="group" aria-label="Версия баннера"><button type="button" id="bm" aria-pressed="true">Мокап ИИ</button><button type="button" id="bf" aria-pressed="false">Без обработки</button></div>
+  <span class="sub" id="sub"></span>
+</div>
+<script>
+(function () {
+  var $ = function (i) { return document.getElementById(i); };
+  var fr = window.self !== window.top;
+  if (fr) document.documentElement.classList.add('fr');
+  var items = [], cur = 0, mode = 'mock', needReady = false, subT = 0, tk = 0;
+  var stage = $('stage'), sc = $('sc'), fig = $('fig'), img = $('img'), reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function close() { if (fr) parent.postMessage('vw-close', location.origin); else location.href = '../../#zaglavki'; }
+  function load(src) { return new Promise(function (r) { var q = new Image(); q.onload = q.onerror = function () { r(); }; q.src = src; }); }
+  function side() { var it = items[cur]; return mode === 'mock' ? it.mock : it.fact; }
+  function layout() {
+    var s = side(), ar = s.w / s.h, wide = ar > 1;
+    var portraitScreen = stage.clientWidth < stage.clientHeight;
+    var pan = wide && portraitScreen && stage.clientWidth < 700;
+    sc.classList.toggle('pan', pan);
+    fig.style.setProperty('--ar', ar);
+    if (!pan) { fig.style.aspectRatio = ar; fig.style.width = ''; }
+    else { fig.style.aspectRatio = ar; }
+    if (pan) requestAnimationFrame(function () { sc.scrollLeft = (sc.scrollWidth - sc.clientWidth) * (s.cx || .5); });
+    return pan;
+  }
+  function render(withFade) {
+    var it = items[cur], s = side(), t = ++tk;
+    $('bm').setAttribute('aria-pressed', mode === 'mock'); $('bf').setAttribute('aria-pressed', mode !== 'mock');
+    $('lbl').textContent = s.label; img.alt = s.alt || it.title;
+    var apply = function () {
+      if (t !== tk) return;
+      var pan = layout();
+      img.style.opacity = '0'; img.src = '../../' + s.img;
+      load('../../' + s.img).then(function () {
+        if (t !== tk) return;
+        (img.decode ? img.decode() : Promise.resolve()).catch(function () {}).then(function () {
+          if (t !== tk) return;
+          img.style.opacity = '1'; stage.classList.remove('out');
+          if (needReady) { needReady = false; parent.postMessage('vw-ready', location.origin); }
+        });
+      });
+      clearTimeout(subT);
+      var sub = $('sub'); sub.style.opacity = '1';
+      sub.textContent = pan ? 'Листайте баннер вбок' : (mode === 'mock' ? 'Так баннер выглядел на согласовании' : 'Так баннер выглядит в реальности');
+      subT = setTimeout(function () { sub.style.opacity = '0'; }, 3500);
+    };
+    if (withFade && !reduce) { stage.classList.add('out'); setTimeout(apply, 180); } else apply();
+  }
+  function show(i, instant) {
+    cur = Math.max(0, Math.min(items.length - 1, i)); mode = 'mock';
+    var it = items[cur];
+    $('ttl').textContent = it.title; $('ct').textContent = (cur + 1) + ' / ' + items.length;
+    $('pv').hidden = $('nx').hidden = items.length < 2;
+    $('pv').disabled = cur === 0; $('nx').disabled = cur === items.length - 1;
+    $('pv').style.opacity = cur === 0 ? .35 : ''; $('nx').style.opacity = cur === items.length - 1 ? .35 : '';
+    document.title = it.title + ' — Алексей Дмитриев';
+    render(!instant);
+  }
+  function setMode(m) { if (m === mode) return; mode = m; render(true); }
+  function go(d) { var n = cur + d; if (n < 0 || n >= items.length) return; show(n); }
+
+  $('x').addEventListener('click', close);
+  $('pv').addEventListener('click', function () { go(-1); });
+  $('nx').addEventListener('click', function () { go(1); });
+  $('bm').addEventListener('click', function () { setMode('mock'); });
+  $('bf').addEventListener('click', function () { setMode('fact'); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') go(1);
+    else if (e.key === 'ArrowLeft') go(-1);
+    else if (e.key === 'ArrowUp') setMode('mock');
+    else if (e.key === 'ArrowDown') setMode('fact');
+  });
+  addEventListener('resize', function () { if (items.length) layout(); });
+
+  fetch('../../data/ads.json?v=4', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
+    items = d.formats.slice().sort(function (a, b) { return a.order - b.order; });
+    if (fr) parent.postMessage('vw-loaded', location.origin);
+    else { var q = /[?&]i=(\d+)/.exec(location.search); show(q ? +q[1] : 0, true); }
+  });
+  window.addEventListener('message', function (e) {
+    if (e.origin !== location.origin || !e.data || e.data.t !== 'open' || !items.length) return;
+    needReady = true; show(e.data.i || 0, true);
+  });
+  setTimeout(function () { try { window.focus(); } catch (e) {} }, 0);
+})();
+</script>
+</body>
+</html>
