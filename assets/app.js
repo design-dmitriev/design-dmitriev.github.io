@@ -16,7 +16,7 @@
     Ozon: function (a) { return 'https://www.ozon.ru/product/' + a + '/'; },
     WB: function (a) { return 'https://www.wildberries.ru/catalog/' + a + '/detail.aspx'; }
   };
-  getJSON('data/results.json').then(function (d) {
+  getJSON('data/results.json?v=2').then(function (d) {
     $('#results-intro').textContent = d.intro || '';
     if (d.demo) $('#demo').hidden = false;
     function idx(c) { return c.orders || c.ordersIndex || c.conversionIndex || (c.conv == null ? c.ctr : null); }

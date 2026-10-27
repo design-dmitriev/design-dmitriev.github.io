@@ -41,15 +41,6 @@
   },
   {
    "marketplace": "WB",
-   "article": "952905731",
-   "orders": [
-    470,
-    501
-   ],
-   "date": "10.2026"
-  },
-  {
-   "marketplace": "WB",
    "article": "332485524",
    "orders": [
     274,
@@ -73,19 +64,6 @@
     10
    ],
    "date": "03.2026"
-  },
-  {
-   "marketplace": "WB",
-   "article": "259137678",
-   "orders": [
-    170,
-    207
-   ],
-   "ctr": [
-    6.15,
-    5.41
-   ],
-   "date": "06.2026"
   },
   {
    "marketplace": "WB",
