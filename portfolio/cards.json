@@ -423,6 +423,71 @@
      "note": "Станция, кабель, кольцо, салфетки и талон."
     }
    ]
+  },
+  {
+   "id": "zaryadka-typec",
+   "title": "Быстрая зарядка для Android",
+   "short": "Зарядка для Android",
+   "lead": "Блок с Type-C. Восемь слайдов: от заглавной до комплектации.",
+   "cover": "img/typec/cover.webp",
+   "slides": [
+    {
+     "img": "img/typec/1.webp",
+     "thumb": "img/typec/1-t.webp",
+     "kind": "Заглавный слайд",
+     "title": "Быстрая зарядка для Samsung и Android",
+     "note": "Название, 100% за 30 минут, Type-C и гарантия."
+    },
+    {
+     "img": "img/typec/2.webp",
+     "thumb": "img/typec/2-t.webp",
+     "kind": "Быстрая зарядка",
+     "title": "С разъёмом Type-C",
+     "note": "Схема подключения и скорость зарядки."
+    },
+    {
+     "img": "img/typec/3.webp",
+     "thumb": "img/typec/3-t.webp",
+     "kind": "Безопасность",
+     "title": "Снижает износ аккумулятора на 30%",
+     "note": "Блок в разрезе и три защиты."
+    },
+    {
+     "img": "img/typec/4.webp",
+     "thumb": "img/typec/4-t.webp",
+     "kind": "Поддержка",
+     "title": "Мы рядом",
+     "note": "Гарантия 12 месяцев и техническая поддержка."
+    },
+    {
+     "img": "img/typec/5.webp",
+     "thumb": "img/typec/5-t.webp",
+     "kind": "Совместимость",
+     "title": "Подойдёт к любому устройству",
+     "note": "iOS и Android, устройства вокруг товара."
+    },
+    {
+     "img": "img/typec/6.webp",
+     "thumb": "img/typec/6-t.webp",
+     "kind": "Размеры",
+     "title": "Компактный",
+     "note": "Три габарита на крупном ракурсе."
+    },
+    {
+     "img": "img/typec/7.webp",
+     "thumb": "img/typec/7-t.webp",
+     "kind": "Сценарии",
+     "title": "Практичен в любой обстановке",
+     "note": "Работа, дом и учёба."
+    },
+    {
+     "img": "img/typec/8.webp",
+     "thumb": "img/typec/8-t.webp",
+     "kind": "Комплектация",
+     "title": "Комплектация вашего устройства",
+     "note": "Блок питания и гарантийный талон."
+    }
+   ]
   }
  ],
  "slides": {

@@ -42,14 +42,15 @@
   document.addEventListener('portfolio:ready',function(){(window.requestIdleCallback||function(f){setTimeout(f,1500)})(warm)});
   $$('#rgs .zg').forEach(function(b){b.onclick=function(){openVw('portfolio/rich/?i='+b.dataset.i)}});
   $$('#zgs .zg').forEach(function(b){b.onclick=function(){openVw('portfolio/slides/?i='+b.dataset.i)}});
-  fetch('portfolio/cards.json?v=12').then(function(r){return r.json()}).then(function(d){
+  fetch('portfolio/cards.json?v=13').then(function(r){return r.json()}).then(function(d){
     var ul=$('#cgs');if(!ul||!d.cards.length)return;
     function w(n){var a=n%10,b=n%100;return n+' '+(b>10&&b<15?'слайдов':a===1?'слайд':a>1&&a<5?'слайда':'слайдов')}
     d.cards.forEach(function(c,k){var li=document.createElement('li');
       li.innerHTML='<div class="zw"><i class="stk s2"></i><i class="stk s1"></i><button class="zg zc" type="button" data-card="'+(k+1)+'" aria-label="Открыть презентацию: '+esc(c.title)+(c.adult?', товар для взрослых 18+':'')+', '+w(c.slides.length)+'"><img src="portfolio/'+c.cover+'" width="450" height="600" alt="" decoding="async">'+(c.adult?'<span class="age"><b>18+</b><i>Товар для взрослых</i></span>':'')+'<span class="bdg">'+w(c.slides.length)+'</span></button></div><span class="cap">'+esc(c.title)+'</span>';
-      ul.appendChild(li)});
-    $('#cgn').textContent=d.cards.length;$('#g-cards').hidden=false;
-    $$('.zc',ul).forEach(function(b){b.onclick=function(){openVw('portfolio/'+b.dataset.card+'/')}});
+      (c.adult?$('#cmore'):ul).appendChild(li)});
+    var mo=$('#cmore'),mb=$('#cmb');if(mo.children.length){$('#cmw').hidden=false;mb.onclick=function(){var o=mo.hidden;mo.hidden=!o;mb.setAttribute('aria-expanded',o);mb.firstChild.nodeValue=o?'Скрыть':'Смотреть больше карточек'}}
+    $('#cgn').textContent=ul.children.length;$('#g-cards').hidden=false;
+    $$('.zc').forEach(function(b){b.onclick=function(){openVw('portfolio/'+b.dataset.card+'/')}});
     document.dispatchEvent(new Event('portfolio:ready'));
     $$('.zg img').forEach(function(im){if(im.decode)im.decode().catch(function(){})});
   }).catch(function(){});
