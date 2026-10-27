@@ -1,0 +1,9 @@
+User-agent: Googlebot-Image
+Disallow: /
+
+User-agent: *
+Disallow: /portfolio/img/
+Disallow: /assets/demo/
+Disallow: /assets/zag/
+Disallow: /assets/peek/
+Allow: /
