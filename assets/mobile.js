@@ -37,17 +37,24 @@
   document.addEventListener('results:ready',initCases);
 
   /* нижняя навигация */
-  var secs=[['zaglavki','Портфолио'],['works','Проекты'],['results','Цифры'],['built','Система'],['team','Команда'],['experience','Опыт'],['terms','Условия'],['contact','Связь']];
+  var secs=[['zaglavki','Портфолио'],['works','Проекты'],['results','Обо мне'],['contact','Контакты']];
+  var about=document.querySelector('.nav-about');
+  if(about){
+    about.addEventListener('click',function(e){if(e.target.closest('a'))about.open=false});
+    document.addEventListener('click',function(e){if(!about.contains(e.target))about.open=false});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&about.open){about.open=false;about.querySelector('summary').focus()}});
+  }
   var dock=document.createElement('nav');dock.className='dock';dock.setAttribute('aria-label','Разделы');
   dock.innerHTML=secs.map(function(s){return '<a href="#'+s[0]+'">'+s[1]+'</a>'}).join('')+'<i class="ind"></i>';
   document.body.appendChild(dock);
   var links=$$('a',dock),ind=$('.ind',dock),active=null;
   function mark(id){
+    if(['built','team','experience','terms'].indexOf(id)!==-1)id='results';
     active=id;var on=null;links.forEach(function(a){var m=a.getAttribute('href')==='#'+id;a.classList.toggle('on',m);if(m)on=a});
     if(on){try{dock.scrollTo({left:on.offsetLeft-(dock.clientWidth-on.offsetWidth)/2,behavior:'smooth'})}catch(x){}ind.style.setProperty('--x',on.offsetLeft+'px');ind.style.setProperty('--w',on.offsetWidth+'px');ind.style.opacity=1}else ind.style.opacity=0;
   }
   var sio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id)})},{rootMargin:'-45% 0px -50% 0px'});
-  secs.forEach(function(s){var el=document.getElementById(s[0]);if(el)sio.observe(el)});
+  secs.map(function(s){return s[0]}).concat(['built','team','experience','terms']).forEach(function(id){var el=document.getElementById(id);if(el)sio.observe(el)});
   var hero=$('.hero');
   function dockShow(){var on=window.scrollY>(hero?hero.offsetHeight*.55:300);dock.classList.toggle('on',on);if(!on)mark('')}
   addEventListener('scroll',dockShow,{passive:true});dockShow();

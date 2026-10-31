@@ -29,8 +29,18 @@ button{font:inherit;color:inherit}
 /* шапка */
 .top{position:absolute;inset:0 0 auto 0;z-index:20;display:flex;align-items:center;gap:1.5rem;padding:max(1rem,env(safe-area-inset-top)) var(--gutter) 1rem;color:#fff}
 .brand{font-weight:500;text-decoration:none;margin-right:auto;white-space:nowrap}
-.nav{display:none;gap:1.5rem;font-size:.9375rem}
+.nav{display:none;align-items:center;gap:1.5rem;font-size:.9375rem}
 .nav a{text-decoration:none;opacity:.75}
+.nav-about{position:relative}
+.nav-about summary{display:flex;align-items:center;gap:.5rem;cursor:pointer;list-style:none;opacity:.75}
+.nav-about summary::-webkit-details-marker{display:none}
+.nav-about summary::after{content:"";width:6px;height:6px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+.nav-about[open] summary{opacity:1}
+.nav-about[open] summary::after{transform:translateY(2px) rotate(225deg)}
+.nav-submenu{position:absolute;top:calc(100% + 16px);right:-16px;min-width:228px;padding:8px;background:#fff;color:#0a0a0a;border:1px solid rgba(0,0,0,.08);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.2)}
+.nav .nav-submenu a{display:flex;align-items:center;min-height:44px;padding:10px 14px;border-radius:9px;white-space:nowrap;opacity:1}
+.nav .nav-submenu a:hover{background:#f3f3f3}
+.nav a:focus-visible,.nav-about summary:focus-visible{outline:2px solid currentColor;outline-offset:5px}
 .views{display:flex;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:3px;gap:2px}
 .views button{border:0;background:transparent;border-radius:999px;padding:.5rem 1rem;min-height:36px;cursor:pointer;font-size:.875rem;color:rgba(255,255,255,.8)}
 .views button[aria-pressed="true"]{background:#fff;color:var(--ink)}
