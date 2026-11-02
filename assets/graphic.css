@@ -1,0 +1,46 @@
+/* Graphic design leads the portfolio; the work itself supplies the colour. */
+.graphic-hero{min-height:0;background:#111;justify-content:center}
+.graphic-hero .hero-body{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center;gap:clamp(2rem,5vw,6rem);padding-top:9rem;padding-bottom:5rem}
+.graphic-hero .hero-body>*{animation:none}
+.hero-kicker{font-size:.8125rem;letter-spacing:.04em;color:#aaa;margin-bottom:2rem}
+.graphic-hero h1{font-size:clamp(3rem,5.5vw,5.75rem);letter-spacing:-.045em;line-height:1.02;max-width:none;mix-blend-mode:normal;color:#fff;text-wrap:initial}
+.graphic-hero .lead{font-size:clamp(1rem,1.5vw,1.1875rem);line-height:1.55;max-width:31rem;color:#c9c9c9;text-shadow:none;text-wrap:pretty;margin-top:1.75rem}
+.graphic-hero .actions{gap:.65rem;margin-top:2rem}
+.graphic-hero .btn{padding-inline:1.2rem;gap:1rem;font-size:.9375rem}
+.graphic-hero .btn-line{border-color:#595959}
+.hero-experience{font-size:.875rem;line-height:1.6;color:#969696;margin-top:2.5rem}
+.hero-art{position:relative;aspect-ratio:1/1.14;max-height:620px;width:100%;isolation:isolate}
+.hero-poster{position:absolute;top:0;right:0;width:75%;display:block;border-radius:12px;overflow:hidden;transform:rotate(5deg);background:#2b153f;box-shadow:0 24px 60px #0005}
+.hero-poster img{width:100%;height:auto;display:block}
+.hero-art-caption{position:absolute;bottom:0;right:0;color:#969696;font-size:.6875rem;letter-spacing:.025em}
+.portfolio-jump{display:flex;flex-wrap:wrap;gap:.5rem;margin:-.75rem 0 2.75rem}
+.portfolio-jump a{padding:.65rem 1rem;min-height:44px;display:inline-flex;align-items:center;border:1px solid #ddd;border-radius:99px;text-decoration:none;font-size:.875rem}
+@media(hover:hover){.portfolio-jump a:hover{background:#111;border-color:#111;color:#fff}}
+#zaglavki{padding-top:clamp(3rem,6vw,6rem)}
+#g-cards,#g-rich,#g-ads{scroll-margin-top:2rem}
+@media(max-width:1099px) and (min-width:900px){.graphic-hero .hero-body{gap:2rem}.graphic-hero .actions{flex-direction:column;align-items:flex-start}.graphic-hero .hero-experience{margin-top:1.5rem}}
+@media(max-width:899px){
+  .graphic-hero{min-height:0}
+  .graphic-hero .hero-body{grid-template-columns:1fr;gap:2.5rem;padding-top:7rem;padding-bottom:2rem}
+  .hero-kicker{margin-bottom:1.5rem}
+  .graphic-hero h1{font-size:clamp(2.75rem,10vw,5rem)}
+  .graphic-hero .lead{max-width:34rem;margin-top:1.25rem}
+  .graphic-hero .actions{display:flex;flex-wrap:wrap;margin-top:1.5rem}
+  .graphic-hero .actions .btn{flex:1 1 auto}
+  .hero-experience{margin-top:1.5rem}
+  .hero-art{aspect-ratio:1/1.05;max-width:480px;margin-inline:auto;width:92%}
+  .hero-poster{width:68%;right:3%}
+  .hero-art-caption{font-size:.625rem}
+  .portfolio-jump{margin-top:0;margin-bottom:2rem}
+  #works .works{display:grid;grid-template-columns:1fr;overflow:visible;margin:0;padding:0;gap:1rem}
+  #works .works li{min-width:0}
+  #works .wcard{border-radius:1.25rem}
+}
+
+/* A second finished work replaces the typeface in progress. */
+.hero-ad{position:absolute;bottom:8%;left:-4%;width:82%;display:block;background:#f7f7f5;color:#171717;text-decoration:none;transform:rotate(-6deg);box-shadow:0 18px 40px #0005;overflow:hidden;border-radius:4px}
+.hero-ad img{display:block;width:100%;height:auto}
+.hero-ad>span{display:flex;justify-content:space-between;gap:.75rem;padding:.65rem .85rem;font-size:.6875rem;line-height:1.4}
+.hero-ad>span>span{color:#777}
+@media(min-width:900px){#works .wtool:last-child{grid-column:1/-1}}
+@media(max-width:899px){.hero-ad{left:0;width:84%;bottom:8%}.hero-ad>span{font-size:.625rem;padding:.5rem .65rem}}
