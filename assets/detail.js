@@ -96,8 +96,11 @@
   document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.fy-steps .fs');if(!b)return;var fr=$('.fy-box iframe',sh);if(fr&&fr.contentWindow){var k=+b.dataset.k;fsSet(k,3000);try{fr.contentWindow.postMessage({fy:'go',i:k},'*')}catch(x){}}});
   function fitFy(){
     var st=$('.fy-stage',sh);if(!st)return;var box=$('.fy-box',st),fr=$('iframe,video',box),r=parseFloat(st.getAttribute('data-r'))||.6,fw=parseFloat(st.getAttribute('data-fw'))||0,W=st.clientWidth,H=st.clientHeight-232;
-    var cap=r>1?640:540,w=r>1?Math.min(W,cap):innerWidth<900?Math.min(W,Math.max(180,Math.min(340,((window.visualViewport?visualViewport.height:innerHeight)-352)*r))):Math.min(W,H*r,336);if(w<168)w=168;box.style.width=w+'px';box.style.height=w/r+'px';var fs=$('.fy-steps',st);if(fs)fs.style.width=w+'px';
-    if(fw&&fr.tagName==='IFRAME'){fr.style.transform='scale('+(w/fw)+')'}
+    var vh=window.visualViewport?visualViewport.height:innerHeight;
+    var portrait=innerWidth<900&&vh>=560;
+    var w=r>1?Math.min(W,640):portrait?Math.min(W,Math.max(168,Math.min(260,(vh-364)*r))):innerWidth<900?Math.min(W,260):Math.min(W,Math.max(168,H*r),336);
+    box.style.width=w+'px';box.style.height=w/r+'px';var fs=$('.fy-steps',st);if(fs)fs.style.width=w+'px';
+    if(fw&&fr&&fr.tagName==='IFRAME'){fr.style.transform='scale('+(w/fw)+')'}
   }
   window.addEventListener('resize',function(){if(sheetOn)fitFy()});window.addEventListener('orientationchange',function(){setTimeout(function(){if(sheetOn)fitFy()},300)});if(window.visualViewport)visualViewport.addEventListener('resize',function(){if(sheetOn)fitFy()});
 
@@ -161,8 +164,9 @@
     if(e.key==='Escape'&&sheetOn&&!vwOn)closeSheet()
   });
   /* свайп вниз закрывает шторку на телефоне */
-  var y0=0,top0=0;sh.addEventListener('touchstart',function(e){y0=e.touches[0].clientY;top0=$('.sh-body',sh)?$('.sh-body',sh).scrollTop:0},{passive:true});
-  sh.addEventListener('touchend',function(e){if(innerWidth<900&&top0<=0&&e.changedTouches[0].clientY-y0>110)closeSheet()});
+  var y0=0,x0=0,dragHeader=false;
+  sh.addEventListener('touchstart',function(e){var t=e.touches[0];y0=t.clientY;x0=t.clientX;dragHeader=!!e.target.closest('.sh-top')&&!e.target.closest('button,a')},{passive:true});
+  sh.addEventListener('touchend',function(e){var t=e.changedTouches[0];if(innerWidth<900&&dragHeader&&t.clientY-y0>110&&Math.abs(t.clientX-x0)<(t.clientY-y0)/1.7)closeSheet();dragHeader=false});
 
   fetch('data/built.json?v=11').then(function(r){return r.json()}).then(function(d){
     DATA=d;

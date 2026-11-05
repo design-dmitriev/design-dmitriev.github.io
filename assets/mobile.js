@@ -38,6 +38,15 @@
 
   /* нижняя навигация */
   var secs=[['zaglavki','Портфолио'],['works','Проекты'],['results','Обо мне'],['contact','Контакты']];
+  var menu=$('.nav'),toggle=$('.nav-toggle');
+  function closeMenu(){if(!toggle)return;toggle.setAttribute('aria-expanded','false');menu.classList.remove('open')}
+  if(toggle&&menu){
+    toggle.addEventListener('click',function(){var on=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(on));menu.classList.toggle('open',on)});
+    menu.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
+    document.addEventListener('click',function(e){if(!e.target.closest('.top'))closeMenu()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true'){closeMenu();toggle.focus()}});
+    narrow.addEventListener('change',closeMenu);
+  }
   var about=document.querySelector('.nav-about');
   if(about){
     about.addEventListener('click',function(e){if(e.target.closest('a'))about.open=false});
@@ -90,7 +99,7 @@
 
   /* свайп вбок по всей секции, а не только по ленте карточек */
   function wideSwipe(zone,row,item,soft){
-    if(!zone||!row||!matchMedia('(max-width:899px)').matches)return;
+    if(!zone||!row||!matchMedia('(max-width:899px)').matches||getComputedStyle(row).display==='grid')return;
     var sx=0,sy=0,sl=0,on=false,lock=null,lt=0,lx=0,vx=0,raf=0;
     zone.style.touchAction='pan-y';
     zone.addEventListener('touchstart',function(e){if(row.contains(e.target))return;if(raf){cancelAnimationFrame(raf);raf=0;row.style.scrollSnapType='none'}var t=e.touches[0];sx=lx=t.clientX;sy=t.clientY;sl=row.scrollLeft;on=true;lock=null;vx=0;lt=e.timeStamp},{passive:true});
