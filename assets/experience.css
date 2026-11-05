@@ -1,0 +1,36 @@
+/* Resume sheet: employer on the left, work on the right. */
+#experience{background:var(--soft)}
+.experience-sheet{background:#fff;border:1px solid var(--line);border-radius:clamp(1.25rem,3vw,2rem);overflow:hidden}
+.experience-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1.25rem 2rem;padding:clamp(1.25rem,3vw,2.5rem)}
+.experience-head h2{font-size:clamp(1.75rem,3.5vw,2.75rem);line-height:1.1;letter-spacing:-.035em}
+.experience-head .sum{grid-column:1;max-width:45rem;color:var(--muted);font-size:clamp(1rem,1.4vw,1.125rem)}
+.experience-download{grid-column:2;grid-row:1/3;align-self:start;display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:52px;padding:.875rem 1.5rem;border-radius:99px;background:var(--ink);color:#fff;text-decoration:none;font-weight:500;white-space:nowrap}
+.experience-download span{opacity:.65}
+.experience-download:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.experience-sheet .jobs{list-style:none;padding:0;margin:0;border:0}
+.jobs>.job-entry{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.65fr);gap:clamp(1.5rem,4vw,4rem);padding:clamp(1.25rem,3vw,2.5rem);border-top:1px solid var(--line);border-bottom:0}
+.job-side,.job-main{min-width:0}
+.job-side{display:flex;flex-direction:column;align-items:flex-start;gap:.5rem}
+.job-mark{width:60px;height:60px;display:grid;place-items:center;margin-bottom:.5rem;background:var(--ink);color:#fff;border-radius:50%;font-size:1.25rem;font-weight:500;letter-spacing:-.04em}
+.job-side h3{font-size:1.375rem;font-weight:500;line-height:1.2;letter-spacing:-.02em}
+.jobs .job-side h3 a{text-decoration:none}
+.job-side h3 a:hover{text-decoration:underline}
+.job-role,.jobs .when,.job-former{color:var(--muted);font-size:.9375rem;line-height:1.5}
+.job-former{font-size:.8125rem}
+.job-former a{color:inherit;text-underline-offset:.2em}
+.job-main .duty{max-width:none;gap:1rem;margin:0;font-size:1rem;line-height:1.5}
+.job-main .duty li{display:block;padding:0 0 0 .875rem;border:0;border-left:2px solid var(--line)}
+.job-main .duty li::before{display:none}
+.job-main .duty a{display:inline;font-weight:inherit;text-underline-offset:.2em}
+@media(max-width:899px){
+  .experience-head{grid-template-columns:1fr;gap:1rem}
+  .experience-head .sum{grid-column:auto}
+  .experience-download{grid-column:auto;grid-row:auto;width:100%;min-height:48px;margin-top:.25rem}
+  .jobs>.job-entry{grid-template-columns:1fr;gap:1.5rem}
+  .job-side{display:grid;grid-template-columns:48px minmax(0,1fr);column-gap:.875rem;row-gap:.25rem;align-items:start}
+  .job-mark{grid-column:1;grid-row:1/5;width:48px;height:48px;font-size:1rem;margin:0}
+  .job-side h3,.job-role,.jobs .when,.job-former{grid-column:2;min-width:0;overflow-wrap:anywhere}
+  .job-side h3{font-size:1.25rem}
+  .job-main .duty{font-size:.9375rem;gap:.875rem}
+}
+@media(prefers-reduced-motion:reduce){.jobs>.job-entry{transition:none}}
