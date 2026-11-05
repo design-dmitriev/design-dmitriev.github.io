@@ -17,12 +17,13 @@
 <link rel="stylesheet" href="assets/graphic.css?v=3">
 <link rel="stylesheet" href="assets/responsive.css?v=2">
 <link rel="stylesheet" href="assets/experience.css?v=1">
+<link rel="stylesheet" href="assets/header.css?v=1">
 <meta name="robots" content="noimageindex"><script src="assets/guard.js?v=1"></script></head>
-<body data-view="work">
+<body data-view="work" id="top">
 <a class="skip" href="#main">К содержимому</a>
 
-<header class="top" id="top">
-  <a class="brand" href="#top">Алексей Дмитриев</a>
+<header class="top">
+  <a class="brand" href="#top" aria-label="Алексей Дмитриев — наверх"><span class="brand-full" aria-hidden="true">Алексей Дмитриев</span><span class="brand-short" aria-hidden="true">Дмитриев</span></a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню <span aria-hidden="true">＋</span></button>
   <nav class="nav" id="site-nav" aria-label="Разделы">
     <a href="#zaglavki">Портфолио</a>
@@ -39,6 +40,7 @@
     </details>
     <a href="#contact">Контакты</a>
   </nav>
+  <a class="header-cv" href="/CV_Starlight.pdf" aria-label="Скачать резюме в PDF"><span class="cv-desktop">Резюме</span><span class="cv-mobile">CV</span><span aria-hidden="true">↗</span></a>
   <div class="views" id="views" role="group" aria-label="Раздел сайта" hidden>
     <button type="button" data-view-btn="work" aria-pressed="true">Работа</button>
     <button type="button" data-view-btn="hobby" aria-pressed="false">Хобби</button>
