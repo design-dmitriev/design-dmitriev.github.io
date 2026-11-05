@@ -8,14 +8,14 @@
 <title>Алексей Дмитриев — графический дизайнер</title>
 <meta name="description" content="Графический дизайнер Алексей Дмитриев. Карточки товаров, реклама, упаковка и дизайн интерфейсов. Опыт работы с 2021 года.">
 <link rel="icon" href="/favicon.ico">
-<link rel="preload" href="assets/fonts/zarya-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.className+=" js";try{history.scrollRestoration="manual"}catch(e){}function t(){if(!location.hash)window.scrollTo(0,0)}t();addEventListener("pageshow",function(e){if(e.persisted)t()});addEventListener("load",function(){t();setTimeout(t,60)});addEventListener("pagehide",function(){if(!location.hash)window.scrollTo(0,0)})</script>
 <link rel="stylesheet" href="assets/tokens.css?v=1">
-<link rel="stylesheet" href="assets/style.css?v=31">
+<link rel="stylesheet" href="assets/style.css?v=32">
 <link rel="stylesheet" href="assets/mobile.css?v=36">
 <link rel="stylesheet" href="assets/detail.css?v=31">
-<link rel="stylesheet" href="assets/graphic.css?v=2">
-<link rel="stylesheet" href="assets/responsive.css?v=1">
+<link rel="stylesheet" href="assets/graphic.css?v=3">
+<link rel="stylesheet" href="assets/responsive.css?v=2">
 <link rel="stylesheet" href="assets/experience.css?v=1">
 <meta name="robots" content="noimageindex"><script src="assets/guard.js?v=1"></script></head>
 <body data-view="work">
@@ -46,6 +46,8 @@
 </header>
 
 <section class="hero graphic-hero" aria-labelledby="h1">
+  <canvas id="noise" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
   <div class="hero-body wrap">
     <div class="hero-copy">
       <p class="hero-kicker">Алексей Дмитриев · портфолио</p>
@@ -56,16 +58,6 @@
         <a class="btn btn-line" href="https://t.me/starlight_lnk">Написать в Telegram</a>
       </div>
       <p class="hero-experience">В дизайне с 2021 года.<br>Есть опыт арт-дирекшна и руководства командой.</p>
-    </div>
-    <div class="hero-art" aria-label="Примеры работ: карточки товаров и наружная реклама">
-      <a class="hero-poster" href="#g-cards" aria-label="Посмотреть дизайн карточек товаров">
-        <img src="portfolio/img/zaryadka-iphone/1.webp" width="900" height="1200" fetchpriority="high" alt="Дизайн карточки зарядки для iPhone: белый блок и кабель на фиолетовом фоне">
-      </a>
-      <a class="hero-ad" href="#g-ads" aria-label="Посмотреть наружную рекламу">
-        <img src="portfolio/img/ads/street-mock-full.webp" width="1600" height="893" alt="Дизайн рекламы GQbox на уличном щите. Мокап, сгенерирован ИИ.">
-        <span>Наружная реклама <span>Мокап ↗</span></span>
-      </a>
-      <p class="hero-art-caption">Карточки товаров / наружная реклама</p>
     </div>
   </div>
 </section>
@@ -115,7 +107,8 @@
               <span class="wc-side"><span class="wc-name">Сборщик коробочек, мой сервис</span><span class="wc-text">Вводите размеры товара и получаете развёртку для типографии и 3D-примерку макета.</span><span class="wc-go">Смотреть, как работает <i>→</i></span></span>
             </button>
           </li>
-          <li class="wtool">
+          <!-- Temporarily hidden while the project is being revised. -->
+          <li class="wtool" hidden>
             <a class="wcard tool" href="webapp/" aria-label="Открыть кейс: Web-App для Telegram-бота">
               <span class="wc-side"><span class="wc-name">Web-App для Telegram-бота</span><span class="wc-text">Дизайн мини-приложения: экраны и кликабельный прототип, который можно пройти на странице.</span><span class="wc-go">Открыть прототип →</span></span>
             </a>
@@ -324,6 +317,7 @@
 </footer>
 
 
+<script src="assets/noise.js?v=1" defer></script>
 <script src="assets/app.js?v=17" defer></script>
 <script src="assets/mobile.js?v=22" defer></script>
 <script src="assets/detail.js?v=66" defer></script>

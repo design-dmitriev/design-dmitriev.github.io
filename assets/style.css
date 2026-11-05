@@ -1,8 +1,4 @@
-@font-face{font-family:Zarya;font-weight:100;font-display:swap;src:url(fonts/zarya-100.woff2) format("woff2")}
-@font-face{font-family:Zarya;font-weight:900;font-display:swap;src:url(fonts/zarya-900.woff2) format("woff2")}
-@font-face{font-family:Zarya;font-weight:400;font-display:swap;src:url(fonts/zarya-400.woff2) format("woff2")}
-@font-face{font-family:Zarya;font-weight:500;font-display:swap;src:url(fonts/zarya-500.woff2) format("woff2")}
-@font-face{font-family:Zarya;font-weight:700;font-display:swap;src:url(fonts/zarya-700.woff2) format("woff2")}
+@import url("fonts.css?v=1");
 
 :root{
   --ink:#0a0a0a;
@@ -15,7 +11,7 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.55 Zarya,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.55 Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
 h1,h2,h3,p,ul,ol,dl,dd{margin:0;padding:0}
 ul,ol{list-style:none}
 a{color:inherit}

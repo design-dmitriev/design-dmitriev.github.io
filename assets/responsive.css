@@ -14,17 +14,13 @@
   .top .nav>a,.top .nav summary{min-height:44px;padding:.5rem .75rem;opacity:1;display:flex;align-items:center}
   .nav-submenu{position:static;min-width:0;padding:0 0 .5rem .75rem;border:0;box-shadow:none}
   .nav .nav-submenu a{white-space:normal}
-  .graphic-hero .hero-body{padding-top:6rem;padding-bottom:2rem;gap:1.75rem}
+  .graphic-hero .hero-body{padding-top:6rem;padding-bottom:3rem;gap:1.75rem}
   .hero-kicker{margin-bottom:1rem;font-size:.8125rem}
   .graphic-hero h1{font-size:clamp(2.125rem,9.8vw,4.5rem);line-height:1.08;letter-spacing:-.035em}
   .graphic-hero .lead{font-size:1rem;line-height:1.5;margin-top:1.1rem}
   .graphic-hero .actions{display:grid;grid-template-columns:1fr;gap:.625rem;margin-top:1.25rem}
   .graphic-hero .actions .btn{min-height:48px;padding:.875rem 1rem;justify-content:center}
   .hero-experience{font-size:.8125rem;margin-top:1.25rem}
-  .hero-art{width:90%;max-width:360px;aspect-ratio:1/1;max-height:none}
-  .hero-poster{width:64%;right:4%}
-  .hero-ad{width:83%;bottom:10%;left:0}
-  .hero-art-caption{font-size:.6875rem;right:0;left:0;text-align:center}
   .sec-head{gap:1rem;margin-bottom:1.5rem}
   h2{font-size:clamp(1.75rem,7.5vw,2.75rem);line-height:1.12;overflow-wrap:anywhere}
   .sum{font-size:1rem;line-height:1.55}
@@ -72,9 +68,8 @@
   .foot-row{gap:1rem;flex-wrap:wrap}
 }
 @media (min-width:600px) and (max-width:899px){
-  .graphic-hero .hero-body{grid-template-columns:minmax(0,1fr) minmax(0,.8fr);gap:1.5rem;padding-top:7rem}
-  .graphic-hero h1{font-size:clamp(2.125rem,5.4vw,3rem)}
-  .hero-art{width:100%}
+  .graphic-hero .hero-body{padding-top:7rem}
+  .graphic-hero h1{font-size:clamp(3rem,7.6vw,4.5rem)}
   .zgs{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem 1rem}
   #works .works{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
