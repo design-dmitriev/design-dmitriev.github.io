@@ -37,7 +37,7 @@
   document.addEventListener('results:ready',initCases);
 
   /* нижняя навигация */
-  var secs=[['zaglavki','Портфолио'],['works','Проекты'],['results','Обо мне'],['contact','Контакты']];
+  var secs=[['zaglavki','Портфолио'],['results','Обо мне'],['contact','Контакты'],['works','Проекты']];
   var menu=$('.nav'),toggle=$('.nav-toggle');
   function closeMenu(){if(!toggle)return;toggle.setAttribute('aria-expanded','false');menu.classList.remove('open')}
   if(toggle&&menu){
@@ -58,12 +58,12 @@
   document.body.appendChild(dock);
   var links=$$('a',dock),ind=$('.ind',dock),active=null;
   function mark(id){
-    if(['built','team','experience','terms'].indexOf(id)!==-1)id='results';
+    if(['built','team','experience'].indexOf(id)!==-1)id='results';
     active=id;var on=null;links.forEach(function(a){var m=a.getAttribute('href')==='#'+id;a.classList.toggle('on',m);if(m)on=a});
     if(on){try{dock.scrollTo({left:on.offsetLeft-(dock.clientWidth-on.offsetWidth)/2,behavior:'smooth'})}catch(x){}ind.style.setProperty('--x',on.offsetLeft+'px');ind.style.setProperty('--w',on.offsetWidth+'px');ind.style.opacity=1}else ind.style.opacity=0;
   }
   var sio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)mark(e.target.id)})},{rootMargin:'-45% 0px -50% 0px'});
-  secs.map(function(s){return s[0]}).concat(['built','team','experience','terms']).forEach(function(id){var el=document.getElementById(id);if(el)sio.observe(el)});
+  secs.map(function(s){return s[0]}).concat(['built','team','experience']).forEach(function(id){var el=document.getElementById(id);if(el)sio.observe(el)});
   var hero=$('.hero');
   function dockShow(){var on=window.scrollY>(hero?hero.offsetHeight*.55:300);dock.classList.toggle('on',on);if(!on)mark('')}
   addEventListener('scroll',dockShow,{passive:true});dockShow();

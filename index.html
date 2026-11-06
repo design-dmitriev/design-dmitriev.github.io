@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="assets/experience.css?v=2">
 <link rel="stylesheet" href="assets/header.css?v=1">
 <link rel="stylesheet" href="assets/project-previews.css?v=1">
+<link rel="stylesheet" href="assets/contact.css?v=1">
 <meta name="robots" content="noimageindex"><script src="assets/guard.js?v=1"></script></head>
 <body data-view="work" id="top">
 <a class="skip" href="#main">К содержимому</a>
@@ -28,7 +29,6 @@
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Меню <span aria-hidden="true">＋</span></button>
   <nav class="nav" id="site-nav" aria-label="Разделы">
     <a href="#zaglavki">Портфолио</a>
-    <a href="#works">Проекты</a>
     <details class="nav-about">
       <summary>Обо мне</summary>
       <div class="nav-submenu">
@@ -36,12 +36,12 @@
         <a href="#built">Что я выстроил</a>
         <a href="#team">Команда и процессы</a>
         <a href="#experience">Опыт</a>
-        <a href="#terms">Условия работы</a>
       </div>
     </details>
     <a href="#contact">Контакты</a>
+    <a href="#works">Проекты</a>
   </nav>
-  <a class="header-cv" href="/CV_Starlight.pdf?v=20261106b" aria-label="Скачать резюме в PDF"><span class="cv-desktop">Резюме</span><span class="cv-mobile">CV</span><span aria-hidden="true">↗</span></a>
+  <a class="header-cv" href="/CV_Starlight.pdf?v=20261106c" aria-label="Скачать резюме в PDF"><span class="cv-desktop">Резюме</span><span class="cv-mobile">CV</span><span aria-hidden="true">↗</span></a>
   <div class="views" id="views" role="group" aria-label="Раздел сайта" hidden>
     <button type="button" data-view-btn="work" aria-pressed="true">Работа</button>
     <button type="button" data-view-btn="hobby" aria-pressed="false">Хобби</button>
@@ -89,57 +89,6 @@
           <div class="mre" id="adw" hidden><button class="mre-b" id="adb" type="button" aria-expanded="false" aria-controls="adm">Смотреть больше рекламы</button><ul class="zgs zcs mre-l" id="adm" hidden></ul></div>
         </div>
 
-      </div>
-    </section>
-    <section class="sec" id="works" aria-labelledby="works-h">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2 id="works-h">Свои проекты</h2>
-          <p class="sum" id="works-note">Проектирую интерфейсы и делаю инструменты, которые помогают в работе с дизайном.</p>
-        </div>
-        <ul class="works" id="works-list">
-          <li class="wtool">
-            <button class="wcard tool" type="button" data-open="folderify" aria-label="Подробнее: Folderify, плагин для Figma">
-              <span class="wt-img project-preview" aria-hidden="true">
-                <svg viewBox="0 0 600 400" focusable="false">
-                  <text class="pv-kicker" x="36" y="45">ПЛАГИН ДЛЯ FIGMA</text>
-                  <g class="pv-window"><rect x="36" y="76" width="528" height="250" rx="16"/><path d="M36 114H564"/><circle cx="55" cy="95" r="3"/><circle cx="67" cy="95" r="3"/><circle cx="79" cy="95" r="3"/></g>
-                  <text class="pv-title" x="300" y="100" text-anchor="middle">Folderify</text>
-                  <g transform="translate(91 158)"><rect class="pv-tile" width="92" height="100" rx="15"/><g transform="translate(33 22)" fill="#171717"><path d="M0 0h13v18H0a9 9 0 0 1 0-18M13 0h9a9 9 0 0 1 0 18h-9M0 18h13v18H0a9 9 0 0 1 0-18M0 36h13v9a9 9 0 1 1-13-9"/><circle cx="22" cy="27" r="9"/></g></g>
-                  <path class="pv-track" d="M207 208H393"/>
-                  <g class="pv-file"><rect x="263" y="188" width="32" height="40" rx="5"/><path d="M271 200h16m-16 7h16m-16 7h10"/></g>
-                  <g transform="translate(417 158)"><rect class="pv-tile" width="92" height="100" rx="15"/><image href="assets/peek/yandex-disk.svg" x="21" y="30" width="50" height="40"/></g>
-                  <text class="pv-label" x="137" y="286" text-anchor="middle">Figma</text><text class="pv-label" x="463" y="286" text-anchor="middle">Яндекс.Диск</text>
-                  <text class="pv-foot" x="36" y="368">Кадры → файлы → ссылка</text><text class="pv-foot" x="564" y="368" text-anchor="end">↗</text>
-                </svg>
-              </span>
-              <span class="wc-side"><span class="wc-name">Folderify, мой плагин для Figma</span><span class="wc-text">Экспортирует кадры из Figma прямо на Яндекс.Диск — без скачивания на компьютер. Пока устанавливается как локальный плагин.</span><span class="wc-go">Смотреть, как работает <i>→</i></span></span>
-            </button>
-          </li>
-          <li class="wtool">
-            <button class="wcard tool" type="button" data-open="box" aria-label="Подробнее: Сборщик коробочек">
-              <span class="wt-img project-preview" aria-hidden="true">
-                <svg viewBox="0 0 600 400" focusable="false">
-                  <text class="pv-kicker" x="36" y="45">ВЕБ-ИНСТРУМЕНТ</text>
-                  <g class="pv-window"><rect x="36" y="76" width="528" height="250" rx="16"/><path d="M36 114H564"/><circle cx="55" cy="95" r="3"/><circle cx="67" cy="95" r="3"/><circle cx="79" cy="95" r="3"/></g>
-                  <text class="pv-title" x="300" y="100" text-anchor="middle">Сборщик коробочек</text>
-                  <g class="pv-carton"><path class="pv-box-front" d="m110 174 64 27v86l-64-27z"/><path class="pv-box-side" d="m174 201 49-32v86l-49 32z"/><path class="pv-box-top" d="m110 174 49-32 64 27-49 32z"/></g>
-                  <path class="pv-track" d="M254 211h52m-9-7 9 7-9 7"/>
-                  <g class="pv-net"><path d="M345 180h144v70H345zM381 145h36v140h-36zM345 180l7-15h22l7 15m36 0 7-15h22l7 15m0 70-7 15h-22l-7-15m-36 0-7 15h-22l-7-15"/><path class="pv-fold" d="M381 180v70m36-70v70m36-70v70m-72-70h36m-36 70h36"/></g>
-                  <text class="pv-label" x="167" y="307" text-anchor="middle">3D-макет</text><text class="pv-label" x="417" y="307" text-anchor="middle">Развёртка</text>
-                  <text class="pv-foot" x="36" y="368">Размеры → коробка → PDF / SVG</text><text class="pv-foot" x="564" y="368" text-anchor="end">↗</text>
-                </svg>
-              </span>
-              <span class="wc-side"><span class="wc-name">Сборщик коробочек, мой сервис</span><span class="wc-text">Вводите размеры товара и получаете развёртку для типографии и 3D-примерку макета.</span><span class="wc-go">Смотреть, как работает <i>→</i></span></span>
-            </button>
-          </li>
-          <!-- Temporarily hidden while the project is being revised. -->
-          <li class="wtool" hidden>
-            <a class="wcard tool" href="webapp/" aria-label="Открыть кейс: Web-App для Telegram-бота">
-              <span class="wc-side"><span class="wc-name">Web-App для Telegram-бота</span><span class="wc-text">Дизайн мини-приложения: экраны и кликабельный прототип, который можно пройти на странице.</span><span class="wc-go">Открыть прототип →</span></span>
-            </a>
-          </li>
-        </ul>
       </div>
     </section>
     <section class="sec" id="results" aria-labelledby="results-h">
@@ -205,7 +154,7 @@
           <div class="experience-head">
             <h2 id="exp-h">Опыт работы</h2>
             <p class="sum">Профессиональный путь от фотографа-дизайнера до руководителя отдела дизайна. Основной фокус — практическая работа над визуалом; управление командой — дополнительная компетенция.</p>
-            <a class="experience-download" href="/CV_Starlight.pdf?v=20261106b">Скачать CV <span>PDF ↗</span></a>
+            <a class="experience-download" href="/CV_Starlight.pdf?v=20261106c">Скачать CV <span>PDF ↗</span></a>
           </div>
           <ul class="jobs">
 <li class="job-entry"><div class="job-side"><span class="job-mark" aria-hidden="true">HC</span><h3>HaruCase</h3><p class="job-role">Руководитель отдела дизайна</p><p class="when">март 2025 — настоящее время</p></div><div class="job-main"><p class="job-intro">Прямое взаимодействие с генеральным директором и CEO: обсуждение бизнес-задач, предложение визуальных решений и согласование приоритетов отдела контента.</p><ul class="duty"><li>Самостоятельная разработка карточек, инфографики, рич-контента и баннеров: изучение продукта и конкурентов, формирование офферов и УТП, структура слайдов и визуальная концепция.</li><li>Адаптация контента для Wildberries, Ozon, Яндекс Маркета, DNS, «Эльдорадо», «М.Видео» и «Самоката». Подготовка к размещению совместно с руководителями направлений.</li><li>Визуальная концепция сайта, дизайн упаковки, инструкций и мерча. Подготовка к печати: CMYK, вылеты, развёртки; взаимодействие с производством и проверка образцов.</li><li>Предметные и сценарные фотосъёмки с моделями, ретушь и цветокоррекция. Монтаж и цветокоррекция видео в Adobe Premiere Pro; применение ИИ-инструментов для изображений и видео.</li><li>Инициирование обновлений карточек и анализ A/B-тестов с маркетологом. Разработка внутреннего подхода к последовательной проверке одного элемента изображения и сравнению показателей.</li><li>Дизайн-системы, шаблоны и регламенты для партнёрских проектов «БастионВелес» и IZI-PC. Прямое взаимодействие с основателями: обсуждение задач, предложение концепций и согласование дизайна.</li><li>Руководство пятью дизайнерами: распределение задач, контроль качества, обучение и участие в найме. Разработка KPI, организация работы в Яндекс.Трекере и внутренней CRM.</li><li>Более 3000 слайдов выпущено отделом за период руководства с марта 2025 года.</li></ul></div></li>
@@ -227,37 +176,66 @@
         </div>
       </div>
     </section>
-    <section class="sec" id="terms" aria-labelledby="terms-h">
-      <div class="wrap">
-        <div class="panel soft two">
-          <div>
-            <h2 id="terms-h">Условия</h2>
-            <p class="sum">Чтобы не тратить время на уточнения.</p>
-          </div>
-          <dl class="facts">
-            <div><dt>Формат</dt><dd>Рассматриваю любой: офис, гибрид или удалёнка. Готов к командировкам по необходимости.</dd></div>
-            <div><dt>Выход</dt><dd>Через неделю после принятия оффера.</dd></div>
-            <div><dt>Ожидания</dt><dd>Указаны в <a href="https://hh.ru/resume/94c704f2ff0aed1eba0039ed1f4531574d5162">резюме на hh.ru</a>, остальное обсудим по запросу.</dd></div>
-            <div><dt>Тестовое</dt><dd>Готов выполнить небольшое тестовое задание после собеседования.</dd></div>
-          </dl>
-        </div>
-      </div>
-    </section>
     <section class="sec" id="contact" aria-labelledby="contact-h">
       <div class="wrap">
-      <div class="panel dark two">
-        <div>
-          <h2 id="contact-h">Контакты</h2>
-          <p class="sum">Пишите в Telegram, отвечаю быстрее всего там.</p>
+        <div class="contact-head"><h2 id="contact-h">Контакты</h2><p>Обсудим дизайн и задачи команды.<br>Быстрее всего отвечаю в Telegram.</p></div>
+        <div class="contact-grid">
+          <a class="contact-card contact-telegram" href="https://t.me/starlight_lnk"><span class="contact-top"><span>Написать в Telegram</span><span class="contact-arrow" aria-hidden="true">↗</span></span><span class="contact-handle">@starlight_lnk</span><span class="contact-note">Карточки, упаковка, визуальные концепции</span></a>
+          <a class="contact-card contact-email" href="mailto:starlight.lnk@yandex.ru"><span class="contact-top"><span>Почта</span><span class="contact-arrow" aria-hidden="true">↗</span></span><span class="contact-value">starlight.lnk@yandex.ru</span></a>
+          <a class="contact-card contact-phone" href="tel:+79933558048"><span class="contact-top"><span>Телефон / MAX</span><span class="contact-arrow" aria-hidden="true">↗</span></span><span class="contact-value">+7 993 355-80-48</span><span class="contact-note">MAX — по этому номеру</span></a>
         </div>
-        <dl class="facts">
-          <div><dt>Telegram</dt><dd><a href="https://t.me/starlight_lnk">@starlight_lnk</a></dd></div>
-          <div><dt>Почта</dt><dd><a href="mailto:starlight.lnk@yandex.ru">starlight.lnk@yandex.ru</a><br><a href="mailto:alex.strl1t@gmail.com">alex.strl1t@gmail.com</a></dd></div>
-          <div><dt>Телефон / MAX</dt><dd><a href="tel:+79933558048">+7 993 355-80-48</a><br><span>MAX — по этому номеру</span></dd></div>
-          <div><dt>Резюме</dt><dd><a href="/CV_Starlight.pdf?v=20261106b">Скачать PDF</a></dd></div>
-          <div><dt>Город</dt><dd>Москва</dd></div>
-        </dl>
+        <div class="contact-bottom"><span>Москва</span><a href="mailto:alex.strl1t@gmail.com">Дополнительная почта <span aria-hidden="true">↗</span></a><a href="/CV_Starlight.pdf?v=20261106c">Скачать CV <span aria-hidden="true">↓</span></a></div>
       </div>
+    </section>
+    <section class="sec" id="works" aria-labelledby="works-h">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="works-h">Свои проекты</h2>
+          <p class="sum" id="works-note">Проектирую интерфейсы и делаю инструменты, которые помогают в работе с дизайном.</p>
+        </div>
+        <ul class="works" id="works-list">
+          <li class="wtool">
+            <button class="wcard tool" type="button" data-open="folderify" aria-label="Подробнее: Folderify, плагин для Figma">
+              <span class="wt-img project-preview" aria-hidden="true">
+                <svg viewBox="0 0 600 400" focusable="false">
+                  <text class="pv-kicker" x="36" y="45">ПЛАГИН ДЛЯ FIGMA</text>
+                  <g class="pv-window"><rect x="36" y="76" width="528" height="250" rx="16"/><path d="M36 114H564"/><circle cx="55" cy="95" r="3"/><circle cx="67" cy="95" r="3"/><circle cx="79" cy="95" r="3"/></g>
+                  <text class="pv-title" x="300" y="100" text-anchor="middle">Folderify</text>
+                  <g transform="translate(91 158)"><rect class="pv-tile" width="92" height="100" rx="15"/><g transform="translate(33 22)" fill="#171717"><path d="M0 0h13v18H0a9 9 0 0 1 0-18M13 0h9a9 9 0 0 1 0 18h-9M0 18h13v18H0a9 9 0 0 1 0-18M0 36h13v9a9 9 0 1 1-13-9"/><circle cx="22" cy="27" r="9"/></g></g>
+                  <path class="pv-track" d="M207 208H393"/>
+                  <g class="pv-file"><rect x="263" y="188" width="32" height="40" rx="5"/><path d="M271 200h16m-16 7h16m-16 7h10"/></g>
+                  <g transform="translate(417 158)"><rect class="pv-tile" width="92" height="100" rx="15"/><image href="assets/peek/yandex-disk.svg" x="21" y="30" width="50" height="40"/></g>
+                  <text class="pv-label" x="137" y="286" text-anchor="middle">Figma</text><text class="pv-label" x="463" y="286" text-anchor="middle">Яндекс.Диск</text>
+                  <text class="pv-foot" x="36" y="368">Кадры → файлы → ссылка</text><text class="pv-foot" x="564" y="368" text-anchor="end">↗</text>
+                </svg>
+              </span>
+              <span class="wc-side"><span class="wc-name">Folderify, мой плагин для Figma</span><span class="wc-text">Экспортирует кадры из Figma прямо на Яндекс.Диск — без скачивания на компьютер. Пока устанавливается как локальный плагин.</span><span class="wc-go">Смотреть, как работает <i>→</i></span></span>
+            </button>
+          </li>
+          <li class="wtool">
+            <button class="wcard tool" type="button" data-open="box" aria-label="Подробнее: Сборщик коробочек">
+              <span class="wt-img project-preview" aria-hidden="true">
+                <svg viewBox="0 0 600 400" focusable="false">
+                  <text class="pv-kicker" x="36" y="45">ВЕБ-ИНСТРУМЕНТ</text>
+                  <g class="pv-window"><rect x="36" y="76" width="528" height="250" rx="16"/><path d="M36 114H564"/><circle cx="55" cy="95" r="3"/><circle cx="67" cy="95" r="3"/><circle cx="79" cy="95" r="3"/></g>
+                  <text class="pv-title" x="300" y="100" text-anchor="middle">Сборщик коробочек</text>
+                  <g class="pv-carton"><path class="pv-box-front" d="m110 174 64 27v86l-64-27z"/><path class="pv-box-side" d="m174 201 49-32v86l-49 32z"/><path class="pv-box-top" d="m110 174 49-32 64 27-49 32z"/></g>
+                  <path class="pv-track" d="M254 211h52m-9-7 9 7-9 7"/>
+                  <g class="pv-net"><path d="M345 180h144v70H345zM381 145h36v140h-36zM345 180l7-15h22l7 15m36 0 7-15h22l7 15m0 70-7 15h-22l-7-15m-36 0-7 15h-22l-7-15"/><path class="pv-fold" d="M381 180v70m36-70v70m36-70v70m-72-70h36m-36 70h36"/></g>
+                  <text class="pv-label" x="167" y="307" text-anchor="middle">3D-макет</text><text class="pv-label" x="417" y="307" text-anchor="middle">Развёртка</text>
+                  <text class="pv-foot" x="36" y="368">Размеры → коробка → PDF / SVG</text><text class="pv-foot" x="564" y="368" text-anchor="end">↗</text>
+                </svg>
+              </span>
+              <span class="wc-side"><span class="wc-name">Сборщик коробочек, мой сервис</span><span class="wc-text">Вводите размеры товара и получаете развёртку для типографии и 3D-примерку макета.</span><span class="wc-go">Смотреть, как работает <i>→</i></span></span>
+            </button>
+          </li>
+          <!-- Temporarily hidden while the project is being revised. -->
+          <li class="wtool" hidden>
+            <a class="wcard tool" href="webapp/" aria-label="Открыть кейс: Web-App для Telegram-бота">
+              <span class="wc-side"><span class="wc-name">Web-App для Telegram-бота</span><span class="wc-text">Дизайн мини-приложения: экраны и кликабельный прототип, который можно пройти на странице.</span><span class="wc-go">Открыть прототип →</span></span>
+            </a>
+          </li>
+        </ul>
       </div>
     </section>
   </div>
@@ -282,7 +260,7 @@
 
 <script src="assets/noise.js?v=1" defer></script>
 <script src="assets/app.js?v=17" defer></script>
-<script src="assets/mobile.js?v=22" defer></script>
+<script src="assets/mobile.js?v=23" defer></script>
 <script src="assets/detail.js?v=69" defer></script>
 <script src="assets/typo.js?v=5" defer></script>
 </body>

@@ -1,0 +1,20 @@
+/* Contact cards share the portfolio's Inter, neutral palette and rounded surfaces. */
+.contact-head{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;margin-bottom:clamp(1.75rem,4vw,3rem)}
+.contact-head h2{margin:0}
+.contact-head p{margin:.5rem 0 0;color:var(--muted);font-size:clamp(1rem,1.5vw,1.25rem);line-height:1.5}
+.contact-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:1rem}
+.contact-card{display:flex;flex-direction:column;gap:1.25rem;min-width:0;min-height:164px;padding:clamp(1.25rem,3vw,2rem);border-radius:clamp(1.25rem,3vw,2rem);background:var(--soft);color:var(--ink);text-decoration:none;transition:background .2s ease}
+.contact-telegram{grid-row:span 2;justify-content:space-between;background:var(--ink);color:#fff;min-height:350px}
+.contact-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;font-size:.9375rem}
+.contact-arrow{font-size:1.75rem;line-height:1;transition:transform .2s ease}
+.contact-handle{font-size:clamp(1.75rem,3.8vw,3.75rem);line-height:1.1;letter-spacing:-.045em;overflow-wrap:anywhere}
+.contact-value{font-size:clamp(1.125rem,2.3vw,2rem);line-height:1.25;letter-spacing:-.035em;overflow-wrap:anywhere}
+.contact-note{font-size:.875rem;line-height:1.5;color:var(--muted)}
+.contact-telegram .contact-note{color:#ffffffa6}
+.contact-bottom{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 2rem;margin-top:1.25rem;color:var(--muted);font-size:.875rem}
+.contact-bottom>span{margin-right:auto}
+.contact-bottom a{display:inline-flex;gap:.75rem;align-items:center;min-height:44px;color:var(--ink);text-decoration:none}
+.contact-card:focus-visible,.contact-bottom a:focus-visible{outline:2px solid var(--ink);outline-offset:5px}
+@media(hover:hover){.contact-card:hover{background:#eaeaea}.contact-telegram:hover{background:#242424}.contact-card:hover .contact-arrow{transform:translate(2px,-2px)}.contact-bottom a:hover{text-decoration:underline}}
+@media(max-width:899px){.contact-head{grid-template-columns:1fr;gap:1rem}.contact-head p{margin:0}.contact-grid{grid-template-columns:1fr}.contact-telegram{grid-row:auto;min-height:220px}.contact-card{min-height:150px}.contact-handle{font-size:clamp(1.75rem,7vw,3rem)}.contact-value{font-size:clamp(1.125rem,4.5vw,1.5rem)}.contact-bottom{gap:.25rem 1rem}.contact-bottom>span{flex-basis:100%;margin:0}}
+@media(prefers-reduced-motion:reduce){.contact-card,.contact-arrow{transition:none}}
