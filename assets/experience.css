@@ -34,3 +34,14 @@
   .job-main .duty{font-size:.9375rem;gap:.875rem}
 }
 @media(prefers-reduced-motion:reduce){.jobs>.job-entry{transition:none}}
+
+/* CV content follows the same resume sheet and typography on every screen. */
+.job-intro{margin:0 0 1.25rem;font-size:1rem;line-height:1.5;color:var(--muted)}
+.cv-tools{padding:clamp(1.25rem,3vw,2.5rem);border-top:1px solid var(--line)}
+.cv-tools h3{font-size:1.375rem;font-weight:500;letter-spacing:-.02em;margin:0 0 1.5rem}
+.cv-tools dl{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem 2rem}
+.cv-tools dl>div{min-width:0;display:grid;align-content:start;gap:.5rem}
+.cv-tools dt{font-size:.875rem;color:var(--muted)}
+.cv-tools dd{margin:0;font-size:1rem;line-height:1.5;overflow-wrap:anywhere}
+#contact dd{min-width:0;overflow-wrap:anywhere}
+@media(max-width:899px){.job-intro,.cv-tools dd{font-size:.9375rem}.cv-tools dl{grid-template-columns:1fr;gap:1.25rem}}
