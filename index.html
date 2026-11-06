@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="assets/header.css?v=1">
 <link rel="stylesheet" href="assets/project-previews.css?v=1">
 <link rel="stylesheet" href="assets/contact.css?v=1">
+<link rel="stylesheet" href="assets/results-preview.css?v=2">
 <meta name="robots" content="noimageindex"><script src="assets/guard.js?v=1"></script></head>
 <body data-view="work" id="top">
 <a class="skip" href="#main">К содержимому</a>
@@ -119,17 +120,23 @@
         </div>
       </div>
     </section>
-    <section class="sec" id="results" aria-labelledby="results-h">
+    <section class="sec results-preview" id="results" aria-labelledby="results-h">
       <div class="wrap">
         <div class="sec-head">
-          <h2 id="results-h">Дизайн в цифрах</h2>
+          <h2 id="results-h">Дизайн и результат</h2>
           <p class="sum" id="results-intro"></p>
         </div>
-        <div class="panel dark">
         <p class="demo" id="demo" hidden>Пока здесь демо-данные, их заменит реальная выгрузка.</p>
-        <ul class="cases" id="cases"></ul>
-        <p class="source" id="source"></p>
-        </div>
+        <ul class="result-highlights" id="result-highlights" aria-label="Три примера изменения CTR"></ul>
+        <p class="result-context">CTR — доля переходов в карточку от показов. Полные данные и контекст замеров — ниже.</p>
+        <details class="results-details">
+          <summary><span>Все показатели и контекст</span></summary>
+          <div class="results-explanation"><p>Работы команды под моим руководством. На превью показаны примеры оформления товаров. Старые версии обложек здесь не представлены: сравнение ниже относится к показателям CTR.</p><p>Указаны месяцы замеров. Точные интервалы, объём выборки и условия сравнения в имеющихся данных не приведены, поэтому эти значения не доказывают изолированное влияние дизайна.</p></div>
+          <div class="panel dark">
+            <ul class="cases" id="cases"></ul>
+            <p class="source" id="source"></p>
+          </div>
+        </details>
       </div>
     </section>
     <section class="sec" id="built" aria-labelledby="built-h">
@@ -259,7 +266,7 @@
 
 
 <script src="assets/noise.js?v=1" defer></script>
-<script src="assets/app.js?v=17" defer></script>
+<script src="assets/app.js?v=18" defer></script>
 <script src="assets/mobile.js?v=23" defer></script>
 <script src="assets/detail.js?v=69" defer></script>
 <script src="assets/typo.js?v=5" defer></script>

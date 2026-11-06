@@ -16,9 +16,23 @@
     Ozon: function (a) { return 'https://www.ozon.ru/product/' + a + '/'; },
     WB: function (a) { return 'https://www.wildberries.ru/catalog/' + a + '/detail.aspx'; }
   };
-  getJSON('data/results.json?v=2').then(function (d) {
+  getJSON('data/results.json?v=3').then(function (d) {
     $('#results-intro').textContent = d.intro || '';
     if (d.demo) $('#demo').hidden = false;
+    var highlights = $('#result-highlights');
+    if (highlights) {
+      var names = {'1615196121':'Беспроводная зарядка 3 в 1','201501407':'Проводные наушники','332485524':'Зарядка с кабелем Type-C'};
+      var selected = ['1615196121','201501407','332485524'];
+      highlights.innerHTML = selected.map(function (article) {
+        var c = d.cases.filter(function (item) { return item.article === article; })[0];
+        if (!c || !c.ctr) return '';
+        return '<li class="result-highlight"><div class="result-heading"><span>'+esc(c.marketplace)+'</span><span>'+esc(c.date || '')+'</span></div>'+
+          '<div class="result-overview"><img src="assets/peek/results/'+esc(article)+'.jpg" width="600" height="800" alt="'+esc(names[article])+'" loading="lazy" decoding="async">'+
+          '<div class="result-metric" role="img" aria-label="CTR: до '+pct(c.ctr[0])+', после '+pct(c.ctr[1])+'"><span class="result-metric-label">CTR</span><span class="result-before">'+pct(c.ctr[0])+' <span aria-hidden="true">→</span></span><strong>'+pct(c.ctr[1])+'</strong></div></div>'+
+          '<a class="result-product" href="'+esc(LINKS[c.marketplace](article))+'" target="_blank" rel="noopener"><span>'+esc(names[article])+'</span><span aria-hidden="true">↗</span></a></li>';
+      }).join('');
+    }
+
     function idx(c) { return c.orders || c.ordersIndex || c.conversionIndex || (c.conv == null ? c.ctr : null); }
     var html = '';
     ['Ozon', 'WB', null].forEach(function (mp) {
