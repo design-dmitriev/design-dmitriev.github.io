@@ -2,13 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Folderify — плагин Figma Алексея Дмитриева</title>
 <meta name="description" content="Folderify: плагин Figma, который выгружает кадры и исходники на Яндекс.Диск и сразу даёт ссылку. Открытый код.">
 <link rel="preload" href="../assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../assets/tokens.css?v=1">
-<link rel="stylesheet" href="page.css?v=2">
+<link rel="stylesheet" href="page.css?v=3">
 <meta name="robots" content="noimageindex"><script src="../assets/guard.js?v=1"></script></head>
 <body>
 <div class="wrap">
@@ -34,7 +34,7 @@
   <section id="how" aria-labelledby="how-h">
     <h2 id="how-h">Как работает</h2>
     <div class="demo">
-      <div class="vbox"><video id="v" src="../assets/demo/folderify.mp4" poster="../assets/demo/folderify.jpg" muted playsinline loop autoplay preload="metadata" aria-label="Демонстрация плагина"></video></div>
+      <div class="vbox"><iframe id="folderify-demo" src="demo.html?v=1" title="Анимация: как работает Folderify" tabindex="-1" aria-hidden="true"></iframe></div>
       <ol class="steps" id="steps">
         <li><button type="button" data-t="0.05"><span class="n">1</span><b>Войдите через Яндекс</b><span class="t">Подтвердите доступ и вставьте показанный токен.</span></button></li>
         <li><button type="button" data-t="3.23"><span class="n">2</span><b>Выберите папку</b><span class="t">Впишите путь или пройдите по списку папок на Диске.</span></button></li>
@@ -91,15 +91,7 @@
 
   <footer class="foot">Алексей Дмитриев © 2026 · <a href="../">На главную</a> · <a href="folderify-plugin.zip" download>Скачать Folderify</a></footer>
 </div>
-<script>
-(function(){
-  var v=document.getElementById('v'),bs=[].slice.call(document.querySelectorAll('#steps button')),m=bs.map(function(b){return +b.dataset.t}),cur=-1;
-  function idx(t){var i=0;for(var k=0;k<m.length;k++)if(t>=m[k]-.02)i=k;return i}
-  function upd(){var i=idx(v.currentTime);if(i!==cur){cur=i;bs.forEach(function(b,k){b.classList.toggle('on',k===i)})}}
-  v.addEventListener('timeupdate',upd);v.addEventListener('seeked',upd);upd();
-  bs.forEach(function(b,k){b.addEventListener('click',function(){v.currentTime=m[k]+.05;cur=-1;upd();var p=v.play();if(p&&p.catch)p.catch(function(){})})});
-})();
-</script>
+<script src="page.js?v=1" defer></script>
 <script src="../assets/typo.js?v=4" defer></script>
 </body>
 </html>

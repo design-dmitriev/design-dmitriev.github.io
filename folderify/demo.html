@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru" class="demo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Folderify — демонстрация</title>
+<link rel="stylesheet" href="demo.css?v=1">
+<script src="demo.js?v=1" defer></script>
+</head>
+<body>
+    <div class="wl" id="wl" role="group" aria-label="Как пользоваться Folderify">
+      <div class="demo-title">Folderify<span>Figma → Яндекс.Диск</span></div>
+      <div class="wl-bars" id="wlBars"><i></i><i></i><i></i><i></i></div>
+      <div class="wl-stage">
+        <div class="wl-scene s1"><div class="mini"><div class="status-card sc"><div class="t1"><div class="dot bad"></div><div style="flex:1">Не подключено</div><button class="secondary" tabindex="-1">Войти</button></div><div class="t2"><div class="dot ok"></div><div style="flex:1">Яндекс.Диск подключён</div></div></div><div class="row tok"><input type="password" value="y0_AgAAAA…" tabindex="-1" readonly><button tabindex="-1">OK</button></div></div></div>
+        <div class="wl-scene s2"><div class="mini"><input type="text" tabindex="-1" readonly value="Общий доступ/Wildberries"><div class="fl"><div style="--i:0">Артикулы</div><div style="--i:1">Заглавки</div><div style="--i:2">Исходники</div></div></div></div>
+        <div class="wl-scene s3"><div class="mini"><div class="fr"><b style="--i:0">Кадр 1</b><b style="--i:1">Кадр 2</b><b style="--i:2">Кадр 3</b></div><div class="prog"><i></i></div><div class="share-card"><div class="share-label">disk.yandex.ru/client/disk/…</div><button class="secondary" tabindex="-1">Копировать</button></div></div></div>
+        <div class="wl-scene s4"><div class="mini"><div class="file-drop"><b>Логотип.fig</b></div><button class="full" tabindex="-1">Загрузить</button><div class="share-card"><div class="share-label">…/Wildberries/Sources</div><button class="secondary" tabindex="-1">Копировать</button></div></div></div>
+      </div>
+      <div class="wl-txt" id="wlTxt">
+        <div><h3>Войдите через Яндекс</h3><p>Нажмите «Войти», подтвердите доступ и вставьте показанный токен.</p></div>
+        <div><h3>Выберите папку</h3><p>Впишите путь или пройдите по папкам списка. Новую папку можно создать здесь же.</p></div>
+        <div><h3>Выделите и выгрузите</h3><p>Отметьте кадры в Figma, выберите формат и масштаб. Плагин сам отправит их на Диск и даст ссылку.</p></div>
+        <div><h3>Добавьте исходники</h3><p>Сохраните .fig через File → Save local copy и загрузите: файл ляжет в подпапку Sources.</p></div>
+      </div>
+      <div class="wl-act"><button type="button" class="secondary" id="wlSkip">Пропустить</button><span class="sp"></span><button type="button" id="wlNext">Дальше</button></div>
+    </div>
+</body>
+</html>

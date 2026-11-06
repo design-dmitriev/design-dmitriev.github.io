@@ -14,7 +14,7 @@
     return s}
   function walk(root){
     if(!root||root.nodeType!==1&&root.nodeType!==11)return;
-    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentNode;if(!p||SKIP[p.nodeName.toUpperCase()]||p.isContentEditable)return NodeFilter.FILTER_REJECT;return /\S/.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}}),n,list=[];
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentNode;if(!p||p.namespaceURI==='http://www.w3.org/2000/svg'||SKIP[p.nodeName.toUpperCase()]||p.isContentEditable)return NodeFilter.FILTER_REJECT;return /\S/.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT}}),n,list=[];
     while(n=w.nextNode())list.push(n);
     list.forEach(function(n){var v=n.nodeValue,f=fix(v);
       if(n===n.parentNode.lastChild||!n.nextSibling){f=f.replace(re5,function(m,a,b){return / /.test(b)?m:a+NB+b})}
