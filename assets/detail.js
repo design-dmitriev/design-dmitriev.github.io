@@ -169,7 +169,7 @@
   sh.addEventListener('touchstart',function(e){var t=e.touches[0];y0=t.clientY;x0=t.clientX;dragHeader=!!e.target.closest('.sh-top')&&!e.target.closest('button,a')},{passive:true});
   sh.addEventListener('touchend',function(e){var t=e.changedTouches[0];if(innerWidth<900&&dragHeader&&t.clientY-y0>110&&Math.abs(t.clientX-x0)<(t.clientY-y0)/1.7)closeSheet();dragHeader=false});
 
-  fetch('data/built.json?v=12').then(function(r){return r.json()}).then(function(d){
+  fetch('data/built.json?v=14').then(function(r){return r.json()}).then(function(d){
     DATA=d;
     $$('.built>li[data-key]').forEach(function(li){
       var key=li.dataset.key;if(!d[key])return;
