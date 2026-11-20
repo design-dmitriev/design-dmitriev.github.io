@@ -103,3 +103,10 @@ dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:n
 .blog-channel-open:hover{background:#383838}
 .blog-post .blog-post-read{font-size:13px;color:inherit;margin-top:auto;align-self:flex-start;border-bottom:1px solid #999;padding-bottom:3px}
 .blog-post:focus-visible{outline-offset:3px}
+#works{scroll-margin-top:100px;background:#fff}#works .sec-head{display:block;margin-bottom:32px}#works h2{font-size:var(--heading-size);font-weight:400;letter-spacing:-.045em;line-height:1.1;margin:0}
+#works .works{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--layout-gap);list-style:none;padding:0;margin:0}
+#works .wtool{min-width:0}#works .wcard{display:flex;flex-direction:column;width:100%;height:100%;padding:0;border:1px solid #e6e6e6;border-radius:var(--surface-radius);background:#f4f4f4;color:#171717;text-align:left;cursor:pointer}
+#works .project-preview{width:100%;height:auto;aspect-ratio:3/2;display:block;border-radius:0;overflow:hidden}#works .wc-side{display:flex;flex-direction:column;gap:16px;padding:28px;width:100%;flex:1;box-sizing:border-box}#works .wc-name{font-size:clamp(22px,2.5vw,32px);font-weight:400;letter-spacing:-.04em}#works .wc-text{font-size:15px;line-height:1.5;color:#666}#works .wc-go{font-size:14px;margin-top:auto;padding-top:12px;text-decoration:underline;text-underline-offset:5px}#works .wcard:focus-visible{outline:2px solid #333;outline-offset:4px}
+.project-demo-stage{height:calc(100dvh - 140px);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}.project-demo-stage iframe{height:100%;width:min(100%,480px);border:0;border-radius:16px;background:white}.project-demo-stage video{max-height:100%;max-width:100%;border-radius:16px}#project-demo-link{color:white;text-decoration:underline;min-height:44px;display:inline-flex;align-items:center}
+@media(max-width:650px){#works .works{grid-template-columns:1fr}#works .wc-side{padding:22px}}
+#works{scroll-margin-top:110px}body:has(#project-demo[open]){overflow:hidden}
