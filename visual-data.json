@@ -46,5 +46,48 @@
       }
     ],
     "wide": true
+  },
+  {
+    "title": "AsperX",
+    "category": "Фотосъёмка",
+    "cover": "portfolio/photos/asperx/01.webp",
+    "images": [
+      {
+        "src": "portfolio/photos/asperx/01.webp",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/02.jpg",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/03.jpg",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/04.webp",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/05.jpg",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/06.jpg",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/07.jpg",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/08.jpg",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/asperx/09.jpg",
+        "label": ""
+      }
+    ]
   }
 ]
