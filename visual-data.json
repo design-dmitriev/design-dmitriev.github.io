@@ -89,5 +89,36 @@
         "label": ""
       }
     ]
+  },
+  {
+    "title": "Постановка для квестов",
+    "category": "Фотосъёмка",
+    "cover": "portfolio/photos/quests/01.png",
+    "images": [
+      {
+        "src": "portfolio/photos/quests/01.png",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/quests/02.png",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/quests/03.png",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/quests/04.png",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/quests/05.png",
+        "label": ""
+      },
+      {
+        "src": "portfolio/photos/quests/06.png",
+        "label": ""
+      }
+    ]
   }
 ]
