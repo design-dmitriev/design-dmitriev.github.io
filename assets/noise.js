@@ -1,70 +1,19 @@
-(function () {
-  var canvas = document.getElementById('noise');
-  if (!canvas) return;
-  var ctx = canvas.getContext('2d');
-  if (!ctx) return;
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var BUDGET = 12000;
-  var W = 0, H = 0, A = 1, img = null, px = null;
-  var visible = true, raf = 0, last = -Infinity;
-
-  function hash(x, y) { var s = Math.sin(127.1 * x + 311.7 * y) * 43758.5453123; return s - Math.floor(s); }
-  function sm(t) { return t * t * (3 - 2 * t); }
-  function vnoise(x, y) {
-    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
-    var a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
-    var u = sm(xf), v = sm(yf);
-    return a + (b - a) * u + (c - a) * v * (1 - u) + (d - b) * u * v;
-  }
-  function fbm(x, y, oct) {
-    var sum = 0, amp = 0.5, f = 1;
-    for (var i = 0; i < oct; i++) { sum += amp * vnoise(x * f, y * f); f *= 2; amp *= 0.5; }
-    return sum;
-  }
-  function field(x, y, t) {
-    var n = fbm(x + 0.06 * t, y, 2), u = fbm(x + 5.2, y + 1.3 - 0.04 * t, 2);
-    var i = fbm(x + 2.6 * n + 1.7 + 0.20 * t, y + 2.6 * u + 9.2, 2);
-    var l = fbm(x + 2.6 * n + 8.3, y + 2.6 * u + 2.8 - 0.16 * t, 2);
-    return fbm(x + 2.2 * i, y + 2.2 * l, 3);
-  }
-  function size() {
-    var p = canvas.parentElement;
-    var a = p && p.clientHeight ? p.clientWidth / p.clientHeight : 1.6;
-    a = Math.min(3, Math.max(0.3, a));
-    var w = Math.round(Math.sqrt(BUDGET * a)), h = Math.round(Math.sqrt(BUDGET / a));
-    if (w !== W || h !== H) {
-      W = w; H = h; A = a;
-      canvas.width = W; canvas.height = H;
-      img = ctx.createImageData(W, H); px = img.data;
-    }
-  }
-  function draw(ms) {
-    size();
-    var t = ms / 1000;
-    for (var y = 0; y < H; y++) {
-      var fy = (y / H) * 1.28 / A;
-      for (var x = 0; x < W; x++) {
-        var v = field((x / W) * 1.28, fy, t);
-        v = sm(Math.min(1, Math.max(0, (v - 0.36) / 0.32)));
-        var ridge = Math.exp(-Math.pow((v - 0.48) * 9, 2));
-        var g = Math.round(12 + 144 * v + 68 * ridge), k = (W * y + x) * 4;
-        px[k] = g; px[k + 1] = g; px[k + 2] = g; px[k + 3] = 255;
-      }
-    }
-    ctx.putImageData(img, 0, 0);
-  }
-  function loop(ms) {
-    raf = 0;
-    if (!visible || document.hidden) return;
-    if (ms - last >= 50) { last = ms; draw(ms); }
-    raf = requestAnimationFrame(loop);
-  }
-  function start() { if (!raf && !reduce) raf = requestAnimationFrame(loop); }
-
-  draw(0);
-
-  new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); }, { threshold: 0 }).observe(canvas.parentElement);
-  document.addEventListener('visibilitychange', start);
-  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', function(e) { reduce=e.matches; if(reduce) { cancelAnimationFrame(raf); raf=0; draw(0); } else start(); });
-  start();
+(()=>{
+const canvas=document.querySelector('#noise');if(!canvas)return;
+const gl=canvas.getContext('webgl',{alpha:false,antialias:false,powerPreference:'low-power'});if(!gl)return;
+const vertex='attribute vec2 position;void main(){gl_Position=vec4(position,0.,1.);}';
+const fragment=`precision mediump float;uniform vec2 resolution;uniform float time;
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
+float fbm(vec2 p){float n=0.,a=.5;for(int i=0;i<4;i++){n+=a*noise(p);p=p*2.03+3.1;a*=.5;}return n;}
+void main(){vec2 uv=gl_FragCoord.xy/resolution;vec2 p=uv*vec2(resolution.x/resolution.y,1.)*1.8;float t=time*.14;vec2 q=vec2(fbm(p+vec2(t,0.)),fbm(p+vec2(5.2,-t*.7)));vec2 r=vec2(fbm(p+2.6*q+vec2(1.7+t,9.2)),fbm(p+2.6*q+vec2(8.3,2.8-t)));float v=smoothstep(.27,.69,fbm(p+2.2*r));float ridge=exp(-pow((v-.48)*9.,2.));float g=.045+.56*v+.26*ridge;gl_FragColor=vec4(vec3(g),1.);}`;
+function shader(type,source){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+const program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,vertex));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,fragment));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))return;gl.useProgram(program);
+const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);const position=gl.getAttribLocation(program,'position');gl.enableVertexAttribArray(position);gl.vertexAttribPointer(position,2,gl.FLOAT,false,0,0);
+const resolution=gl.getUniformLocation(program,'resolution'),time=gl.getUniformLocation(program,'time'),reduce=matchMedia('(prefers-reduced-motion: reduce)');let visible=true,raf=0,last=-1;
+function size(){const rect=canvas.getBoundingClientRect(),scale=Math.min(1,900/rect.width);const w=Math.max(1,Math.round(rect.width*scale)),h=Math.max(1,Math.round(rect.height*scale));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h)}}
+function draw(ms){size();gl.uniform2f(resolution,canvas.width,canvas.height);gl.uniform1f(time,ms/1000);gl.drawArrays(gl.TRIANGLES,0,6);}
+function loop(ms){raf=0;if(!visible||document.hidden||reduce.matches)return;if(last<0||ms-last>=15.5){draw(ms);last=ms;}raf=requestAnimationFrame(loop);}
+function start(){if(!raf&&visible&&!document.hidden&&!reduce.matches)raf=requestAnimationFrame(loop)}
+new ResizeObserver(()=>{size();if(reduce.matches)draw(0)}).observe(canvas.parentElement);new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)start()}).observe(canvas.parentElement);document.addEventListener('visibilitychange',start);reduce.addEventListener('change',()=>{if(reduce.matches){cancelAnimationFrame(raf);raf=0;draw(0)}else start()});canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);raf=0});canvas.addEventListener('webglcontextrestored',()=>location.reload());draw(0);start();
 })();
