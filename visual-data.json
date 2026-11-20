@@ -7,10 +7,6 @@
       {
         "src": "portfolio/img/ads/super-mock-full.webp",
         "label": "Мокап, сгенерирован ИИ"
-      },
-      {
-        "src": "portfolio/img/ads/super-fact.webp",
-        "label": "Фотография размещения"
       }
     ],
     "wide": true
@@ -23,10 +19,6 @@
       {
         "src": "portfolio/img/ads/street-mock-full.webp",
         "label": "Мокап, сгенерирован ИИ"
-      },
-      {
-        "src": "portfolio/img/ads/street-fact.webp",
-        "label": "Фотография размещения"
       }
     ],
     "wide": true
@@ -39,10 +31,6 @@
       {
         "src": "portfolio/img/ads/metro-mock-full.webp?v=2",
         "label": "Мокап, сгенерирован ИИ"
-      },
-      {
-        "src": "portfolio/img/ads/metro-fact.webp",
-        "label": "Фотография размещения"
       }
     ],
     "wide": true
@@ -55,10 +43,6 @@
       {
         "src": "portfolio/img/ads/pvz-mock-full.webp?v=2",
         "label": "Мокап, сгенерирован ИИ"
-      },
-      {
-        "src": "portfolio/img/ads/pvz-fact.webp",
-        "label": "Фотография размещения"
       }
     ],
     "wide": true
