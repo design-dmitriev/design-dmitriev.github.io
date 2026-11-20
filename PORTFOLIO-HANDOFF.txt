@@ -64,3 +64,5 @@ http://127.0.0.1:4174/
 На главной рекламные работы собраны в одну кликабельную обложку GQbox, ведущую на gqbox.html. Внутри пока только существующие четыре рекламные работы, без выдуманного текста, карточек товаров и сравнений. Проверен переход с главной в страницу кейса.
 Колесо отменено: убрано из навигации, не развивать и не добавлять обратно. Его экспериментальные файлы сохранены, но не связаны с основным сайтом.
 Новая страница gqbox.html должна редактироваться вместе с главной при общих изменениях оформления. Ничего не опубликовано.
+
+2026-11-20 — Latest request implemented locally: Refero monopo reference, preserve Inter/monochrome/pill identity. Faster domain-warped grayscale canvas with liquid ridge and animated fine grain, reduced-motion and offscreen pause supported. Main page now has separate Pictures (#zaglavki, four independent lightbox images) then Cases (#cases, GQbox foundation). No product cards, no wheel, no before/after. No marketing prose added. Desktop and 390px mobile checked: no horizontal overflow, four gallery images load, lightbox opens/closes. JS syntax checks passed. Preview http://127.0.0.1:4174/. Public GitHub untouched.

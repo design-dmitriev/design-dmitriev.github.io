@@ -22,9 +22,9 @@
     return sum;
   }
   function field(x, y, t) {
-    var n = fbm(x, y, 2), u = fbm(x + 5.2, y + 1.3, 2);
-    var i = fbm(x + 2.6 * n + 1.7 + 0.045 * t, y + 2.6 * u + 9.2, 2);
-    var l = fbm(x + 2.6 * n + 8.3, y + 2.6 * u + 2.8 - 0.035 * t, 2);
+    var n = fbm(x + 0.06 * t, y, 2), u = fbm(x + 5.2, y + 1.3 - 0.04 * t, 2);
+    var i = fbm(x + 2.6 * n + 1.7 + 0.20 * t, y + 2.6 * u + 9.2, 2);
+    var l = fbm(x + 2.6 * n + 8.3, y + 2.6 * u + 2.8 - 0.16 * t, 2);
     return fbm(x + 2.2 * i, y + 2.2 * l, 3);
   }
   function size() {
@@ -46,7 +46,8 @@
       for (var x = 0; x < W; x++) {
         var v = field((x / W) * 1.28, fy, t);
         v = sm(Math.min(1, Math.max(0, (v - 0.36) / 0.32)));
-        var g = Math.round(255 * v), k = (W * y + x) * 4;
+        var ridge = Math.exp(-Math.pow((v - 0.48) * 9, 2));
+        var g = Math.round(12 + 144 * v + 68 * ridge), k = (W * y + x) * 4;
         px[k] = g; px[k + 1] = g; px[k + 2] = g; px[k + 3] = 255;
       }
     }
@@ -61,8 +62,9 @@
   function start() { if (!raf && !reduce) raf = requestAnimationFrame(loop); }
 
   draw(0);
-  if (reduce) return;
+
   new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) start(); }, { threshold: 0 }).observe(canvas.parentElement);
   document.addEventListener('visibilitychange', start);
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', function(e) { reduce=e.matches; if(reduce) { cancelAnimationFrame(raf); raf=0; draw(0); } else start(); });
   start();
 })();

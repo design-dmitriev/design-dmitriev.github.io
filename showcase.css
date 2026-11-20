@@ -17,3 +17,18 @@ dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:n
 @media(prefers-reduced-motion:reduce){.showcase-piece img,.showcase-piece span{transition:none}}
 
 .case-cover{display:block;color:inherit;text-decoration:none}.case-montage{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;height:clamp(320px,43vw,660px);overflow:hidden;border-radius:24px;background:#111}.case-montage img{width:100%;height:100%;min-width:0;object-fit:cover;transition:transform .6s}.case-montage img:first-child{object-position:35% center}.case-caption{display:flex;align-items:baseline;justify-content:space-between;padding-top:18px}.case-caption h3{font-size:clamp(28px,4vw,48px);margin:0;font-weight:500;letter-spacing:-.04em}.case-caption span{color:#666;font-size:14px}.case-nav{display:flex;justify-content:space-between;padding:25px var(--gutter);border-bottom:1px solid #ddd}.case-nav a{display:flex;align-items:center;min-height:44px}.case-heading{padding:50px var(--gutter) 0}.case-heading h1{font-size:clamp(50px,10vw,130px);font-weight:500;letter-spacing:-.055em}@media(hover:hover){.case-cover:hover img{transform:scale(1.025)}}@media(max-width:650px){.case-montage{height:390px;grid-template-columns:1.3fr 1fr;gap:8px;border-radius:20px}.case-caption{padding-top:14px}}
+
+/* Soft monochrome light behind a moving frosted surface. */
+.graphic-hero{isolation:isolate;overflow:hidden;background:#141414}
+.graphic-hero #noise{inset:-6%;width:112%;height:112%;opacity:.85;filter:blur(13px) contrast(1.2);z-index:-2}
+.graphic-hero .grain{inset:-12%;opacity:.31;background-size:112px 112px;animation:glass-grain .35s steps(3) infinite;z-index:-1}
+.graphic-hero::after{background:linear-gradient(90deg,#0009,transparent 85%),linear-gradient(180deg,#ffffff08,transparent 55%,#0003)}
+@keyframes glass-grain{0%,100%{transform:translate(0,0)}25%{transform:translate(2%,-3%)}50%{transform:translate(-3%,2%)}75%{transform:translate(3%,3%)}}
+.showcase-head h2{font-weight:400;letter-spacing:-.045em}
+.showcase-wall{gap:18px;grid-auto-rows:clamp(340px,42vw,640px)}
+.showcase-piece img{transition:transform 1.1s cubic-bezier(.19,1,.22,1)}
+.case-section{padding-top:20px;border-top:1px solid #eee}
+.case-section .case-montage{height:clamp(280px,35vw,510px)}
+@media(max-width:650px){.showcase-wall{display:flex;flex-direction:column;gap:14px}.showcase-piece{height:auto;aspect-ratio:1.15}.showcase-piece img{object-position:center}.case-section .case-montage{height:300px}}
+@media(prefers-reduced-motion:reduce){.graphic-hero .grain{animation:none}.showcase-piece img{transition:none}}
+#zaglavki,#cases,#blog{scroll-margin-top:110px}
