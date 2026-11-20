@@ -1,0 +1,26 @@
+:root{color-scheme:light}
+.theme-toggle{position:fixed;bottom:max(24px,env(safe-area-inset-bottom));right:var(--gutter);z-index:65;pointer-events:auto;width:100px;height:52px;border:1px solid #ffffff60;border-radius:99px;background:linear-gradient(180deg,#dedede,#f4f4f4);box-shadow:inset 0 3px 7px #0002,0 6px 22px #0002;cursor:pointer;padding:0;isolation:isolate;touch-action:manipulation}
+.theme-toggle svg{width:21px;height:21px;display:block}.theme-sun,.theme-moon{position:absolute;top:14px;z-index:2;color:#444}.theme-sun{left:15px}.theme-moon{right:15px}.theme-thumb{position:absolute;inset:4px auto 4px 4px;width:44px;border-radius:50%;background:linear-gradient(145deg,#fff,#e3e3e3);box-shadow:0 2px 5px #0003,inset 0 1px 1px #fff;transition:transform .65s cubic-bezier(.34,1.5,.35,1),background .4s}
+.theme-toggle[aria-checked=true] .theme-thumb{transform:translateX(46px);background:linear-gradient(145deg,#656565,#303030);box-shadow:0 2px 6px #0008,inset 0 1px 1px #ffffff50}.theme-toggle[aria-checked=true]{background:linear-gradient(180deg,#151515,#333);border-color:#ffffff24}.theme-toggle[aria-checked=true] .theme-moon{color:white}.theme-toggle[aria-checked=true] .theme-sun{color:#999}.theme-bounce{animation:theme-pull .55s ease-out}
+@keyframes theme-pull{0%,100%{scale:1}25%{scale:1.08 .91}55%{scale:.98 1.04}}
+html[data-theme=dark]{color-scheme:dark;--paper:#111;--ink:#eee;--muted:#aaa;--line:#333;--soft:#222}
+[data-theme=dark] .showcase,[data-theme=dark] .channel,[data-theme=dark] .extras{background:#111}
+[data-theme=dark] .top>.brand,[data-theme=dark] .top>.nav,[data-theme=dark] .top>.nav-toggle{background:#252525c9;color:#eee;border-color:#ffffff14}
+[data-theme=dark] .case-caption span{color:#aaa}
+[data-theme=dark] .blog-feed .blog-head h2{color:#eee}
+[data-theme=dark] .blog-channel{background:#1a1a1a;border-color:#333}
+[data-theme=dark] .blog-feed .blog-post{background:#262626;color:#eee;border-color:#333}
+[data-theme=dark] .blog-post-image{background:#303030}
+[data-theme=dark] .blog-post time,[data-theme=dark] .blog-channel-identity>div>span{color:#aaa}
+[data-theme=dark] .blog-channel-head .blog-channel-open{background:#eee;color:#161616}
+[data-theme=dark] #works .wcard{background:#222;color:#eee;border-color:#333}
+[data-theme=dark] #works .wc-text{color:#aaa}
+[data-theme=dark] .contact-telegram{background:#e4e4e4;color:#111}
+[data-theme=dark] .contact-card:hover{background:#333}
+[data-theme=dark] .contact-telegram:hover{background:#ccc}
+[data-theme=dark] .case-nav{border-color:#333}
+[data-theme=dark] .showcase-piece span{background:#222;color:white}
+@media(max-width:650px){.theme-toggle{right:20px;bottom:20px;width:92px;height:48px}.theme-thumb{width:40px}.theme-toggle[aria-checked=true] .theme-thumb{transform:translateX(42px)}.theme-sun,.theme-moon{top:12px}.theme-sun{left:13px}.theme-moon{right:13px}}
+@media(prefers-reduced-motion:reduce){.theme-thumb{transition:none}.theme-bounce{animation:none}}
+[data-theme=dark] .blog-channel-identity h3,[data-theme=dark] #works h2,[data-theme=dark] #contact h2,[data-theme=dark] .case-heading h1{color:#eee}
+[data-theme=dark] .graphic-hero .btn-fill{color:#111;background:#fff}
