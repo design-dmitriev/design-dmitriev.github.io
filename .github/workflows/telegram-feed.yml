@@ -1,5 +1,7 @@
 name: Refresh Telegram blog
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: '23 * * * *'
   workflow_dispatch:
@@ -18,7 +20,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node scripts/update-telegram.cjs
+      - name: Refresh public blog feed
+        continue-on-error: true
+        run: node scripts/update-telegram.cjs
       - name: Save refreshed feed
         run: |
           git config user.name github-actions[bot]
@@ -29,9 +33,13 @@ jobs:
             git push
           fi
       - uses: actions/configure-pages@v5
+      - name: Prepare public site
+        run: |
+          mkdir -p _site
+          rsync -a --exclude='.git' --exclude='.github' --exclude='_site' --exclude='scripts' --exclude='PORTFOLIO-HANDOFF.txt' --exclude='.gitignore' ./ _site/
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: '.'
+          path: '_site'
   deploy:
     needs: refresh
     runs-on: ubuntu-latest
