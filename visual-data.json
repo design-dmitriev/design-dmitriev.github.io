@@ -6,7 +6,7 @@
     "images": [
       {
         "src": "portfolio/img/ads/super-mock-full.webp",
-        "label": "Мокап, сгенерирован ИИ"
+        "label": "Мокап"
       }
     ],
     "wide": true
@@ -18,7 +18,7 @@
     "images": [
       {
         "src": "portfolio/img/ads/street-mock-full.webp",
-        "label": "Мокап, сгенерирован ИИ"
+        "label": "Мокап"
       }
     ],
     "wide": true
@@ -30,7 +30,7 @@
     "images": [
       {
         "src": "portfolio/img/ads/metro-mock-full.webp?v=2",
-        "label": "Мокап, сгенерирован ИИ"
+        "label": "Мокап"
       }
     ],
     "wide": true
@@ -42,7 +42,7 @@
     "images": [
       {
         "src": "portfolio/img/ads/pvz-mock-full.webp?v=2",
-        "label": "Мокап, сгенерирован ИИ"
+        "label": "Мокап"
       }
     ],
     "wide": true
