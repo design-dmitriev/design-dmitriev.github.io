@@ -1,0 +1,68 @@
+/* GQbox case uses the portfolio's own tokens and components. */
+:root{--case-caption-space:12px;--case-block-space:24px}
+.gq-case{max-width:var(--maxw);margin-inline:auto}
+.gq-case .case-heading{padding-top:150px}
+.case-intro{margin-top:24px;color:var(--muted);font-size:clamp(16px,1.6vw,20px);text-wrap:pretty}
+.case-role-label{display:block;margin-bottom:8px;font-size:14px;font-weight:500;color:var(--ink)}
+.case-intro{max-width:58ch}
+.case-contribution{max-width:65ch;margin-top:16px;font-size:clamp(15px,1.4vw,18px);line-height:1.55;color:var(--muted);text-wrap:pretty}
+.case-video-proof .case-cover-image{margin:0}
+.case-video-proof .case-motion-cover{height:58svh;max-height:560px}
+.site-examples{margin-top:var(--case-block-space)}
+.merch-grid{max-width:920px;margin-inline:auto}
+.packaging-stage{max-width:1000px;margin-inline:auto}
+.case-cover-image{position:relative;margin:0 var(--gutter) var(--section-space);overflow:hidden;border-radius:var(--surface-radius);background:var(--soft)}
+.case-cover-image img{display:block;width:100%;height:auto;aspect-ratio:4146/1979;object-fit:cover}
+.case-cover-image .case-brand-mark{position:absolute;top:var(--case-block-space);right:var(--case-block-space);width:clamp(80px,10vw,144px);height:auto;aspect-ratio:auto;border-radius:99px}
+.case-content{padding-inline:var(--gutter)}
+.case-content figure{margin:0;min-width:0}
+.case-content img{display:block;width:100%;height:auto;border-radius:var(--surface-radius)}
+.case-content figcaption{display:block;padding-top:var(--case-caption-space);font-size:13px;line-height:1.5;color:var(--muted);text-wrap:pretty}
+.case-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--case-block-space) var(--layout-gap)}
+.case-content>figure+.case-pair,.campaign-layout+.campaign-april,.campaign-april+.case-pair{margin-top:var(--case-block-space)}
+.campaign-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:var(--layout-gap);align-items:center}
+.portrait-banner{padding:var(--case-block-space);background:var(--soft);border-radius:var(--surface-radius)}
+.portrait-banner img{width:72%;margin:auto;border-radius:0}
+.banner-stack{display:grid;gap:var(--case-block-space)}
+.campaign-april{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:var(--layout-gap);align-items:center}
+.campaign-april>figure:last-child{padding:var(--case-block-space);background:var(--soft);border-radius:var(--surface-radius)}
+.slides img{aspect-ratio:16/9;object-fit:contain;background:#fff}
+.merch-grid{align-items:start}
+.case-motion-cover{height:100svh;max-height:900px;background:#080808}
+.case-cover-video{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.case-motion-toggle{position:absolute;right:var(--case-block-space);bottom:var(--case-block-space);display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;border-radius:99px;background:#292929a6;color:#fff;backdrop-filter:blur(12px);cursor:pointer}
+.case-motion-toggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.motion-pause{display:none}.is-playing .motion-pause{display:block}.is-playing .motion-play{display:none}
+.ozon-real-window{position:relative;overflow:hidden;isolation:isolate;aspect-ratio:1676/817;background:#f5f7fb;border-radius:var(--surface-radius)}
+.ozon-real-window>img{width:100%;height:100%;border-radius:0}
+.ozon-real-slot{position:absolute;left:7.7267%;top:16.0343%;width:84.4869%;height:36.7197%;border-radius:clamp(5px,1.4vw,24px);overflow:hidden}
+.ozon-real-slot>img{height:100%;object-fit:fill;border-radius:0}
+.ad-marker{position:absolute;right:.6%;top:3%;background:#fff8;color:#5f5f5f;border-radius:10px;padding:1px 4px;font-size:clamp(4px,.5vw,8px);line-height:1}
+.ad-arrow{position:absolute;top:calc(50% - 12px);display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:#b0b4ba90;color:#444;font:25px/1 Arial}
+.ad-arrow.left{left:.6%}.ad-arrow.right{right:.6%}
+.case-footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:var(--layout-gap);margin:0 var(--gutter);padding-block:var(--case-block-space) calc(var(--section-space) + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.work-back{display:inline-flex;align-items:center;min-height:44px}
+@media(max-width:1040px){.gq-case .case-heading{padding-top:112px}}
+@media(min-width:651px) and (max-width:1040px){.case-motion-cover{height:auto;aspect-ratio:4/3;max-height:52svh}}
+@media(max-width:650px){
+ :root{--case-block-space:20px}
+ .case-motion-cover{height:auto;aspect-ratio:3/4;max-height:52svh}
+ .case-video-proof .case-motion-cover{height:auto;max-height:52svh}
+ .case-pair.campaign-placements{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .gq-case .case-heading{padding-top:104px}
+ .case-intro{margin-top:16px}
+ .campaign-layout,.campaign-april{grid-template-columns:1fr;gap:var(--case-block-space)}
+ .portrait-banner img{width:min(66%,280px)}
+ .banner-stack{gap:var(--layout-gap)}
+ .case-pair{grid-template-columns:1fr}
+ .merch-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .ad-arrow{width:10px;height:12px;top:calc(50% - 6px);border-radius:3px;font-size:12px}
+}
+@media(max-height:500px) and (orientation:landscape){.case-motion-cover{height:70svh;max-height:360px;aspect-ratio:auto}}
+@media(max-height:500px) and (orientation:landscape){.case-video-proof .case-motion-cover{height:70svh;max-height:360px;aspect-ratio:auto}}
+/* One composition, with the original site screenshots kept intact. */
+.case-pair.case-collage{grid-template-columns:1.25fr 1fr;gap:var(--layout-gap);padding:var(--case-block-space);background:var(--soft);border-radius:var(--surface-radius);align-items:center}
+.case-collage>figure:first-child{grid-row:span 2}
+.case-collage>figure img{border-radius:calc(var(--surface-radius)/2)}
+.case-pair.campaign-collage{grid-template-columns:1.2fr 1fr;align-items:center;padding:var(--case-block-space);background:var(--soft);border-radius:var(--surface-radius)}
+@media(max-width:650px){.case-pair.case-collage{grid-template-columns:1fr 1fr;padding:12px}.case-collage>figure:first-child{grid-column:1/-1;grid-row:auto}.case-collage figcaption{font-size:13px}.case-pair.campaign-collage{padding:12px;grid-template-columns:1fr 1fr}}
