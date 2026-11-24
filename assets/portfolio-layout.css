@@ -71,3 +71,17 @@ html{scroll-padding-top:var(--header-clearance)}
   .graphic-hero h1{font-size:48px;margin-bottom:24px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.graphic-hero{clip-path:none}}
+
+/* One height and type scale for the identity and navigation pills. */
+.top{--header-pill-height:56px;--header-font-size:16px;align-items:center}
+.top>.brand,.top>.nav,.top>.theme-toggle{box-sizing:border-box;height:var(--header-pill-height);min-height:var(--header-pill-height)}
+.top>.brand{font-size:var(--header-font-size);line-height:1.25;padding:0 22px}
+.top>.nav{font-size:var(--header-font-size);padding:4px 8px}
+.top .nav>a{font-size:inherit;min-height:44px;padding:10px 14px;line-height:1.25}
+@media(max-width:1040px){
+ .top{--header-pill-height:44px;--header-font-size:13px}
+ .top>.brand,.top>.nav-toggle{height:var(--header-pill-height);min-height:var(--header-pill-height);font-size:var(--header-font-size);line-height:18px;padding:0 16px}
+ .top>.nav{height:auto;min-height:0;padding:8px}
+ .top .nav>a{font-size:16px;min-height:48px;padding:12px 16px}
+}
+@media(max-width:380px){.top>.brand{padding-inline:14px}}

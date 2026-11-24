@@ -1,0 +1,9 @@
+.motion-case-cover{position:relative;aspect-ratio:16/9;max-height:680px;overflow:hidden;border-radius:var(--surface-radius,24px);background:#080808}.motion-case-cover video{display:block;width:100%;height:100%;object-fit:cover}.kupibilet-motion-cover{background:#fe6240}.kupibilet-motion-cover video{object-fit:contain}.gq-case .work-sector-head h2{font-size:clamp(28px,3.4vw,46px)}.gq-case .work-sector{margin-bottom:clamp(40px,6vw,88px)}.brand-example-tag{display:none}@media(prefers-reduced-motion:no-preference){.work-sector.reveal-ready{opacity:.25;transform:translateY(24px);transition:opacity .6s,transform .6s}.work-sector.reveal-ready.is-revealed{opacity:1;transform:none}}@media(max-width:650px){.motion-case-cover{aspect-ratio:16/10;max-height:320px}.gq-case .case-heading{padding-bottom:24px}}
+.case-opening{margin-bottom:var(--section-space,64px)}.kupi-opening{margin-inline:var(--gutter)}.case-opening .case-cover-image{margin:0}.case-opening .case-motion-cover{height:58svh;max-height:620px}.case-opening figcaption{padding-top:12px;font-size:13px;color:var(--muted)}@media(max-width:650px){.case-opening .case-motion-cover{height:auto;aspect-ratio:3/4;max-height:52svh}}
+.case-page main{max-width:var(--maxw,1480px);margin-inline:auto}
+/* Both case covers share one frame on every viewport. */
+.case-section .motion-case-cover,.case-section .kupibilet-motion-cover{height:clamp(280px,35vw,510px);max-height:none;aspect-ratio:auto}
+@media(max-width:650px){.case-section .motion-case-cover,.case-section .kupibilet-motion-cover{height:300px;aspect-ratio:auto}}
+
+.case-section .kupibilet-motion-cover video{object-fit:cover}
+.kupi-opening .motion-case-cover{height:auto;max-height:none;aspect-ratio:1320/500}@media(max-width:650px){.kupi-opening .motion-case-cover{aspect-ratio:720/640}}
