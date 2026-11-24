@@ -17,7 +17,7 @@
   const nav=document.querySelector('.top .nav');
   if(!toggle||!nav)return;
   const narrow=matchMedia('(max-width:1040px)');
-  const labels = root.lang === 'en'
+  const menuLabels = () => root.lang === 'en'
     ? {menu: 'Menu', close: 'Close', closeMenu: 'Close menu'}
     : {menu: 'Меню', close: 'Закрыть', closeMenu: 'Закрыть меню'};
   let open=false,savedY=0,savedTop='';
@@ -37,6 +37,7 @@
     }
     open=next;
     toggle.setAttribute('aria-expanded',String(open));
+    const labels = menuLabels();
     toggle.textContent=open ? labels.close : labels.menu;
     toggle.setAttribute('aria-label',open ? labels.closeMenu : labels.menu);
     nav.classList.toggle('showcase-nav-open',open);
@@ -59,6 +60,7 @@
       else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
     }
   });
+  document.addEventListener('portfolio:language', () => setOpen(open));
   narrow.addEventListener('change',()=>setOpen(false));
   setOpen(false);
 })();

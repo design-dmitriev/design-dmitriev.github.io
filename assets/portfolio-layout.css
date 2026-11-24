@@ -126,7 +126,7 @@ html{scroll-padding-top:var(--header-clearance)}
 .portfolio-home > .blog-feed {
   padding-block: var(--section-space) 0;
 }
-.portfolio-home > main:not(:has(+ .blog-feed)) {
+.portfolio-home > main:not(:has(+ .blog-feed:not([hidden]))) {
   padding-block-end: var(--section-space);
 }
 .portfolio-home > .blog-feed {
@@ -140,4 +140,68 @@ html{scroll-padding-top:var(--header-clearance)}
 }
 @media (max-width: 650px) {
   .portfolio-home { --section-heading-gap: 24px; }
+}
+
+/* Case previews sit on the same grid as the rest of the portfolio. */
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--layout-gap);
+}
+.case-grid > .case-cover {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 2;
+  gap: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--surface-radius);
+  background: var(--soft);
+}
+.case-grid > .case-cover:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+.case-card-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: clamp(20px, 3vw, 44px);
+}
+.case-card-copy h3 { margin: 0; }
+.case-card-copy p {
+  margin: 0;
+  max-width: 38ch;
+  font-size: clamp(16px, 1.45vw, 22px);
+  line-height: 1.4;
+}
+.case-card-copy > span {
+  margin-block-start: auto;
+  color: var(--muted);
+  font-size: .875rem;
+}
+.case-section .case-grid .motion-case-cover {
+  height: auto;
+  aspect-ratio: 16 / 10;
+  margin: 0 clamp(12px, 2vw, 28px) clamp(12px, 2vw, 28px);
+  border-radius: calc(var(--surface-radius) - 6px);
+}
+.case-section .case-grid .motion-case-cover video { display: block; }
+.portfolio-home > .blog-feed[hidden] { display: none; }
+.language-status {
+  position: absolute;
+  inset-block-start: calc(100% + 8px);
+  inset-inline-end: 0;
+  padding: 10px 14px;
+  border-radius: var(--surface-radius);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--header-shadow);
+  font-size: .875rem;
+}
+@media (max-width: 650px) {
+  .case-grid { grid-template-columns: minmax(0, 1fr); }
+  .case-grid > .case-cover { grid-template-rows: auto auto; grid-row: auto; }
 }
