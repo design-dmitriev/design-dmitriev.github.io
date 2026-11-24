@@ -17,6 +17,9 @@
   const nav=document.querySelector('.top .nav');
   if(!toggle||!nav)return;
   const narrow=matchMedia('(max-width:1040px)');
+  const labels = root.lang === 'en'
+    ? {menu: 'Menu', close: 'Close', closeMenu: 'Close menu'}
+    : {menu: 'Меню', close: 'Закрыть', closeMenu: 'Закрыть меню'};
   let open=false,savedY=0,savedTop='';
   nav.dataset.lenisPrevent='';
   function setOpen(next,returnFocus=false){
@@ -34,8 +37,8 @@
     }
     open=next;
     toggle.setAttribute('aria-expanded',String(open));
-    toggle.textContent=open?'Закрыть':'Меню';
-    toggle.setAttribute('aria-label',open?'Закрыть меню':'Меню');
+    toggle.textContent=open ? labels.close : labels.menu;
+    toggle.setAttribute('aria-label',open ? labels.closeMenu : labels.menu);
     nav.classList.toggle('showcase-nav-open',open);
     nav.hidden=narrow.matches&&!open;
     document.dispatchEvent(new Event('portfolio:menu'));

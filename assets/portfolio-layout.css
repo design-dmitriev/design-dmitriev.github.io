@@ -50,7 +50,6 @@ html{scroll-padding-top:var(--header-clearance)}
   .graphic-hero .actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;width:100%}
   .graphic-hero .actions .btn{grid-column:auto;min-width:0;min-height:44px;width:100%;font-size:clamp(12px,3.2vw,14px);padding:12px 10px;white-space:normal;text-align:center}
   .graphic-hero .actions .btn:first-child,.graphic-hero .actions .btn:last-child{grid-column:auto}
-  #zaglavki{padding-top:24px}
   .showcase-head,.contact-head{margin-bottom:20px}
   .work-highlights{grid-template-columns:repeat(2,minmax(0,1fr))}
   .work-highlight:nth-child(n){grid-column:span 1}
@@ -85,3 +84,60 @@ html{scroll-padding-top:var(--header-clearance)}
  .top .nav>a{font-size:16px;min-height:48px;padding:12px 16px}
 }
 @media(max-width:380px){.top>.brand{padding-inline:14px}}
+
+.top.top-localized {
+  grid-template-columns: minmax(0, 1fr) auto var(--header-pill-height) var(--header-pill-height) !important;
+}
+.top-localized > .language-switch {
+  grid-column: 3;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: var(--header-pill-height);
+  height: var(--header-pill-height);
+  border: 1px solid transparent;
+  border-radius: 99px;
+  background: var(--header-surface);
+  color: var(--header-ink);
+  box-shadow: var(--header-shadow);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+  pointer-events: auto;
+}
+.top.top-localized > .theme-toggle { grid-column: 4; }
+@media (hover: hover) {
+  .top-localized > .language-switch:hover { background: var(--header-surface-hover); }
+}
+@media (max-width: 430px) {
+  .top-localized .brand-full { display: none; }
+  .top-localized .brand-short { display: inline; }
+}
+
+
+/* Homepage sections use one vertical interval, including the gap after the hero. */
+.portfolio-home {
+  --section-heading-gap: 32px;
+}
+.portfolio-home > main > section,
+.portfolio-home > .blog-feed {
+  padding-block: var(--section-space) 0;
+}
+.portfolio-home > main:not(:has(+ .blog-feed)) {
+  padding-block-end: var(--section-space);
+}
+.portfolio-home > .blog-feed {
+  padding-block-end: var(--section-space);
+}
+.portfolio-home .showcase-head,
+.portfolio-home #works .sec-head,
+.portfolio-home .contact-head,
+.portfolio-home .blog-feed .blog-head {
+  margin-block-end: var(--section-heading-gap);
+}
+@media (max-width: 650px) {
+  .portfolio-home { --section-heading-gap: 24px; }
+}
