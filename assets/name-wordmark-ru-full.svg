@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="302" height="28" viewBox="0 -5 302 28" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path transform="translate(2)" d="M1 19 7 2h4l6 17M4 13h10"/>
+  <path transform="translate(22)" d="M1 19 6 2h9v17"/>
+  <path transform="translate(41)" d="M14 2H2v17h12M2 10h10"/>
+  <path transform="translate(59)" d="M2 2v17m0-8h4l8-9M6 11l8 8"/>
+  <path transform="translate(77)" d="M15 2H7L2 7v7l5 5h8"/>
+  <path transform="translate(96)" d="M14 2H2v17h12M2 10h10"/>
+  <path transform="translate(114)" d="M2 2v17h3L14 2h2v17M6-3l2 2h3l2-2"/>
+  <path transform="translate(144)" d="M1 21v-3h17v3M4 18 8 2h7v16"/>
+  <path transform="translate(166)" d="M2 19V2h2l6 9 6-9h2v17"/>
+  <path transform="translate(188)" d="M2 2v17h3L14 2h2v17"/>
+  <path transform="translate(208)" d="M1 2h15M9 2v17"/>
+  <path transform="translate(227)" d="M2 19V2h9l4 4v3l-4 4H2"/>
+  <path transform="translate(246)" d="M2 2v17h3L14 2h2v17"/>
+  <path transform="translate(266)" d="M14 2H2v17h12M2 10h10"/>
+  <path transform="translate(284)" d="M2 19V2h9l3 3v3l-3 2H2m9 0 4 3v3l-3 3H2"/>
+</svg>

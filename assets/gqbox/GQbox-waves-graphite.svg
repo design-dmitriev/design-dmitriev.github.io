@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" overflow="hidden">
+<rect width="960" height="540" fill="#111111"/>
+<g fill="none" stroke-linecap="round">
+  <path d="M-35 -80 C115 -154 220 -154 360 -80 S605 -6 745 -80 S965 -154 1030 -117" stroke="#69419F" stroke-width="4"/>
+  <path d="M-35 -20 C115 -94 220 -94 360 -20 S605 54 745 -20 S965 -94 1030 -57" stroke="#9B74CA" stroke-width="3"/>
+  <path d="M-35 40 C115 -34 220 -34 360 40 S605 114 745 40 S965 -34 1030 3" stroke="#493263" stroke-width="3"/>
+  <path d="M-35 100 C115 26 220 26 360 100 S605 174 745 100 S965 26 1030 63" stroke="#69419F" stroke-width="4"/>
+  <path d="M-35 160 C115 86 220 86 360 160 S605 234 745 160 S965 86 1030 123" stroke="#9B74CA" stroke-width="3"/>
+  <path d="M-35 220 C115 146 220 146 360 220 S605 294 745 220 S965 146 1030 183" stroke="#493263" stroke-width="3"/>
+  <path d="M-35 280 C115 206 220 206 360 280 S605 354 745 280 S965 206 1030 243" stroke="#69419F" stroke-width="4"/>
+  <path d="M-35 340 C115 266 220 266 360 340 S605 414 745 340 S965 266 1030 303" stroke="#9B74CA" stroke-width="3"/>
+  <path d="M-35 400 C115 326 220 326 360 400 S605 474 745 400 S965 326 1030 363" stroke="#493263" stroke-width="3"/>
+  <path d="M-35 460 C115 386 220 386 360 460 S605 534 745 460 S965 386 1030 423" stroke="#69419F" stroke-width="4"/>
+</g>
+</svg>

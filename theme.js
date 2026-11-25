@@ -1,5 +1,12 @@
 (()=>{
   const root=document.documentElement;
+  if (document.querySelector('.top-localized')) {
+    const updateBackdrop = () => {
+      root.style.setProperty('--header-backdrop-opacity', Math.min(1, Math.max(0, scrollY / 72)));
+    };
+    addEventListener('scroll', updateBackdrop, {passive: true});
+    updateBackdrop();
+  }
   const theme=document.querySelector('.theme-toggle');
   function syncTheme(){theme?.setAttribute('aria-checked',String(root.dataset.theme==='dark'))}
   syncTheme();

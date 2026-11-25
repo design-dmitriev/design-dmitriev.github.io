@@ -139,7 +139,24 @@ html{scroll-padding-top:var(--header-clearance)}
   margin-block-end: var(--section-heading-gap);
 }
 @media (max-width: 650px) {
-  .portfolio-home { --section-heading-gap: 24px; }
+  .portfolio-home {
+    --section-space: 64px;
+    --section-heading-gap: 24px;
+    --group-space: 32px;
+    --card-space: 20px;
+  }
+  .portfolio-home #photography { padding-block-start: var(--section-space); }
+  .portfolio-home .work-logos-preview { margin-block-start: var(--group-space); }
+  .portfolio-home .work-logos-preview h3 { margin-block: 0 16px; }
+  .portfolio-home .photography .photo-series + .photo-series {
+    margin-block-start: var(--group-space);
+  }
+  .portfolio-home .case-grid,
+  .portfolio-home .contact-grid,
+  .portfolio-home .blog-posts {
+    row-gap: var(--card-space);
+  }
+  .portfolio-home #works .works { row-gap: var(--group-space); }
 }
 
 /* Case previews sit on the same grid as the rest of the portfolio. */
@@ -204,4 +221,27 @@ html{scroll-padding-top:var(--header-clearance)}
 @media (max-width: 650px) {
   .case-grid { grid-template-columns: minmax(0, 1fr); }
   .case-grid > .case-cover { grid-template-rows: auto auto; grid-row: auto; }
+}
+
+/* The backdrop fades out below the floating header. */
+body:has(> .top-localized)::before {
+  content: "";
+  position: fixed;
+  z-index: 59;
+  inset: 0 0 auto;
+  height: calc(var(--header-clearance) + env(safe-area-inset-top) + 36px);
+  pointer-events: none;
+  opacity: var(--header-backdrop-opacity, 0);
+  background: color-mix(in srgb, var(--paper) 14%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  mask-image: linear-gradient(#000 0%, #000 28%, transparent 100%);
+}
+
+.top > .case-header-back {
+  gap: .5em;
+}
+.case-header-back > span:first-child {
+  font-size: 1.5em;
+  line-height: .7;
 }

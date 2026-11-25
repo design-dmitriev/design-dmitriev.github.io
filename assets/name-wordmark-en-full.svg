@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="28" viewBox="0 -5 260 28" fill="none" stroke="#000" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <path transform="translate(2)" d="M1 19 7 2h4l6 17M4 13h10"/>
+  <path transform="translate(22)" d="M2 2v17h11"/>
+  <path transform="translate(39)" d="M14 2H2v17h12M2 10h10"/>
+  <path transform="translate(57)" d="M1 2h3l12 17M16 2 1 19"/>
+  <path transform="translate(77)" d="M14 2H2v17h12M2 10h10"/>
+  <path transform="translate(95)" d="M1 2l8 10 8-10M9 12v7"/>
+  <path transform="translate(125)" d="M2 2h9l5 5v7l-5 5H2z"/>
+  <path transform="translate(145)" d="M2 19V2h2l6 9 6-9h2v17"/>
+  <path transform="translate(167)" d="M3 2v17"/>
+  <path transform="translate(176)" d="M1 2h15M9 2v17"/>
+  <path transform="translate(195)" d="M2 19V2h9l4 4v3l-4 4H2m7 0 6 6"/>
+  <path transform="translate(214)" d="M3 2v17"/>
+  <path transform="translate(223)" d="M14 2H2v17h12M2 10h10"/>
+  <path transform="translate(241)" d="M1 2l6 17h4l6-17"/>
+</svg>

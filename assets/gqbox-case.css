@@ -66,3 +66,349 @@
 .case-collage>figure img{border-radius:calc(var(--surface-radius)/2)}
 .case-pair.campaign-collage{grid-template-columns:1.2fr 1fr;align-items:center;padding:var(--case-block-space);background:var(--soft);border-radius:var(--surface-radius)}
 @media(max-width:650px){.case-pair.case-collage{grid-template-columns:1fr 1fr;padding:12px}.case-collage>figure:first-child{grid-column:1/-1;grid-row:auto}.case-collage figcaption{font-size:13px}.case-pair.campaign-collage{padding:12px;grid-template-columns:1fr 1fr}}
+
+/* GQbox reads as a sequence of large visual chapters. */
+.case-page > .gq-story {
+  max-width: none;
+  --story-inset: max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter)));
+  --story-gap: clamp(28px, 5vw, 72px);
+}
+.gq-story > .case-heading,
+.gq-story .work-sector-head,
+.gq-story .case-content {
+  padding-inline: var(--story-inset);
+}
+.gq-story > .case-opening { padding-inline: 0; }
+.gq-story .case-opening .case-motion-cover {
+  height: clamp(460px, 75svh, 920px);
+  max-height: none;
+  border-radius: 0;
+}
+.gq-story .case-opening figcaption { padding-inline: var(--story-inset); }
+.gq-story .case-brand-mark { display: none; }
+.gq-story .case-intro { max-width: 52ch; }
+.gq-story .case-content .case-pair,
+.gq-story .case-content .campaign-collage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: none;
+  padding: 0;
+  gap: var(--story-gap);
+  background: transparent;
+}
+.gq-story .case-collage > figure:first-child { grid-row: auto; }
+.gq-story .case-content .merch-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--layout-gap);
+}
+.gq-story .packaging-stage { max-width: none; }
+.gq-story .site-examples { margin-top: 0; }
+.gq-story .brand-story {
+  max-width: var(--maxw);
+  margin-inline: auto;
+}
+.gq-story .brand-story .work-sector-head { padding-inline: var(--gutter); }
+.gq-story .case-footer { margin-inline: var(--story-inset); }
+@media (max-width: 650px) {
+  .gq-story .case-opening .case-motion-cover {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .gq-story .case-content .merch-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* A full-width sequence of chapters with room for the artwork to lead. */
+.gq-story {
+  --gq-purple: #472384;
+  --gq-black: #111111;
+  --gq-white: #ffffff;
+  --chapter-paper: var(--gq-white);
+  --chapter-gap: clamp(36px, 7vw, 112px);
+}
+[data-theme="dark"] .gq-story {
+  --chapter-paper: var(--gq-black);
+}
+.gq-story > .work-sector {
+  padding-block: var(--chapter-gap);
+  margin: 0;
+}
+.gq-story :is(#website, #merch, #presentations) {
+  background: var(--chapter-paper);
+}
+/* Keep the intro, title and film on one presentation grid. */
+.gq-story > .case-heading {
+  padding-top: calc(var(--header-clearance) + clamp(8px, 2vw, 28px));
+  padding-bottom: clamp(24px, 3vw, 44px);
+  background: var(--chapter-paper);
+}
+.gq-story > .case-heading .work-back {
+  color: var(--muted);
+  font-size: .875rem;
+}
+.gq-story > .case-heading .brand-case-title {
+  min-height: 0;
+  margin: clamp(12px, 2vw, 24px) 0;
+}
+.gq-story .brand-case-title img {
+  width: clamp(150px, 19vw, 290px);
+  height: auto;
+}
+.gq-story > .case-heading .case-intro { margin: 0; }
+.gq-story > .case-opening {
+  padding-inline: var(--story-inset);
+  margin-bottom: 0;
+}
+.gq-story .case-opening .case-motion-cover {
+  border-radius: var(--surface-radius);
+}
+.gq-story .case-opening figcaption { padding-inline: 0; }
+.gq-story :is(#campaigns, #packaging) {
+  background: var(--gq-purple) url("gqbox/GQbox-waves-purple.svg") center top / 100% auto repeat-y;
+  color: var(--gq-white);
+  --ink: var(--gq-white);
+  --muted: #f0e8fa;
+}
+.gq-story .work-sector-head {
+  margin-block-end: clamp(24px, 4vw, 56px);
+}
+.gq-story .work-sector-head h2 {
+  font-size: clamp(32px, 5vw, 82px);
+  line-height: 1;
+}
+.gq-story > .work-sector > .case-content {
+  padding-inline: 0;
+}
+.gq-story .case-content .case-pair { gap: var(--chapter-gap); }
+.gq-story .case-content figure { overflow: hidden; }
+.gq-story .case-content figcaption {
+  padding-inline: var(--gutter);
+}
+.gq-story :is(.site-examples, .campaign-placements, .slides) > figure {
+  width: min(91%, 1850px);
+}
+.gq-story :is(.site-examples, .campaign-placements, .slides) > figure:nth-child(even) {
+  justify-self: end;
+}
+.gq-story :is(.site-examples, .campaign-placements) > figure:first-child {
+  width: 100%;
+}
+.gq-story :is(.site-examples, .campaign-placements) > figure:first-child img,
+.gq-story :is(#ozon, #packaging) > .case-content > figure img,
+.gq-story .ozon-real-window {
+  border-radius: 0;
+}
+.gq-story .case-content .merch-grid {
+  gap: var(--layout-gap);
+  padding-inline: var(--gutter);
+}
+@media (max-width: 650px) {
+  .gq-story { --chapter-gap: 48px; }
+  .gq-story .case-content .merch-grid { gap: 24px; }
+  .gq-story :is(.site-examples, .campaign-placements, .slides) > figure {
+    width: 96%;
+  }
+  .gq-story :is(.site-examples, .campaign-placements) > figure:first-child {
+    width: 100%;
+  }
+}
+
+.gq-identity-board {
+  display: grid;
+  gap: var(--layout-gap);
+  margin-inline: var(--story-inset);
+}
+.identity-palette,
+.identity-type {
+  display: grid;
+  gap: clamp(18px, 3vw, 40px);
+  padding: clamp(16px, 3.5vw, 56px);
+  border-radius: var(--surface-radius);
+}
+.identity-palette {
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+.identity-palette h3,
+.identity-type h3,
+.gq-identity-board p { margin: 0; }
+.gq-identity-board p {
+  max-width: 65ch;
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.55;
+}
+.identity-swatches {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.identity-swatch {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  gap: 5px;
+  min-height: clamp(86px, 19vw, 250px);
+  padding: clamp(7px, 1.7vw, 24px);
+  border-radius: calc(var(--surface-radius) * .67);
+  color: var(--gq-white);
+  font-size: clamp(11px, 1.6vw, 22px);
+}
+.identity-swatch code { font-size: clamp(10px, 1vw, 14px); }
+.identity-swatch--purple { background: var(--gq-purple); }
+.identity-swatch--black { background: var(--gq-black); }
+.identity-swatch--white { background: var(--gq-white); color: var(--gq-black); }
+.identity-type {
+  background: var(--gq-black);
+  color: var(--gq-white);
+}
+@font-face {
+  font-family: "Cygre Specimen";
+  src: local("Cygre Regular"), local("Cygre-Regular");
+  font-display: swap;
+}
+.identity-type > div {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+.identity-kicker {
+  line-height: 1.25;
+  font-size: .875rem;
+  color: #d3ccd8;
+}
+.identity-type h3 {
+  font-size: clamp(40px, 7vw, 86px);
+  font-weight: 500;
+  letter-spacing: -.045em;
+  line-height: 1.05;
+}
+.cygre-specimen {
+  display: grid;
+  gap: clamp(8px, 1.5vw, 20px);
+  padding: clamp(18px, 3.5vw, 48px);
+  border-radius: calc(var(--surface-radius) * .67);
+  background: #fff;
+  color: #17121c;
+  font-family: "Cygre Specimen", Inter, system-ui, sans-serif;
+}
+.cygre-specimen-line {
+  position: relative;
+  display: block;
+  font-size: clamp(20px, 4.4vw, 64px);
+  line-height: 1.22;
+}
+.cygre-specimen-line + .cygre-specimen-line {
+  color: #514763;
+  font-size: clamp(14px, 2.4vw, 32px);
+}
+.cygre-specimen-line:has(.wave-visual) .wave-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.wave-word { display: inline-block; }
+.wave-word > span {
+  display: inline-block;
+  paint-order: stroke fill;
+  -webkit-text-stroke: calc(var(--wave, 0) * .065em) currentColor;
+}
+
+/* A translucent brand-colored wash keeps chapter titles and captions legible. */
+.gq-story :is(#campaigns, #packaging) {
+  background-image: linear-gradient(#472384b8, #472384b8), url("gqbox/GQbox-waves-purple.svg");
+}
+
+/* Open on the work. Let the title and contribution introduce the chapters. */
+.gq-story > .case-opening:first-child {
+  padding: var(--header-clearance) 0 0;
+}
+.gq-story > .case-opening:first-child .case-motion-cover {
+  border-radius: 0;
+}
+.gq-story > .case-opening:first-child figcaption {
+  padding-inline: var(--story-inset);
+}
+.gq-story > .case-opening + .case-heading {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--story-gap);
+  row-gap: 16px;
+  padding-block: clamp(32px, 6vw, 84px);
+}
+.gq-story > .case-opening + .case-heading .brand-case-title { margin: 0; }
+@media (max-width: 700px) {
+  .gq-story > .case-opening + .case-heading {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.gq-story #campaigns .work-sector-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: clamp(18px, 4vw, 48px);
+}
+.campaign-marks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: none;
+  gap: clamp(16px, 3vw, 40px);
+}
+.campaign-note {
+  position: relative;
+  display: inline-block;
+  padding: 9px 14px;
+  white-space: nowrap;
+  font: italic clamp(16px, 2vw, 24px)/1.2 Georgia, serif;
+  transform: rotate(-7deg);
+}
+.campaign-note svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  pointer-events: none;
+}
+.campaign-medal {
+  display: grid;
+  place-content: center;
+  width: clamp(70px, 8vw, 112px);
+  aspect-ratio: 1;
+  text-align: center;
+  background: #fff;
+  color: var(--gq-purple);
+  transform: rotate(8deg);
+  clip-path: polygon(50% 0%,58% 5%,67% 3%,73% 10%,83% 11%,87% 20%,95% 25%,95% 35%,100% 43%,97% 50%,100% 58%,95% 65%,95% 75%,87% 80%,83% 89%,73% 90%,67% 97%,58% 95%,50% 100%,42% 95%,33% 97%,27% 90%,17% 89%,13% 80%,5% 75%,5% 65%,0% 58%,3% 50%,0% 43%,5% 35%,5% 25%,13% 20%,17% 11%,27% 10%,33% 3%,42% 5%);
+}
+.campaign-medal strong {
+  font-size: clamp(24px, 4vw, 46px);
+  line-height: 1;
+}
+.campaign-medal > span { font-size: clamp(11px, 1vw, 14px); }
+.case-handline {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+}
+.case-handline::after {
+  content: "";
+  position: absolute;
+  inset: auto -2px -3px;
+  height: 5px;
+  border-top: 1.5px solid currentColor;
+  border-radius: 65% 45% 0 0;
+  transform: rotate(-2deg);
+}
+@media (max-width: 760px) {
+  .gq-story #campaigns .work-sector-head { display: grid; }
+  .campaign-marks { justify-content: start; }
+}
